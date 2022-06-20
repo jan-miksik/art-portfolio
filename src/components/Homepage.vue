@@ -66,7 +66,7 @@
     <Transition name="fade">
     <div v-if="isContactModalVisible" class="homepage__contact-modal">
       <div class="homepage__contact-modal-content">
-        <h1>Jan Mikšík</h1>
+        <!-- <h1>Jan Mikšík</h1> -->
         <!-- <p>
            ... email is the most certain  ..
         </p> -->
@@ -159,7 +159,7 @@ const selectTopic = (topic: Topics) => {
     case Topics.NODE_AVATARS:
       setTimeout(() => {
         piecesNodeAvatars.value = piecesData[topic].map(
-          (pieceData: Piece) => new Piece(pieceData)
+          (pieceData: any) => new Piece(pieceData)
         );
       }, 300);
       break;
@@ -167,7 +167,7 @@ const selectTopic = (topic: Topics) => {
     case Topics.SANS_TOPIC:
       setTimeout(() => {
         piecesSansTopic.value = piecesData[topic].map(
-          (pieceData: Piece) => new Piece(pieceData)
+          (pieceData: any) => new Piece(pieceData)
         );
       }, 300);
       break;
@@ -175,7 +175,7 @@ const selectTopic = (topic: Topics) => {
     case Topics.GEOMETRY:
       setTimeout(() => {
         piecesGeometry.value = piecesData[topic].map(
-          (pieceData: Piece) => new Piece(pieceData)
+          (pieceData: any) => new Piece(pieceData)
         );
       }, 500);
       break;

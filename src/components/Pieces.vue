@@ -69,10 +69,10 @@ const selectImage = (id: string) => {
   }
   const coordinates = document.getElementById(id)?.getBoundingClientRect();
   if (window.innerHeight > window.innerWidth) {
-    const targetPosition = window.scrollY + coordinates.y - 185;
+    const targetPosition = window.scrollY + (coordinates?.y || 0) - 185;
     window.scrollTo(0, targetPosition);
   } else {
-    const targetPosition = window.scrollY + coordinates.y;
+    const targetPosition = window.scrollY + (coordinates?.y || 0);
     window.scrollTo(0, targetPosition);
   }
   activeImage.value = id;
