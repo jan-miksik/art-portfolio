@@ -95,7 +95,25 @@ export const piecesData = {
       id: '5',
       name: 'ooo',
       description: '',
-      image: 'sans-topic/ooo,2020,drawing on paper,30x21cm.jpg',
+      image: 'sans-topic/ooo,2021,drawing on paper,42x30cm.jpg',
+      topic: Topics.SANS_TOPIC,
+      price: 0,
+      technique: Techniques.DRAWING,
+      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
+      sizeInCm: {
+        x: 42,
+        y: 30
+      },
+      tags: [],
+      created: new Date('2021'),
+      updated: new Date()
+    },
+    {
+      id: '6',
+      name: 'side project - kɛrɛfɛ porozɛ(bm) - vedlejší projekt',
+      description: '',
+      image:
+        'sans-topic/side project - kɛrɛfɛ porozɛ(bm) - vedlejší projekt,2018,drawing on paper,30x21cm.jpg',
       topic: Topics.SANS_TOPIC,
       price: 0,
       technique: Techniques.DRAWING,
@@ -103,6 +121,78 @@ export const piecesData = {
       sizeInCm: {
         x: 30,
         y: 21
+      },
+      tags: [],
+      created: new Date('2018'),
+      updated: new Date()
+    },
+    {
+      id: '7',
+      name: 'tlak - 壓力(zh) - pressure',
+      description: '',
+      image:
+        'sans-topic/tlak - 壓力(zh) - pressure,2019,drawing on paper,30x21cm.jpg',
+      topic: Topics.SANS_TOPIC,
+      price: 0,
+      technique: Techniques.DRAWING,
+      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
+      sizeInCm: {
+        x: 30,
+        y: 21
+      },
+      tags: [],
+      created: new Date('2019'),
+      updated: new Date()
+    },
+    {
+      id: '8',
+      name: 'सपनों की लय(hi) - dream rhythm - rytmus snu',
+      description: '',
+      image:
+        'sans-topic/सपनों की लय(hi) - dream rhythm - rytmus snu,2016,drawing on paper,42x30cm.jpg',
+      topic: Topics.SANS_TOPIC,
+      price: 0,
+      technique: Techniques.DRAWING,
+      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
+      sizeInCm: {
+        x: 42,
+        y: 30
+      },
+      tags: [],
+      created: new Date('2016'),
+      updated: new Date()
+    },
+    {
+      id: '9',
+      name: 'ananas - ananász(hu) - pineapple',
+      description: '',
+      image:
+        'sans-topic/ananas - ananász(hu) - pineapple,2016,drawing on paper,31x31cm.jpg',
+      topic: Topics.SANS_TOPIC,
+      price: 0,
+      technique: Techniques.DRAWING,
+      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
+      sizeInCm: {
+        x: 31,
+        y: 31
+      },
+      tags: [],
+      created: new Date('2016'),
+      updated: new Date()
+    },
+    {
+      id: '10',
+      name: 'system language - γλώσσα συστήματος(el) - systémový jazyk',
+      description: '',
+      image:
+        'sans-topic/system language - γλώσσα συστήματος(el) - systémový jazyk,2020,drawing on paper,26x22cm.jpg',
+      topic: Topics.SANS_TOPIC,
+      price: 0,
+      technique: Techniques.DRAWING,
+      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
+      sizeInCm: {
+        x: 26,
+        y: 22
       },
       tags: [],
       created: new Date('2020'),

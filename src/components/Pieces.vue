@@ -15,6 +15,7 @@
         :key="piece.id"
         :class="[
           'pieces__piece',
+          { 'pieces__piece-node-avatar': Topics.NODE_AVATARS === props.type },
           { 'pieces__active-image-container': piece.id === activeImage }
         ]"
       >
@@ -33,7 +34,7 @@
         <div
           :class="[
             piece.id === activeImage
-              ? 'pieces__piece-description-selected'
+              ? handleImageClass(piece)
               : 'pieces__piece-description-unselected'
           ]"
         >
@@ -61,6 +62,15 @@ const props = defineProps<{
   selectedTopic: Topics
 }>()
 
+const getScale = (coordinates: any) => {
+  const widthRatio = window.innerWidth / coordinates.width
+  const heightRatio = window.innerHeight / (coordinates.height + 50)
+  const scale = widthRatio > heightRatio ? heightRatio : widthRatio
+
+  if (scale > 2.2) return 2.2
+  return scale
+}
+
 const handleImagePosition = (piece: Piece) => {
   if (piece.id !== activeImage.value || window.innerWidth <= 1000) {
     return piece.randomizedPosition
@@ -68,12 +78,29 @@ const handleImagePosition = (piece: Piece) => {
   const selectedImage = document.getElementById(piece.id)
   const coordinates = selectedImage?.getBoundingClientRect()
   if (!coordinates || !selectedImage) return
-
+  const translateY = coordinates.height < 320 ? 110 : 100
   return {
-    transform: `rotate(0deg) scale(2) translateY(100px) translateX(${
+    transform: `rotate(0deg) scale(${getScale(
+      coordinates
+    )}) translateY(${translateY}px) translateX(${
       (window.innerWidth / 2 - (coordinates.width / 2 + coordinates.left)) / 2
     }px) !important`
   }
+}
+
+const handleImageClass = (piece: Piece) => {
+  const selectedImage = document.getElementById(piece.id)
+  const coordinates = selectedImage?.getBoundingClientRect()
+  if (!coordinates || !selectedImage) return
+  const isHigherThanWider2 = coordinates.height / coordinates.width
+  console.log('isHigherThanWider2: ', isHigherThanWider2)
+  const isHigherThanWider = coordinates.height > coordinates.width
+  console.log('isHigherThanWider: ', isHigherThanWider)
+
+  console.log('coordinates.height: ', coordinates.height)
+  return isHigherThanWider && coordinates.height > 350
+    ? 'pieces__piece-description-selected-higher-img'
+    : 'pieces__piece-description-selected'
 }
 
 const selectImage = (id: string) => {
@@ -84,12 +111,15 @@ const selectImage = (id: string) => {
   const selectedImage = document.getElementById(id)
   const coordinates = selectedImage?.getBoundingClientRect()
   if (!coordinates || !selectedImage) return
+  const isHigherThanWider = coordinates.height > coordinates.width
 
   if (window.innerHeight > window.innerWidth) {
     const targetPosition = window.scrollY + (coordinates?.y || 0) - 185
     window.scrollTo(0, targetPosition)
   } else {
-    const targetPosition = window.scrollY + (coordinates?.y || 0)
+    const targetPosition =
+      window.scrollY + (coordinates?.y || 0) + (isHigherThanWider ? 85 : 0)
+
     window.scrollTo(0, targetPosition)
   }
   activeImage.value = id
@@ -140,7 +170,8 @@ const getImagePath = (imagePath: string) => {
 .pieces__active-image-container {
 }
 
-.pieces__piece {
+.pieces__piece,
+.pieces__piece-node-avatar {
   transition: all 0.25s;
   position: relative;
   width: 100%;
@@ -149,6 +180,10 @@ const getImagePath = (imagePath: string) => {
 @media (min-width: 1000px) {
   .pieces__piece {
     max-width: 500px;
+  }
+  .pieces__piece-node-avatar {
+    max-width: 200px;
+    margin: 1rem;
   }
   .pieces__image:hover {
     cursor: cell;
@@ -172,6 +207,7 @@ const getImagePath = (imagePath: string) => {
   display: none;
 }
 .pieces__piece-description-selected,
+.pieces__piece-description-selected-higher-img,
 .pieces__piece-description-unselected {
   transition: all 0.2s;
   background-color: #eee;
@@ -193,7 +229,11 @@ const getImagePath = (imagePath: string) => {
 
 @media (min-width: 1000px) {
   .pieces__piece-description-selected {
-    bottom: -50vh;
+    bottom: -52vh;
+  }
+
+  .pieces__piece-description-selected-higher-img {
+    bottom: -20vh;
   }
 }
 .pieces__piece-description:hover {
