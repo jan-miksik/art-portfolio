@@ -1,35 +1,33 @@
-import { Topics } from "@/components/piecesData";
+import { Topics } from '@/components/piecesData'
 
 const generateRandomNumberPlusMinus = (max: number) => {
-  return Math.floor(((Math.random() * max) + 1) * (Math.random() - 0.5) * 2)
+  return Math.floor((Math.random() * max + 1) * (Math.random() - 0.5) * 2)
 }
 
 const randomRange = (min: number, max: number) => {
-   return Math.floor((Math.random() * (max - min + 1)) + min);
+  return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
 export type IPiece = {
-  id: string;
-  name: string;
-  topic: string;
-  technique: string;
-  techniqueDescription: string;
-  created: Date;
-  image: string;
+  id: string
+  name: string
+  topic: string
+  technique: string
+  techniqueDescription: string
+  created: Date
+  image: string
   sizeInCm: {
-    x: number;
-    y: number;
-    z?: number;
-  };
-  randomizedPosition: {transform: string};
+    x: number
+    y: number
+    z?: number
+  }
+  randomizedPosition: { transform: string }
 
-  tags: string[];
-  description: string;
-  price: number;
-  updated: Date;
+  tags: string[]
+  description: string
+  price: number
+  updated: Date
 }
-
-
 
 export default class Piece {
   public id
@@ -40,13 +38,13 @@ export default class Piece {
   public created
   public image
   public sizeInCm
-  
+
   public randomizedPosition
   public tags
   public description
   public price
   public updated
-  
+
   constructor(data: IPiece) {
     this.id = data.id || ''
     this.name = data.name || ''
@@ -65,13 +63,31 @@ export default class Piece {
 
   getRandomizedPosition () {
     if (this.topic === Topics.SANS_TOPIC) {
-      return {transform: `rotate(${generateRandomNumberPlusMinus(9)}deg) scale(${randomRange(3, 12)/10}) translateY(${generateRandomNumberPlusMinus(170)}px) translateX(${generateRandomNumberPlusMinus(100)}px)`}
+      return {
+        transform: `rotate(${generateRandomNumberPlusMinus(9)}deg) scale(${
+          randomRange(3, 12) / 10
+        }) translateY(${generateRandomNumberPlusMinus(
+          170
+        )}px) translateX(${generateRandomNumberPlusMinus(100)}px)`
+      }
     }
     if (this.topic === Topics.GEOMETRY) {
-      return {transform: `scale(${randomRange(3, 12)/10}) translateY(${generateRandomNumberPlusMinus(180)}px) translateX(${generateRandomNumberPlusMinus(110)}px)`}
+      return {
+        transform: `scale(${
+          randomRange(3, 12) / 10
+        }) translateY(${generateRandomNumberPlusMinus(
+          180
+        )}px) translateX(${generateRandomNumberPlusMinus(110)}px)`
+      }
     }
     if (this.topic === Topics.NODE_AVATARS) {
-      return {transform: `scale(${randomRange(3, 8)/10}) translateY(${generateRandomNumberPlusMinus(110)}px) translateX(${generateRandomNumberPlusMinus(110)}px)`}
+      return {
+        transform: `scale(${
+          randomRange(3, 8) / 10
+        }) translateY(${generateRandomNumberPlusMinus(
+          110
+        )}px) translateX(${generateRandomNumberPlusMinus(110)}px)`
+      }
     }
   }
 }

@@ -1,0 +1,27 @@
+module.exports = {
+  env: {
+    browser: true,
+    es2021: true
+  },
+  extends: [
+    'prettier',
+    'standard',
+    'eslint:recommended',
+    'plugin:vue/essential',
+    'plugin:vue/vue3-recommended'
+  ],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    parser: '@typescript-eslint/parser',
+    sourceType: 'module'
+  },
+  plugins: ['vue', '@typescript-eslint', 'prettier'],
+  rules: {
+    'prettier/prettier': ['warn'],
+    'vue/multi-word-component-names': 0,
+    'vue/no-unused-vars': 1,
+    'no-unused-vars': 1,
+    'vue/html-self-closing': 0,
+    'space-before-function-paren': 0
+  }
+}
