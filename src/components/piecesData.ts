@@ -1,7 +1,7 @@
 export enum Topics {
-  SANS_TOPIC = 'SANS_TOPIC',
-  GEOMETRY = 'GEOMETRY',
-  NODE_AVATARS = 'NODE_AVATARS'
+  SANS_TOPIC = 'sans topic',
+  GEOMETRY = 'geometry',
+  NODE_AVATARS = 'node avatars'
 }
 
 export enum Techniques {

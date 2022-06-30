@@ -1,18 +1,18 @@
 <template>
   <div class="homepage__titles">
     <h1
-      @click="selectTopic(Topics.SANS_TOPIC)"
       :class="[
         'homepage__title homepage__title-sans-topic',
         {
           'homepage__animate-selected-sans-topic':
-            selectedTopic === Topics.SANS_TOPIC,
+            selectedTopic === Topics.SANS_TOPIC
         },
         {
           'homepage__unselected-title animate-unselected-sans-topic':
-            selectedTopic && selectedTopic !== Topics.SANS_TOPIC,
-        },
+            selectedTopic && selectedTopic !== Topics.SANS_TOPIC
+        }
       ]"
+      @click="selectTopic(Topics.SANS_TOPIC)"
     >
       sans topic
     </h1>
@@ -20,167 +20,157 @@
     <!-- <div class="homepage__title-sans-topic-hover-hack"/> -->
 
     <h1
-      @click="selectTopic(Topics.GEOMETRY)"
       :class="[
         'homepage__title  homepage__title-geometry',
         {
           'homepage__animate-selected-geometry':
-            selectedTopic === Topics.GEOMETRY,
+            selectedTopic === Topics.GEOMETRY
         },
         {
           'homepage__unselected-title animate-unselected-geometry':
-            selectedTopic && selectedTopic !== Topics.GEOMETRY,
-        },
+            selectedTopic && selectedTopic !== Topics.GEOMETRY
+        }
       ]"
+      @click="selectTopic(Topics.GEOMETRY)"
     >
       geometry
     </h1>
 
     <h1
-      @click="selectTopic(Topics.NODE_AVATARS)"
       :class="[
         'homepage__title  homepage__title-node-avatars',
         {
           'homepage__animate-selected-node-avatars':
-            selectedTopic === Topics.NODE_AVATARS,
+            selectedTopic === Topics.NODE_AVATARS
         },
         {
           'homepage__unselected-title animate-unselected-node-avatars':
-            selectedTopic && selectedTopic !== Topics.NODE_AVATARS,
-        },
+            selectedTopic && selectedTopic !== Topics.NODE_AVATARS
+        }
       ]"
+      @click="selectTopic(Topics.NODE_AVATARS)"
     >
       node avatars
     </h1>
 
-    <div @click="showContactModal" class="homepage__contact">contact</div>
+    <div
+class="homepage__contact" @click="showContactModal">contact</div>
     <Transition name="fade">
       <div
         v-if="isContactModalVisible"
-        @click="isContactModalVisible = false"
         class="homepage__contact-modal-backdrop"
+        @click="isContactModalVisible = false"
       />
-
     </Transition>
 
     <Transition name="fade">
-    <div v-if="isContactModalVisible" class="homepage__contact-modal">
-      <div class="homepage__contact-modal-content">
-        <!-- <h1>Jan Mikšík</h1> -->
-        <!-- <p>
+      <div v-if="isContactModalVisible" class="homepage__contact-modal">
+        <div class="homepage__contact-modal-content">
+          <!-- <h1>Jan Mikšík</h1> -->
+          <!-- <p>
            ... email is the most certain  ..
         </p> -->
-        <div class="homepage__soc-links">
+          <div class="homepage__soc-links">
+            <a class="homepage__soc-link"
+href="mailto: jan.miksik.g@gmail.com"
+              ><img
+                src="../assets/email.svg"
+                width="35"
+                alt="email"
+                :style="randomizePosition()"
+            /></a>
+            <a
+              class="homepage__soc-link"
+              href="https://www.instagram.com/miksik.jan/"
+              target="_blank"
+              ><img
+                src="../assets/instagram.svg"
+                width="27"
+                alt="instagram"
+                :style="randomizePosition()"
+            /></a>
 
-
-        <a class="homepage__soc-link" href="mailto: jan.miksik.g@gmail.com"
-          ><img src="../assets/email.svg" width="35" alt="email" :style="randomizePosition()"/></a
-        >
-        <a
-          class="homepage__soc-link"
-          href="https://www.instagram.com/miksik.jan/"
-          target="_blank"
-          ><img src="../assets/instagram.svg"  width="27" alt="instagram" :style="randomizePosition()"/></a
-        >
-        
-        <a
-          class="homepage__soc-link"
-          href="https://www.facebook.com/jan.miksik.1/"
-          target="_blank"
-          ><img src="../assets/fb.svg"  width="26" alt="facebook" :style="randomizePosition()"/></a
-        >
-        <a
-          class="homepage__soc-link"
-          href="https://twitter.com/MiksikJan"
-          target="_blank"
-          ><img src="../assets/twitter.svg"  width="30" alt="twitter" :style="randomizePosition()"/></a
-        >
-                </div>
+            <a
+              class="homepage__soc-link"
+              href="https://www.facebook.com/jan.miksik.1/"
+              target="_blank"
+              ><img
+                src="../assets/fb.svg"
+                width="26"
+                alt="facebook"
+                :style="randomizePosition()"
+            /></a>
+            <a
+              class="homepage__soc-link"
+              href="https://twitter.com/MiksikJan"
+              target="_blank"
+              ><img
+                src="../assets/twitter.svg"
+                width="30"
+                alt="twitter"
+                :style="randomizePosition()"
+            /></a>
+          </div>
+        </div>
       </div>
-    </div>
     </Transition>
   </div>
 
   <Pieces
     :pieces="piecesSansTopic"
     :type="Topics.SANS_TOPIC"
-    :selectedTopic="selectedTopic"
+    :selected-topic="selectedTopic"
   />
   <Pieces
     :pieces="piecesGeometry"
     :type="Topics.GEOMETRY"
-    :selectedTopic="selectedTopic"
+    :selected-topic="selectedTopic"
   />
   <Pieces
     :pieces="piecesNodeAvatars"
     :type="Topics.NODE_AVATARS"
-    :selectedTopic="selectedTopic"
+    :selected-topic="selectedTopic"
   />
 </template>
 
 <script setup lang="ts">
-import Piece from "@/models/Piece";
-import { ref } from "vue";
-import Pieces from "@/components/Pieces.vue";
-import { piecesData, Topics } from "@/components/piecesData";
-const piecesNodeAvatars = ref<Piece[] | undefined>();
-const piecesSansTopic = ref<Piece[] | undefined>();
-const piecesGeometry = ref<Piece[] | undefined>();
-const selectedTopic = ref();
+import { ref } from 'vue'
+import Pieces from '@/components/Pieces.vue'
+import { Topics } from '@/components/piecesData'
+import useAssets from '@/assets/useAssets'
+const { piecesNodeAvatars, piecesSansTopic, piecesGeometry } = useAssets()
+const selectedTopic = ref()
 
-const isContactModalVisible = ref(false);
+const isContactModalVisible = ref(false)
 
 const showContactModal = () => {
-  console.log('showContactModal: ');
-  isContactModalVisible.value = true;
-};
+  isContactModalVisible.value = true
+}
 
 const generateRandomNumberPlusMinus = (max: number) => {
-  return Math.floor(((Math.random() * max) + 1) * (Math.random() - 0.5) * 2)
+  return Math.floor((Math.random() * max + 1) * (Math.random() - 0.5) * 2)
 }
 
 const randomRange = (min: number, max: number) => {
-   return Math.floor((Math.random() * (max - min + 1)) + min);
+  return Math.floor(Math.random() * (max - min + 1) + min)
 }
-
-
-const randomizePosition = () => { 
-  return {transform: `scale(${randomRange(7, 12)/10}) translateY(${generateRandomNumberPlusMinus(30)}px) translateX(${generateRandomNumberPlusMinus(50)}px)`}
+const randomizePosition = () => {
+  return {
+    transform: `scale(${
+      randomRange(7, 12) / 10
+    }) translateY(${generateRandomNumberPlusMinus(
+      30
+    )}px) translateX(${generateRandomNumberPlusMinus(50)}px)`
+  }
 }
 
 const selectTopic = (topic: Topics) => {
   if (selectedTopic.value === topic) {
-    selectedTopic.value = undefined;
-    return;
+    selectedTopic.value = undefined
+    return
   }
-  selectedTopic.value = topic;
-
-  switch (topic) {
-    case Topics.NODE_AVATARS:
-      setTimeout(() => {
-        piecesNodeAvatars.value = piecesData[topic].map(
-          (pieceData: any) => new Piece(pieceData)
-        );
-      }, 300);
-      break;
-
-    case Topics.SANS_TOPIC:
-      setTimeout(() => {
-        piecesSansTopic.value = piecesData[topic].map(
-          (pieceData: any) => new Piece(pieceData)
-        );
-      }, 300);
-      break;
-
-    case Topics.GEOMETRY:
-      setTimeout(() => {
-        piecesGeometry.value = piecesData[topic].map(
-          (pieceData: any) => new Piece(pieceData)
-        );
-      }, 500);
-      break;
-  }
-};
+  selectedTopic.value = topic
+}
 </script>
 
 <style scoped>
@@ -211,8 +201,6 @@ code {
   margin: 0;
   padding: 0.3rem 1rem;
 }
-
-
 
 /* .homepage__title-sans-topic-hover-hack {
   position: absolute;
@@ -246,7 +234,7 @@ code {
 
 /* Node Avatars */
 .homepage__title-node-avatars {
-  font-family: "RalewayDots", Helvetica, Arial, sans-serif;
+  font-family: 'RalewayDots', Helvetica, Arial, sans-serif;
   font-size: 1.2rem;
   top: 10vh;
   font-weight: normal;
@@ -272,7 +260,7 @@ code {
 
 /* Geometry */
 .homepage__title-geometry {
-  font-family: "BungeeHairline", Helvetica, Arial, sans-serif;
+  font-family: 'BungeeHairline', Helvetica, Arial, sans-serif;
   font-size: 1.5rem;
   font-weight: normal;
   line-height: 1;
@@ -300,7 +288,7 @@ code {
 
 /* Sans Topic */
 .homepage__title-sans-topic {
-  font-family: "PMarker", Helvetica, Arial, sans-serif;
+  font-family: 'PMarker', Helvetica, Arial, sans-serif;
   font-size: 3.5rem;
   padding: 0 1rem 0.7rem;
   font-weight: normal;
@@ -328,14 +316,6 @@ code {
   backdrop-filter: grayscale(1);
 }
 
-
-
-
-
-
-
-
-
 .homepage__contact {
   position: fixed;
   -webkit-box-shadow: 2px 1px 10px 0px rgba(0, 0, 0, 0.12);
@@ -356,8 +336,6 @@ code {
   color: #ffffff;
   background-image: none;
 }
-
-
 .homepage__contact-modal-backdrop {
   position: fixed;
   left: 0px;
@@ -390,7 +368,7 @@ code {
 }
 
 .homepage__contact-modal-content {
-      text-align: center;
+  text-align: center;
 }
 
 .homepage__soc-link {
@@ -405,12 +383,10 @@ code {
   align-items: center;
   flex-wrap: wrap;
 }
-
-
 /*/ Animation /*/
 .fade-enter-active,
 .fade-leave-active {
-  transition: all .5s;
+  transition: all 0.5s;
   /* transition-delay: 10s; */
 }
 
@@ -421,5 +397,4 @@ code {
 .fade-leave-to {
   opacity: 0;
 }
-
 </style>

@@ -55,6 +55,7 @@
 import Piece from '@/models/Piece'
 import { Topics } from '@/components/piecesData'
 import { ref } from 'vue'
+
 const activeImage = ref()
 const props = defineProps<{
   pieces?: Piece[]
@@ -79,6 +80,7 @@ const handleImagePosition = (piece: Piece) => {
   const coordinates = selectedImage?.getBoundingClientRect()
   if (!coordinates || !selectedImage) return
   const translateY = coordinates.height < 320 ? 110 : 100
+
   return {
     transform: `rotate(0deg) scale(${getScale(
       coordinates
@@ -92,12 +94,10 @@ const handleImageClass = (piece: Piece) => {
   const selectedImage = document.getElementById(piece.id)
   const coordinates = selectedImage?.getBoundingClientRect()
   if (!coordinates || !selectedImage) return
-  const isHigherThanWider2 = coordinates.height / coordinates.width
-  console.log('isHigherThanWider2: ', isHigherThanWider2)
-  const isHigherThanWider = coordinates.height > coordinates.width
-  console.log('isHigherThanWider: ', isHigherThanWider)
+  const heightRatio = coordinates.height / coordinates.width
 
-  console.log('coordinates.height: ', coordinates.height)
+  const isHigherThanWider = heightRatio > 1
+
   return isHigherThanWider && coordinates.height > 350
     ? 'pieces__piece-description-selected-higher-img'
     : 'pieces__piece-description-selected'
@@ -111,7 +111,10 @@ const selectImage = (id: string) => {
   const selectedImage = document.getElementById(id)
   const coordinates = selectedImage?.getBoundingClientRect()
   if (!coordinates || !selectedImage) return
-  const isHigherThanWider = coordinates.height > coordinates.width
+
+  const heightRatio = coordinates.height / coordinates.width
+
+  const isHigherThanWider = heightRatio > 1.15
 
   if (window.innerHeight > window.innerWidth) {
     const targetPosition = window.scrollY + (coordinates?.y || 0) - 185
@@ -129,6 +132,7 @@ const getImagePath = (imagePath: string) => {
   if (!imagePath) {
     return
   }
+  if (imagePath.includes('https://')) return imagePath
   return new URL(`../assets/${imagePath}`, import.meta.url)?.href
 }
 </script>
@@ -229,11 +233,13 @@ const getImagePath = (imagePath: string) => {
 
 @media (min-width: 1000px) {
   .pieces__piece-description-selected {
-    bottom: -52vh;
+    bottom: -50vh;
+    z-index: 100;
   }
 
   .pieces__piece-description-selected-higher-img {
     bottom: -20vh;
+    z-index: 100;
   }
 }
 .pieces__piece-description:hover {

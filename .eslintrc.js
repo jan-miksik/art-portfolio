@@ -22,6 +22,8 @@ module.exports = {
     'vue/no-unused-vars': 1,
     'no-unused-vars': 1,
     'vue/html-self-closing': 0,
-    'space-before-function-paren': 0
+    'space-before-function-paren': 0,
+    'vue/no-multiple-template-root': 0,
+    'vue/html-indent': 0
   }
 }

@@ -21,12 +21,12 @@ export type IPiece = {
     y: number
     z?: number
   }
-  randomizedPosition: { transform: string }
+  randomizedPosition?: { transform: string }
 
-  tags: string[]
-  description: string
-  price: number
-  updated: Date
+  tags?: string[]
+  description?: string
+  price?: number
+  updated?: Date
 }
 
 export default class Piece {
@@ -61,7 +61,7 @@ export default class Piece {
     this.randomizedPosition = this.getRandomizedPosition()
   }
 
-  getRandomizedPosition () {
+  getRandomizedPosition() {
     if (this.topic === Topics.SANS_TOPIC) {
       return {
         transform: `rotate(${generateRandomNumberPlusMinus(9)}deg) scale(${
