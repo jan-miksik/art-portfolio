@@ -11,27 +11,31 @@
       ]"
     >
       <div
-        v-for="piece in props.pieces"
-        :key="piece.id"
+        v-for="(piece, index) in props.pieces"
+        :key="piece?.id || index"
         :class="[
           'pieces__piece',
           { 'pieces__piece-node-avatar': Topics.NODE_AVATARS === props.type },
           { 'pieces__active-image-container': piece.id === activeImage }
         ]"
       >
-        <img
+        <Image
+          v-if="piece"
           :id="piece.id"
-          :src="getImagePath(piece.image)"
+          :src="piece.image"
           :class="[
             'pieces__image',
             { 'pieces__image-node-avatar': Topics.NODE_AVATARS === props.type },
             { 'pieces__is-active-image': piece.id === activeImage }
           ]"
+          width="500"
+          height="400"
           :style="handleImagePosition(piece)"
           @click="selectImage(piece.id)"
         />
 
         <div
+          v-if="piece"
           :class="[
             piece.id === activeImage
               ? handleImageClass(piece)
@@ -55,6 +59,7 @@
 import Piece from '@/models/Piece'
 import { Topics } from '@/components/piecesData'
 import { ref } from 'vue'
+import Image from './Image.vue'
 
 const activeImage = ref()
 const props = defineProps<{
@@ -128,13 +133,13 @@ const selectImage = (id: string) => {
   activeImage.value = id
 }
 
-const getImagePath = (imagePath: string) => {
-  if (!imagePath) {
-    return
-  }
-  if (imagePath.includes('https://')) return imagePath
-  return new URL(`../assets/${imagePath}`, import.meta.url)?.href
-}
+// const getImagePath = (imagePath: string) => {
+//   if (!imagePath) {
+//     return
+//   }
+//   if (imagePath.includes('https://')) return imagePath
+//   return new URL(`../assets/${imagePath}`, import.meta.url)?.href
+// }
 </script>
 
 <style scoped>
@@ -181,6 +186,15 @@ const getImagePath = (imagePath: string) => {
   width: 100%;
 }
 
+.pieces__image:hover {
+  cursor: cell;
+  transform: translateY(0) translateX(0) rotate(0) scale(1.1) !important;
+  z-index: 100;
+}
+.pieces__image:hover + .pieces__piece-description-unselected {
+  display: block;
+}
+
 @media (min-width: 1000px) {
   .pieces__piece {
     max-width: 500px;
@@ -188,14 +202,6 @@ const getImagePath = (imagePath: string) => {
   .pieces__piece-node-avatar {
     max-width: 200px;
     margin: 1rem;
-  }
-  .pieces__image:hover {
-    cursor: cell;
-    transform: translateY(0) translateX(0) rotate(0) scale(1.1) !important;
-    z-index: 100;
-  }
-  .pieces__image:hover + .pieces__piece-description-unselected {
-    display: block;
   }
 
   .pieces__active-image-container {

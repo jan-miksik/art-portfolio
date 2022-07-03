@@ -53,8 +53,11 @@
       node avatars
     </h1>
 
-    <div
-class="homepage__contact" @click="showContactModal">contact</div>
+    <div class="homepage__contact"
+@click="showContactModal"
+>
+contact
+</div>
     <Transition name="fade">
       <div
         v-if="isContactModalVisible"
@@ -64,16 +67,19 @@ class="homepage__contact" @click="showContactModal">contact</div>
     </Transition>
 
     <Transition name="fade">
-      <div v-if="isContactModalVisible" class="homepage__contact-modal">
+      <div
+v-if="isContactModalVisible" class="homepage__contact-modal"
+>
         <div class="homepage__contact-modal-content">
           <!-- <h1>Jan Mikšík</h1> -->
           <!-- <p>
            ... email is the most certain  ..
         </p> -->
           <div class="homepage__soc-links">
-            <a class="homepage__soc-link"
-href="mailto: jan.miksik.g@gmail.com"
+            <a
+class="homepage__soc-link" href="mailto: jan.miksik.g@gmail.com"
               ><img
+                loading="lazy"
                 src="../assets/email.svg"
                 width="35"
                 alt="email"
@@ -84,6 +90,7 @@ href="mailto: jan.miksik.g@gmail.com"
               href="https://www.instagram.com/miksik.jan/"
               target="_blank"
               ><img
+                loading="lazy"
                 src="../assets/instagram.svg"
                 width="27"
                 alt="instagram"
@@ -95,6 +102,7 @@ href="mailto: jan.miksik.g@gmail.com"
               href="https://www.facebook.com/jan.miksik.1/"
               target="_blank"
               ><img
+                loading="lazy"
                 src="../assets/fb.svg"
                 width="26"
                 alt="facebook"
@@ -105,6 +113,7 @@ href="mailto: jan.miksik.g@gmail.com"
               href="https://twitter.com/MiksikJan"
               target="_blank"
               ><img
+                loading="lazy"
                 src="../assets/twitter.svg"
                 width="30"
                 alt="twitter"

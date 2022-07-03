@@ -7,18 +7,34 @@ const piecesNodeAvatars = ref<Piece[] | undefined>()
 const piecesSansTopic = ref<Piece[] | undefined>()
 const piecesGeometry = ref<Piece[] | undefined>()
 
+const addRandomlyEmptySpacesIntoArray = (array: Piece[]) => {
+  array.forEach((piece, index) => {
+    const isAddEmptySpace = Math.floor(Math.random() * 10) >= 3
+    const randomIndex = Math.floor(Math.random() * array.length)
+    if (isAddEmptySpace) {
+      array.splice(randomIndex, 0, '' as any)
+    }
+  })
+
+  return array
+}
+
 export default function useAssets() {
-  piecesNodeAvatars.value = piecesData.NODE_AVATARS.map(
+  const nodeAvatars = piecesData.NODE_AVATARS.map(
     (pieceData: any) => new Piece(pieceData)
   )
 
-  piecesSansTopic.value = piecesData.SANS_TOPIC.map(
-    (pieceData: any) => new Piece(pieceData)
-  )
+  piecesNodeAvatars.value = addRandomlyEmptySpacesIntoArray(nodeAvatars)
 
-  piecesGeometry.value = piecesData.GEOMETRY.map(
+  const sansTopic = piecesData.SANS_TOPIC.map(
     (pieceData: any) => new Piece(pieceData)
   )
+  piecesSansTopic.value = addRandomlyEmptySpacesIntoArray(sansTopic)
+
+  const geometry = piecesData.GEOMETRY.map(
+    (pieceData: any) => new Piece(pieceData)
+  )
+  piecesGeometry.value = addRandomlyEmptySpacesIntoArray(geometry)
 
   const mergeContentfulDataWithLocalData = async () => {
     const { contentfulData } = useContentful()

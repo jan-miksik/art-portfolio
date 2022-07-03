@@ -17,13 +17,14 @@ module.exports = {
   },
   plugins: ['vue', '@typescript-eslint', 'prettier'],
   rules: {
-    'prettier/prettier': ['warn'],
+    'prettier/prettier': 0,
     'vue/multi-word-component-names': 0,
     'vue/no-unused-vars': 1,
     'no-unused-vars': 1,
     'vue/html-self-closing': 0,
     'space-before-function-paren': 0,
     'vue/no-multiple-template-root': 0,
-    'vue/html-indent': 0
+    'vue/html-indent': 0,
+    'func-call-spacing': 0
   }
 }
