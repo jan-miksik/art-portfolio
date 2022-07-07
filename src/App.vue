@@ -5,7 +5,9 @@
 <script setup lang="ts">
 import Homepage from '@/components/Homepage.vue'
 import useContentful from '@/api/useContentful'
+
 import { onMounted } from 'vue'
+
 import useAssets from '@/assets/useAssets'
 
 const { fetchContentfulData } = useContentful()
@@ -16,6 +18,7 @@ onMounted(async () => {
   mergeContentfulDataWithLocalData()
 })
 </script>
+
 <style>
 /* @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap'); */
 

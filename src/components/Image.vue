@@ -9,39 +9,13 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 
-// import { StyleValue } from 'vue'
 const imageRef = ref()
 const props = defineProps<{
   src: string
 }>()
 
-// const options = {
-//   // root: imageRef.value,
-//   // rootMargin: '0px',
-//   threshold: [0, 0.25, 0.5, 0.75, 1]
-// }
-
-// const handleImageLoaded = () => {
-//   console.log('imageRef: 000000', imageRef)
-//   console.log('handleImageLoaded')
-// }
-
-// const observer = new IntersectionObserver((entries, observer) => {
-//   console.log('entries: ', entries)
-//   entries.forEach(entry => {
-//     if (entry.isIntersecting) {
-//       console.log('entry.isIntersecting')
-//       handleImageLoaded()
-//       // observer.unobserve(imageRef.value)
-//     }
-//   })
-// }, options)
-
 const loaded = () => {
-  console.log('loaded')
-  console.log('imageRef.value: ', imageRef.value)
   imageRef.value.classList.remove('animBg')
-  // imageRef.value.style.backgroundColor = 'transparent'
 }
 
 onMounted(() => {
@@ -67,25 +41,25 @@ const getImagePath = (imagePath: string) => {
 
 @keyframes backgroundColorPalette {
   0% {
-    background: #ee6055;
+    background: #fb648fb1;
   }
   25% {
-    background: #60d394;
+    background: #87ed69;
   }
   50% {
-    background: #aaf683;
+    background: #4c6ee6;
   }
   75% {
     background: #ffd97d;
   }
   100% {
-    background: #ff9b85;
+    background: #644b6f;
   }
 }
 
 .animBg {
   animation-name: backgroundColorPalette;
-  animation-duration: 3s;
+  animation-duration: 3.5s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
   /* filter: opacity(0.3) blur(7px); */
