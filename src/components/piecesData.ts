@@ -393,7 +393,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       updated: new Date()
     },
     {
-      id: '5',
+      id: '20',
       name: 'abstract',
       description: '',
       image: { url: 'node-avatars/abstract,2019,drawing on paper,6x7cm.png', lastUpdated: new Date('2020').getTime() },
@@ -410,7 +410,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       updated: new Date()
     },
     {
-      id: '6',
+      id: '21',
       name: 'absurd',
       description: '',
       image: { url: 'node-avatars/absurd,2019,drawing on paper,5x5cm.png', lastUpdated: new Date('2020').getTime() },

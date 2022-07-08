@@ -57,6 +57,7 @@ const giveImageSourcePlease = async () => {
       return
     }
     imageSrc.value = URL.createObjectURL(imageFromIDB.blob)
+    return
   }
 
   showImageFromProps(image.url)
