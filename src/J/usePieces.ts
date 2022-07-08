@@ -19,7 +19,7 @@ const addRandomlyEmptySpacesIntoArray = (array: Piece[]) => {
   return array
 }
 
-export default function useAssets() {
+export default function usePieces() {
   const nodeAvatars = piecesData.NODE_AVATARS.map(
     (pieceData: any) => new Piece(pieceData)
   )
@@ -46,7 +46,8 @@ export default function useAssets() {
         techniqueDescription,
         created,
         sizeInCmXHorizontal,
-        sizeInCmYVertical
+        sizeInCmYVertical,
+        image
       } = pieceData
 
       const newPiece = new Piece({
@@ -56,7 +57,10 @@ export default function useAssets() {
         technique,
         techniqueDescription,
         created: new Date(created),
-        image: pieceData.image.url,
+        image: {
+          url: image.url,
+          lastUpdated: new Date(image.sys.publishedAt).getTime()
+        },
         sizeInCm: {
           x: sizeInCmXHorizontal,
           y: sizeInCmYVertical

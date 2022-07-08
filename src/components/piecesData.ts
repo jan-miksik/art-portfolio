@@ -1,3 +1,5 @@
+import { IPiece } from '@/models/Piece'
+
 export enum Topics {
   SANS_TOPIC = 'sans topic',
   GEOMETRY = 'geometry',
@@ -17,14 +19,16 @@ export enum TechniqueDescription {
   MIXED_MEDIA = 'mixed media'
 }
 
-export const piecesData = {
+export const piecesData: {[key: string]: IPiece[]} = {
   SANS_TOPIC: [
     {
       id: '1',
       name: 'history cylinder - historie válec - geskiedenis silinder(af)',
       description: '',
-      image:
-        'sans-topic/history cylinder - historie válec - geskiedenis silinder(af),2020,drawing on paper,275x100cm.jpg',
+      image: {
+        url: 'sans-topic/history cylinder - historie válec - geskiedenis silinder(af),2020,drawing on paper,275x100cm.jpg',
+        lastUpdated: new Date('2020').getTime()
+      },
       price: 0,
       topic: Topics.SANS_TOPIC,
       technique: Techniques.DRAWING,
@@ -41,8 +45,11 @@ export const piecesData = {
       id: '2',
       name: 'přejmenování - تغییر نام - renaming',
       description: '',
-      image:
+      image: {
+        url:
         'sans-topic/přejmenování - تغییر نام(fa) - renaming,2020,drawing on paper,30x21cm.jpg',
+        lastUpdated: new Date('2020').getTime()
+      },
       topic: Topics.SANS_TOPIC,
       price: 0,
       technique: Techniques.DRAWING,
@@ -59,8 +66,11 @@ export const piecesData = {
       id: '3',
       name: 'kalo(ceb) - hat - klobouk',
       description: '',
-      image:
+      image: {
+        url:
         'sans-topic/kalo(ceb) - hat - klobouk,2020,drawing on paper,30x21cm.jpg',
+        lastUpdated: new Date('2020').getTime()
+      },
       topic: Topics.SANS_TOPIC,
       price: 0,
       technique: Techniques.DRAWING,
@@ -77,8 +87,11 @@ export const piecesData = {
       id: '4',
       name: 'neighborhood - sousedství - vicinia(la)',
       description: '',
-      image:
+      image: {
+        url:
         'sans-topic/neighborhood - sousedství - vicinia(la),2020,drawing on paper,30x21cm.jpg',
+        lastUpdated: new Date('2020').getTime()
+      },
       topic: Topics.SANS_TOPIC,
       price: 0,
       technique: Techniques.DRAWING,
@@ -95,7 +108,7 @@ export const piecesData = {
       id: '5',
       name: 'ooo',
       description: '',
-      image: 'sans-topic/ooo,2021,drawing on paper,42x30cm.jpg',
+      image: { url: 'sans-topic/ooo,2021,drawing on paper,42x30cm.jpg', lastUpdated: new Date('2020').getTime() },
       topic: Topics.SANS_TOPIC,
       price: 0,
       technique: Techniques.DRAWING,
@@ -112,8 +125,11 @@ export const piecesData = {
       id: '6',
       name: 'side project - kɛrɛfɛ porozɛ(bm) - vedlejší projekt',
       description: '',
-      image:
+      image: {
+        url:
         'sans-topic/side project - kɛrɛfɛ porozɛ(bm) - vedlejší projekt,2018,drawing on paper,30x21cm.jpg',
+        lastUpdated: new Date('2020').getTime()
+      },
       topic: Topics.SANS_TOPIC,
       price: 0,
       technique: Techniques.DRAWING,
@@ -130,8 +146,11 @@ export const piecesData = {
       id: '7',
       name: 'tlak - 壓力(zh) - pressure',
       description: '',
-      image:
+      image: {
+        url:
         'sans-topic/tlak - 壓力(zh) - pressure,2019,drawing on paper,30x21cm.jpg',
+        lastUpdated: new Date('2020').getTime()
+      },
       topic: Topics.SANS_TOPIC,
       price: 0,
       technique: Techniques.DRAWING,
@@ -148,8 +167,11 @@ export const piecesData = {
       id: '8',
       name: 'सपनों की लय(hi) - dream rhythm - rytmus snu',
       description: '',
-      image:
+      image: {
+        url:
         'sans-topic/सपनों की लय(hi) - dream rhythm - rytmus snu,2016,drawing on paper,42x30cm.jpg',
+        lastUpdated: new Date('2020').getTime()
+      },
       topic: Topics.SANS_TOPIC,
       price: 0,
       technique: Techniques.DRAWING,
@@ -166,8 +188,11 @@ export const piecesData = {
       id: '9',
       name: 'ananas - ananász(hu) - pineapple',
       description: '',
-      image:
+      image: {
+        url:
         'sans-topic/ananas - ananász(hu) - pineapple,2016,drawing on paper,31x31cm.jpg',
+        lastUpdated: new Date('2020').getTime()
+      },
       topic: Topics.SANS_TOPIC,
       price: 0,
       technique: Techniques.DRAWING,
@@ -184,8 +209,11 @@ export const piecesData = {
       id: '10',
       name: 'system language - γλώσσα συστήματος(el) - systémový jazyk',
       description: '',
-      image:
+      image: {
+        url:
         'sans-topic/system language - γλώσσα συστήματος(el) - systémový jazyk,2020,drawing on paper,26x22cm.jpg',
+        lastUpdated: new Date('2020').getTime()
+      },
       topic: Topics.SANS_TOPIC,
       price: 0,
       technique: Techniques.DRAWING,
@@ -202,10 +230,10 @@ export const piecesData = {
 
   GEOMETRY: [
     {
-      id: '1',
+      id: '11',
       name: 'A and B',
       description: '',
-      image: 'geometry/A and B,2019,drawing on paper,30x21cm.jpg',
+      image: { url: 'geometry/A and B,2019,drawing on paper,30x21cm.jpg', lastUpdated: new Date('2020').getTime() },
       price: 0,
       topic: Topics.GEOMETRY,
       technique: Techniques.DRAWING,
@@ -219,11 +247,14 @@ export const piecesData = {
       updated: undefined
     },
     {
-      id: '2',
+      id: '12',
       name: 'almost circles - skoro kruhy - pafupifupi zozungulira(ny)',
       description: '',
-      image:
+      image: {
+        url:
         'geometry/almost circles - skoro kruhy - pafupifupi zozungulira(ny),2019,drawing on paper,30x21cm.jpg',
+        lastUpdated: new Date('2020').getTime()
+      },
       topic: Topics.GEOMETRY,
       price: 0,
       technique: Techniques.DRAWING,
@@ -237,10 +268,10 @@ export const piecesData = {
       updated: undefined
     },
     {
-      id: '3',
+      id: '13',
       name: 'double cross',
       description: '',
-      image: 'geometry/double cross,2018,drawing on paper,21x30cm.jpg',
+      image: { url: 'geometry/double cross,2018,drawing on paper,21x30cm.jpg', lastUpdated: new Date('2020').getTime() },
       topic: Topics.GEOMETRY,
       price: 0,
       technique: Techniques.DRAWING,
@@ -254,10 +285,10 @@ export const piecesData = {
       updated: undefined
     },
     {
-      id: '4',
+      id: '14',
       name: 'Jiri and Jirina',
       description: '',
-      image: 'geometry/Jiri and Jirina,2018,drawing on paper,30x21cm.jpg',
+      image: { url: 'geometry/Jiri and Jirina,2018,drawing on paper,30x21cm.jpg', lastUpdated: new Date('2020').getTime() },
       price: 0,
       topic: Topics.NODE_AVATARS,
       technique: Techniques.DRAWING,
@@ -271,11 +302,14 @@ export const piecesData = {
       updated: undefined
     },
     {
-      id: '5',
+      id: '15',
       name: '簡略化(jp) - zjednodušování - simplification',
       description: '',
-      image:
+      image: {
+        url:
         'geometry/簡略化(jp) - zjednodušování - simplification,2019,drawing on paper,30x42cm.jpg',
+        lastUpdated: new Date('2020').getTime()
+      },
       price: 0,
       topic: Topics.NODE_AVATARS,
       technique: Techniques.DRAWING,
@@ -291,10 +325,10 @@ export const piecesData = {
   ],
   NODE_AVATARS: [
     {
-      id: '1',
+      id: '16',
       name: 'about',
       description: '',
-      image: 'node-avatars/about,2019,drawing on paper,7x10cm.png',
+      image: { url: 'node-avatars/about,2019,drawing on paper,7x10cm.png', lastUpdated: new Date('2020').getTime() },
       price: 0,
       topic: Topics.NODE_AVATARS,
       technique: Techniques.DRAWING,
@@ -308,10 +342,10 @@ export const piecesData = {
       updated: undefined
     },
     {
-      id: '2',
+      id: '17',
       name: 'above',
       description: '',
-      image: 'node-avatars/above,2018,drawing on paper,8x8cm.png',
+      image: { url: 'node-avatars/above,2018,drawing on paper,8x8cm.png', lastUpdated: new Date('2020').getTime() },
       topic: Topics.NODE_AVATARS,
       price: 0,
       technique: Techniques.DRAWING,
@@ -325,10 +359,10 @@ export const piecesData = {
       updated: new Date()
     },
     {
-      id: '3',
+      id: '18',
       name: 'absent',
       description: '',
-      image: 'node-avatars/absent,2018,drawing on paper,8x7cm.png',
+      image: { url: 'node-avatars/absent,2018,drawing on paper,8x7cm.png', lastUpdated: new Date('2020').getTime() },
       topic: Topics.NODE_AVATARS,
       price: 0,
       technique: Techniques.DRAWING,
@@ -342,10 +376,10 @@ export const piecesData = {
       updated: new Date()
     },
     {
-      id: '4',
+      id: '19',
       name: 'absorb',
       description: '',
-      image: 'node-avatars/absorb,2018,drawing on paper,15x11cm.png',
+      image: { url: 'node-avatars/absorb,2018,drawing on paper,15x11cm.png', lastUpdated: new Date('2020').getTime() },
       topic: Topics.NODE_AVATARS,
       price: 0,
       technique: Techniques.DRAWING,
@@ -362,7 +396,7 @@ export const piecesData = {
       id: '5',
       name: 'abstract',
       description: '',
-      image: 'node-avatars/abstract,2019,drawing on paper,6x7cm.png',
+      image: { url: 'node-avatars/abstract,2019,drawing on paper,6x7cm.png', lastUpdated: new Date('2020').getTime() },
       topic: Topics.NODE_AVATARS,
       price: 0,
       technique: Techniques.DRAWING,
@@ -379,7 +413,7 @@ export const piecesData = {
       id: '6',
       name: 'absurd',
       description: '',
-      image: 'node-avatars/absurd,2019,drawing on paper,5x5cm.png',
+      image: { url: 'node-avatars/absurd,2019,drawing on paper,5x5cm.png', lastUpdated: new Date('2020').getTime() },
       topic: Topics.NODE_AVATARS,
       price: 0,
       technique: Techniques.DRAWING,

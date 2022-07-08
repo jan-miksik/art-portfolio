@@ -17,8 +17,6 @@
       sans topic
     </h1>
 
-    <!-- <div class="homepage__title-sans-topic-hover-hack"/> -->
-
     <h1
       :class="[
         'homepage__title  homepage__title-geometry',
@@ -53,7 +51,8 @@
       node avatars
     </h1>
 
-    <div class="homepage__contact"
+    <div
+class="homepage__contact"
 @click="showContactModal"
 >
 contact
@@ -68,7 +67,8 @@ contact
 
     <Transition name="fade">
       <div
-v-if="isContactModalVisible" class="homepage__contact-modal"
+v-if="isContactModalVisible"
+class="homepage__contact-modal"
 >
         <div class="homepage__contact-modal-content">
           <!-- <h1>Jan Mikšík</h1> -->
@@ -77,8 +77,10 @@ v-if="isContactModalVisible" class="homepage__contact-modal"
         </p> -->
           <div class="homepage__soc-links">
             <a
-class="homepage__soc-link" href="mailto: jan.miksik.g@gmail.com"
-              ><img
+              class="homepage__soc-link"
+              href="mailto: jan.miksik.g@gmail.com"
+            >
+              <img
                 loading="lazy"
                 src="../assets/email.svg"
                 width="35"
@@ -146,8 +148,8 @@ class="homepage__soc-link" href="mailto: jan.miksik.g@gmail.com"
 import { ref } from 'vue'
 import Pieces from '@/components/Pieces.vue'
 import { Topics } from '@/components/piecesData'
-import useAssets from '@/assets/useAssets'
-const { piecesNodeAvatars, piecesSansTopic, piecesGeometry } = useAssets()
+import usePieces from '@/J/usePieces'
+const { piecesNodeAvatars, piecesSansTopic, piecesGeometry } = usePieces()
 const selectedTopic = ref()
 
 const isContactModalVisible = ref(false)
@@ -210,23 +212,6 @@ code {
   margin: 0;
   padding: 0.3rem 1rem;
 }
-
-/* .homepage__title-sans-topic-hover-hack {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  bottom: 0px;
-  right: 0px;
-  height: 100vh;
-  z-index: -1;
-  opacity: 0;
-  transition: all 0.2s;
-} */
-/* .homepage__title-sans-topic:hover + .homepage__title-sans-topic-hover-hack {
-  z-index: 10;
-  background: black;
-  opacity: 0.95;
-} */
 
 .homepage__unselected-title {
   background-image: linear-gradient(#ffffff, ghostwhite);
@@ -306,7 +291,6 @@ code {
   right: calc(50% - 150px);
   top: 25vh;
   position: absolute;
-  /* z-index: 100; */
   cursor: crosshair;
 }
 
@@ -396,7 +380,6 @@ code {
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.5s;
-  /* transition-delay: 10s; */
 }
 
 .fade-enter-from {

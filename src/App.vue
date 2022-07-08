@@ -8,10 +8,10 @@ import useContentful from '@/api/useContentful'
 
 import { onMounted } from 'vue'
 
-import useAssets from '@/assets/useAssets'
+import usePieces from '@/J/usePieces'
 
 const { fetchContentfulData } = useContentful()
-const { mergeContentfulDataWithLocalData } = useAssets()
+const { mergeContentfulDataWithLocalData } = usePieces()
 
 onMounted(async () => {
   await fetchContentfulData()

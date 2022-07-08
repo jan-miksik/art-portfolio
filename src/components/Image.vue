@@ -2,25 +2,29 @@
   <img
     ref="imageRef"
     loading="lazy"
-    :src="getImagePath(props.src || '')"
+    :src="imageSrc"
   />
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
-
+import Piece from '@/models/Piece'
+import { onMounted, onUnmounted, ref, toRefs } from 'vue'
+import { updateImage, addImage, getImage } from '@/services/idb'
 const imageRef = ref()
+const imageSrc = ref()
 const props = defineProps<{
-  src: string
+  piece: Piece
 }>()
 
+const { piece } = toRefs(props)
+
 const loaded = () => {
-  imageRef.value.classList.remove('animBg')
+  imageRef.value?.classList.remove('animBg')
 }
 
 onMounted(() => {
-  // imageRef.value.style.backgroundColor = '#797979'
-  imageRef.value.classList.add('animBg')
+  giveImageSourcePlease()
+  imageRef.value?.classList.add('animBg')
   imageRef.value.addEventListener('load', loaded)
 })
 
@@ -28,13 +32,36 @@ onUnmounted(() => {
   imageRef.value?.removeEventListener('load', loaded)
 })
 
-const getImagePath = (imagePath: string) => {
-  if (!imagePath) {
-    return
+const giveImageSourcePlease = async () => {
+  const showImageFromProps = (url: string) => {
+    if (url.includes('https://')) {
+      imageSrc.value = url
+    } else {
+      imageSrc.value = new URL(`../assets/${url}`, import.meta.url)?.href
+    }
   }
-  if (imagePath.includes('https://')) return imagePath
-  return new URL(`../assets/${imagePath}`, import.meta.url)?.href
+
+  if (!piece.value) return
+
+  const { image, id } = piece.value
+  const imageFromIDB = await getImage(piece.value.id)
+
+  if (!imageFromIDB) {
+    await addImage({ image, id })
+  }
+
+  if (imageFromIDB) {
+    if (imageFromIDB.lastUpdated !== image.lastUpdated) {
+      updateImage({ image, id })
+      showImageFromProps(image.url)
+      return
+    }
+    imageSrc.value = URL.createObjectURL(imageFromIDB.blob)
+  }
+
+  showImageFromProps(image.url)
 }
+
 </script>
 
 <style scoped>

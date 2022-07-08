@@ -25,6 +25,7 @@ module.exports = {
     'space-before-function-paren': 0,
     'vue/no-multiple-template-root': 0,
     'vue/html-indent': 0,
-    'func-call-spacing': 0
+    'func-call-spacing': 0,
+    semi: 1
   }
 }

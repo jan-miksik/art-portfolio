@@ -15,7 +15,10 @@ export type IPiece = {
   technique: string
   techniqueDescription: string
   created: Date
-  image: string
+  image: {
+    url: string
+    lastUpdated: number
+  }
   sizeInCm: {
     x: number
     y: number
@@ -51,7 +54,7 @@ export default class Piece {
     this.description = data.description || ''
     this.technique = data.technique || ''
     this.techniqueDescription = data.techniqueDescription || ''
-    this.image = data.image || ''
+    this.image = data.image || { url: '', lastUpdated: new Date('1990') }
     this.sizeInCm = data.sizeInCm || { x: 0, y: 0 }
     this.price = data.price || 0
     this.topic = data.topic || ''

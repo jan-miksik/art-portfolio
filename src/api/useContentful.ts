@@ -12,6 +12,9 @@ export default function useContentful() {
           }
           name
           image {
+            sys {
+              publishedAt
+            }
             fileName
             url
           }

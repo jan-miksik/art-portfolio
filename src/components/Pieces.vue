@@ -22,7 +22,7 @@
         <Image
           v-if="piece"
           :id="piece.id"
-          :src="piece.image"
+          :piece="piece"
           :class="[
             'pieces__image',
             { 'pieces__image-node-avatar': Topics.NODE_AVATARS === props.type },
@@ -109,6 +109,7 @@ const handleImageClass = (piece: Piece) => {
 }
 
 const selectImage = (id: string) => {
+  console.log('id: ', id)
   if (activeImage.value === id) {
     activeImage.value = undefined
     return
@@ -132,14 +133,6 @@ const selectImage = (id: string) => {
   }
   activeImage.value = id
 }
-
-// const getImagePath = (imagePath: string) => {
-//   if (!imagePath) {
-//     return
-//   }
-//   if (imagePath.includes('https://')) return imagePath
-//   return new URL(`../assets/${imagePath}`, import.meta.url)?.href
-// }
 </script>
 
 <style scoped>

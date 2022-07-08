@@ -10,11 +10,14 @@
   "dependencies": {
     "@types/node": "^17.0.42",
     "contentful": "^9.1.32",
+    "dexie": "^3.2.2",
     "path": "^0.12.7",
     "url": "^0.11.0",
+    "uuid": "^8.3.2",
     "vue": "^3.2.25"
   },
   "devDependencies": {
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
     "@vitejs/plugin-vue": "^2.3.3",
@@ -26,7 +29,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-vue": "^9.1.1",
-    "postcss": "^8.4.14", 
+    "postcss": "^8.4.14",
     "postcss-html": "^1.5.0",
     "prettier": "^2.7.1",
     "stylelint": "13",
