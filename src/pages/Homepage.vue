@@ -149,8 +149,14 @@ import { ref } from 'vue'
 import Pieces from '@/components/Pieces.vue'
 import { Topics } from '@/components/piecesData'
 import usePieces from '@/J/usePieces'
+import { useRouter } from 'vue-router'
 const { piecesNodeAvatars, piecesSansTopic, piecesGeometry } = usePieces()
-const selectedTopic = ref()
+const { currentRoute } = useRouter()
+const router = useRouter()
+console.log('useRouter(): ', useRouter())
+console.log('currentRoute: ', currentRoute.value.params.topic)
+
+const selectedTopic = ref(currentRoute.value.params.topic as Topics | undefined)
 
 const isContactModalVisible = ref(false)
 
@@ -178,8 +184,10 @@ const randomizePosition = () => {
 const selectTopic = (topic: Topics) => {
   if (selectedTopic.value === topic) {
     selectedTopic.value = undefined
+    router.push('/')
     return
   }
+  router.push(`/${topic}`)
   selectedTopic.value = topic
 }
 </script>

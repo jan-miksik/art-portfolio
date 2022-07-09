@@ -65,7 +65,7 @@ const activeImage = ref()
 const props = defineProps<{
   pieces?: Piece[]
   type: Topics
-  selectedTopic: Topics
+  selectedTopic?: Topics
 }>()
 
 const getScale = (coordinates: any) => {

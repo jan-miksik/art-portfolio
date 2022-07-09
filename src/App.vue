@@ -1,9 +1,10 @@
 <template>
-  <Homepage />
+  <!-- <Homepage /> -->
+  <router-view />
 </template>
 
 <script setup lang="ts">
-import Homepage from '@/components/Homepage.vue'
+// import Homepage from '@/components/Homepage.vue'
 import useContentful from '@/api/useContentful'
 
 import { onMounted } from 'vue'

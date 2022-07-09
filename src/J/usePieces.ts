@@ -38,6 +38,7 @@ export default function usePieces() {
 
   const mergeContentfulDataWithLocalData = async () => {
     const { contentfulData } = useContentful()
+    console.log('contentfulData: ', contentfulData)
     contentfulData.value.forEach((pieceData: any) => {
       const {
         name,
