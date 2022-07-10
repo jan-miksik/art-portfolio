@@ -36,7 +36,7 @@ export const addImage = async ({ image, id }: {image: {url: string, lastUpdated:
       lastUpdated
     })
   } catch (error) {
-    console.log('error: ', error)
+    console.error('error: ', error)
   }
 }
 

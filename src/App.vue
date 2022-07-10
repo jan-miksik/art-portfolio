@@ -1,10 +1,8 @@
 <template>
-  <!-- <Homepage /> -->
   <router-view />
 </template>
 
 <script setup lang="ts">
-// import Homepage from '@/components/Homepage.vue'
 import useContentful from '@/api/useContentful'
 
 import { onMounted } from 'vue'
@@ -21,10 +19,12 @@ onMounted(async () => {
 </script>
 
 <style>
-/* @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap'); */
-
+:root {
+  --image-filter-invert: 1;
+}
 html {
   scroll-behavior: smooth;
+      transition: all 0.6s;
 }
 
 @font-face {
@@ -83,11 +83,18 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /* margin-top: 60px; */
 }
 body {
   margin: 0;
   overflow-x: hidden;
   background-color: ghostwhite;
+}
+
+.dark-mode {
+  filter: invert(1)
+}
+
+.dark-mode img {
+  filter: invert(var(--image-filter-invert))
 }
 </style>

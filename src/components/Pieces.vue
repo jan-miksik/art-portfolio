@@ -109,7 +109,6 @@ const handleImageClass = (piece: Piece) => {
 }
 
 const selectImage = (id: string) => {
-  console.log('id: ', id)
   if (activeImage.value === id) {
     activeImage.value = undefined
     return
@@ -228,6 +227,13 @@ const selectImage = (id: string) => {
   bottom: -90px;
   left: 50%;
   transform: translateX(-50%);
+  box-shadow: 0px 0px 5px 0px rgb(0 0 0 / 12%);
+}
+
+.dark-mode .pieces__piece-description-selected,
+.dark-mode .pieces__piece-description-selected-higher-img,
+.dark-mode .pieces__piece-description-unselected {
+  background-color: rgb(17 17 17);
 }
 
 @media (min-width: 1000px) {
@@ -266,6 +272,10 @@ const selectImage = (id: string) => {
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(1px) grayscale(1);
   transition: all 0.5s;
+}
+
+.dark-mode .pieces__is-active-image-backdrop {
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 /*/ Animation /*/

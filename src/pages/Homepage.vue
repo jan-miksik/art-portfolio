@@ -1,4 +1,5 @@
 <template>
+  <DarkModeSwitcher />
   <div class="homepage__titles">
     <h1
       :class="[
@@ -150,11 +151,10 @@ import Pieces from '@/components/Pieces.vue'
 import { Topics } from '@/components/piecesData'
 import usePieces from '@/J/usePieces'
 import { useRouter } from 'vue-router'
+import DarkModeSwitcher from '@/components/DarkModeSwitcher.vue'
 const { piecesNodeAvatars, piecesSansTopic, piecesGeometry } = usePieces()
 const { currentRoute } = useRouter()
 const router = useRouter()
-console.log('useRouter(): ', useRouter())
-console.log('currentRoute: ', currentRoute.value.params.topic)
 
 const selectedTopic = ref(currentRoute.value.params.topic as Topics | undefined)
 
@@ -350,6 +350,10 @@ code {
   transition: all 0.5s;
 }
 
+.dark-mode .homepage__contact-modal-backdrop {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
 .homepage__contact-modal {
   transition: all 0.2s;
   background-color: #eee;
@@ -366,6 +370,10 @@ code {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.dark-mode .homepage__contact-modal {
+  background-color: #272727;
 }
 
 .homepage__contact-modal-content {
