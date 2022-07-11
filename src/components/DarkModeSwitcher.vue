@@ -36,15 +36,16 @@ const switchMode = () => {
   modeRef.value?.classList.toggle('scaling')
   amountOfSwitching.value++
 
-  // if (amountOfSwitching.value === 5) {
-  //   // alert('Seems, that you like switching')
-  // }
-
-  if (amountOfSwitching.value % 5 === 0) {
+  if (amountOfSwitching.value % 7 === 0) {
+    // alert('Seems, that you like switching')
     document.documentElement.style.setProperty('--image-filter-invert', '0')
   }
 
-  if (amountOfSwitching.value % 10 === 0) {
+  // if (amountOfSwitching.value === 5) {
+  //   alert('filter switch')
+  // }
+
+  if (amountOfSwitching.value % 5 === 0) {
     document.documentElement.style.setProperty('--image-filter-invert', '1')
     // alert('Back to normal')
     // amountOfSwitching.value = 0
@@ -52,6 +53,10 @@ const switchMode = () => {
 
   // if (amountOfSwitching.value === 32) {
   //   alert('Seems, that you like switching')
+  // }
+
+  // if (amountOfSwitching.value === 32) {
+  //   alert('I would like to know if you have switched it more times than is your age in years')
   // }
 
   // if (amountOfSwitching.value === 78) {
