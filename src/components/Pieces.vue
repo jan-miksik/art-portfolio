@@ -168,9 +168,6 @@ const selectImage = (id: string) => {
   max-height: 85vh;
 }
 
-.pieces__active-image-container {
-}
-
 .pieces__piece,
 .pieces__piece-node-avatar {
   transition: all 0.25s;
@@ -183,31 +180,11 @@ const selectImage = (id: string) => {
   transform: translateY(0) translateX(0) rotate(0) scale(1.1) !important;
   z-index: 100;
 }
-.pieces__image:hover + .pieces__piece-description-unselected {
-  display: block;
-}
-
-@media (min-width: 1000px) {
-  .pieces__piece {
-    max-width: 500px;
-  }
-  .pieces__piece-node-avatar {
-    max-width: 200px;
-    margin: 1rem;
-  }
-
-  .pieces__active-image-container {
-    /* max-width: 100%; */
-  }
-}
-.pieces__image-node-avatar {
-  max-width: clamp(190px, 75vw, 190px);
-  width: 100%;
-}
 
 .pieces__piece-description-unselected {
   display: none;
 }
+
 .pieces__piece-description-selected,
 .pieces__piece-description-selected-higher-img,
 .pieces__piece-description-unselected {
@@ -221,19 +198,37 @@ const selectImage = (id: string) => {
   z-index: 10;
   width: fit-content;
   max-width: 500px;
-
   position: absolute;
-
   bottom: -90px;
   left: 50%;
   transform: translateX(-50%);
-  box-shadow: 0px 0px 5px 0px rgb(0 0 0 / 12%);
+  box-shadow: 0 0 5px 0 rgb(0 0 0 / 12%);
 }
 
 .dark-mode .pieces__piece-description-selected,
 .dark-mode .pieces__piece-description-selected-higher-img,
 .dark-mode .pieces__piece-description-unselected {
   background-color: rgb(17 17 17);
+}
+
+.pieces__image:hover + .pieces__piece-description-unselected {
+  display: block;
+}
+
+@media (min-width: 1000px) {
+  .pieces__piece {
+    max-width: 500px;
+  }
+
+  .pieces__piece-node-avatar {
+    max-width: 200px;
+    margin: 1rem;
+  }
+}
+
+.pieces__image-node-avatar {
+  max-width: clamp(190px, 75vw, 190px);
+  width: 100%;
 }
 
 @media (min-width: 1000px) {
@@ -247,6 +242,7 @@ const selectImage = (id: string) => {
     z-index: 100;
   }
 }
+
 .pieces__piece-description:hover {
   visibility: visible;
 }
@@ -263,25 +259,26 @@ const selectImage = (id: string) => {
 
 .pieces__is-active-image-backdrop {
   position: fixed;
-  left: 0px;
-  top: 0px;
-  bottom: 0px;
-  right: 0px;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
   height: 140vh;
   z-index: 1;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgb(0 0 0 / 50%);
   backdrop-filter: blur(1px) grayscale(1);
   transition: all 0.5s;
 }
 
 .dark-mode .pieces__is-active-image-backdrop {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgb(255 255 255 / 50%);
 }
 
-/*/ Animation /*/
+/* / Animation / */
 .images-enter-active,
 .images-leave-active {
   transition: all 2.5s;
+
   /* transition-delay: 10s; */
 }
 

@@ -19,12 +19,12 @@ const props = defineProps<{
 const { piece } = toRefs(props)
 
 const loaded = () => {
-  imageRef.value?.classList.remove('animBg')
+  imageRef.value?.classList.remove('anim-bg')
 }
 
 onMounted(() => {
   giveImageSourcePlease()
-  imageRef.value?.classList.add('animBg')
+  imageRef.value?.classList.add('anim-bg')
   imageRef.value.addEventListener('load', loaded)
 })
 
@@ -65,32 +65,27 @@ const giveImageSourcePlease = async () => {
 
 </script>
 
-<style scoped>
+<style scoped lang="stylus">
+@keyframes background-color-palette
+  0%
+    background: #fb648fb1
 
-@keyframes backgroundColorPalette {
-  0% {
-    background: #fb648fb1;
-  }
-  25% {
-    background: #87ed69;
-  }
-  50% {
-    background: #4c6ee6;
-  }
-  75% {
-    background: #ffd97d;
-  }
-  100% {
-    background: #644b6f;
-  }
-}
+  25%
+    background: #87ed69
 
-.animBg {
-  animation-name: backgroundColorPalette;
-  animation-duration: 3.5s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-  /* filter: opacity(0.3) blur(7px); */
-}
+  50%
+    background: #4c6ee6
+
+  75%
+    background: #ffd97d
+
+  100%
+    background: #644b6f
+
+.anim-bg
+  animation-name: background-color-palette
+  animation-duration: 3.5s
+  animation-iteration-count: infinite
+  animation-direction: alternate
 
 </style>

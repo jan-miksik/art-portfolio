@@ -219,24 +219,24 @@ code {
   cursor: cell;
   margin: 0;
   padding: 0.3rem 1rem;
+  border-radius: 2px;
 }
 
 .homepage__unselected-title {
-  background-image: linear-gradient(#ffffff, ghostwhite);
-  -webkit-box-shadow: 2px 1px 10px 0px rgba(0, 0, 0, 0.2);
-  box-shadow: 2px 1px 10px 0px rgba(0, 0, 0, 0.2);
+  background-image: linear-gradient(#fff, ghostwhite);
+  box-shadow: 2px 1px 10px 0 rgb(0 0 0 / 20%);
 }
 
 .homepage__title:hover {
   transition: all 0.2s;
   background-color: black;
-  color: #ffffff;
+  color: #fff;
   background-image: none;
 }
 
 /* Node Avatars */
 .homepage__title-node-avatars {
-  font-family: 'RalewayDots', Helvetica, Arial, sans-serif;
+  font-family: RalewayDots, Helvetica, Arial, sans-serif;
   font-size: 1.2rem;
   top: 10vh;
   font-weight: normal;
@@ -245,6 +245,7 @@ code {
   text-transform: uppercase;
   left: 15vw;
 }
+
 .animate-unselected-node-avatars {
   transform: scale(0.8, 0.7) rotate(-89deg);
   top: 150px;
@@ -262,14 +263,12 @@ code {
 
 /* Geometry */
 .homepage__title-geometry {
-  font-family: 'BungeeHairline', Helvetica, Arial, sans-serif;
+  font-family: BungeeHairline, Helvetica, Arial, sans-serif;
   font-size: 1.5rem;
   font-weight: normal;
   line-height: 1;
   color: initial;
-
   position: absolute;
-
   top: 50vh;
   left: 15vw;
 }
@@ -290,7 +289,7 @@ code {
 
 /* Sans Topic */
 .homepage__title-sans-topic {
-  font-family: 'PMarker', Helvetica, Arial, sans-serif;
+  font-family: PMarker, Helvetica, Arial, sans-serif;
   font-size: 3.5rem;
   padding: 0 1rem 0.7rem;
   font-weight: normal;
@@ -319,8 +318,8 @@ code {
 
 .homepage__contact {
   position: fixed;
-  -webkit-box-shadow: 2px 1px 10px 0px rgba(0, 0, 0, 0.12);
-  box-shadow: 2px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: inset 2px 1px 10px 0 rgb(0 0 0 / 12%);
+  box-shadow: inset 2px 1px 10px 0 rgb(0 0 0 / 12%);
   bottom: 0;
   left: 0;
   padding: 0.3rem;
@@ -334,24 +333,25 @@ code {
 .homepage__contact:hover {
   transition: all 0.2s;
   background-color: black;
-  color: #ffffff;
+  color: #fff;
   background-image: none;
 }
+
 .homepage__contact-modal-backdrop {
   position: fixed;
-  left: 0px;
-  top: 0px;
-  bottom: 0px;
-  right: 0px;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
   height: 140vh;
   z-index: 1;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgb(0 0 0 / 50%);
   backdrop-filter: blur(1px) grayscale(1);
   transition: all 0.5s;
 }
 
 .dark-mode .homepage__contact-modal-backdrop {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgb(255 255 255 / 50%);
 }
 
 .homepage__contact-modal {
@@ -362,9 +362,7 @@ code {
   color: #515151;
   border-radius: 350px;
   z-index: 10;
-
   position: fixed;
-
   width: 350px;
   height: 350px;
   top: 50%;
@@ -387,12 +385,12 @@ code {
 .homepage__soc-links {
   margin-top: 3.5rem;
   display: flex;
-  flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
 }
-/*/ Animation /*/
+
+/* / Animation / */
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.5s;

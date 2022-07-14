@@ -41,9 +41,14 @@ const switchMode = () => {
     document.documentElement.style.setProperty('--image-filter-invert', '0')
   }
 
-  // if (amountOfSwitching.value === 5) {
-  //   alert('filter switch')
-  // }
+  if (amountOfSwitching.value === 25) {
+    console.log('amountOfSwitching.value: ', amountOfSwitching.value)
+    // alert('filter switch')
+    document.body.classList.toggle('rotate-all')
+    setTimeout(() => {
+      document.body.classList.toggle('rotate-all')
+    }, 3000)
+  }
 
   if (amountOfSwitching.value % 5 === 0) {
     document.documentElement.style.setProperty('--image-filter-invert', '1')
@@ -51,9 +56,9 @@ const switchMode = () => {
     // amountOfSwitching.value = 0
   }
 
-  // if (amountOfSwitching.value === 32) {
-  //   alert('Seems, that you like switching')
-  // }
+  if (amountOfSwitching.value === 21) {
+    // alert('Seems, that you like switching')
+  }
 
   // if (amountOfSwitching.value === 32) {
   //   alert('I would like to know if you have switched it more times than is your age in years')
@@ -72,68 +77,68 @@ const switchMode = () => {
 
 </script>
 
-<style scoped>
+<style scoped lang="stylus">
+.mode
+  position absolute
+  width 36px
+  height 36px
+  border-radius 50%
+  background rgb(0 0 0 / 0%)
+  cursor pointer
+  text-align center
+  display flex
+  align-items center
+  justify-content center
 
-.mode {
-  position: absolute;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0);
-  cursor: pointer;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.mode::before {
-  content: '';
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-image: linear-gradient(to right, white 50%, black 50.01%);
-  border: 2px solid rgb(0, 0, 0);
-  transition: transform .5s ease-out;
-}
-.mode::after {
-  content: '';
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: white;
-  mix-blend-mode: difference
-}
+  &::before
+    content ""
+    position absolute
+    width 24px
+    height 24px
+    border-radius 50%
+    background-image linear-gradient(to right, white 50%, black 50.01%)
+    border 2px solid rgb(0 0 0)
+    transition transform 0.5s ease-out
 
-div {
-  position: absolute;
+  &::after
+    content ""
+    position absolute
+    top 12px
+    left 12px
+    width 12px
+    height 12px
+    border-radius 50%
+    background white
+    mix-blend-mode difference
 
-  width: 76px;
-  right: 0.12rem;
-  top: 2rem;
-  font-size: 14px;
-  font-weight: 500;
-  color: white;
-  line-height: 18px;
-}
+div
+  position absolute
+  width 76px
+  right 0.12rem
+  top 2rem
+  font-size 14px
+  font-weight 500
+  color white
+  line-height 18px
 
-.dark-mode .mode {
-  background: rgba(255, 255, 255, 0);
-}
-.dark-mode .mode::before {
-  border: 2px solid black;
-  transform: rotate(180deg);
-}
 
-@keyframes scaleInner {
-  50% { transform: scale(1.8)};
-}
-.scaling::after {
-  animation: scaleInner .5s ease forwards
-}
+.dark-mode .mode
+  background rgb(255 255 255 / 0%)
+
+
+.dark-mode .mode::before
+  border 2px solid black
+  transform rotate(180deg)
+
+
+@keyframes scale-inner
+  50%
+    transform scale(1.8)
+
+
+.scaling::after
+  animation scale-inner 0.5s ease forwards
+
 </style>
 
 <!-- This component is based on codepen by Andreas Storm
