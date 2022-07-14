@@ -319,7 +319,6 @@ code {
 .homepage__contact {
   position: fixed;
   box-shadow: inset 2px 1px 10px 0 rgb(0 0 0 / 12%);
-  box-shadow: inset 2px 1px 10px 0 rgb(0 0 0 / 12%);
   bottom: 0;
   left: 0;
   padding: 0.3rem;
