@@ -29,6 +29,7 @@ module.exports = {
     quotes: 1,
     'no-unused-vars': 1,
     semi: 1,
-    'no-trailing-spaces': 1
+    'no-trailing-spaces': 1,
+    'padded-blocks': 1
   }
 }

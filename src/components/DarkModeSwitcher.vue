@@ -1,6 +1,7 @@
 <template>
 <div
-
+id="dark-mode-switcher"
+ref="darkModeSwitcher"
 class="container"
 >
     <div
@@ -13,12 +14,18 @@ class="container"
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import useDragAndDrop from '@/J/useDragAndDrop'
 const isDarkMode = ref(false)
 const amountOfSwitching = ref(0)
 const modeRef = ref<HTMLElement>()
+const darkModeSwitcher = ref<HTMLElement>()
+const { dragAndDrop, isDragging } = useDragAndDrop()
 
 onMounted(() => {
   const modeInStorage = localStorage.getItem('darkMode')
+  if (darkModeSwitcher.value) {
+    dragAndDrop(darkModeSwitcher.value)
+  }
 
   const modeInBrowser = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
 
@@ -31,6 +38,7 @@ onMounted(() => {
 })
 
 const switchMode = () => {
+  if (isDragging.value) return
   isDarkMode.value = !isDarkMode.value
   document.documentElement.classList.toggle('dark-mode')
   modeRef.value?.classList.toggle('scaling')
@@ -78,13 +86,16 @@ const switchMode = () => {
 </script>
 
 <style scoped lang="stylus">
+.hide
+  display none
+
 .mode
   position absolute
   width 36px
   height 36px
   border-radius 50%
   background rgb(0 0 0 / 0%)
-  cursor pointer
+  cursor cell
   text-align center
   display flex
   align-items center
@@ -111,7 +122,7 @@ const switchMode = () => {
     background white
     mix-blend-mode difference
 
-div
+#dark-mode-switcher
   position absolute
   width 76px
   right 0.12rem

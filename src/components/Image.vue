@@ -68,24 +68,24 @@ const giveImageSourcePlease = async () => {
 <style scoped lang="stylus">
 @keyframes background-color-palette
   0%
-    background: #fb648fb1
+    background #fb648fb1
 
   25%
-    background: #87ed69
+    background #87ed69
 
   50%
-    background: #4c6ee6
+    background #4c6ee6
 
   75%
-    background: #ffd97d
+    background #ffd97d
 
   100%
-    background: #644b6f
+    background #644b6f
 
 .anim-bg
-  animation-name: background-color-palette
-  animation-duration: 3.5s
-  animation-iteration-count: infinite
-  animation-direction: alternate
+  animation-name background-color-palette
+  animation-duration 3.5s
+  animation-iteration-count infinite
+  animation-direction alternate
 
 </style>
