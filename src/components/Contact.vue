@@ -2,6 +2,7 @@
   <div
 ref="contactRef"
 class="homepage__contact"
+draggable="true"
 @click="showContactModal"
 >
     <span

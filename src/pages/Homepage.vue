@@ -1,7 +1,7 @@
 <template>
   <DarkModeSwitcher />
   <div class="homepage__titles">
-    <h1
+    <div
       :class="[
         'homepage__title homepage__title-sans-topic',
         {
@@ -15,8 +15,12 @@
       ]"
       @click="selectTopic(Topics.SANS_TOPIC)"
     >
-      sans topic
-    </h1>
+      <img
+              src="../assets/sans-topic-title-letters.png"
+              class="homepage__title-sans-topic-img"
+              alt="sans topic"
+          />
+    </div>
 
     <h1
       :class="[
@@ -119,6 +123,7 @@ code
 
 
 .homepage__title
+  opacity 0.85
   transition all 0.2s
   white-space nowrap
   cursor cell
@@ -134,9 +139,10 @@ code
 
 .homepage__title:hover
   transition all 0.2s
-  background-color black
-  color #fff
-  background-image none
+  opacity 1
+  // background-color black
+  // color #fff
+  // background-image none
 
 
 // Node Avatars
@@ -194,22 +200,31 @@ code
 
 // Sans Topic
 .homepage__title-sans-topic
-  font-family PMarker, Helvetica, Arial, sans-serif
-  font-size 3.5rem
-  padding 0 1rem 0.7rem
-  font-weight normal
-  color initial
-  line-height 1
+  // padding 0
   right calc(50% - 150px)
   top 25vh
   position absolute
   cursor crosshair
+  padding 0.5rem 1rem
 
+  @media (min-width 700px)
+    padding 0.5rem 1rem 1.5rem
+
+
+.homepage__title-sans-topic-img
+  width 310px
+  height auto
+
+  @media (min-width 700px)
+    width 410px
 
 .animate-unselected-sans-topic
   transform scale(0.35, 0.3) rotate(89deg)
   height 55px
-  right -139px
+  right -154px
+
+  @media (min-width 700px)
+    right -200px
 
 
 .homepage__animate-selected-sans-topic
@@ -218,6 +233,7 @@ code
   right calc(50% - 150px)
   font-size 3.5rem
   position fixed
+  padding 1rem 0
   backdrop-filter grayscale(1)
 
 </style>

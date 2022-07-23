@@ -2,6 +2,7 @@
 <div
 id="dark-mode-switcher"
 ref="darkModeSwitcher"
+draggable="true"
 class="container"
 >
     <div

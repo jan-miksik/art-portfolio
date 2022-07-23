@@ -28,22 +28,22 @@ html
   transition all 0.6s
 
 
-@font-face
-  font-family PMarker
-  unicode-range U+000-5FF
-  src url("@/assets/fonts/Permanent_Marker/PermanentMarker-Regular.ttf")
+// @font-face
+//   font-family PMarker
+//   unicode-range U+000-5FF
+//   src url("@/assets/fonts/Permanent_Marker/PermanentMarker-Regular.ttf")
 
 
-@font-face
-  font-family LiuJianMaoCao
-  unicode-range U+000-5FF
-  src url("@/assets/fonts/Liu_Jian_Mao_Cao/LiuJianMaoCao-Regular.ttf")
+// @font-face
+//   font-family LiuJianMaoCao
+//   unicode-range U+000-5FF
+//   src url("@/assets/fonts/Liu_Jian_Mao_Cao/LiuJianMaoCao-Regular.ttf")
 
 
-@font-face
-  font-family Jayscript
-  unicode-range U+000-5FF
-  src url("@/assets/fonts/jayscript-font/Jayscript-YBAL.ttf")
+// @font-face
+//   font-family Jayscript
+//   unicode-range U+000-5FF
+//   src url("@/assets/fonts/jayscript-font/Jayscript-YBAL.ttf")
 
 
 @font-face
@@ -52,24 +52,24 @@ html
   src url("@/assets/fonts/Raleway_Dots/RalewayDots-Regular.ttf")
 
 
-@font-face
-  font-family desyrel
-  unicode-range U+000-5FF
-  src url("@/assets/fonts/desyrel/DESYREL_.ttf")
+// @font-face
+//   font-family desyrel
+//   unicode-range U+000-5FF
+//   src url("@/assets/fonts/desyrel/DESYREL_.ttf")
 
 
-@font-face
-  font-family TrainOne
-  font-weight normal
-  unicode-range U+000-5FF
-  src url("@/assets/fonts/Train_One/TrainOne-Regular.ttf")
+// @font-face
+//   font-family TrainOne
+//   font-weight normal
+//   unicode-range U+000-5FF
+//   src url("@/assets/fonts/Train_One/TrainOne-Regular.ttf")
 
 
-@font-face
-  font-family edo
-  font-weight normal
-  unicode-range U+000-5FF
-  src url("@/assets/fonts/edo.ttf")
+// @font-face
+//   font-family edo
+//   font-weight normal
+//   unicode-range U+000-5FF
+//   src url("@/assets/fonts/edo.ttf")
 
 
 @font-face
