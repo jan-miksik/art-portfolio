@@ -26,6 +26,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       name: 'history cylinder - historie válec - geskiedenis silinder(af)',
       description: '',
       image: {
+        id: '1',
         url: 'sans-topic/history cylinder - historie válec - geskiedenis silinder(af),2020,drawing on paper,275x100cm.jpg',
         lastUpdated: new Date('2020').getTime()
       },
@@ -46,6 +47,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       name: 'přejmenování - تغییر نام - renaming',
       description: '',
       image: {
+        id: '2',
         url:
         'sans-topic/přejmenování - تغییر نام(fa) - renaming,2020,drawing on paper,30x21cm.jpg',
         lastUpdated: new Date('2020').getTime()
@@ -67,6 +69,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       name: 'kalo(ceb) - hat - klobouk',
       description: '',
       image: {
+        id: '3',
         url:
         'sans-topic/kalo(ceb) - hat - klobouk,2020,drawing on paper,30x21cm.jpg',
         lastUpdated: new Date('2020').getTime()
@@ -88,6 +91,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       name: 'neighborhood - sousedství - vicinia(la)',
       description: '',
       image: {
+        id: '4',
         url:
         'sans-topic/neighborhood - sousedství - vicinia(la),2020,drawing on paper,30x21cm.jpg',
         lastUpdated: new Date('2020').getTime()
@@ -108,7 +112,11 @@ export const piecesData: {[key: string]: IPiece[]} = {
       id: '5',
       name: 'ooo',
       description: '',
-      image: { url: 'sans-topic/ooo,2021,drawing on paper,42x30cm.jpg', lastUpdated: new Date('2020').getTime() },
+      image: {
+        id: '5',
+        url: 'sans-topic/ooo,2021,drawing on paper,42x30cm.jpg',
+        lastUpdated: new Date('2020').getTime()
+      },
       topic: Topics.SANS_TOPIC,
       price: 0,
       technique: Techniques.DRAWING,
@@ -126,6 +134,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       name: 'side project - kɛrɛfɛ porozɛ(bm) - vedlejší projekt',
       description: '',
       image: {
+        id: '6',
         url:
         'sans-topic/side project - kɛrɛfɛ porozɛ(bm) - vedlejší projekt,2018,drawing on paper,30x21cm.jpg',
         lastUpdated: new Date('2020').getTime()
@@ -147,6 +156,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       name: 'tlak - 壓力(zh) - pressure',
       description: '',
       image: {
+        id: '7',
         url:
         'sans-topic/tlak - 壓力(zh) - pressure,2019,drawing on paper,30x21cm.jpg',
         lastUpdated: new Date('2020').getTime()
@@ -168,6 +178,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       name: 'सपनों की लय(hi) - dream rhythm - rytmus snu',
       description: '',
       image: {
+        id: '8',
         url:
         'sans-topic/सपनों की लय(hi) - dream rhythm - rytmus snu,2016,drawing on paper,42x30cm.jpg',
         lastUpdated: new Date('2020').getTime()
@@ -189,6 +200,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       name: 'ananas - ananász(hu) - pineapple',
       description: '',
       image: {
+        id: '9',
         url:
         'sans-topic/ananas - ananász(hu) - pineapple,2016,drawing on paper,31x31cm.jpg',
         lastUpdated: new Date('2020').getTime()
@@ -210,6 +222,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       name: 'system language - γλώσσα συστήματος(el) - systémový jazyk',
       description: '',
       image: {
+        id: '10',
         url:
         'sans-topic/system language - γλώσσα συστήματος(el) - systémový jazyk,2020,drawing on paper,26x22cm.jpg',
         lastUpdated: new Date('2020').getTime()
@@ -233,7 +246,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       id: '11',
       name: 'A and B',
       description: '',
-      image: { url: 'geometry/A and B,2019,drawing on paper,30x21cm.jpg', lastUpdated: new Date('2020').getTime() },
+      image: { id: '11', url: 'geometry/A and B,2019,drawing on paper,30x21cm.jpg', lastUpdated: new Date('2020').getTime() },
       price: 0,
       topic: Topics.GEOMETRY,
       technique: Techniques.DRAWING,
@@ -251,6 +264,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       name: 'almost circles - skoro kruhy - pafupifupi zozungulira(ny)',
       description: '',
       image: {
+        id: '12',
         url:
         'geometry/almost circles - skoro kruhy - pafupifupi zozungulira(ny),2019,drawing on paper,30x21cm.jpg',
         lastUpdated: new Date('2020').getTime()
@@ -271,7 +285,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       id: '13',
       name: 'double cross',
       description: '',
-      image: { url: 'geometry/double cross,2018,drawing on paper,21x30cm.jpg', lastUpdated: new Date('2020').getTime() },
+      image: { id: '13', url: 'geometry/double cross,2018,drawing on paper,21x30cm.jpg', lastUpdated: new Date('2020').getTime() },
       topic: Topics.GEOMETRY,
       price: 0,
       technique: Techniques.DRAWING,
@@ -288,7 +302,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       id: '14',
       name: 'Jiri and Jirina',
       description: '',
-      image: { url: 'geometry/Jiri and Jirina,2018,drawing on paper,30x21cm.jpg', lastUpdated: new Date('2020').getTime() },
+      image: { id: '14', url: 'geometry/Jiri and Jirina,2018,drawing on paper,30x21cm.jpg', lastUpdated: new Date('2020').getTime() },
       price: 0,
       topic: Topics.NODE_AVATARS,
       technique: Techniques.DRAWING,
@@ -306,6 +320,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       name: '簡略化(jp) - zjednodušování - simplification',
       description: '',
       image: {
+        id: '15',
         url:
         'geometry/簡略化(jp) - zjednodušování - simplification,2019,drawing on paper,30x42cm.jpg',
         lastUpdated: new Date('2020').getTime()
@@ -328,7 +343,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       id: '16',
       name: 'about',
       description: '',
-      image: { url: 'node-avatars/about,2019,drawing on paper,7x10cm.png', lastUpdated: new Date('2020').getTime() },
+      image: { id: '16', url: 'node-avatars/about,2019,drawing on paper,7x10cm.png', lastUpdated: new Date('2020').getTime() },
       price: 0,
       topic: Topics.NODE_AVATARS,
       technique: Techniques.DRAWING,
@@ -345,7 +360,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       id: '17',
       name: 'above',
       description: '',
-      image: { url: 'node-avatars/above,2018,drawing on paper,8x8cm.webp', lastUpdated: new Date('2020').getTime() },
+      image: { id: '17', url: 'node-avatars/above,2018,drawing on paper,8x8cm.webp', lastUpdated: new Date('2020').getTime() },
       topic: Topics.NODE_AVATARS,
       price: 0,
       technique: Techniques.DRAWING,
@@ -362,7 +377,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       id: '18',
       name: 'absent',
       description: '',
-      image: { url: 'node-avatars/absent,2018,drawing on paper,8x7cm.png', lastUpdated: new Date('2020').getTime() },
+      image: { id: '18', url: 'node-avatars/absent,2018,drawing on paper,8x7cm.png', lastUpdated: new Date('2020').getTime() },
       topic: Topics.NODE_AVATARS,
       price: 0,
       technique: Techniques.DRAWING,
@@ -379,7 +394,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       id: '19',
       name: 'absorb',
       description: '',
-      image: { url: 'node-avatars/absorb,2018,drawing on paper,15x11cm.webp', lastUpdated: new Date('2020').getTime() },
+      image: { id: '19', url: 'node-avatars/absorb,2018,drawing on paper,15x11cm.webp', lastUpdated: new Date('2020').getTime() },
       topic: Topics.NODE_AVATARS,
       price: 0,
       technique: Techniques.DRAWING,
@@ -396,7 +411,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       id: '20',
       name: 'abstract',
       description: '',
-      image: { url: 'node-avatars/abstract,2019,drawing on paper,6x7cm.png', lastUpdated: new Date('2020').getTime() },
+      image: { id: '20', url: 'node-avatars/abstract,2019,drawing on paper,6x7cm.png', lastUpdated: new Date('2020').getTime() },
       topic: Topics.NODE_AVATARS,
       price: 0,
       technique: Techniques.DRAWING,
@@ -413,7 +428,7 @@ export const piecesData: {[key: string]: IPiece[]} = {
       id: '21',
       name: 'absurd',
       description: '',
-      image: { url: 'node-avatars/absurd,2019,drawing on paper,5x5cm.webp', lastUpdated: new Date('2020').getTime() },
+      image: { id: '21', url: 'node-avatars/absurd,2019,drawing on paper,5x5cm.webp', lastUpdated: new Date('2020').getTime() },
       topic: Topics.NODE_AVATARS,
       price: 0,
       technique: Techniques.DRAWING,
