@@ -22,7 +22,7 @@
         <Image
           v-if="piece"
           :id="piece.id"
-          :piece="piece"
+          :image-file="piece.image"
           :class="[
             'pieces__image',
             { 'pieces__image-node-avatar': Topics.NODE_AVATARS === props.type },
@@ -233,7 +233,7 @@ const selectImage = (id: string) => {
 
 @media (min-width: 1000px) {
   .pieces__piece-description-selected {
-    bottom: -50vh;
+    bottom: -45vh;
     z-index: 100;
   }
 

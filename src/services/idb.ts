@@ -1,3 +1,4 @@
+import ImageFile from '@/models/ImageFile'
 import Dexie, { Table } from 'dexie'
 
 export interface Image {
@@ -25,8 +26,8 @@ const getBlobFromUrl = async (imageUrl: string): Promise<Blob> => {
   return await res.blob()
 }
 
-export const addImage = async ({ image, id }: {image: {url: string, lastUpdated: number}, id: string}) => {
-  const { url, lastUpdated } = image
+export const addImage = async (image: ImageFile) => {
+  const { url, lastUpdated, id } = image
   const blob = await getBlobFromUrl(url)
 
   try {
@@ -36,12 +37,12 @@ export const addImage = async ({ image, id }: {image: {url: string, lastUpdated:
       lastUpdated
     })
   } catch (error) {
-    console.error('error: ', error)
+    console.error('addImage error: ', error)
   }
 }
 
-export const updateImage = async ({ image, id }: {image: {url: string, lastUpdated: number}, id: string}) => {
-  const { url, lastUpdated } = image
+export const updateImage = async (image: ImageFile) => {
+  const { url, lastUpdated, id } = image
 
   const blob = await getBlobFromUrl(url)
 
@@ -52,7 +53,7 @@ export const updateImage = async ({ image, id }: {image: {url: string, lastUpdat
       lastUpdated
     })
   } catch (error) {
-    console.error(error)
+    console.error('updateImage error: ', error)
   }
 }
 

@@ -5,7 +5,9 @@ const initialPosition = ref({ x: 0, y: 0 })
 export default function useDragAndDrop() {
   const dragAndDrop = (el: HTMLElement) => {
     let isDown = false
+
     if (!el) return
+
     el.addEventListener('mousedown', function(e) {
       e.preventDefault()
       isDown = true
@@ -33,13 +35,9 @@ export default function useDragAndDrop() {
         if (isDragX || isDragY) {
           isDragging.value = true
         }
-        const deltaX = event.movementX
-        const deltaY = event.movementY
 
-
-        if (!rect) return
-        el.style.left = rect.x + deltaX + 'px'
-        el.style.top = rect.y + deltaY + 'px'
+        el.style.left = event.pageX - el.offsetWidth / 2 + 'px'
+        el.style.top = event.pageY - el.offsetHeight / 2 + 'px'
       }
     }, true)
   }

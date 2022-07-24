@@ -1,4 +1,5 @@
 import { Topics } from '@/components/piecesData'
+import ImageFile from '@/models/ImageFile'
 
 const generateRandomNumberPlusMinus = (max: number) => {
   return Math.floor((Math.random() * max + 1) * (Math.random() - 0.5) * 2)
@@ -15,10 +16,7 @@ export type IPiece = {
   technique: string
   techniqueDescription: string
   created: Date
-  image: {
-    url: string
-    lastUpdated: number
-  }
+  image: ImageFile
   sizeInCm: {
     x: number
     y: number
@@ -54,7 +52,7 @@ export default class Piece {
     this.description = data.description || ''
     this.technique = data.technique || ''
     this.techniqueDescription = data.techniqueDescription || ''
-    this.image = data.image || { url: '', lastUpdated: new Date('1990') }
+    this.image = new ImageFile({ id: data.id, url: data.image.url, lastUpdated: data.image.lastUpdated })
     this.sizeInCm = data.sizeInCm || { x: 0, y: 0 }
     this.price = data.price || 0
     this.topic = data.topic || ''

@@ -7,16 +7,16 @@
 </template>
 
 <script setup lang="ts">
-import Piece from '@/models/Piece'
 import { onMounted, onUnmounted, ref, toRefs } from 'vue'
 import { updateImage, addImage, getImage } from '@/services/idb'
+import ImageFile from '@/models/ImageFile'
 const imageRef = ref()
 const imageSrc = ref()
 const props = defineProps<{
-  piece: Piece
+  imageFile: ImageFile
 }>()
 
-const { piece } = toRefs(props)
+const { imageFile } = toRefs(props)
 
 const loaded = () => {
   imageRef.value?.classList.remove('anim-bg')
@@ -41,26 +41,24 @@ const giveImageSourcePlease = async () => {
     }
   }
 
-  if (!piece.value) return
-
-  const { image, id } = piece.value
-  const imageFromIDB = await getImage(piece.value.id)
+  if (!imageFile.value) return
+  const imageFromIDB = await getImage(imageFile.value.id)
 
   if (!imageFromIDB) {
-    await addImage({ image, id })
+    await addImage(imageFile.value)
   }
 
   if (imageFromIDB) {
-    if (imageFromIDB.lastUpdated !== image.lastUpdated) {
-      updateImage({ image, id })
-      showImageFromProps(image.url)
+    if (imageFromIDB.lastUpdated !== imageFile.value.lastUpdated) {
+      updateImage(imageFile.value)
+      showImageFromProps(imageFile.value.url)
       return
     }
     imageSrc.value = URL.createObjectURL(imageFromIDB.blob)
     return
   }
 
-  showImageFromProps(image.url)
+  showImageFromProps(imageFile.value.url)
 }
 
 </script>

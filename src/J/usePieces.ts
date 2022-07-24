@@ -58,6 +58,7 @@ export default function usePieces() {
         techniqueDescription,
         created: new Date(created),
         image: {
+          id: pieceData.sys.id,
           url: image.url,
           lastUpdated: new Date(image.sys.publishedAt).getTime()
         },

@@ -15,11 +15,11 @@
       ]"
       @click="selectTopic(Topics.SANS_TOPIC)"
     >
-      <img
-              src="../assets/sans-topic-title-letters.png"
-              class="homepage__title-sans-topic-img"
-              alt="sans topic"
-          />
+      <Image
+        :image-file="sansTopicImage"
+        class="homepage__title-sans-topic-img"
+        alt="sans topic"
+      />
     </div>
 
     <h1
@@ -36,7 +36,11 @@
       ]"
       @click="selectTopic(Topics.GEOMETRY)"
     >
-      geometry
+      <Image
+        :image-file="geometryImage"
+        class="homepage__title-geometry-img"
+        alt="sans topic"
+      />
     </h1>
 
     <h1
@@ -53,7 +57,11 @@
       ]"
       @click="selectTopic(Topics.NODE_AVATARS)"
     >
-      node avatars
+      <Image
+        :image-file="nodeAvatarsImage"
+        class="homepage__title-node-avatars-img"
+        alt="node avatars"
+      />
     </h1>
   </div>
   <Contact />
@@ -83,9 +91,36 @@ import usePieces from '@/J/usePieces'
 import { useRouter } from 'vue-router'
 import DarkModeSwitcher from '@/components/DarkModeSwitcher.vue'
 import Contact from '@/components/Contact.vue'
+import Image from '@/components/Image.vue'
+import ImageFile from '@/models/ImageFile'
 const { piecesNodeAvatars, piecesSansTopic, piecesGeometry } = usePieces()
 const { currentRoute } = useRouter()
 const router = useRouter()
+
+const sansTopicImage = ref(
+  new ImageFile({
+    url: 'sans-topic-title-letters.webp',
+    id: 'title-sans-topic-img',
+    lastUpdated: new Date('1990').getTime()
+  })
+)
+
+const geometryImage = ref(
+  new ImageFile({
+    url: 'geometry-title.webp',
+    id: 'geometry-title-img',
+    lastUpdated: new Date('1990').getTime()
+  })
+)
+
+const nodeAvatarsImage = ref(
+  new ImageFile({
+    url: 'node-avatars-title.webp',
+    id: 'node-avatars-title-img',
+    lastUpdated: new Date('1990').getTime()
+  })
+)
+
 
 const selectedTopic = ref(currentRoute.value.params.topic as Topics | undefined)
 
@@ -98,7 +133,6 @@ const selectTopic = (topic: Topics) => {
   router.push(`/${topic}`)
   selectedTopic.value = topic
 }
-
 </script>
 
 <style scoped lang="stylus">
@@ -158,9 +192,12 @@ code
 
 
 .animate-unselected-node-avatars
-  transform scale(0.8, 0.7) rotate(-89deg)
+  transform scale(0.55) rotate(-89deg)
+  left -128px
   top 150px
-  left -70px
+
+  @media (min-width 700px)
+    left -155px
 
 
 .homepage__animate-selected-node-avatars
@@ -171,6 +208,12 @@ code
   position fixed
   backdrop-filter grayscale(1)
 
+.homepage__title-node-avatars-img
+  width 270px
+  height auto
+
+  @media (min-width 700px)
+    width 350px
 
 // Geometry
 .homepage__title-geometry
@@ -180,13 +223,22 @@ code
   line-height 1
   color initial
   position absolute
-  top 50vh
+  top 55vh
   left 15vw
 
+.homepage__title-geometry-img
+  width 230px
+  height auto
+
+  @media (min-width 700px)
+    width 320px
 
 .animate-unselected-geometry
-  transform scale(0.8, 0.5) rotate(-92deg)
-  left -70px
+  transform scale(0.6) rotate(-92deg)
+  left -105px
+
+  @media (min-width 700px)
+    left -145px
 
 
 .homepage__animate-selected-geometry
@@ -235,5 +287,4 @@ code
   position fixed
   padding 1rem 0
   backdrop-filter grayscale(1)
-
 </style>
