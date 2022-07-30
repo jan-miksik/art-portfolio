@@ -3,13 +3,15 @@ import { IPiece } from '~/models/Piece'
 export enum Topics {
   SANS_TOPIC = 'sans topic',
   GEOMETRY = 'geometry',
-  NODE_AVATARS = 'node avatars'
+  NODE_AVATARS = 'node avatars',
+  PUZZLE = 'puzzle'
 }
 
 export enum Techniques {
   DRAWING = 'DRAWING',
   PAINTING = 'PAINTING',
-  PHOTO = 'PHOTO'
+  PHOTO = 'PHOTO',
+  MIXED_MEDIA = 'MIXED_MEDIA'
 }
 
 export enum TechniqueDescription {
@@ -439,6 +441,110 @@ const piecesData: {[key: string]: IPiece[]} = {
       },
       tags: [],
       created: new Date('2019'),
+      updated: new Date()
+    }
+  ],
+  PUZZLE: [
+    {
+      id: '22',
+      name: 'puzzle 1',
+      description: '',
+      image: { id: '22', url: 'puzzle/puzzle 1,2013,70x50cm.jpg', lastUpdated: new Date('2020').getTime() },
+      topic: Topics.PUZZLE,
+      price: 0,
+      technique: Techniques.MIXED_MEDIA,
+      techniqueDescription: TechniqueDescription.MIXED_MEDIA,
+      sizeInCm: {
+        x: 70,
+        y: 50
+      },
+      tags: [],
+      created: new Date('2013'),
+      updated: new Date()
+    },
+    {
+      id: '23',
+      name: 'puzzle 1 detail',
+      description: '',
+      image: { id: '23', url: 'puzzle/puzzle 1 detail,2013,70x50cm.jpg', lastUpdated: new Date('2020').getTime() },
+      topic: Topics.PUZZLE,
+      price: 0,
+      technique: Techniques.MIXED_MEDIA,
+      techniqueDescription: TechniqueDescription.MIXED_MEDIA,
+      sizeInCm: {
+        x: 70,
+        y: 50
+      },
+      tags: [],
+      created: new Date('2013'),
+      updated: new Date()
+    },
+    {
+      id: '24',
+      name: 'puzzle 2',
+      description: '',
+      image: { id: '24', url: 'puzzle/puzzle 2,2014,70x50cm.jpg', lastUpdated: new Date('2020').getTime() },
+      topic: Topics.PUZZLE,
+      price: 0,
+      technique: Techniques.MIXED_MEDIA,
+      techniqueDescription: TechniqueDescription.MIXED_MEDIA,
+      sizeInCm: {
+        x: 70,
+        y: 50
+      },
+      tags: [],
+      created: new Date('2014'),
+      updated: new Date()
+    },
+    {
+      id: '25',
+      name: 'puzzle 2 detail',
+      description: '',
+      image: { id: '25', url: 'puzzle/puzzle 2 detail,2014,70x50cm.jpg', lastUpdated: new Date('2020').getTime() },
+      topic: Topics.PUZZLE,
+      price: 0,
+      technique: Techniques.MIXED_MEDIA,
+      techniqueDescription: TechniqueDescription.MIXED_MEDIA,
+      sizeInCm: {
+        x: 70,
+        y: 50
+      },
+      tags: [],
+      created: new Date('2014'),
+      updated: new Date()
+    },
+    {
+      id: '26',
+      name: 'puzzle 3',
+      description: '',
+      image: { id: '26', url: 'puzzle/puzzle 3,mixed media,2016,40x100cm.jpg', lastUpdated: new Date('2020').getTime() },
+      topic: Topics.PUZZLE,
+      price: 0,
+      technique: Techniques.MIXED_MEDIA,
+      techniqueDescription: TechniqueDescription.MIXED_MEDIA,
+      sizeInCm: {
+        x: 40,
+        y: 100
+      },
+      tags: [],
+      created: new Date('2016'),
+      updated: new Date()
+    },
+    {
+      id: '27',
+      name: 'puzzle 3 detail',
+      description: '',
+      image: { id: '27', url: 'puzzle/puzzle 3 detail,mixed media,2016,40x100cm.jpg', lastUpdated: new Date('2020').getTime() },
+      topic: Topics.PUZZLE,
+      price: 0,
+      technique: Techniques.MIXED_MEDIA,
+      techniqueDescription: TechniqueDescription.MIXED_MEDIA,
+      sizeInCm: {
+        x: 40,
+        y: 100
+      },
+      tags: [],
+      created: new Date('2016'),
       updated: new Date()
     }
   ]

@@ -39,7 +39,7 @@
       <Image
         :image-file="geometryImage"
         class="homepage__title-geometry-img"
-        alt="sans topic"
+        alt="geometry"
       />
     </h1>
 
@@ -63,6 +63,27 @@
         alt="node avatars"
       />
     </h1>
+
+    <h1
+      :class="[
+        'homepage__title  homepage__title-puzzle',
+        {
+          'homepage__animate-selected-puzzle':
+            selectedTopic === Topics.PUZZLE
+        },
+        {
+          'homepage__unselected-title animate-unselected-puzzle':
+            selectedTopic && selectedTopic !== Topics.PUZZLE
+        }
+      ]"
+      @click="selectTopic(Topics.PUZZLE)"
+    >
+      <Image
+        :image-file="puzzleImage"
+        class="homepage__title-puzzle-img"
+        alt="puzzle"
+      />
+    </h1>
   </div>
   <Contact />
 
@@ -81,6 +102,11 @@
     :type="Topics.NODE_AVATARS"
     :selected-topic="selectedTopic"
   />
+  <Pieces
+    :pieces="piecesPuzzle"
+    :type="Topics.PUZZLE"
+    :selected-topic="selectedTopic"
+  />
 </template>
 
 <script setup lang="ts">
@@ -88,7 +114,7 @@ import { Topics } from '~/components/piecesData'
 import usePieces from '~/J/usePieces'
 import ImageFile from '~/models/ImageFile'
 
-const { piecesNodeAvatars, piecesSansTopic, piecesGeometry } = usePieces()
+const { piecesNodeAvatars, piecesSansTopic, piecesGeometry, piecesPuzzle } = usePieces()
 // const { currentRoute } = useRouter()
 // const router = useRouter()
 useHead({
@@ -119,6 +145,14 @@ const nodeAvatarsImage = ref(
     url: 'node-avatars-title.webp',
     id: 'node-avatars-title-img',
     lastUpdated: new Date('1990').getTime()
+  })
+)
+
+const puzzleImage = ref(
+  new ImageFile({
+    url: 'puzzle-title.png',
+    id: 'puzzle-title-img',
+    lastUpdated: new Date('1992').getTime()
   })
 )
 
@@ -288,6 +322,37 @@ code
   right calc(50% - 150px)
   font-size 3.5rem
   position fixed
-  padding 1rem 0
+  padding 0.3rem 0.5rem 0
   backdrop-filter grayscale(1)
+
+// Puzzle
+.homepage__title-puzzle
+  line-height 1
+  position absolute
+  top 70vh
+  right 20vw
+
+.homepage__title-puzzle-img
+  width 180px
+  height auto
+
+  @media (min-width 700px)
+    width 200px
+
+.animate-unselected-puzzle
+  transform scale(0.6) rotate(90.5deg)
+  right -80px
+
+  @media (min-width 700px)
+    right -90px
+
+
+.homepage__animate-selected-puzzle
+  font-size 2.5rem
+  transform initial
+  top 0
+  left calc(50% - 125px)
+  position fixed
+  backdrop-filter grayscale(1)
+
 </style>

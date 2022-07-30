@@ -5,6 +5,7 @@ import useContentful from '~/api/useContentful'
 const piecesNodeAvatars = ref<Piece[] | undefined>()
 const piecesSansTopic = ref<Piece[] | undefined>()
 const piecesGeometry = ref<Piece[] | undefined>()
+const piecesPuzzle = ref<Piece[] | undefined>()
 
 const addRandomlyEmptySpacesIntoArray = (array: Piece[]) => {
   array.forEach((piece, index) => {
@@ -34,6 +35,11 @@ export default function usePieces() {
     (pieceData: any) => new Piece(pieceData)
   )
   piecesGeometry.value = addRandomlyEmptySpacesIntoArray(geometry)
+
+  const puzzle = piecesData.PUZZLE.map(
+    (pieceData: any) => new Piece(pieceData)
+  )
+  piecesPuzzle.value = addRandomlyEmptySpacesIntoArray(puzzle)
 
   const mergeContentfulDataWithLocalData = async () => {
     const { contentfulData } = useContentful()
@@ -83,6 +89,7 @@ export default function usePieces() {
   return {
     piecesNodeAvatars,
     piecesSansTopic,
+    piecesPuzzle,
     mergeContentfulDataWithLocalData,
     piecesGeometry
   }

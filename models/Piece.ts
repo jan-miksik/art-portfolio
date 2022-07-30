@@ -90,5 +90,14 @@ export default class Piece {
         )}px) translateX(${generateRandomNumberPlusMinus(110)}px)`
       }
     }
+    if (this.topic === Topics.PUZZLE) {
+      return {
+        transform: `scale(${
+          randomRange(7, 12) / 10
+        }) translateY(${generateRandomNumberPlusMinus(
+          180
+        )}px) translateX(${generateRandomNumberPlusMinus(110)}px)`
+      }
+    }
   }
 }
