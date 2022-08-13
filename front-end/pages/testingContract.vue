@@ -56,18 +56,8 @@
 
 </template>
 
+
 <script setup lang="ts">
-import { ethers } from 'ethers'
-import contractAbi from '~/../contracts/artifacts/contracts/MessagePortal.sol/MessagePortal.json'
-// import Web3Modal from "web3modal";
-
-
-interface Message {
-  from: string
-  text: string
-  datetime: Date
-}
-
 // TODOS
 
 // add web3 modal?
@@ -87,25 +77,31 @@ interface Message {
 // disconnect wallet - kind of / login, logout sessions
 // send
 // receive
+import { ethers } from 'ethers'
+import contractAbi from '~/../contracts/artifacts/contracts/MessagePortal.sol/MessagePortal.json'
+import useWeb3 from '~/J/useWeb3'
+// import Web3Modal from "web3modal";
+const {initDapp, connectWallet, web3Provider, isChainOk, signer, checkWindowEthereum, chain, switchToSupportedChain, supportedNetwork, handleWalletConnection, connectedAddress } = useWeb3()
+
+let jsonRpcProvider: any = null;
+
+interface Message {
+  from: string
+  text: string
+  datetime: Date
+}
 
 
-const RPC_URL = import.meta.env.VITE_APP_RPC_URL as string || ''
 const CONTRACT_ADDRESS = import.meta.env.VITE_APP_MSG_CONTRACT as string || ''
+const contract = ref()
 
 const trxInProgress = ref(false)
 const allMessages = ref<Message[]>([])
 const message = ref()
 
-const supportedNetwork = {name: 'localhost', chainId: 31337}
-const connectedAddress = ref('nothing')
-const signer = ref()
-const contract = ref()
-const chain = ref()
-const isChainOk = ref()
-const web3Provider = ref()
-
-let jsonRpcProvider: any = null;
 let contractReadOnly: any = null
+
+
 
 const chainName = computed(() => {
   if (chain.value) {
@@ -114,77 +110,6 @@ const chainName = computed(() => {
   return 'not connected'
 })
 
-const checkWindowEthereum = () => {
-  if (window.ethereum !== undefined) {
-    if (!web3Provider.value) {
-      web3Provider.value = new ethers.providers.Web3Provider(window.ethereum, "any")
-    }
-    return true
-  } else {
-    if(confirm("To use this dapp, please install MetaMask")) {
-      window.open("https://metamask.io/")
-    }
-  }
-}
-
-const disconnectWallet = () => {
-  connectedAddress.value = 'nothing'
-  signer.value = undefined
-  localStorage.setItem('connectedAddress', '')
-}
-
-
-const switchToSupportedChain = () => {
-  if(!checkWindowEthereum()) return
-  console.log('switchToSupportedChain: ');
-
-  window.ethereum.request({
-    method: "wallet_addEthereumChain",
-    params: [{
-        chainId: "0x7a69",
-        rpcUrls: ["http://127.0.0.1:8545"],
-        chainName: "localhost",
-        // nativeCurrency: {
-        //     name: "MATIC",
-        //     symbol: "MATIC",
-        //     decimals: 18
-        // },
-        // blockExplorerUrls: ["https://polygonscan.com/"]
-    }]
-});
-}
-
-const connectWallet = async () => {
-  if(!checkWindowEthereum()) return
-  // const providerOptions = {
-  // /* See Provider Options Section */
-  // };
-
-  // const web3Modal = new Web3Modal({
-  //   // chain: "mainnet", // optional
-  //   cacheProvider: true, // optional
-  //   providerOptions // required
-  // });
-
-  // const instance = await web3Modal.connect();
-
-  // signer.value = web3Provider.value.getSigner();
-
-  await web3Provider.value.send('eth_requestAccounts', [])
-  signer.value = await web3Provider.value.getSigner()
-  connectedAddress.value = await signer.value.getAddress()
-
-  localStorage.setItem('connectedAddress', connectedAddress.value)
-}
-
-
-const handleWalletConnection = async () => {
-  if (!signer.value) {
-    connectWallet()
-  } else {
-    disconnectWallet()
-  }
-}
 
 
 const sendMessage = async function () {
@@ -249,7 +174,6 @@ const sortMessages = () => {
 }
 
 
-
 const retrieveMessages = async function () {
   allMessages.value = []
   try {
@@ -264,35 +188,12 @@ const retrieveMessages = async function () {
     })
 
     sortMessages()
-
     
   } catch (error) {
     console.error(error)
   }
 }
 
-
-const checkChain = async () => {
-  chain.value = await web3Provider.value.getNetwork();
-  console.log('chain.value: ', chain.value);
-  if (chain.value.chainId === supportedNetwork.chainId) {
-    isChainOk.value = true
-  } else {
-    isChainOk.value = false
-  }
-}
-
-
-
-const checkConnectedAddress = async() => {
-  const connectedAccounts =  await web3Provider.value.listAccounts()
-  const lastConnectedAddress = localStorage.getItem('connectedAddress')
-
-  if (connectedAccounts.length > 0 && lastConnectedAddress) {
-    signer.value = web3Provider.value.getSigner()
-    connectedAddress.value = await signer.value.getAddress()
-  }
-}
 
 const listenForNewMessages = () => {
   contractReadOnly.on("NewMessage", (fromAddress: any, timestamp: any, message: any) => {
@@ -302,23 +203,14 @@ const listenForNewMessages = () => {
         text: message,
         datetime: new Date(timestamp.toNumber() * 1000)
       })
-
     sortMessages()
   })
 }
 
-const listenForAccountChange = () => {
-  window.ethereum.on('accountsChanged', async ([account]: string) => {
-    signer.value = web3Provider.value.getSigner()
-    connectedAddress.value = await signer.value.getAddress()
-    localStorage.setItem('connectedAddress', account)
-  });
-}
-
-
 
 const loadContractData = async () => {
   // if (isChainOk.value) {
+    console.log('jsonRpcProvider: loadContractData ', jsonRpcProvider);
     contractReadOnly = new ethers.Contract(
       CONTRACT_ADDRESS,
       contractAbi.abi,
@@ -329,65 +221,10 @@ const loadContractData = async () => {
 }
 
 
-
-const listenForChainChange = () => {
-  window.ethereum.on('chainChanged', (chainId: any) => {
-    
-    const chainIdDecimal = parseInt(chainId, 16)
-
-    checkChain()
-    
-    switch (chainIdDecimal) {
-      case 1:
-        chain.value = {name: 'mainnet', chainId: 1}
-        break;
-      case 3:
-        chain.value = {name: 'ropsten', chainId: 3}
-        break;
-      case 4:
-        chain.value = {name: 'rinkeby', chainId: 4}
-        break;
-      case 42:
-        chain.value = {name: 'kovan', chainId: 42}
-        break;
-      case 137:
-        chain.value = {name: 'polygon', chainId: 137}
-        break;
-      case 5777:
-        chain.value = {name: 'goerli', chainId: 5777}
-        break;
-      case 80001:
-        chain.value = {name: 'mumbai', chainId: 80001}
-        break;
-      case 31337:
-        chain.value = {name: 'localhost', chainId: 31337}
-        break;
-      default:
-        chain.value = {name: 'unknown', chainId: 0}
-        break;
-    }
-  })
-}
-
-
-const initDapp = async () => {
-
-  jsonRpcProvider = new ethers.providers.JsonRpcProvider(RPC_URL);
-
-  if (window.ethereum !== undefined) {
-    web3Provider.value = new ethers.providers.Web3Provider(window.ethereum, "any")
-    listenForAccountChange()
-    listenForChainChange()
-    await checkConnectedAddress()
-    await checkChain()
-  }
-
+onMounted(async () => {
+  jsonRpcProvider = await initDapp()
+  console.log('jsonRpcProvider: ', jsonRpcProvider);
   await loadContractData() // jsonRpcProvider ok
-
-}
-
-onMounted(() => {
-  initDapp()
 })
 
 </script>
