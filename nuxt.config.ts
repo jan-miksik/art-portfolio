@@ -4,4 +4,5 @@ export default defineNuxtConfig({
     strict: true
   },
   ssr: false,
+  srcDir: 'front-end/'
 })
