@@ -195,7 +195,7 @@ const selectImage = (id: string) => {
   color: #919191;
   border-radius: 2px;
   z-index: 10;
-  width: fit-content;
+  width: max-content;
   max-width: 500px;
   position: absolute;
   bottom: -90px;

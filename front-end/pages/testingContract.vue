@@ -16,11 +16,11 @@
     {{ chainName }}
     <br />
 
-    <span v-if="!isChainOk">
+    <!-- <span v-if="!isChainSupported">
       to use this app please
       <button  @click="switchToSupportedChain">
         switch to {{ supportedNetwork.name }}</button> 
-    </span>
+    </span> -->
 
     <br />
     <br />
@@ -59,6 +59,7 @@
 
 <script setup lang="ts">
 // TODOS
+// add goerli testnet
 
 // add web3 modal?
 // refactoring after testing on testnet
@@ -78,10 +79,10 @@
 // send
 // receive
 import { ethers } from 'ethers'
-import contractAbi from '~/../contracts/artifacts/contracts/MessagePortal.sol/MessagePortal.json'
+// import contractAbi from '~/../contracts/artifacts/contracts/MessagePortal.sol/MessagePortal.json'
 import useWeb3 from '~/J/useWeb3'
 // import Web3Modal from "web3modal";
-const {initDapp, connectWallet, web3Provider, isChainOk, signer, checkWindowEthereum, chain, switchToSupportedChain, supportedNetwork, handleWalletConnection, connectedAddress } = useWeb3()
+const {initDapp, connectWallet, web3Provider, isChainSupported, signer, checkWindowEthereum, chain, switchToSupportedChain, handleWalletConnection, connectedAddress } = useWeb3()
 
 let jsonRpcProvider: any = null;
 
@@ -122,7 +123,7 @@ const sendMessage = async function () {
 
   contract.value = new ethers.Contract(
     CONTRACT_ADDRESS,
-    contractAbi.abi,
+    // contractAbi.abi,
     signer.value
   )
 
@@ -132,7 +133,7 @@ const sendMessage = async function () {
     message.value = ''
     trxInProgress.value = false
   } catch (error) {
-    console.error(error)
+    
     trxInProgress.value = false
   }
 }
@@ -149,7 +150,7 @@ const contractActions = async (action: string) => {
       const signer = await web3Provider.value.getSigner()
       isConnectedAddress = await signer.getAddress()
     } catch (error) {
-      console.log(error)
+      
     }
 
     if (isConnectedAddress) {
@@ -190,7 +191,7 @@ const retrieveMessages = async function () {
     sortMessages()
     
   } catch (error) {
-    console.error(error)
+    
   }
 }
 
@@ -209,21 +210,20 @@ const listenForNewMessages = () => {
 
 
 const loadContractData = async () => {
-  // if (isChainOk.value) {
-    console.log('jsonRpcProvider: loadContractData ', jsonRpcProvider);
+    
     contractReadOnly = new ethers.Contract(
       CONTRACT_ADDRESS,
-      contractAbi.abi,
+      // contractAbi.abi,
       jsonRpcProvider
     )
     listenForNewMessages()
-  // }
 }
 
 
 onMounted(async () => {
+  
   jsonRpcProvider = await initDapp()
-  console.log('jsonRpcProvider: ', jsonRpcProvider);
+  
   await loadContractData() // jsonRpcProvider ok
 })
 

@@ -57,7 +57,6 @@ export default function useDragAndDrop() {
 
 // const dragStart = (event: DragEvent | any) => {
 //   if (!event?.dataTransfer || !event.target) return
-//   console.log('event', event)
 //   // event.dataTransfer.dropEffect = 'move'
 //   // event.dataTransfer.effectAllowed = 'move'
 //   setTimeout(() => {
@@ -69,7 +68,6 @@ export default function useDragAndDrop() {
 
 // const drop = (event: DragEvent | any) => {
 //   if (!event?.dataTransfer || !event.target) return
-//   console.log('event 000000', event)
 
 //   event.target.classList.remove('hide')
 //   event.target.style.left = `${event.clientX}px`

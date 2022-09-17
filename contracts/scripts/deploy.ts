@@ -24,15 +24,21 @@ import { ethers } from "hardhat";
 
 const main = async () => {
   // name of the contract should match with the file name!!
-  const msgContractFactory = await ethers.getContractFactory('MessagePortal');
-  const msgContract = await msgContractFactory.deploy({});
-  await msgContract.deployed();
-  console.log('msgPortal address: ', msgContract.address);
+  // const msgContractFactory = await ethers.getContractFactory('MessagePortal');
+  // const msgContract = await msgContractFactory.deploy({});
+  // await msgContract.deployed();
+  // console.log('msgPortal address: ', msgContract.address);
 
 
   const TestNFTContractFactory = await ethers.getContractFactory('TestNFT');
   const TestNFTContract = await TestNFTContractFactory.deploy('https://www.721.so/api/example/metadata/');
   await TestNFTContract.deployed();
+
+  // const TestBNB = await ethers.getContractFactory('BNB');
+  // const TestBNBContract = await TestBNB.deploy('200000000000000000000000000', 'BNBTest', 18, 'BNBTest');
+  // await TestBNBContract.deployed();
+
+  // 200000000000000000000000000
   console.log('TestNFTContract address: ', TestNFTContract.address);
 };
 

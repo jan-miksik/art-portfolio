@@ -1,12 +1,14 @@
 import { ethers } from 'ethers'
+import chains, { IChain, connectedChain } from '../constants/chains'
 
 const chain = ref()
 const web3Provider = ref()
-const supportedNetwork = {name: 'localhost', chainId: 31337}
-const isChainOk = ref()
+// const supportedNetwork = {name: 'goerli', chainId: 5}
+const isChainSupported = ref()
 const signer = ref()
 const connectedAddress = ref('nothing')
-const RPC_URL = import.meta.env.VITE_APP_RPC_URL as string || ''
+// const RPC_URL = import.meta.env.VITE_APP_RPC_URL_GOERLI as string || ''
+let jsonRpcProvider: any = null;
 
 
 
@@ -101,34 +103,58 @@ export default function useWeb3() {
 
   const checkChain = async () => {
     chain.value = await web3Provider.value.getNetwork();
-    console.log('chain.value: ', chain.value);
-    if (chain.value.chainId === supportedNetwork.chainId) {
-      isChainOk.value = true
+        
+    // goerli
+    if (chain.value.chainId === 5) {
+      isChainSupported.value = true
+      connectedChain.value = chains.goerli
+    // rinkeby
+    } else if (chain.value.chainId === 4) {
+      isChainSupported.value = true
+      connectedChain.value = chains.rinkeby
     } else {
-      isChainOk.value = false
+      connectedChain.value = undefined
+      isChainSupported.value = false
+
     }
   }
 
 
-  const switchToSupportedChain = () => {
+  const switchToSupportedChain = async ({chainId, chainName, rpcUrls}:IChain) => {
+    const CHAIN_NOT_ADDED_TO_METAMASK_CODE = 4902
     if(!checkWindowEthereum()) return
-    console.log('switchToSupportedChain: ');
   
-    window.ethereum.request({
-      method: "wallet_addEthereumChain",
-      params: [{
-          chainId: "0x7a69",
-          rpcUrls: ["http://127.0.0.1:8545"],
-          chainName: "localhost",
-          // nativeCurrency: {
-          //     name: "MATIC",
-          //     symbol: "MATIC",
-          //     decimals: 18
-          // },
-          // blockExplorerUrls: ["https://polygonscan.com/"]
-      }]
-    });
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId }],
+      });
+      
+    } catch (switchError) {
+      if ((switchError as any).code === CHAIN_NOT_ADDED_TO_METAMASK_CODE) {
+        
+        try {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId,
+                chainName,
+                rpcUrls,
+              },
+            ],
+          });
+        } catch (addError) {
+          console.error('addError: ', addError);
+          // handle "add" error
+        }
+      }
+      console.error('switchError: ', switchError);
+      // handle other "switch" errors
+    }
+    window.location.reload();
   }
+
 
 
   const listenForChainChange = () => {
@@ -148,14 +174,14 @@ export default function useWeb3() {
         case 4:
           chain.value = {name: 'rinkeby', chainId: 4}
           break;
+        case 5:
+          chain.value = {name: 'goerli', chainId: 5}
+          break;
         case 42:
           chain.value = {name: 'kovan', chainId: 42}
           break;
         case 137:
           chain.value = {name: 'polygon', chainId: 137}
-          break;
-        case 5777:
-          chain.value = {name: 'goerli', chainId: 5777}
           break;
         case 80001:
           chain.value = {name: 'mumbai', chainId: 80001}
@@ -175,8 +201,6 @@ export default function useWeb3() {
 
   const initDapp = async () => {
 
-    let jsonRpcProvider = new ethers.providers.JsonRpcProvider(RPC_URL);
-  
     if (window.ethereum !== undefined) {
       web3Provider.value = new ethers.providers.Web3Provider(window.ethereum, "any")
       listenForAccountChange()
@@ -184,8 +208,8 @@ export default function useWeb3() {
       await checkConnectedAddress()
       await checkChain()
     }
-
-    return jsonRpcProvider
+    
+    jsonRpcProvider = new ethers.providers.JsonRpcProvider(connectedChain.value?.rpcUrls[0]);
   
   }
 
@@ -194,14 +218,15 @@ export default function useWeb3() {
     checkWindowEthereum,
     switchToSupportedChain,
     handleWalletConnection,
-    isChainOk,
+    isChainSupported,
     chain,
     web3Provider,
-    supportedNetwork,
+    // supportedNetwork,
     connectedAddress,
     signer,
     initDapp,
     connectWallet,
+    jsonRpcProvider,
   }
 
 }

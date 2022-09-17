@@ -8,31 +8,12 @@ import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import '@openzeppelin/contracts/interfaces/IERC2981.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 import '@openzeppelin/contracts/utils/Address.sol';
-import '@openzeppelin/contracts/utils/Strings.sol';
 
 contract TestNFT is ERC721, IERC2981, ReentrancyGuard, Ownable {
     using Counters for Counters.Counter;
 
-    using Strings for uint256;
-
-    constructor(string memory customBaseURI_) ERC721('TestToken', 'TTKN') {
+    constructor(string memory customBaseURI_) ERC721('TestToken22', 'TTKN') {
         customBaseURI = customBaseURI_;
-    }
-
-    /** TOKEN PARAMETERS **/
-
-    struct TokenParameters {
-        uint256 royalty;
-    }
-
-    mapping(uint256 => TokenParameters) private tokenParametersMap;
-
-    function tokenParameters(uint256 tokenId)
-        external
-        view
-        returns (TokenParameters memory)
-    {
-        return tokenParametersMap[tokenId];
     }
 
     /** MINTING LIMITS **/
@@ -42,6 +23,12 @@ contract TestNFT is ERC721, IERC2981, ReentrancyGuard, Ownable {
     mapping(address => uint256) private allowedMintCountMap;
 
     uint256 public constant MINT_LIMIT_PER_WALLET = 7;
+
+    uint256 public royaltyFreeThreshold = 100000000000000000;
+
+    mapping(uint256 => uint256) public tokensBpsRoyalty;
+
+    event NewMint(uint256[] tokenId);
 
     function allowedMintCount(address minter) public view returns (uint256) {
         return MINT_LIMIT_PER_WALLET - mintCountMap[minter];
@@ -53,47 +40,40 @@ contract TestNFT is ERC721, IERC2981, ReentrancyGuard, Ownable {
 
     /** MINTING **/
 
-    uint256 public constant MAX_SUPPLY = 2000;
+    uint256 public constant MAX_SUPPLY = 2048;
 
     uint256 public constant MAX_MULTIMINT = 5;
 
-    uint256 public constant PRICE = 100000000000000; // 0.0001 ETH
+    uint256 public constant PRICE = 0;
 
     Counters.Counter private supplyCounter;
 
-    function mint(uint256[] calldata ids, TokenParameters[] calldata parameters)
-        public
-        payable
-        nonReentrant
-    {
-        uint256 count = ids.length;
-
+    function mint(uint256 id) public payable nonReentrant {
         require(saleIsActive, 'Sale not active');
 
-        if (allowedMintCount(msg.sender) >= count) {
-            updateMintCount(msg.sender, count);
+        if (allowedMintCount(msg.sender) >= 1) {
+            updateMintCount(msg.sender, 1);
         } else {
             revert('Minting limit exceeded');
         }
 
-        require(totalSupply() + count - 1 < MAX_SUPPLY, 'Exceeds max supply');
+        require(totalSupply() < MAX_SUPPLY, 'Exceeds max supply');
 
-        require(count <= MAX_MULTIMINT, 'Mint at most 5 at a time');
-
-        require(
-            msg.value >= PRICE * count,
-            'Insufficient payment, 0.0001 ETH per item'
-        );
-
-        for (uint256 i = 0; i < count; i++) {
-            uint256 id = ids[i];
-
-            _mint(msg.sender, id);
-
-            tokenParametersMap[id] = parameters[i];
-
-            supplyCounter.increment();
+        if (msg.value >= royaltyFreeThreshold) {
+            tokensBpsRoyalty[id] = 0;
+        } else if (msg.value == 0) {
+            tokensBpsRoyalty[id] = 10000;
+        } else {
+            unchecked {
+                uint256 royaltyBps = (100 -
+                    (msg.value / (royaltyFreeThreshold / 100))) * 100;
+                tokensBpsRoyalty[id] = royaltyBps;
+            }
         }
+
+        _mint(msg.sender, id);
+
+        supplyCounter.increment();
     }
 
     function totalSupply() public view returns (uint256) {
@@ -154,13 +134,26 @@ contract TestNFT is ERC721, IERC2981, ReentrancyGuard, Ownable {
 
     /** ROYALTIES **/
 
-    function royaltyInfo(uint256, uint256 salePrice)
+    function setRoyaltyFreeThreshold(uint256 royaltyFreeThreshold_)
         external
+        onlyOwner
+    {
+        royaltyFreeThreshold = royaltyFreeThreshold_;
+    }
+
+    function royaltyInfo(uint256 tokenId, uint256 salePrice)
+        public
         view
-        override
         returns (address receiver, uint256 royaltyAmount)
     {
-        return (address(this), (salePrice * 1000) / 10000);
+        if (tokensBpsRoyalty[tokenId] == 0) {
+            royaltyAmount = 0;
+        } else {
+            unchecked {
+                royaltyAmount = (salePrice * tokensBpsRoyalty[tokenId]) / 10000;
+            }
+        }
+        receiver = address(this);
     }
 
     function supportsInterface(bytes4 interfaceId)
