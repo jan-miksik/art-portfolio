@@ -9,10 +9,16 @@ import '@openzeppelin/contracts/interfaces/IERC2981.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 import '@openzeppelin/contracts/utils/Address.sol';
 
+interface IConduitController {
+    function getKey(address conduit) external view returns (bytes32);
+}
+
 contract TestNFT is ERC721, IERC2981, ReentrancyGuard, Ownable {
     using Counters for Counters.Counter;
 
-    constructor(string memory customBaseURI_) ERC721('TestToken22', 'TTKN') {
+    constructor(string memory customBaseURI_)
+        ERC721('TestToken_70', 'TTKN_70')
+    {
         customBaseURI = customBaseURI_;
     }
 
@@ -20,7 +26,9 @@ contract TestNFT is ERC721, IERC2981, ReentrancyGuard, Ownable {
 
     mapping(address => uint256) private mintCountMap;
 
-    mapping(address => uint256) private allowedMintCountMap;
+    // mapping(address => uint256) private allowedMintCountMap;
+
+    mapping(address => address) private unsupportedMarketplaces;
 
     uint256 public constant MINT_LIMIT_PER_WALLET = 7;
 
@@ -45,6 +53,8 @@ contract TestNFT is ERC721, IERC2981, ReentrancyGuard, Ownable {
     uint256 public constant MAX_MULTIMINT = 5;
 
     uint256 public constant PRICE = 0;
+
+    // address public constant OPERATORS_WITHOUT_ERC2981 = 0x1e0049783f008a0085193e00003d00cd54003c71;
 
     Counters.Counter private supplyCounter;
 
@@ -134,6 +144,17 @@ contract TestNFT is ERC721, IERC2981, ReentrancyGuard, Ownable {
 
     /** ROYALTIES **/
 
+    address private royaltyReciever;
+
+    function setRoyaltyReciever(address receiver) external onlyOwner {
+        require(receiver == address(receiver), 'Invalid address');
+        royaltyReciever = receiver;
+    }
+
+    function getRoyaltyReciever() public view returns (address) {
+        return royaltyReciever;
+    }
+
     function setRoyaltyFreeThreshold(uint256 royaltyFreeThreshold_)
         external
         onlyOwner
@@ -153,7 +174,7 @@ contract TestNFT is ERC721, IERC2981, ReentrancyGuard, Ownable {
                 royaltyAmount = (salePrice * tokensBpsRoyalty[tokenId]) / 10000;
             }
         }
-        receiver = address(this);
+        receiver = royaltyReciever;
     }
 
     function supportsInterface(bytes4 interfaceId)
@@ -165,6 +186,47 @@ contract TestNFT is ERC721, IERC2981, ReentrancyGuard, Ownable {
     {
         return (interfaceId == type(IERC2981).interfaceId ||
             super.supportsInterface(interfaceId));
+    }
+
+    /* BLOCK UNSUPPORTED MARKETPLACE */
+    mapping(address => bool) isDarklisted;
+
+    function addToListOfUnsupportedMarketPlaces(address addr)
+        external
+        onlyOwner
+    {
+        require(!isDarklisted[addr], 'address already darklisted');
+        isDarklisted[addr] = true;
+    }
+
+    function removeFromListOfUnsupportedMarketPlaces(address addr)
+        external
+        onlyOwner
+    {
+        require(isDarklisted[addr], 'address not on darklist');
+        isDarklisted[addr] = false;
+    }
+
+    function isAddressDarklisted(address addr) public view returns (bool) {
+        return isDarklisted[addr];
+    }
+
+    function _requireMarketplaceNotBeOnDarklist(address to) internal view {
+        require(!isDarklisted[to], 'address is darklisted');
+    }
+
+    function setApprovalForAll(address operator, bool approved)
+        public
+        virtual
+        override
+    {
+        _requireMarketplaceNotBeOnDarklist(operator);
+        super.setApprovalForAll(operator, approved);
+    }
+
+    function approve(address to, uint256 tokenId) public virtual override {
+        _requireMarketplaceNotBeOnDarklist(to);
+        super.approve(to, tokenId);
     }
 }
 

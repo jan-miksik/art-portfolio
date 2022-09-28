@@ -45,9 +45,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC165__factory>;
     getContractFactory(
-      name: "BNB",
+      name: "IConduitController",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.BNB__factory>;
+    ): Promise<Contracts.IConduitController__factory>;
     getContractFactory(
       name: "TestNFT",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -94,10 +94,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC165>;
     getContractAt(
-      name: "BNB",
+      name: "IConduitController",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.BNB>;
+    ): Promise<Contracts.IConduitController>;
     getContractAt(
       name: "TestNFT",
       address: string,

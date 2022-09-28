@@ -475,8 +475,8 @@
       ]
     },
     "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/contracts/TestNFT.sol": {
-      "lastModificationDate": 1663399884674,
-      "contentHash": "49decbdc7d6719466e6af872aa924ae5",
+      "lastModificationDate": 1664103281957,
+      "contentHash": "bd0e2b4cd8cc0381652aa8a748669418",
       "sourceName": "contracts/TestNFT.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -513,6 +513,7 @@
         "^0.8.9"
       ],
       "artifacts": [
+        "IConduitController",
         "TestNFT"
       ]
     }

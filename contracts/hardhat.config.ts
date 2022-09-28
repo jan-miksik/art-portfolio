@@ -5,7 +5,7 @@ import "@nomiclabs/hardhat-etherscan";
 const ALCHEMY_API_KEY = "Z-XTlpT7I0aI3a4rdfMPn3nTCvEoZhw_";
 const ETHERSCAN_API_KEY = 'ZN8W2V9X1SI4BHUU32TZKRI3MKM3I3MRG5'
 
-const TESTNET_PRIVATE_KEY = "f0796cf120f6a924019a78dc5991e3aa0efb52636cfd1ab83d93c679ea6e3123";
+const TESTNET_PRIVATE_KEY = "17719d0728205e7bf995c2472b3af71e1cb348d58386760d9bb3ffd367e7131f";
 
 const config: HardhatUserConfig = {
   solidity: "0.8.9",

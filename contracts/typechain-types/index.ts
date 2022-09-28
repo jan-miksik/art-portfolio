@@ -22,7 +22,7 @@ export type { ERC165 } from "./@openzeppelin/contracts/utils/introspection/ERC16
 export { ERC165__factory } from "./factories/@openzeppelin/contracts/utils/introspection/ERC165__factory";
 export type { IERC165 } from "./@openzeppelin/contracts/utils/introspection/IERC165";
 export { IERC165__factory } from "./factories/@openzeppelin/contracts/utils/introspection/IERC165__factory";
-export type { BNB } from "./contracts/BNB";
-export { BNB__factory } from "./factories/contracts/BNB__factory";
-export type { TestNFT } from "./contracts/TestNFT";
-export { TestNFT__factory } from "./factories/contracts/TestNFT__factory";
+export type { IConduitController } from "./contracts/TestNFT.sol/IConduitController";
+export { IConduitController__factory } from "./factories/contracts/TestNFT.sol/IConduitController__factory";
+export type { TestNFT } from "./contracts/TestNFT.sol/TestNFT";
+export { TestNFT__factory } from "./factories/contracts/TestNFT.sol/TestNFT__factory";
