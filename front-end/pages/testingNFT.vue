@@ -106,12 +106,12 @@
 // fetch images and show them
 
 import { BigNumber, ethers } from 'ethers'
-import contractAbi from '~/../contracts/artifacts/contracts/TestNFT.sol/TestNFT.json'
+// import contractAbi from '~/../contracts/artifacts/contracts/TestNFT.sol/TestNFT.json'
 import useWeb3 from '~/J/useWeb3'
 import chains, {connectedChain} from '~/constants/chains'
+import contractAbi from '~/../contracts/artifacts/contracts/NftArbitraryPrice.sol/NftACP.json';
 
 // import Web3Modal from "web3modal";
-
 interface Message {
   from: string
   text: string
