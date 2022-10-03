@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.9;
 
 import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
 import '@openzeppelin/contracts/security/Pausable.sol';
@@ -8,24 +8,33 @@ import '@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 import '@openzeppelin/contracts/interfaces/IERC2981.sol';
+
 // import "@openzeppelin/contracts/utils/ContextMixin.sol";
 
-
-contract NftACP is ERC1155, IERC2981, Pausable, Ownable, ERC1155Supply, ReentrancyGuard {
+contract NftArbitraryPrice is
+    ERC1155,
+    IERC2981,
+    Pausable,
+    Ownable,
+    ERC1155Supply,
+    ReentrancyGuard
+{
     using Counters for Counters.Counter;
-    
+
+    /**
+     * @dev _royaltyReciever is accepted by some marketplaces.
+     * Other marketplaces may send royalty based on specification in contractURI metadata
+     */
     address private _royaltyReciever = address(this);
 
     uint256 public constant MAX_SUPPLY = 1000;
 
+    // counting of minted NFTs by address
     mapping(address => uint256) private mintCountMap;
-
-    mapping(address => uint256) private allowedMintCountMap;
 
     uint256 public constant MINT_LIMIT_PER_WALLET = 5;
 
-
-    constructor() ERC1155('') {
+    constructor(string memory uri) ERC1155(uri) {
         _royaltyReciever = owner();
     }
 
@@ -61,10 +70,6 @@ contract NftACP is ERC1155, IERC2981, Pausable, Ownable, ERC1155Supply, Reentran
 
     Counters.Counter private supplyCounter;
 
-    function totalSupply() public view returns (uint256) {
-        return supplyCounter.current();
-    }
-
     /** MINTING **/
 
     function _checkIfCanMint() internal {
@@ -73,22 +78,22 @@ contract NftACP is ERC1155, IERC2981, Pausable, Ownable, ERC1155Supply, Reentran
         } else {
             revert('Minting limit exceeded');
         }
-        require(totalSupply() < MAX_SUPPLY, 'Exceeds max supply');
+        /**
+         * @dev totalSupply(1) -> this ERC1155 contract has only one item id
+         */
+        require(totalSupply(1) < MAX_SUPPLY, 'Exceeds max supply');
     }
 
     /**
      * @dev
-     * `data` in _mint is set to `''` because is not used in this contract
+     * `data` in _mint is set to `''` because are not used in this contract
      * `amount` in _mint is set 1 to restrict multimint
+     * `id` in _mint is set 1 because this contract has only one item id
      */
 
-    function mint(address account, uint256 id)
-        public
-        payable 
-        nonReentrant
-    {
+    function mint(address account) public payable nonReentrant {
         _checkIfCanMint();
-        _mint(account, id, 1, '');
+        _mint(account, 1, 1, '');
         supplyCounter.increment();
     }
 
@@ -102,7 +107,10 @@ contract NftACP is ERC1155, IERC2981, Pausable, Ownable, ERC1155Supply, Reentran
 
     /** ROYALTIES **/
 
-    function _setRoyaltyReciever(address newRoyaltyReceiver) internal onlyOwner {
+    function _setRoyaltyReciever(address newRoyaltyReceiver)
+        internal
+        onlyOwner
+    {
         require(newRoyaltyReceiver != address(0), 'Invalid address');
         _royaltyReciever = newRoyaltyReceiver;
     }
@@ -132,10 +140,8 @@ contract NftACP is ERC1155, IERC2981, Pausable, Ownable, ERC1155Supply, Reentran
         override(ERC1155, IERC165)
         returns (bool)
     {
-        return (
-            interfaceId == type(IERC2981).interfaceId ||
-            super.supportsInterface(interfaceId)
-        );
+        return (interfaceId == type(IERC2981).interfaceId ||
+            super.supportsInterface(interfaceId));
     }
 
     /** METADATA **/
@@ -144,26 +150,7 @@ contract NftACP is ERC1155, IERC2981, Pausable, Ownable, ERC1155Supply, Reentran
      */
 
     function contractURI() public pure returns (string memory) {
-        return 'https://metadata-url.com/my-metadata';
+        return
+            'ipfs://bafkreiaz5rlt5y5kfixnbbc7npmyk4muy4zhozf4tkqxw5ze7cewhsx6vi';
     }
-
-    // {
-    //   "name": "Test ACP",
-    //   "description": "Test ACP description",
-    //   "image": "external-link-url/image.png",
-    //   "external_link": "https://janmiksik.ooo",
-    //   "seller_fee_basis_points": 500, # Indicates a 5% seller fee.
-    //   "fee_recipient": "0x4bC5f73A9A3f7210aD9Bc3f0DAD3F1Ae66F20c91" # Where seller fees will be paid to.
-    // }
-
-    // function uri() public view returns (string memory) {
-    //     return "https://metadata-url.com/my-metadata";
-    // }
-
-    // {
-    //   "description": "Test ACP description",
-    //   "external_url": "https://janmiksik.ooo",
-    //   "image": "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png",
-    //   "name": "Test ACP",
-    // }
 }

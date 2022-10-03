@@ -4,7 +4,8 @@ export enum Topics {
   SANS_TOPIC = 'sans topic',
   GEOMETRY = 'geometry',
   NODE_AVATARS = 'node avatars',
-  PUZZLE = 'puzzle'
+  PUZZLE = 'puzzle',
+  NFT_COLLECTION = 'nft collection'
 }
 
 export enum Techniques {
@@ -283,23 +284,23 @@ const piecesData: {[key: string]: IPiece[]} = {
       created: new Date('2019'),
       updated: undefined
     },
-    {
-      id: '13',
-      name: 'double cross',
-      description: '',
-      image: { id: '13', url: 'geometry/double cross,2018,drawing on paper,21x30cm.jpg', lastUpdated: new Date('2020').getTime() },
-      topic: Topics.GEOMETRY,
-      price: 0,
-      technique: Techniques.DRAWING,
-      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
-      sizeInCm: {
-        x: 21,
-        y: 30
-      },
-      tags: [],
-      created: new Date('2018'),
-      updated: undefined
-    },
+    // {
+    //   id: '13',
+    //   name: 'indoor',
+    //   description: '',
+    //   image: { id: '13', url: 'geometry/indoor,2018,drawing on paper,21x30cm.jpg', lastUpdated: new Date('2020').getTime() },
+    //   topic: Topics.GEOMETRY,
+    //   price: 0,
+    //   technique: Techniques.DRAWING,
+    //   techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
+    //   sizeInCm: {
+    //     x: 21,
+    //     y: 30
+    //   },
+    //   tags: [],
+    //   created: new Date('2018'),
+    //   updated: undefined
+    // },
     {
       id: '14',
       name: 'Jiri and Jirina',

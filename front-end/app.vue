@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <NuxtPage />
@@ -15,13 +16,6 @@ onMounted(async () => {
   await fetchContentfulData()
   mergeContentfulDataWithLocalData()
 })
-
-
-declare global {
-  interface Window {
-    ethereum?: any;
-  }
-}
 
 </script>
 
@@ -66,5 +60,17 @@ body
 .rotate-all
   transform rotate(1080deg)
   transition all 3s
+
+// Chrome, Safari, Edge, Opera
+input::-webkit-outer-spin-button
+input::-webkit-inner-spin-button
+  appearance none
+  margin 0
+
+
+// Firefox
+input[type="number"]
+  appearance textfield
+
 
 </style>

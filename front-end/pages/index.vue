@@ -1,4 +1,5 @@
 <template>
+  <div>
   <DarkModeSwitcher />
   <div class="homepage__titles">
     <div
@@ -84,6 +85,28 @@
         alt="puzzle"
       />
     </h1>
+
+    <h1
+      :class="[
+        'homepage__title  homepage__title-nft-collection',
+        {
+          'homepage__animate-selected-nft-collection':
+            selectedTopic === Topics.NFT_COLLECTION
+        },
+        {
+          'homepage__unselected-title animate-unselected-nft-collection':
+            selectedTopic && selectedTopic !== Topics.NFT_COLLECTION
+        }
+      ]"
+      @click="selectTopic(Topics.NFT_COLLECTION)"
+    >
+    Collect
+      <!-- <Image
+        :image-file="puzzleImage"
+        class="homepage__title-puzzle-img"
+        alt="puzzle"
+      /> -->
+    </h1>
   </div>
   <Contact />
 
@@ -107,6 +130,11 @@
     :type="Topics.PUZZLE"
     :selected-topic="selectedTopic"
   />
+  <NftCollectionPieces
+    :type="Topics.NFT_COLLECTION"
+    :selected-topic="selectedTopic"
+  />
+</div>
 </template>
 
 <script setup lang="ts">
@@ -115,8 +143,7 @@ import usePieces from '~/J/usePieces'
 import ImageFile from '~/models/ImageFile'
 
 const { piecesNodeAvatars, piecesSansTopic, piecesGeometry, piecesPuzzle } = usePieces()
-// const { currentRoute } = useRouter()
-// const router = useRouter()
+
 useHead({
   title: 'Portfolio of Jan Mikšík',
   meta: [{
@@ -230,11 +257,11 @@ code
 
 .animate-unselected-node-avatars
   transform scale(0.55) rotate(-89deg)
-  left -128px
+  left -105px
   top 150px
 
   @media (min-width 700px)
-    left -155px
+    left -120px
 
 
 .homepage__animate-selected-node-avatars
@@ -246,11 +273,11 @@ code
   backdrop-filter grayscale(1)
 
 .homepage__title-node-avatars-img
-  width 270px
+  width 210px
   height auto
 
   @media (min-width 700px)
-    width 350px
+    width 250px
 
 // Geometry
 .homepage__title-geometry
@@ -264,18 +291,18 @@ code
   left 15vw
 
 .homepage__title-geometry-img
-  width 230px
+  width 150px
   height auto
 
   @media (min-width 700px)
-    width 320px
+    width 180px
 
 .animate-unselected-geometry
   transform scale(0.6) rotate(-92deg)
-  left -105px
+  left -75px
 
   @media (min-width 700px)
-    left -145px
+    left -90px
 
 
 .homepage__animate-selected-geometry
@@ -354,5 +381,50 @@ code
   left calc(50% - 125px)
   position fixed
   backdrop-filter grayscale(1)
+
+// NFT Collection
+.homepage__title-nft-collection
+  // padding 0
+  right calc(45% - 75px)
+  top 45vh
+  position absolute
+  cursor crosshair
+  padding 0.5rem 1rem
+  font-size 1.5rem
+
+  @media (min-width 700px)
+    padding 0.5rem 1rem 1.5rem
+    right calc(22% - 75px)
+
+
+.homepage__title-nft-collection-img
+  width 310px
+  height auto
+
+  @media (min-width 700px)
+    width 410px
+
+.animate-unselected-nft-collection
+  transform scale(0.5, 0.5) rotate(90deg)
+  height 28px
+  right -38px
+
+  @media (min-width 700px)
+    height 20px
+    right -38px
+
+
+.homepage__animate-selected-nft-collection
+  top 0
+  transform initial
+  right calc(50% - 75px)
+  font-size 2.1rem
+  position fixed
+  padding 0.3rem 0.5rem 0
+  backdrop-filter grayscale(1)
+
+  @media (min-width 700px)
+    font-size 3rem
+    right calc(50% - 100px)
 
 </style>

@@ -1,3 +1,8 @@
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
 interface Window {
   ethereum: import('ethers').providers.ExternalProvider | any;
   contract: any;

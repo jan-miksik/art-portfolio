@@ -32,7 +32,36 @@ export default function useWeb3() {
   }
 
 
-
+  const checkForAnyContractAction = async () => {
+    if (!checkWindowEthereum()) return
+  
+    if (!isChainSupported.value) {
+      if (confirm('Switch to Goerli testnet chain and continue?')) {
+        await switchToSupportedChain(chains.goerli)
+      } else {
+        return
+      }
+    }
+  
+    if (!signer.value) {
+      let isConnectedAddress = null
+  
+      try {
+        const signer = await web3Provider.value.getSigner()
+        isConnectedAddress = await signer.getAddress()
+      } catch (error) {}
+  
+      if (isConnectedAddress) {
+        if (confirm('Connect to this dapp and continue?')) {
+          await connectWallet()
+        } else {
+          return
+        }
+      } else {
+        await connectWallet()
+      }
+    }
+  }
 
 
 
@@ -152,7 +181,7 @@ export default function useWeb3() {
       console.error('switchError: ', switchError);
       // handle other "switch" errors
     }
-    window.location.reload();
+    // window.location.reload();
   }
 
 
@@ -217,6 +246,7 @@ export default function useWeb3() {
     listenForChainChange,
     checkWindowEthereum,
     switchToSupportedChain,
+    checkForAnyContractAction,
     handleWalletConnection,
     isChainSupported,
     chain,

@@ -28,3 +28,5 @@ export type { IERC165 } from "./@openzeppelin/contracts/utils/introspection/IERC
 export { IERC165__factory } from "./factories/@openzeppelin/contracts/utils/introspection/IERC165__factory";
 export type { NftACP } from "./contracts/NftArbitraryPrice.sol/NftACP";
 export { NftACP__factory } from "./factories/contracts/NftArbitraryPrice.sol/NftACP__factory";
+export type { NftArbitraryPrice } from "./contracts/NftArbitraryPrice.sol/NftArbitraryPrice";
+export { NftArbitraryPrice__factory } from "./factories/contracts/NftArbitraryPrice.sol/NftArbitraryPrice__factory";
