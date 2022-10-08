@@ -13,7 +13,7 @@
     <br />
     <br />
     -- chain -- <br />
-    {{ chainName }}
+    {{ name }}
     <br />
 
     <!-- <span v-if="!isChainSupported">
@@ -82,7 +82,7 @@ import { ethers } from 'ethers'
 // import contractAbi from '~/../contracts/artifacts/contracts/MessagePortal.sol/MessagePortal.json'
 import useWeb3 from '~/J/useWeb3'
 // import Web3Modal from "web3modal";
-const {initDapp, connectWallet, web3Provider, isChainSupported, signer, checkWindowEthereum, chain, switchToSupportedChain, handleWalletConnection, connectedAddress } = useWeb3()
+const {initDapp, connectWallet, web3Provider, signer, checkWindowEthereum, chain, switchToSupportedChain, handleWalletConnection, connectedAddress } = useWeb3()
 
 let jsonRpcProvider: any = null;
 
@@ -104,7 +104,7 @@ let contractReadOnly: any = null
 
 
 
-const chainName = computed(() => {
+const name = computed(() => {
   if (chain.value) {
     return chain.value.chainId == 31337 ? 'localhost' : chain.value.name
   }

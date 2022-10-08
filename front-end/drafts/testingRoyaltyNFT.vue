@@ -16,9 +16,9 @@
     <span>
       usable options
       <button v-if="connectedChain?.chainId !== chains.goerli.chainId" @click="switchToSupportedChain(chains.goerli)"> 
-        {{ chains.goerli.chainName }}</button>  
+        {{ chains.goerli.name }}</button>  
         <button v-if="connectedChain?.chainId !== chains.rinkeby.chainId"  @click="switchToSupportedChain(chains.rinkeby)">
-          {{ chains.rinkeby.chainName }}</button>
+          {{ chains.rinkeby.name }}</button>
     </span>
     
 

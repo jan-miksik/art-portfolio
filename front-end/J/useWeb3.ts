@@ -3,11 +3,9 @@ import chains, { IChain, connectedChain } from '../constants/chains'
 
 const chain = ref()
 const web3Provider = ref()
-// const supportedNetwork = {name: 'goerli', chainId: 5}
-const isChainSupported = ref()
+// const isChainSupported = ref()
 const signer = ref()
-const connectedAddress = ref('nothing')
-// const RPC_URL = import.meta.env.VITE_APP_RPC_URL_GOERLI as string || ''
+const connectedAddress = ref('')
 let jsonRpcProvider: any = null;
 
 
@@ -28,6 +26,7 @@ export default function useWeb3() {
       if(confirm("To use this dapp, please install MetaMask")) {
         window.open("https://metamask.io/")
       }
+      return false
     }
   }
 
@@ -35,7 +34,7 @@ export default function useWeb3() {
   const checkForAnyContractAction = async () => {
     if (!checkWindowEthereum()) return
   
-    if (!isChainSupported.value) {
+    if (!connectedChain.value?.isChainSupported) {
       if (confirm('Switch to Goerli testnet chain and continue?')) {
         await switchToSupportedChain(chains.goerli)
       } else {
@@ -83,7 +82,7 @@ export default function useWeb3() {
   }
 
   const disconnectWallet = () => {
-    connectedAddress.value = 'nothing'
+    connectedAddress.value = ''
     signer.value = undefined
     localStorage.setItem('connectedAddress', '')
   }
@@ -111,9 +110,10 @@ export default function useWeb3() {
     const connectedAccounts =  await web3Provider.value.listAccounts()
     const lastConnectedAddress = localStorage.getItem('connectedAddress')
   
-    if (connectedAccounts.length > 0 && lastConnectedAddress) {
+    if (connectedAccounts.length > 0 && lastConnectedAddress) { 
       signer.value = web3Provider.value.getSigner()
       connectedAddress.value = await signer.value.getAddress()
+
     }
   }
 
@@ -131,32 +131,28 @@ export default function useWeb3() {
   /** Chain **/
 
   const checkChain = async () => {
-    chain.value = await web3Provider.value.getNetwork();
-        
-    // goerli
-    if (chain.value.chainId === 5) {
-      isChainSupported.value = true
-      connectedChain.value = chains.goerli
-    // rinkeby
-    } else if (chain.value.chainId === 4) {
-      isChainSupported.value = true
-      connectedChain.value = chains.rinkeby
-    } else {
-      connectedChain.value = undefined
-      isChainSupported.value = false
+    const chain = await web3Provider.value.getNetwork();
+    const selectedChain = Object.entries(chains).find(([,chainValue]) => chainValue.chainIdDec === chain.chainId)
+    connectedChain.value = selectedChain?.[1]
+  }
 
-    }
+  const listenForChainChange = () => {
+    window.ethereum.on('chainChanged', () => {
+      checkChain()
+    })
   }
 
 
-  const switchToSupportedChain = async ({chainId, chainName, rpcUrls}:IChain) => {
+
+
+  const switchToSupportedChain = async ({chainIdHex, name, rpcUrls}:IChain) => {
     const CHAIN_NOT_ADDED_TO_METAMASK_CODE = 4902
     if(!checkWindowEthereum()) return
   
     try {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId }],
+        params: [{ chainId: chainIdHex }],
       });
       
     } catch (switchError) {
@@ -167,79 +163,44 @@ export default function useWeb3() {
             method: 'wallet_addEthereumChain',
             params: [
               {
-                chainId,
-                chainName,
+                chainId: chainIdHex,
+                name,
                 rpcUrls,
               },
             ],
           });
         } catch (addError) {
-          console.error('addError: ', addError);
-          // handle "add" error
+          console.error('addError: ', addError)
+          
         }
       }
-      console.error('switchError: ', switchError);
-      // handle other "switch" errors
+      console.error('switchError: ', switchError)
     }
     // window.location.reload();
   }
 
 
 
-  const listenForChainChange = () => {
-    window.ethereum.on('chainChanged', (chainId: any) => {
-      
-      const chainIdDecimal = parseInt(chainId, 16)
-
-      checkChain()
-      
-      switch (chainIdDecimal) {
-        case 1:
-          chain.value = {name: 'mainnet', chainId: 1}
-          break;
-        case 3:
-          chain.value = {name: 'ropsten', chainId: 3}
-          break;
-        case 4:
-          chain.value = {name: 'rinkeby', chainId: 4}
-          break;
-        case 5:
-          chain.value = {name: 'goerli', chainId: 5}
-          break;
-        case 42:
-          chain.value = {name: 'kovan', chainId: 42}
-          break;
-        case 137:
-          chain.value = {name: 'polygon', chainId: 137}
-          break;
-        case 80001:
-          chain.value = {name: 'mumbai', chainId: 80001}
-          break;
-        case 31337:
-          chain.value = {name: 'localhost', chainId: 31337}
-          break;
-        default:
-          chain.value = {name: 'unknown', chainId: 0}
-          break;
-      }
-    })
-  }
-
 
 
 
   const initDapp = async () => {
 
-    if (window.ethereum !== undefined) {
+    try {
+      if (!checkWindowEthereum()) return
+
       web3Provider.value = new ethers.providers.Web3Provider(window.ethereum, "any")
       listenForAccountChange()
       listenForChainChange()
       await checkConnectedAddress()
       await checkChain()
+      
+      if (connectedChain.value?.rpcUrls) {
+        jsonRpcProvider = new ethers.providers.JsonRpcProvider(connectedChain.value.rpcUrls[0]);
+      }
+    } catch (error) {
+      alert('problem with connecting the wallet. May try different browser or create new browser profile.')
     }
-    
-    jsonRpcProvider = new ethers.providers.JsonRpcProvider(connectedChain.value?.rpcUrls[0]);
-  
   }
 
   return {
@@ -248,15 +209,12 @@ export default function useWeb3() {
     switchToSupportedChain,
     checkForAnyContractAction,
     handleWalletConnection,
-    isChainSupported,
     chain,
     web3Provider,
-    // supportedNetwork,
     connectedAddress,
     signer,
     initDapp,
     connectWallet,
     jsonRpcProvider,
   }
-
 }

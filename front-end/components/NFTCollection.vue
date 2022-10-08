@@ -1,52 +1,44 @@
 <template>
   <div class="nft-collection">
-    <img
-      src="geometry/indoor,2018,drawing on paper,21x30cm.jpg"
-      class="nft-collection__mint-image"
-    />
-    <div>{{maxSupply?.toNumber()}}</div>
+    <Web3ConnectionInfo />
+    <img src="geometry/indoor,2018,drawing on paper,21x30cm.jpg" class="nft-collection__mint-image" />
+    <div>{{ maxSupply?.toNumber() }} / {{mintedNfts?.toNumber()}}</div>
+
     <div class="nft-collection__successfully-minted">
-        <div>
-          <Transition name="fade">
-          <span class="nft-collection__successfully-minted-message" v-if="isMinted && !mintInProgress">
-            𓀆📨 !minted! 📨𓀊
-          </span>
-        </Transition>
-        <Transition name="fade">
-          <Loader v-if="mintInProgress" size="large" class="nft-collection__minting-in-progress"/>
-        </Transition>
-        </div>
+      <Transition name="fade">
+        <span class="nft-collection__successfully-minted-message" v-if="isMinted && !mintInProgress">
+          𓀆📨 !minted! 📨𓀊
+        </span>
+      </Transition>
     </div>
 
-    <label  class="nft-collection__label">arbitrary price</label>
+    <Transition name="fade">
+      <Loader v-if="mintInProgress" size="large" class="nft-collection__minting-in-progress" />
+    </Transition>
+    <span class="nft-collection__limit-exceeded" v-if="mintLimitExceeded">
+      Minting limit exceeded
+    </span>
+
+    <label class="nft-collection__label">arbitrary price</label>
     <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
-      <input
-        class="nft-collection__mint-input"
-        required
-        type="number"
-        step="any"
-        v-model="requestedPrice"
-        name="image-name"
-      />
+      <input class="nft-collection__mint-input" required type="number" step="any" v-model="requestedPrice"
+        name="image-name" />
 
       <span>ETH</span>
-      <input type="submit" :value="mintInProgress ? 'minting' : 'mint'" :disabled="mintInProgress">
+      <input type="submit" :value="mintInProgress ? 'minting' : 'mint'"
+        :disabled="mintInProgress || mintLimitExceeded" />
     </form>
-    <button @click="isMinted = !isMinted">give contract with signer</button>
-    <button @click="mintInProgress = !mintInProgress">switch loading</button>
+    <!-- <button @click="isMinted = !isMinted">give contract with signer</button>
+    <button @click="mintInProgress = !mintInProgress">switch loading</button> -->
   </div>
 </template>
 
 <script setup lang="ts">
 // TODOS
 
-
-// error messages limit exceeded
-// polygon/mumbai version
-
-// add maxSupply/minted
-
 // links to opensea and another open markets
+
+// refactor useWeb3 into more general usage
 // restyling
 // create description text, name and select or modify picture
 // replace browser alert & confirm pop-ups with modal windows, (if user does not have installed metamask). (if user is on different chain)
@@ -56,79 +48,64 @@
 // refactoring after testing on testnet
 // successfully minted - next iteration
 
-
 // ???
 // add web3 modal?
 //support for multiple wallets?
 //better manage eht provider
 
-// DONOS
 
+// DONOS
+// polygon/mumbai version
+// add maxSupply/minted
+
+// error messages limit exceeded
+// info about wallet and connected chain
 
 import { BigNumber, ethers } from 'ethers'
 import useWeb3 from '~/J/useWeb3'
 import { connectedChain } from '~/constants/chains'
 import contractAbi from '~/../contracts/artifacts/contracts/NftArbitraryPrice.sol/NftArbitraryPrice.json'
 
-const {
-  initDapp,
-  signer,
-  checkForAnyContractAction,
-  connectedAddress
-} = useWeb3()
+const { initDapp, signer, checkForAnyContractAction, connectedAddress } =
+  useWeb3()
 
 let contractReadOnly: any = null
 
 const requestedPrice = ref()
 const contract = ref()
-const mintInProgress = ref(true)
+const mintInProgress = ref(false)
 const isMinted = ref(false)
 const maxSupply = ref<BigNumber>()
+const mintLimitExceeded = ref(false)
+const mintedNfts = ref<BigNumber>()
 
 const handleMintNFT = async () => {
-  // event.preventDefault()
   isMinted.value = false
   mintInProgress.value = true
   const confirmation = await contractActions('mint')
 
   mintInProgress.value = false
   if (confirmation) {
+    requestedPrice.value = undefined
+    mintedNfts.value = await contractReadOnly.totalSupply(1)
     isMinted.value = true
   }
 }
 
-// const giveContractWithSigner = () => {
-//   contract.value = new ethers.Contract(
-//     connectedChain.value?.nftACPContract || '',
-//     contractAbi.abi,
-//     signer.value
-//   )
-//   window.contract = contract.value
-//   window.ethers = ethers
-// }
-
 const mintAction = async () => {
+
   contract.value = new ethers.Contract(
     connectedChain.value?.nftACPContract || '',
     contractAbi.abi,
     signer.value
   )
 
-  const requestedPriceParsed = ethers.utils.parseUnits(
-    requestedPrice.value.toString(),
-    'ether'
-    )
-  const txMint = await contract.value.mint(connectedAddress.value, 1, {
-    value: ethers.utils.parseUnits(
-    requestedPrice.value.toString(),
-    'ether'
-    )
+  const txMint = await contract.value.mint(connectedAddress.value, {
+    value: ethers.utils.parseUnits(requestedPrice.value.toString(), 'ether')
   })
 
   return await txMint.wait()
 }
-
-
 
 const contractActions = async (action: string) => {
   await checkForAnyContractAction()
@@ -137,7 +114,24 @@ const contractActions = async (action: string) => {
     if (action == 'mint') {
       return await mintAction()
     }
-  } catch (error) {}
+  } catch (error) { 
+    console.error('error: ', error)
+  }
+}
+
+const checkMintingLimit = async (account?: string) => {
+  if (account || connectedAddress.value) {
+    const remainingMints: BigNumber = await contractReadOnly.allowedMintCount(
+      account || connectedAddress.value
+    )
+    mintLimitExceeded.value = remainingMints.toNumber() === 0
+  }
+}
+
+const listenForAccountChange = () => {
+  window.ethereum.on('accountsChanged', async ([account]: string) => {
+    checkMintingLimit(account)
+  })
 }
 
 const loadContractData = async () => {
@@ -151,11 +145,15 @@ const loadContractData = async () => {
   window.jsonRpcProvider = useWeb3().jsonRpcProvider
 
   maxSupply.value = await contractReadOnly.MAX_SUPPLY()
+  mintedNfts.value = await contractReadOnly.totalSupply(1)
+
+  checkMintingLimit()
 }
 
 onMounted(async () => {
   await initDapp()
   await loadContractData()
+  listenForAccountChange()
 })
 </script>
 
@@ -206,7 +204,14 @@ onMounted(async () => {
     height 0
     filter drop-shadow(-2px 7px 7px #000) drop-shadow(-2px 7px 25px #fff) drop-shadow(-2px 7px 25px #000) drop-shadow(-2px 7px 25px #fff)
 
+  &__limit-exceeded
+    color tomato
+
 .dark-mode .nft-collection__successfully-minted
+  filter invert(1)
+
+
+.dark-mode .nft-collection__limit-exceeded
   filter invert(1)
 
 // / Animation /
@@ -221,5 +226,4 @@ onMounted(async () => {
 
 .fade-leave-to
   opacity 0
-
 </style>

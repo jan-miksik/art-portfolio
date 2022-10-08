@@ -53,10 +53,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC165__factory>;
     getContractFactory(
-      name: "NftACP",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.NftACP__factory>;
-    getContractFactory(
       name: "NftArbitraryPrice",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.NftArbitraryPrice__factory>;
@@ -111,11 +107,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IERC165>;
-    getContractAt(
-      name: "NftACP",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.NftACP>;
     getContractAt(
       name: "NftArbitraryPrice",
       address: string,

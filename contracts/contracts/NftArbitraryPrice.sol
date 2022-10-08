@@ -27,14 +27,23 @@ contract NftArbitraryPrice is
      */
     address private _royaltyReciever = address(this);
 
-    uint256 public constant MAX_SUPPLY = 1000;
-
     // counting of minted NFTs by address
     mapping(address => uint256) private mintCountMap;
 
+    uint256 public constant MAX_SUPPLY = 1000;
+
     uint256 public constant MINT_LIMIT_PER_WALLET = 5;
 
-    constructor(string memory uri) ERC1155(uri) {
+    string private _ipfsContractURI;
+
+    event PermanentURI(string _value, uint256 indexed _id);
+
+    /**
+     * @dev `uri` should contain metadata of NFT token
+     * `_contractURI` is meant to contain metadata of collection
+     */
+    constructor(string memory uri, string memory _contractURI) ERC1155(uri) {
+        _ipfsContractURI = _contractURI;
         _royaltyReciever = owner();
     }
 
@@ -88,12 +97,23 @@ contract NftArbitraryPrice is
      * @dev
      * `data` in _mint is set to `''` because are not used in this contract
      * `amount` in _mint is set 1 to restrict multimint
-     * `id` in _mint is set 1 because this contract has only one item id
+     * `id` in _mint and `emit PermanentURI(uri(1), 1)` is set 1 because this contract has only one item id
      */
-
-    function mint(address account) public payable nonReentrant {
+    function _mintWrapper(address account) internal virtual {
         _checkIfCanMint();
         _mint(account, 1, 1, '');
+        emit PermanentURI(uri(1), 1);
+        supplyCounter.increment();
+    }
+
+    function mint(address account) public payable virtual nonReentrant {
+        _mintWrapper(account);
+    }
+
+    function mint2(address account) public payable nonReentrant {
+        _checkIfCanMint();
+        _mint(account, 1, 1, '');
+        emit PermanentURI(uri(1), 1);
         supplyCounter.increment();
     }
 
@@ -148,9 +168,7 @@ contract NftArbitraryPrice is
     /**
      * @dev Collection metadata based on opensea standards
      */
-
-    function contractURI() public pure returns (string memory) {
-        return
-            'ipfs://bafkreiaz5rlt5y5kfixnbbc7npmyk4muy4zhozf4tkqxw5ze7cewhsx6vi';
+    function contractURI() public view returns (string memory) {
+        return _ipfsContractURI;
     }
 }
