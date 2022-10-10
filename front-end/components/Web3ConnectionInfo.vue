@@ -1,7 +1,7 @@
 <template>
 
   <div class="web3-connection-info">
-    <div class="web3-connection-info__chain" @click="switchToSupportedChain(chains.goerli)" :title="connectedChain?.isChainSupported ? 'connected chain' : 'please connect to supported chain'">
+    <div :class="['web3-connection-info__chain', {'web3-connection-info__chain--hover': !connectedChain?.isChainSupported }]" @click="switchToSupportedChain(mainSupportedChain)" :title="connectedChain?.isChainSupported ? 'connected chain' : 'please connect to supported chain'">
       <span v-if="connectedChain" >
         {{connectedChain?.name}}
       </span>
@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import useWeb3 from '~/J/useWeb3'
 import shortenCryptoAddress from '~/utils/shortenCryptoAddress'
-import chains, { connectedChain } from '~/constants/chains'
+import chains, { connectedChain, mainSupportedChain } from '~/constants/chains' 
 
 const {
   connectedAddress,
@@ -52,10 +52,12 @@ const {
     opacity 0.8
     background palegoldenrod
     box-shadow 0 1px 1px 0 #b0b0b0
-    cursor pointer
 
-    &:hover
-      opacity 1
+    &--hover
+      cursor pointer
+
+      &:hover
+        opacity 1
 
   &__connected-address
     border-radius 5px
@@ -68,10 +70,10 @@ const {
     width 6.5rem
     align-items center
     opacity 0.9
-    cursor pointer
+    // cursor pointer
 
-    &:hover
-      opacity 1
+    // &:hover
+    //   opacity 1
 
   &__connected-address-text
     &:hover

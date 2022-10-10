@@ -1,7 +1,7 @@
 <template>
   <div class="nft-collection">
     <Web3ConnectionInfo />
-    <img src="geometry/indoor,2018,drawing on paper,21x30cm.jpg" class="nft-collection__mint-image" />
+    <img src="geometry/indoor-edited,2018,drawing on paper,21x30cm.jpg" class="nft-collection__mint-image" />
     <div>{{ maxSupply?.toNumber() }} / {{mintedNfts?.toNumber()}}</div>
 
     <div class="nft-collection__successfully-minted">
@@ -16,7 +16,7 @@
       <Loader v-if="mintInProgress" size="large" class="nft-collection__minting-in-progress" />
     </Transition>
     <span class="nft-collection__limit-exceeded" v-if="mintLimitExceeded">
-      Minting limit exceeded
+      Minting limit for this account exceeded
     </span>
 
     <label class="nft-collection__label">arbitrary price</label>
@@ -24,7 +24,7 @@
       <input class="nft-collection__mint-input" required type="number" step="any" v-model="requestedPrice"
         name="image-name" />
 
-      <span>ETH</span>
+      <span>{{mainSupportedChain?.nativeCurrency}}</span>
       <input type="submit" :value="mintInProgress ? 'minting' : 'mint'"
         :disabled="mintInProgress || mintLimitExceeded" />
     </form>
@@ -63,7 +63,7 @@
 
 import { BigNumber, ethers } from 'ethers'
 import useWeb3 from '~/J/useWeb3'
-import { connectedChain } from '~/constants/chains'
+import { connectedChain, mainSupportedChain } from '~/constants/chains'
 import contractAbi from '~/../contracts/artifacts/contracts/NftArbitraryPrice.sol/NftArbitraryPrice.json'
 
 const { initDapp, signer, checkForAnyContractAction, connectedAddress } =
@@ -93,13 +93,15 @@ const handleMintNFT = async () => {
 }
 
 const mintAction = async () => {
+  
 
   contract.value = new ethers.Contract(
     connectedChain.value?.nftACPContract || '',
     contractAbi.abi,
     signer.value
-  )
-
+    )
+    
+    
   const txMint = await contract.value.mint(connectedAddress.value, {
     value: ethers.utils.parseUnits(requestedPrice.value.toString(), 'ether')
   })
@@ -110,12 +112,14 @@ const mintAction = async () => {
 const contractActions = async (action: string) => {
   await checkForAnyContractAction()
 
+  
+
   try {
     if (action == 'mint') {
       return await mintAction()
     }
   } catch (error) { 
-    console.error('error: ', error)
+    
   }
 }
 

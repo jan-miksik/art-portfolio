@@ -1,19 +1,13 @@
 import { ethers } from 'ethers'
-import chains, { IChain, connectedChain } from '../constants/chains'
+import chains, { IChain, connectedChain, mainSupportedChain } from '../constants/chains'
 
 const chain = ref()
 const web3Provider = ref()
-// const isChainSupported = ref()
 const signer = ref()
 const connectedAddress = ref('')
 let jsonRpcProvider: any = null;
 
-
-
 export default function useWeb3() {
-
-
-
 
 
   const checkWindowEthereum = () => {
@@ -35,12 +29,15 @@ export default function useWeb3() {
     if (!checkWindowEthereum()) return
   
     if (!connectedChain.value?.isChainSupported) {
-      if (confirm('Switch to Goerli testnet chain and continue?')) {
-        await switchToSupportedChain(chains.goerli)
+      if (confirm(`Contract is on ${mainSupportedChain.name} chain. Switch to ${mainSupportedChain.name} and continue?`)) {
+        await switchToSupportedChain(mainSupportedChain)
+        
       } else {
         return
       }
     }
+
+    
   
     if (!signer.value) {
       let isConnectedAddress = null
@@ -48,7 +45,9 @@ export default function useWeb3() {
       try {
         const signer = await web3Provider.value.getSigner()
         isConnectedAddress = await signer.getAddress()
-      } catch (error) {}
+      } catch (error) {
+        
+      }
   
       if (isConnectedAddress) {
         if (confirm('Connect to this dapp and continue?')) {
@@ -170,11 +169,11 @@ export default function useWeb3() {
             ],
           });
         } catch (addError) {
-          console.error('addError: ', addError)
+          
           
         }
       }
-      console.error('switchError: ', switchError)
+      
     }
     // window.location.reload();
   }
