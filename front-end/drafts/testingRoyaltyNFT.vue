@@ -135,15 +135,6 @@ const contract = ref()
 const royaltyFreeThreshold = ref('')
 
 
-
-
-
-// const connectedChain.value.nftRoyaltyContract = import.meta.env.VITE_APP_TEST_NFT_CONTRACT_GOERLI as string || ''
-
-// onMounted(() => {
-
-// })
-
 const checkIsMinted = async (NFTId: number) => {
   
   try {

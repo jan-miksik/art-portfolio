@@ -19,14 +19,15 @@
       Minting limit for this account exceeded
     </span>
 
-    <label class="nft-collection__label">arbitrary price</label>
+    <label class="nft-collection__label">own price setup</label>
     <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
       <input class="nft-collection__mint-input" required type="number" step="any" v-model="requestedPrice"
         name="image-name" />
 
       <span>{{mainSupportedChain?.nativeCurrency}}</span>
-      <input type="submit" :value="mintInProgress ? 'minting' : 'mint'"
-        :disabled="mintInProgress || mintLimitExceeded" />
+      <Button :disabled="mintInProgress || mintLimitExceeded">
+        {{mintInProgress ? 'Minting' : 'Mint'}}
+      </Button>
     </form>
     <!-- <button @click="isMinted = !isMinted">give contract with signer</button>
     <button @click="mintInProgress = !mintInProgress">switch loading</button> -->
