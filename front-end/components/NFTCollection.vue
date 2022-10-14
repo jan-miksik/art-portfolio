@@ -1,7 +1,7 @@
 <template>
   <div class="nft-collection">
     <Web3ConnectionInfo />
-    <img src="geometry/indoor-edited,2018,drawing on paper,21x30cm.jpg" class="nft-collection__mint-image" />
+    <img src="collect/ooo,2021,drawing on paper,42x30cm.jpg" class="nft-collection__mint-image" />
     <div>{{ maxSupply?.toNumber() }} / {{mintedNfts?.toNumber()}}</div>
 
     <div class="nft-collection__successfully-minted">
@@ -16,13 +16,14 @@
       <Loader v-if="mintInProgress" size="large" class="nft-collection__minting-in-progress" />
     </Transition>
     <span class="nft-collection__limit-exceeded" v-if="mintLimitExceeded">
-      Minting limit for this account exceeded
+      max 5 pices per address
     </span>
 
-    <label class="nft-collection__label">own price setup</label>
     <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
+      <!-- <label class="nft-collection__label">setup own price</label>
       <input class="nft-collection__mint-input" required type="number" step="any" v-model="requestedPrice"
-        name="image-name" />
+        name="image-name" /> -->
+      <Input required type="number" step="any" v-model="requestedPrice"/>
 
       <span>{{mainSupportedChain?.nativeCurrency}}</span>
       <Button :disabled="mintInProgress || mintLimitExceeded">
@@ -171,8 +172,8 @@ onMounted(async () => {
 
   &__mint-image
     object-fit contain
-    max-width 250px
-    max-height 350px
+    max-width 350px
+    max-height 250px
     margin-bottom 0.3rem
 
   &__mint-form
