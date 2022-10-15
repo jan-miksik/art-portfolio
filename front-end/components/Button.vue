@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   text-align center
   justify-content center
   color black
-  opacity 0.8
+  // opacity 0.8
   transition all 0.2s
   box-shadow 0 1px 2px 0 #1e9e6a, 0 1px 5px 0 #979797
   border 1px solid black

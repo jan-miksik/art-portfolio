@@ -11,17 +11,17 @@ export default function useWeb3() {
 
 
   const checkWindowEthereum = () => {
-    if (window.ethereum !== undefined) {
-      if (!web3Provider.value) {
-        web3Provider.value = new ethers.providers.Web3Provider(window.ethereum, "any")
-      }
-      return true
-    } else {
+    if (window.ethereum === undefined) {
       if(confirm("To use this dapp, please install MetaMask")) {
         window.open("https://metamask.io/")
       }
       return false
     }
+
+    if (!web3Provider.value) {
+      web3Provider.value = new ethers.providers.Web3Provider(window.ethereum, "any")
+    }
+    return true
   }
 
 
@@ -31,14 +31,11 @@ export default function useWeb3() {
     if (!connectedChain.value?.isChainSupported) {
       if (confirm(`Contract is on ${mainSupportedChain.name} chain. Switch to ${mainSupportedChain.name} and continue?`)) {
         await switchToSupportedChain(mainSupportedChain)
-        
       } else {
         return
       }
     }
-
     
-  
     if (!signer.value) {
       let isConnectedAddress = null
   
@@ -46,7 +43,7 @@ export default function useWeb3() {
         const signer = await web3Provider.value.getSigner()
         isConnectedAddress = await signer.getAddress()
       } catch (error) {
-        
+        console.error('error: ', error)
       }
   
       if (isConnectedAddress) {
@@ -80,6 +77,7 @@ export default function useWeb3() {
     });
   }
 
+
   const disconnectWallet = () => {
     connectedAddress.value = ''
     signer.value = undefined
@@ -89,12 +87,13 @@ export default function useWeb3() {
 
   const connectWallet = async () => {
     if(!checkWindowEthereum()) return
+  
     await web3Provider.value.send('eth_requestAccounts', [])
     signer.value = await web3Provider.value.getSigner()
     connectedAddress.value = await signer.value.getAddress()
-  
     localStorage.setItem('connectedAddress', connectedAddress.value)
   }
+
 
   const handleWalletConnection = async () => {
     if (!signer.value) {
@@ -108,11 +107,9 @@ export default function useWeb3() {
   const checkConnectedAddress = async() => {
     const connectedAccounts =  await web3Provider.value.listAccounts()
     const lastConnectedAddress = localStorage.getItem('connectedAddress')
-  
     if (connectedAccounts.length > 0 && lastConnectedAddress) { 
       signer.value = web3Provider.value.getSigner()
       connectedAddress.value = await signer.value.getAddress()
-
     }
   }
 
@@ -135,14 +132,13 @@ export default function useWeb3() {
     connectedChain.value = selectedChain?.[1]
   }
 
+
   const listenForChainChange = () => {
     window.ethereum.on('chainChanged', () => {
       checkChain()
     })
   }
-
-
-
+  
 
   const switchToSupportedChain = async ({chainIdHex, name, rpcUrls}:IChain) => {
     const CHAIN_NOT_ADDED_TO_METAMASK_CODE = 4902
@@ -169,13 +165,11 @@ export default function useWeb3() {
             ],
           });
         } catch (addError) {
-          
-          
+          console.error('addError: ', addError)
         }
       }
-      
     }
-    // window.location.reload();
+    // window.location.reload(); ?
   }
 
 
@@ -184,7 +178,6 @@ export default function useWeb3() {
 
 
   const initDapp = async () => {
-
     try {
       if (!checkWindowEthereum()) return
 

@@ -1,8 +1,9 @@
 <template>
+  <!-- <Web3ConnectionInfo /> -->
   <div class="nft-collection">
-    <Web3ConnectionInfo />
-    <img src="collect/ooo,2021,drawing on paper,42x30cm.jpg" class="nft-collection__mint-image" />
-    <div>{{ maxSupply?.toNumber() }} / {{mintedNfts?.toNumber()}}</div>
+    <h2 class="nft-collection__title-breeze-edit">Hat</h2>
+    <img src="collect/kalo(ceb) - hat - klobouk,2020,drawing on paper,30x21cm.jpg" class="nft-collection__mint-image" />
+    <div class="nft-collection__amount">{{ maxSupply?.toNumber() }} / {{mintedNfts?.toNumber()}}</div>
 
     <div class="nft-collection__successfully-minted">
       <Transition name="fade">
@@ -20,18 +21,15 @@
     </span>
 
     <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
-      <!-- <label class="nft-collection__label">setup own price</label>
-      <input class="nft-collection__mint-input" required type="number" step="any" v-model="requestedPrice"
-        name="image-name" /> -->
-      <Input required type="number" step="any" v-model="requestedPrice"/>
+      <div class="nft-collection__input-and-currency">
+        <Input required type="number" step="any" v-model="requestedPrice"/>
+        <span>{{mainSupportedChain?.nativeCurrency}}</span>
+      </div>
 
-      <span>{{mainSupportedChain?.nativeCurrency}}</span>
-      <Button :disabled="mintInProgress || mintLimitExceeded">
+      <Button class="nft-collection__mint-button" :disabled="mintInProgress || mintLimitExceeded">
         {{mintInProgress ? 'Minting' : 'Mint'}}
       </Button>
     </form>
-    <!-- <button @click="isMinted = !isMinted">give contract with signer</button>
-    <button @click="mintInProgress = !mintInProgress">switch loading</button> -->
   </div>
 </template>
 
@@ -41,22 +39,25 @@
 // links to opensea and another open markets
 
 // refactor useWeb3 into more general usage
-// restyling
-// create description text, name and select or modify picture
 // replace browser alert & confirm pop-ups with modal windows, (if user does not have installed metamask). (if user is on different chain)
 
+// restyling #2
+// create description text, name and select or modify picture #2
 
-//////// extra stuff /////////
-// refactoring after testing on testnet
-// successfully minted - next iteration
 
-// ???
-// add web3 modal?
-//support for multiple wallets?
-//better manage eht provider
+//////// extra stuff ///////// {
+  // refactoring after testing on testnet
+  // successfully minted - next iteration
+  
+  // ???
+  // add web3 modal?
+  //support for multiple wallets?
+  //better manage eht provider
 
 
 // DONOS
+// create description text, name and select or modify picture
+// restyling
 // polygon/mumbai version
 // add maxSupply/minted
 
@@ -67,6 +68,7 @@ import { BigNumber, ethers } from 'ethers'
 import useWeb3 from '~/J/useWeb3'
 import { connectedChain, mainSupportedChain } from '~/constants/chains'
 import contractAbi from '~/../contracts/artifacts/contracts/NftArbitraryPrice.sol/NftArbitraryPrice.json'
+
 
 const { initDapp, signer, checkForAnyContractAction, connectedAddress } =
   useWeb3()
@@ -82,9 +84,11 @@ const mintLimitExceeded = ref(false)
 const mintedNfts = ref<BigNumber>()
 
 const handleMintNFT = async () => {
+  
   isMinted.value = false
   mintInProgress.value = true
   const confirmation = await contractActions('mint')
+  
 
   mintInProgress.value = false
   if (confirmation) {
@@ -96,25 +100,26 @@ const handleMintNFT = async () => {
 
 const mintAction = async () => {
   
-
   contract.value = new ethers.Contract(
     connectedChain.value?.nftACPContract || '',
     contractAbi.abi,
     signer.value
     )
-    
-    
-  const txMint = await contract.value.mint(connectedAddress.value, {
-    value: ethers.utils.parseUnits(requestedPrice.value.toString(), 'ether')
-  })
 
-  return await txMint.wait()
+  try {
+    const txMint = await contract.value.mint(connectedAddress.value, {
+      value: ethers.utils.parseEther(requestedPrice.value.toString())
+    })
+    return await txMint.wait()
+  } catch (error) {
+    console.error('error: ', error)
+  }
+ 
 }
 
 const contractActions = async (action: string) => {
-  await checkForAnyContractAction()
-
   
+  await checkForAnyContractAction()
 
   try {
     if (action == 'mint') {
@@ -169,21 +174,58 @@ onMounted(async () => {
   justify-content center
   align-items center
   flex-direction column
+  color floralwhite
+  position relative
+  background-image url("collect/breeze-edit-bg.png")
+  background-repeat no-repeat
+  border-radius 100%
+  width 35rem
+  height 39rem
+  background-size 190%
+
+  @media screen and (min-width 370px)
+    height 35rem
+    background-size 160%
+
+  @media screen and (min-width 410px)
+    background-size 150%
+
+  @media screen and (min-width 430px)
+    background-size 135%
+
+  @media screen and (min-width 470px)
+    background-size 115%
+
+  @media screen and (min-width 530px)
+    background-size 100%
 
   &__mint-image
     object-fit contain
-    max-width 350px
     max-height 250px
     margin-bottom 0.3rem
+    border-radius 3px
+    max-width 100%
+    box-shadow 0 1px 3px 1px #cac9cf
+
+  &__amount
+    margin-bottom 1rem
+    border-radius 5px
+    font-family system-ui
 
   &__mint-form
     display flex
     align-items center
+    justify-content center
+    flex-wrap wrap
     gap 0.5rem
-    margin 0.5rem 0 2rem
+    margin 0.5rem 1.5rem 2rem
 
   &__mint-input
     width 135px
+
+  &__input-and-currency
+    display flex
+    align-items center
 
   &__label
     margin-top 0.5rem
@@ -213,12 +255,16 @@ onMounted(async () => {
   &__limit-exceeded
     color tomato
 
+  &__title-breeze-edit
+    margin 0 0 0.5rem
+    font-family system-ui
+    color whitesmoke
+
 .dark-mode .nft-collection__successfully-minted
-  filter invert(1)
-
-
 .dark-mode .nft-collection__limit-exceeded
+.dark-mode .nft-collection__mint-button
   filter invert(1)
+
 
 // / Animation /
 .fade-enter-active
@@ -229,7 +275,45 @@ onMounted(async () => {
 .fade-enter-from
   opacity 0
 
-
 .fade-leave-to
   opacity 0
+
+/* unused variant with morphing circle
+.nft-collection
+
+background ghostwhite
+background-clip padding-box // !importanté
+border solid 5px transparent // !importanté
+border-radius 33% 67% 58% 42% / 63% 68% 32% 37%
+animation morphing 60s infinite alternate ease-in-out
+
+&::before
+  content ""
+  position absolute
+  top 0
+  right 0
+  bottom 0
+  left 0
+  z-index -1
+  margin -1px // !importanté
+  border-radius inherit // !importanté
+  // margin -1px
+  // border-radius inherit
+  background linear-gradient(346deg, #1e9e6aa8, #0d0a023b 28%, #0f0d000a 80%, #448acc8a)
+
+@keyframes morphing
+  0%
+    border-radius 78% 80% 78% 89%/66% 59% 91% 57%
+
+  25%
+    border-radius 58% 42% 75% 25% / 76% 46% 54% 24%
+
+  50%
+    border-radius 50% 50% 33% 67% / 55% 27% 73% 45%
+
+  100%
+    border-radius 33% 67% 58% 42% / 63% 68% 32% 37%
+*/
 </style>
+
+
