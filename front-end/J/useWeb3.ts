@@ -129,9 +129,8 @@ export default function useWeb3() {
 
   const checkChain = async () => {
     const chain = await web3Provider.value.getNetwork();
-    const chainIdInHex = parseInt(chain.chainId.toString(), 16)
-    const chainIdInHex2 = parseInt(chain.chainId, 16)
-    switchToChainByHexId(chainIdInHex.toString())
+    const chainIdInHex = '0x' + Number(chain.chainId).toString(16);
+    switchToChainByHexId(chainIdInHex)
   }
 
 
