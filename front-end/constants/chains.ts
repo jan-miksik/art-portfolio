@@ -31,7 +31,8 @@ const chains: Record<string, IChain> = {
     chainIdHex: '0x5',
     chainIdDec: 5,
     name: 'Goerli',
-    nftACPContract: '0x1121855fafF7FEC9d802F1E66B84F3fa90BFE2f7',
+    nftACPContract: '0xB77Bd694BC9F0C158439629F69A4FA1ee05C5E40',
+    // nftACPContract: '0x1121855fafF7FEC9d802F1E66B84F3fa90BFE2f7',
     rpcUrls: ['https://rpc.ankr.com/eth_goerli'],
     isChainSupported: true,
     nativeCurrency: {
@@ -88,7 +89,8 @@ const chains: Record<string, IChain> = {
     chainIdHex: '0x13881',
     chainIdDec: 80001,
     name: 'Mumbai',
-    nftACPContract: '0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2',
+    nftACPContract: '0x985f6e98755666155B36e73c78c345949b844BcE',
+    // nftACPContract: '0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2',
     rpcUrls: ['https://matic-mumbai.chainstacklabs.com'],
     isChainSupported: true,
     nativeCurrency: {

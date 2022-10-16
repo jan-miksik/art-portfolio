@@ -30,16 +30,17 @@ const config: HardhatUserConfig = {
   },
 
   etherscan: {
-    apiKey: {
-        //ethereum
+    apiKey:
+    {
+    //     //ethereum
         mainnet: ETHERSCAN_API_KEY,
         ropsten: ETHERSCAN_API_KEY,
         rinkeby: ETHERSCAN_API_KEY,
         goerli: ETHERSCAN_API_KEY,
         kovan: ETHERSCAN_API_KEY,             
-        //polygon
-        polygon: POLYGONSCAN_API_KEY,
-        polygonMumbai: POLYGONSCAN_API_KEY
+    //     //polygon
+    //     polygon: POLYGONSCAN_API_KEY,
+    //     polygonMumbai: POLYGONSCAN_API_KEY
     }
   }
 };

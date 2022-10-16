@@ -7,11 +7,12 @@ const main = async () => {
   // await TestNFTContract.deployed();
 
 
-  const TestACP_NFTContractFactory = await ethers.getContractFactory('NftArbitraryPrice');
-  const TestNFTContract = await TestACP_NFTContractFactory.deploy('ipfs://bafkreib63o5i3n6ocv4l3ey3po4nhcochjymsof5end4jt64kbbhnl4uiq', 'ipfs://bafkreiaz5rlt5y5kfixnbbc7npmyk4muy4zhozf4tkqxw5ze7cewhsx6vi');
-  await TestNFTContract.deployed();
+  const ContractFactory = await ethers.getContractFactory('NftHat');
+  // @params uri(single NFT) contactURI(collection)
+  const Contract = await ContractFactory.deploy('ipfs://bafkreihx3yvxe3o6x7hlx3v4nhbpdries6ovjtvyoyz7qyexnqrfhif74y', 'ipfs://bafkreibttyb6y3q62ckblguwrwnuhwehz75lsylpsrnkc6lzu2q76dajlq');
+  await Contract.deployed();
 
-  console.log('deployed contract address: ', TestNFTContract.address);
+  console.log('deployed contract address: ', Contract.address);
 };
 
 const runMain = async () => {

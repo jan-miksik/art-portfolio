@@ -11,7 +11,7 @@ import '@openzeppelin/contracts/interfaces/IERC2981.sol';
 
 // import "@openzeppelin/contracts/utils/ContextMixin.sol";
 
-contract NftArbitraryPrice is
+contract NftHat is
     ERC1155,
     IERC2981,
     Pausable,
@@ -32,14 +32,14 @@ contract NftArbitraryPrice is
 
     uint256 public constant MAX_SUPPLY = 1000;
 
-    uint256 public constant MINT_LIMIT_PER_WALLET = 5;
+    uint256 public constant MINT_LIMIT_PER_WALLET = 7;
 
     string private _ipfsContractURI;
 
     event PermanentURI(string _value, uint256 indexed _id);
 
     /**
-     * @dev `uri` should contain metadata of NFT token
+     * @dev `uri` is set for contain metadata of NFT token
      * `_contractURI` is meant to contain metadata of collection
      */
     constructor(string memory uri, string memory _contractURI) ERC1155(uri) {
@@ -69,6 +69,8 @@ contract NftArbitraryPrice is
 
     /** MINTING LIMITS **/
 
+    Counters.Counter private supplyCounter;
+
     function allowedMintCount(address minter) public view returns (uint256) {
         return MINT_LIMIT_PER_WALLET - mintCountMap[minter];
     }
@@ -76,8 +78,6 @@ contract NftArbitraryPrice is
     function updateMintCount(address minter, uint256 count) private {
         mintCountMap[minter] += count;
     }
-
-    Counters.Counter private supplyCounter;
 
     /** MINTING **/
 
@@ -87,34 +87,34 @@ contract NftArbitraryPrice is
         } else {
             revert('Minting limit exceeded');
         }
-        /**
-         * @dev totalSupply(1) -> this ERC1155 contract has only one item id
-         */
-        require(totalSupply(1) < MAX_SUPPLY, 'Exceeds max supply');
+        require(
+            Counters.current(supplyCounter) < MAX_SUPPLY,
+            'Exceeds max supply'
+        );
+    }
+
+    function mintedNFTs() public view returns (uint256) {
+        return Counters.current(supplyCounter);
     }
 
     /**
      * @dev
-     * `data` in _mint is set to `''` because are not used in this contract
+     * `id` for token id in _mint is `Counters.current(supplyCounter)`. Each NFT token has unique id
      * `amount` in _mint is set 1 to restrict multimint
-     * `id` in _mint and `emit PermanentURI(uri(1), 1)` is set 1 because this contract has only one item id
+     * `data` in _mint is set to `''` because are not used in this contract
      */
     function _mintWrapper(address account) internal virtual {
         _checkIfCanMint();
-        _mint(account, 1, 1, '');
-        emit PermanentURI(uri(1), 1);
+        _mint(account, Counters.current(supplyCounter), 1, '');
+        emit PermanentURI(
+            uri(Counters.current(supplyCounter)),
+            Counters.current(supplyCounter)
+        );
         supplyCounter.increment();
     }
 
     function mint(address account) public payable virtual nonReentrant {
         _mintWrapper(account);
-    }
-
-    function mint2(address account) public payable nonReentrant {
-        _checkIfCanMint();
-        _mint(account, 1, 1, '');
-        emit PermanentURI(uri(1), 1);
-        supplyCounter.increment();
     }
 
     /** PAYOUT **/

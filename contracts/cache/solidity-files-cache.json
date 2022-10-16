@@ -1,49 +1,6 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/contracts/NftArbitraryPrice.sol": {
-      "lastModificationDate": 1665252535893,
-      "contentHash": "21d3320426a5624470ad93fb589b0a31",
-      "sourceName": "contracts/NftArbitraryPrice.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC1155/ERC1155.sol",
-        "@openzeppelin/contracts/security/Pausable.sol",
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol",
-        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
-        "@openzeppelin/contracts/utils/Counters.sol",
-        "@openzeppelin/contracts/interfaces/IERC2981.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "NftArbitraryPrice"
-      ]
-    },
     "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC1155/ERC1155.sol": {
       "lastModificationDate": 1660392663642,
       "contentHash": "9be05ac5a08ad0370e3cc36665ca490c",
@@ -555,6 +512,49 @@
       ],
       "artifacts": [
         "IERC165"
+      ]
+    },
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/contracts/NftHat.sol": {
+      "lastModificationDate": 1665932673269,
+      "contentHash": "0059128e725aa29e1b75b12355849f94",
+      "sourceName": "contracts/NftHat.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC1155/ERC1155.sol",
+        "@openzeppelin/contracts/security/Pausable.sol",
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol",
+        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/utils/Counters.sol",
+        "@openzeppelin/contracts/interfaces/IERC2981.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "NftHat"
       ]
     }
   }

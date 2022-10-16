@@ -68,7 +68,7 @@ import { BigNumber, ethers } from 'ethers'
 import useWeb3 from '~/J/useWeb3'
 import { mainSupportedChain } from '~/appSetup'
 import { connectedChain } from '~/constants/chains'
-import contractAbi from '~/../contracts/artifacts/contracts/NftArbitraryPrice.sol/NftArbitraryPrice.json'
+import contractAbi from '~/../contracts/artifacts/contracts/NftHat.sol/NftHat.json'
 
 
 const { initDapp, signer, checkForAnyContractAction, connectedAddress } =
@@ -94,7 +94,7 @@ const handleMintNFT = async () => {
   mintInProgress.value = false
   if (confirmation) {
     requestedPrice.value = undefined
-    mintedNfts.value = await contractReadOnly.totalSupply(1)
+    mintedNfts.value = await contractReadOnly.mintedNFTs()
     isMinted.value = true
   }
 }
@@ -158,7 +158,7 @@ const loadContractData = async () => {
   window.jsonRpcProvider = useWeb3().jsonRpcProvider
 
   maxSupply.value = await contractReadOnly.MAX_SUPPLY()
-  mintedNfts.value = await contractReadOnly.totalSupply(1)
+  mintedNfts.value = await contractReadOnly.mintedNFTs()
 
   checkMintingLimit()
 }
