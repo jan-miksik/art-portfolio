@@ -141,7 +141,7 @@ export default function useWeb3() {
   }
   
 
-  const switchToSupportedChain = async ({chainIdHex, name, rpcUrls}:IChain) => {
+  const switchToSupportedChain = async ({chainIdHex, name, rpcUrls, nativeCurrency}:IChain) => {
     const CHAIN_NOT_ADDED_TO_METAMASK_CODE = 4902
     if(!checkWindowEthereum()) return
   
@@ -153,6 +153,7 @@ export default function useWeb3() {
       const selectedChain = Object.entries(chains).find(([,chainValue]) => chainValue.chainIdHex === chainIdHex)
     connectedChain.value = selectedChain?.[1]
     } catch (switchError) {
+      console.log('switchError: ', switchError);
       if ((switchError as any).code === CHAIN_NOT_ADDED_TO_METAMASK_CODE) {
         
         try {
@@ -161,8 +162,13 @@ export default function useWeb3() {
             params: [
               {
                 chainId: chainIdHex,
-                name,
+                chainName: name,
                 rpcUrls,
+                nativeCurrency: {
+                  name: nativeCurrency.name,
+                  symbol: nativeCurrency.symbol,
+                  decimals: nativeCurrency.decimals,
+                },
               },
             ],
           });

@@ -23,7 +23,7 @@
     <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
       <div class="nft-collection__input-and-currency">
         <Input required type="number" step="any" v-model="requestedPrice"/>
-        <span>{{mainSupportedChain?.nativeCurrency}}</span>
+        <span>{{mainSupportedChain?.nativeCurrency.symbol}}</span>
       </div>
 
       <Button class="nft-collection__mint-button" :disabled="mintInProgress || mintLimitExceeded">

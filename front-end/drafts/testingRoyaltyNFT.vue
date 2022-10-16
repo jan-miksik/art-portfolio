@@ -9,17 +9,17 @@
 
     
     
-    <span v-if="!isChainSupported">
+    <!-- <span v-if="!isChainSupported">
      ## #Is connected unsupported chain ## .#
-    </span>
+    </span> -->
 
-    <span>
+    <!-- <span>
       usable options
       <button v-if="connectedChain?.chainId !== chains.goerli.chainId" @click="switchToSupportedChain(chains.goerli)"> 
         {{ chains.goerli.name }}</button>  
         <button v-if="connectedChain?.chainId !== chains.rinkeby.chainId"  @click="switchToSupportedChain(chains.rinkeby)">
           {{ chains.rinkeby.name }}</button>
-    </span>
+    </span> -->
     
 
     <br />
@@ -118,7 +118,7 @@ interface Message {
   datetime: Date
 }
 
-const {initDapp, connectWallet, web3Provider, isChainSupported, signer, checkWindowEthereum, chain, switchToSupportedChain, handleWalletConnection, connectedAddress } = useWeb3()
+const {initDapp, connectWallet, web3Provider, signer, checkWindowEthereum, chain, switchToSupportedChain, handleWalletConnection, connectedAddress } = useWeb3()
 
 const baseUri = import.meta.env.VITE_APP_TEST_NFT_BASE_URI as string || ''
 
@@ -254,14 +254,14 @@ const contractActions = async (action: string, value: any) => {
   
     
 
-  if(!isChainSupported.value) {
+  // if(!isChainSupported.value) {
     
-    if(confirm('Switch to Rinkeby testnet chain and continue?')) {
-      await switchToSupportedChain(chains.rinkeby)
-    } else {
-      return
-    }
-  }
+  //   if(confirm('Switch to Rinkeby testnet chain and continue?')) {
+  //     await switchToSupportedChain(chains.rinkeby)
+  //   } else {
+  //     return
+  //   }
+  // }
 
   if (!signer.value) {
     
