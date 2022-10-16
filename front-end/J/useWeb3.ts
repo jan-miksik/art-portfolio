@@ -129,14 +129,16 @@ export default function useWeb3() {
 
   const checkChain = async () => {
     const chain = await web3Provider.value.getNetwork();
-    const selectedChain = Object.entries(chains).find(([,chainValue]) => chainValue.chainIdDec === chain.chainId)
-    connectedChain.value = selectedChain?.[1]
+    const chainIdInHex = parseInt(chain.chainId.toString(), 16)
+    const chainIdInHex2 = parseInt(chain.chainId, 16)
+    switchToChainByHexId(chainIdInHex.toString())
   }
 
 
   const switchToChainByHexId = (chainIdHex: string) => {
     const selectedChain = Object.entries(chains).find(([,chainValue]) => chainValue.chainIdHex === chainIdHex)
     connectedChain.value = selectedChain?.[1]
+    console.log('connectedChain.value: ', connectedChain.value)
   }
 
 

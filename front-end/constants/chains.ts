@@ -92,7 +92,7 @@ const chains: Record<string, IChain> = {
     rpcUrls: ['https://matic-mumbai.chainstacklabs.com'],
     isChainSupported: true,
     nativeCurrency: {
-      name: 'Matic Mumbai',
+      name: 'maticmum',
       symbol: 'tMATIC',
       decimals: 18,
     },
