@@ -25,8 +25,9 @@
 
 <script setup lang="ts">
 import useWeb3 from '~/J/useWeb3'
+import { mainSupportedChain } from '~/appSetup'
 import shortenCryptoAddress from '~/utils/shortenCryptoAddress'
-import chains, { connectedChain, mainSupportedChain } from '~/constants/chains' 
+import { connectedChain } from '~/constants/chains' 
 
 const {
   connectedAddress,

@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
-import chains, { IChain, connectedChain, mainSupportedChain } from '../constants/chains'
+import { mainSupportedChain } from '~/appSetup'
+import chains, { IChain, connectedChain } from '~/constants/chains'
 
 const chain = ref()
 const web3Provider = ref()
@@ -28,7 +29,7 @@ export default function useWeb3() {
   const checkForAnyContractAction = async () => {
     if (!checkWindowEthereum()) return
   
-    if (!connectedChain.value?.isChainSupported) {
+    if (connectedChain.value?.chainIdDec !== mainSupportedChain.chainIdDec) {
       if (confirm(`Contract is on ${mainSupportedChain.name} chain. Switch to ${mainSupportedChain.name} and continue?`)) {
         await switchToSupportedChain(mainSupportedChain)
       } else {
@@ -149,7 +150,8 @@ export default function useWeb3() {
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: chainIdHex }],
       });
-      
+      const selectedChain = Object.entries(chains).find(([,chainValue]) => chainValue.chainIdHex === chainIdHex)
+    connectedChain.value = selectedChain?.[1]
     } catch (switchError) {
       if ((switchError as any).code === CHAIN_NOT_ADDED_TO_METAMASK_CODE) {
         
@@ -187,8 +189,8 @@ export default function useWeb3() {
       await checkConnectedAddress()
       await checkChain()
       
-      if (connectedChain.value?.rpcUrls) {
-        jsonRpcProvider = new ethers.providers.JsonRpcProvider(connectedChain.value.rpcUrls[0]);
+      if (mainSupportedChain.rpcUrls) {
+        jsonRpcProvider = new ethers.providers.JsonRpcProvider(mainSupportedChain.rpcUrls[0]);
       }
     } catch (error) {
       alert('problem with connecting the wallet. May try different browser or create new browser profile.')

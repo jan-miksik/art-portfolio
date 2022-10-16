@@ -66,7 +66,8 @@
 
 import { BigNumber, ethers } from 'ethers'
 import useWeb3 from '~/J/useWeb3'
-import { connectedChain, mainSupportedChain } from '~/constants/chains'
+import { mainSupportedChain } from '~/appSetup'
+import { connectedChain } from '~/constants/chains'
 import contractAbi from '~/../contracts/artifacts/contracts/NftArbitraryPrice.sol/NftArbitraryPrice.json'
 
 
@@ -112,7 +113,7 @@ const mintAction = async () => {
     })
     return await txMint.wait()
   } catch (error) {
-    console.error('error: ', error)
+    console.error('mintAction error: ', error)
   }
  
 }
@@ -147,10 +148,11 @@ const listenForAccountChange = () => {
 
 const loadContractData = async () => {
   contractReadOnly = new ethers.Contract(
-    connectedChain.value?.nftACPContract || '',
+    mainSupportedChain.nftACPContract || '',
     contractAbi.abi,
     useWeb3().jsonRpcProvider
-  )
+    )
+    console.log('contractReadOnly: ', contractReadOnly)
 
   window.contractReadOnly = contractReadOnly
   window.jsonRpcProvider = useWeb3().jsonRpcProvider
