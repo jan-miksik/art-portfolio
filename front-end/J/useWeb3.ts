@@ -134,6 +134,12 @@ export default function useWeb3() {
   }
 
 
+  const switchToChainByHexId = (chainIdHex: string) => {
+    const selectedChain = Object.entries(chains).find(([,chainValue]) => chainValue.chainIdHex === chainIdHex)
+    connectedChain.value = selectedChain?.[1]
+  }
+
+
   const listenForChainChange = () => {
     window.ethereum.on('chainChanged', () => {
       checkChain()
@@ -144,14 +150,13 @@ export default function useWeb3() {
   const switchToSupportedChain = async ({chainIdHex, name, rpcUrls, nativeCurrency}:IChain) => {
     const CHAIN_NOT_ADDED_TO_METAMASK_CODE = 4902
     if(!checkWindowEthereum()) return
-  
+    
     try {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: chainIdHex }],
       });
-      const selectedChain = Object.entries(chains).find(([,chainValue]) => chainValue.chainIdHex === chainIdHex)
-    connectedChain.value = selectedChain?.[1]
+      switchToChainByHexId(chainIdHex)
     } catch (switchError) {
       console.log('switchError: ', switchError);
       if ((switchError as any).code === CHAIN_NOT_ADDED_TO_METAMASK_CODE) {
@@ -172,6 +177,7 @@ export default function useWeb3() {
               },
             ],
           });
+          switchToChainByHexId(chainIdHex)
         } catch (addError) {
           console.error('addError: ', addError)
         }
