@@ -37,15 +37,15 @@
         {{mintInProgress ? 'Minting' : 'Mint'}}
       </Button>
 
-      <a :href="handleOpenseaCollectionLink()" class="nft-collection__opensea-collection-link" target="_blank">
+      <a :href="handleOpenseaCollectionLink()" title="collection on Opensea" class="nft-collection__opensea-collection-link" target="_blank">
           <img src="opensea-blue-ship.svg" width="25" height="25" alt="opensea logo"/>
         </a>
-        <a :href="handleLooksrareCollectionLink()" class="nft-collection__looksrare-collection-link" target="_blank">
+        <a :href="handleLooksrareCollectionLink()" title="collection on Looksrare" class="nft-collection__looksrare-collection-link" target="_blank">
           <img src="looksrare.svg" width="35" height="35" alt="looksrare logo"/>
         </a>
     </form>
-    <!-- <div @click="handleOpenseaAssetLink">TEST</div>
-    <div @click="isMinted = !isMinted">Like a Minted</div> -->
+    <!-- <div @click="handleOpenseaAssetLink">TEST</div>-->
+    <div @click="isMinted = !isMinted">Like a Minted</div> 
   </div>
 </template>
 
@@ -322,9 +322,11 @@ onMounted(async () => {
     bottom 37px
     left 12px
     transition all 0.391s
+    opacity 0.5
 
     &:hover
-      rotate -17deg
+      // rotate -17deg
+      opacity 1
       scale 1.1
 
   &__looksrare-link
@@ -332,8 +334,10 @@ onMounted(async () => {
     top 47px
     right 20px
     transition all 0.391s
+    opacity 0.6
 
     &:hover
+      opacity 1
       scale 1.1
 
   &__hide-is-minted-msg
