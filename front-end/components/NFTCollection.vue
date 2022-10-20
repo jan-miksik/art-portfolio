@@ -8,7 +8,14 @@
     <div class="nft-collection__successfully-minted">
       <Transition name="fade">
         <span class="nft-collection__successfully-minted-message" v-if="isMinted && !mintInProgress">
-          𓀆📨 !minted! 📨𓀊
+          𓀆 !minted! 𓀊
+        <a :href="handleOpenseaAssetLink()" class="nft-collection__opensea-link" target="_blank">
+          <img src="opensea-blue-ship.svg" width="30" height="30" alt="opensea logo"/>
+        </a>
+        <a :href="handleLooksrareAssetLink()" class="nft-collection__looksrare-link" target="_blank">
+          <img src="looksrare.svg" width="45" height="45" alt="looksrare logo"/>
+        </a>
+        <div @click="isMinted = false" class="nft-collection__hide-is-minted-msg">✖</div>
         </span>
       </Transition>
     </div>
@@ -17,7 +24,7 @@
       <Loader v-if="mintInProgress" size="large" class="nft-collection__minting-in-progress" />
     </Transition>
     <span class="nft-collection__limit-exceeded" v-if="mintLimitExceeded">
-      max 5 pices per address
+      max 7 pieces per address
     </span>
 
     <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
@@ -29,23 +36,35 @@
       <Button class="nft-collection__mint-button" :disabled="mintInProgress || mintLimitExceeded">
         {{mintInProgress ? 'Minting' : 'Mint'}}
       </Button>
+
+      <a :href="handleOpenseaCollectionLink()" class="nft-collection__opensea-collection-link" target="_blank">
+          <img src="opensea-blue-ship.svg" width="25" height="25" alt="opensea logo"/>
+        </a>
+        <a :href="handleLooksrareCollectionLink()" class="nft-collection__looksrare-collection-link" target="_blank">
+          <img src="looksrare.svg" width="35" height="35" alt="looksrare logo"/>
+        </a>
     </form>
+    <!-- <div @click="handleOpenseaAssetLink">TEST</div>
+    <div @click="isMinted = !isMinted">Like a Minted</div> -->
   </div>
 </template>
 
+
+
 <script setup lang="ts">
+
 // TODOS
 
-// links to opensea and another open markets
-
-// refactor useWeb3 into more general usage
-// replace browser alert & confirm pop-ups with modal windows, (if user does not have installed metamask). (if user is on different chain)
-
-// restyling #2
-// create description text, name and select or modify picture #2
 
 
-//////// extra stuff ///////// {
+
+//////// extra stuff /////////
+  // restyling #2
+  // links to markets - styling #2
+  // refactor useWeb3 into more general usage
+  // ?replace browser alert & confirm pop-ups with modal windows, (if user does not have installed metamask). (if user is on different chain)
+  // create description text, name and select or modify picture #2
+
   // refactoring after testing on testnet
   // successfully minted - next iteration
   
@@ -56,6 +75,7 @@
 
 
 // DONOS
+// links to opensea and another open markets
 // create description text, name and select or modify picture
 // restyling
 // polygon/mumbai version
@@ -69,10 +89,12 @@ import useWeb3 from '~/J/useWeb3'
 import { mainSupportedChain } from '~/appSetup'
 import { connectedChain } from '~/constants/chains'
 import contractAbi from '~/../contracts/artifacts/contracts/NftHat.sol/NftHat.json'
-
+import useCryptoExplorer from '~/J/useCryptoExplorer'
 
 const { initDapp, signer, checkForAnyContractAction, connectedAddress } =
   useWeb3()
+
+const explorers = useCryptoExplorer()
 
 let contractReadOnly: any = null
 
@@ -99,10 +121,43 @@ const handleMintNFT = async () => {
   }
 }
 
+const handleOpenseaAssetLink = () => {
+  if (mainSupportedChain.keyName === 'goerli') {
+    const nftId = mintedNfts.value?.toNumber() ? mintedNfts.value?.toNumber() - 1 : 0
+
+    const link = explorers.goerli.opensea.getAssetLink(`${mainSupportedChain.nftHatContract}/${nftId}`)
+    return link
+  }
+}
+
+const handleLooksrareAssetLink = () => {
+  if (mainSupportedChain.keyName === 'goerli') {
+    const nftId = mintedNfts.value?.toNumber() ? mintedNfts.value?.toNumber() - 1 : 0
+
+    const link = explorers.goerli.looksrare.getAssetLink(`${mainSupportedChain.nftHatContract}/${nftId}`)
+    return link
+  }
+}
+
+const handleOpenseaCollectionLink = () => {
+  if (mainSupportedChain.keyName === 'goerli') {
+
+    const link = explorers.goerli.opensea.getCollectionLink(`${mainSupportedChain.nftHatCollectionName}`)
+    return link
+  }
+}
+
+const handleLooksrareCollectionLink = () => {
+  if (mainSupportedChain.keyName === 'goerli') {
+    const link = explorers.goerli.looksrare.getAssetLink(`${mainSupportedChain.nftHatContract}`)
+    return link
+  }
+}
+
 const mintAction = async () => {
   
   contract.value = new ethers.Contract(
-    connectedChain.value?.nftACPContract || '',
+    connectedChain.value?.nftHatContract || '',
     contractAbi.abi,
     signer.value
     )
@@ -148,7 +203,7 @@ const listenForAccountChange = () => {
 
 const loadContractData = async () => {
   contractReadOnly = new ethers.Contract(
-    mainSupportedChain.nftACPContract || '',
+    mainSupportedChain.nftHatContract || '',
     contractAbi.abi,
     useWeb3().jsonRpcProvider
     )
@@ -262,23 +317,79 @@ onMounted(async () => {
     font-family system-ui
     color whitesmoke
 
+  &__opensea-link
+    position absolute
+    bottom 37px
+    left 12px
+    transition all 0.391s
+
+    &:hover
+      rotate -17deg
+      scale 1.1
+
+  &__looksrare-link
+    position absolute
+    top 47px
+    right 20px
+    transition all 0.391s
+
+    &:hover
+      scale 1.1
+
+  &__hide-is-minted-msg
+    position absolute
+    cursor pointer
+    left 0
+    font-size 2rem
+    top 0
+    color ghostwhite
+    transition all 0.391s
+
+    &:hover
+      color red
+
+  &__opensea-collection-link
+    position absolute
+    bottom 27px
+    right 70px
+    transition all 0.391s
+
+    &:hover
+      scale 1.17
+
+  &__looksrare-collection-link
+    position absolute
+    bottom 0
+    right 100px
+    transition all 0.391s
+
+    &:hover
+      scale 1.17
+
+
 .dark-mode .nft-collection__successfully-minted
 .dark-mode .nft-collection__limit-exceeded
 .dark-mode .nft-collection__mint-button
+.dark-mode .nft-collection__looksrare-link
+.dark-mode .nft-collection__opensea-link
   filter invert(1)
 
 
 // / Animation /
 .fade-enter-active
 .fade-leave-active
-  transition opacity 0.7s
+  transition opacity 0.5s
 
 
 .fade-enter-from
   opacity 0
+  // translate 0 0
+  // rotate 20deg
 
 .fade-leave-to
   opacity 0
+  // translate 0 100px
+  // rotate 20deg
 
 /* unused variant with morphing circle
 .nft-collection

@@ -26,5 +26,5 @@ export type { ERC165 } from "./@openzeppelin/contracts/utils/introspection/ERC16
 export { ERC165__factory } from "./factories/@openzeppelin/contracts/utils/introspection/ERC165__factory";
 export type { IERC165 } from "./@openzeppelin/contracts/utils/introspection/IERC165";
 export { IERC165__factory } from "./factories/@openzeppelin/contracts/utils/introspection/IERC165__factory";
-export type { NftHat } from "./contracts/NftArbitraryPrice.sol/NftHat";
-export { NftHat__factory } from "./factories/contracts/NftArbitraryPrice.sol/NftHat__factory";
+export type { NftHat } from "./contracts/NftHat";
+export { NftHat__factory } from "./factories/contracts/NftHat__factory";

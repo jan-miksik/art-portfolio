@@ -9,7 +9,7 @@ const main = async () => {
 
   const ContractFactory = await ethers.getContractFactory('NftHat');
   // @params uri(single NFT) contactURI(collection)
-  const Contract = await ContractFactory.deploy('ipfs://bafkreihx3yvxe3o6x7hlx3v4nhbpdries6ovjtvyoyz7qyexnqrfhif74y', 'ipfs://bafkreibttyb6y3q62ckblguwrwnuhwehz75lsylpsrnkc6lzu2q76dajlq');
+  const Contract = await ContractFactory.deploy('ipfs://bafkreihx3yvxe3o6x7hlx3v4nhbpdries6ovjtvyoyz7qyexnqrfhif74y');
   await Contract.deployed();
 
   console.log('deployed contract address: ', Contract.address);

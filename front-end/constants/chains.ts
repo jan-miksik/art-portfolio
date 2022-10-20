@@ -2,10 +2,12 @@ export interface IChain {
   chainIdHex:string
   chainIdDec: number
   nftRoyaltyContract?:string
-  nftACPContract?: string
+  nftHatContract?: string
   name:string
   rpcUrls?:string[]
+  nftHatCollectionName?: string
   isChainSupported: boolean
+  keyName: string | 'goerli'
   nativeCurrency: {
     name: string;
     symbol: string;
@@ -17,8 +19,9 @@ const chains: Record<string, IChain> = {
   rinkeby: {
     chainIdHex: '0x4',
     chainIdDec: 4,
-    nftACPContract: '0x47488CA96d736E63365d75C471050b5074CBD076',
+    nftHatContract: '0x47488CA96d736E63365d75C471050b5074CBD076',
     name: 'Rinkeby',
+    keyName: 'rinkeby',
     rpcUrls: ['https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
     isChainSupported: true,
     nativeCurrency: {
@@ -30,9 +33,12 @@ const chains: Record<string, IChain> = {
   goerli: { 
     chainIdHex: '0x5',
     chainIdDec: 5,
+    keyName: 'goerli',
     name: 'Goerli',
-    nftACPContract: '0xB77Bd694BC9F0C158439629F69A4FA1ee05C5E40',
-    // nftACPContract: '0x1121855fafF7FEC9d802F1E66B84F3fa90BFE2f7',
+    nftHatContract: '0xf3dEd36A5288eC57b478fe2F7ffe0A458bb19025',
+    // nftHatContract: '0xB77Bd694BC9F0C158439629F69A4FA1ee05C5E40',
+    // nftHatContract: '0x1121855fafF7FEC9d802F1E66B84F3fa90BFE2f7',
+    nftHatCollectionName: 'hat-1',
     rpcUrls: ['https://rpc.ankr.com/eth_goerli'],
     isChainSupported: true,
     nativeCurrency: {
@@ -45,6 +51,7 @@ const chains: Record<string, IChain> = {
     chainIdHex: '0x1',
     chainIdDec: 1,
     name: 'Ethereum',
+    keyName: 'mainnet',
     isChainSupported: false,
     nativeCurrency: {
       name: 'Ethereum',
@@ -56,6 +63,7 @@ const chains: Record<string, IChain> = {
     chainIdHex: '0x3',
     chainIdDec: 3,
     name: 'Ropsten',
+    keyName: 'ropsten',
     isChainSupported: false,
     nativeCurrency: {
       name: 'Ethereum',
@@ -67,6 +75,7 @@ const chains: Record<string, IChain> = {
     chainIdHex: '0x2a',
     chainIdDec: 42,
     name: 'Kovan',
+    keyName: 'kovan',
     isChainSupported: false,
     nativeCurrency: {
       name: 'Ethereum',
@@ -77,7 +86,8 @@ const chains: Record<string, IChain> = {
   polygon: {
     chainIdHex: '0x89',
     chainIdDec: 137,
-    name: 'Kovan',
+    name: 'Polygon',
+    keyName: 'polygon',
     isChainSupported: false,
     nativeCurrency: {
       name: 'Matic',
@@ -89,8 +99,9 @@ const chains: Record<string, IChain> = {
     chainIdHex: '0x13881',
     chainIdDec: 80001,
     name: 'Mumbai',
-    nftACPContract: '0x985f6e98755666155B36e73c78c345949b844BcE',
-    // nftACPContract: '0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2',
+    keyName: 'mumbai',
+    nftHatContract: '0x985f6e98755666155B36e73c78c345949b844BcE',
+    // nftHatContract: '0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2',
     rpcUrls: ['https://matic-mumbai.chainstacklabs.com'],
     isChainSupported: true,
     nativeCurrency: {
@@ -103,6 +114,7 @@ const chains: Record<string, IChain> = {
     chainIdHex: '0x7a69',
     chainIdDec: 31337,
     name: 'localhost',
+    keyName: 'localhost',
     isChainSupported: true,
     nativeCurrency: {
       name: 'Ethereum',
