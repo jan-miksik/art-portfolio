@@ -9,10 +9,10 @@
       <Transition name="fade">
         <span class="nft-collection__successfully-minted-message" v-if="isMinted && !mintInProgress">
           𓀆 !minted! 𓀊
-        <a :href="handleOpenseaAssetLink()" class="nft-collection__opensea-link" target="_blank">
+        <a :href="getExplorerLink({type: 'asset', marketplace: 'opensea', nftId: nftId})" class="nft-collection__opensea-link" target="_blank">
           <img src="opensea-blue-ship.svg" width="30" height="30" alt="opensea logo"/>
         </a>
-        <a :href="handleLooksrareAssetLink()" class="nft-collection__looksrare-link" target="_blank">
+        <a :href="getExplorerLink({type: 'asset', marketplace: 'looksrare', nftId})" class="nft-collection__looksrare-link" target="_blank">
           <img src="looksrare.svg" width="45" height="45" alt="looksrare logo"/>
         </a>
         <div @click="isMinted = false" class="nft-collection__hide-is-minted-msg">✖</div>
@@ -37,10 +37,10 @@
         {{mintInProgress ? 'Minting' : 'Mint'}}
       </Button>
 
-      <a :href="handleOpenseaCollectionLink()" title="collection on Opensea" class="nft-collection__opensea-collection-link" target="_blank">
+      <a :href="getExplorerLink({type: 'collection', marketplace: 'opensea'})" title="collection on Opensea" class="nft-collection__opensea-collection-link" target="_blank">
           <img src="opensea-blue-ship.svg" width="25" height="25" alt="opensea logo"/>
         </a>
-        <a :href="handleLooksrareCollectionLink()" title="collection on Looksrare" class="nft-collection__looksrare-collection-link" target="_blank">
+        <a :href="getExplorerLink({type: 'collection', marketplace: 'looksrare'})" title="collection on Looksrare" class="nft-collection__looksrare-collection-link" target="_blank">
           <img src="looksrare.svg" width="35" height="35" alt="looksrare logo"/>
         </a>
     </form>
@@ -54,7 +54,6 @@
 <script setup lang="ts">
 
 // TODOS
-// warning if user does not have enough funds
 
 
 
@@ -68,13 +67,13 @@
   // refactoring after testing on testnet
   // successfully minted - next iteration
   
-  // ???
   // add web3 modal?
   //support for multiple wallets?
   //better manage eht provider
 
 
 // DONOS
+// warning if user does not have enough funds
 // links to opensea and another open markets
 // create description text, name and select or modify picture
 // restyling
@@ -94,7 +93,7 @@ import useCryptoExplorer from '~/J/useCryptoExplorer'
 const { initDapp, signer, checkForAnyContractAction, connectedAddress } =
   useWeb3()
 
-const explorers = useCryptoExplorer()
+const { getExplorerLink } = useCryptoExplorer()
 
 let contractReadOnly: any = null
 
@@ -112,7 +111,6 @@ const handleMintNFT = async () => {
   mintInProgress.value = true
   const confirmation = await contractActions('mint')
   
-
   mintInProgress.value = false
   if (confirmation) {
     requestedPrice.value = undefined
@@ -121,38 +119,7 @@ const handleMintNFT = async () => {
   }
 }
 
-const handleOpenseaAssetLink = () => {
-  if (mainSupportedChain.keyName === 'goerli') {
-    const nftId = mintedNfts.value?.toNumber() ? mintedNfts.value?.toNumber() - 1 : 0
-
-    const link = explorers.goerli.opensea.getAssetLink(`${mainSupportedChain.nftHatContract}/${nftId}`)
-    return link
-  }
-}
-
-const handleLooksrareAssetLink = () => {
-  if (mainSupportedChain.keyName === 'goerli') {
-    const nftId = mintedNfts.value?.toNumber() ? mintedNfts.value?.toNumber() - 1 : 0
-
-    const link = explorers.goerli.looksrare.getAssetLink(`${mainSupportedChain.nftHatContract}/${nftId}`)
-    return link
-  }
-}
-
-const handleOpenseaCollectionLink = () => {
-  if (mainSupportedChain.keyName === 'goerli') {
-
-    const link = explorers.goerli.opensea.getCollectionLink(`${mainSupportedChain.nftHatCollectionName}`)
-    return link
-  }
-}
-
-const handleLooksrareCollectionLink = () => {
-  if (mainSupportedChain.keyName === 'goerli') {
-    const link = explorers.goerli.looksrare.getAssetLink(`${mainSupportedChain.nftHatContract}`)
-    return link
-  }
-}
+const nftId = computed(() => mintedNfts.value?.toNumber() ? mintedNfts.value?.toNumber() - 1 : 0)
 
 const mintAction = async () => {
   
@@ -169,6 +136,7 @@ const mintAction = async () => {
     return await txMint.wait()
   } catch (error) {
     console.error('mintAction error: ', error)
+    throw error
   }
  
 }
@@ -182,6 +150,13 @@ const contractActions = async (action: string) => {
       return await mintAction()
     }
   } catch (error) { 
+    if (!(error as Error).message) return alert('Error')
+    if ((error as Error).message.startsWith('insufficient funds for')) {
+      alert('insufficient funds for transaction')
+    } else {
+      alert((error as Error).message)
+    }
+
     
   }
 }
@@ -207,7 +182,6 @@ const loadContractData = async () => {
     contractAbi.abi,
     useWeb3().jsonRpcProvider
     )
-    console.log('contractReadOnly: ', contractReadOnly)
 
   window.contractReadOnly = contractReadOnly
   window.jsonRpcProvider = useWeb3().jsonRpcProvider

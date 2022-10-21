@@ -2,9 +2,7 @@
 pragma solidity ^0.8.9;
 
 import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
-import '@openzeppelin/contracts/security/Pausable.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 import '@openzeppelin/contracts/interfaces/IERC2981.sol';
@@ -14,18 +12,21 @@ import '@openzeppelin/contracts/utils/Base64.sol';
 contract NftHat is
     ERC1155,
     IERC2981,
-    Pausable,
     Ownable,
-    ERC1155Supply,
     ReentrancyGuard
 {
-    using Counters for Counters.Counter;
-
     /**
-     * @dev _royaltyReciever is accepted by some marketplaces.
-     * Other marketplaces may send royalty based on specification in contractURI metadata.
+     * @dev `_uri` is set only to satisfy the constructor of ERC1155. Otherwise uri for NFT token metadata is set on-chain.
      */
-    address private _royaltyReciever = address(this);
+    constructor(string memory _uri) ERC1155(_uri) {
+        _royaltyReciever = owner();
+    }
+
+    /** MINTING **/
+
+    event PermanentURI(string _value, uint256 indexed _id);
+
+    using Counters for Counters.Counter;
 
     // counting of minted NFTs by address
     mapping(address => uint256) private mintCountMap;
@@ -36,37 +37,6 @@ contract NftHat is
 
     Counters.Counter private supplyCounter;
 
-    event PermanentURI(string _value, uint256 indexed _id);
-
-    /**
-     * @dev `_uri` is set only to satisfy the constructor of ERC1155. Otherwise uri for NFT token metadata is set on-chain.
-     */
-    constructor(string memory _uri) ERC1155(_uri) {
-        _royaltyReciever = owner();
-    }
-
-    /** PAUSABLE **/
-    function pause() public onlyOwner {
-        _pause();
-    }
-
-    function unpause() public onlyOwner {
-        _unpause();
-    }
-
-    function _beforeTokenTransfer(
-        address operator,
-        address from,
-        address to,
-        uint256[] memory ids,
-        uint256[] memory amounts,
-        bytes memory data
-    ) internal override(ERC1155, ERC1155Supply) whenNotPaused {
-        super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
-    }
-
-    /** MINTING LIMITS **/
-
     function allowedMintCount(address minter) public view returns (uint256) {
         return MINT_LIMIT_PER_WALLET - mintCountMap[minter];
     }
@@ -74,8 +44,6 @@ contract NftHat is
     function updateMintCount(address minter, uint256 count) private {
         mintCountMap[minter] += count;
     }
-
-    /** MINTING **/
 
     function _checkIfCanMint() internal {
         if (allowedMintCount(msg.sender) >= 1) {
@@ -123,6 +91,12 @@ contract NftHat is
     }
 
     /** ROYALTIES **/
+
+    /**
+     * @dev _royaltyReciever is accepted by some marketplaces.
+     * Other marketplaces may send royalty based on specification in contractURI metadata.
+     */
+    address private _royaltyReciever = address(this);
 
     function _setRoyaltyReciever(address newRoyaltyReceiver)
         internal

@@ -37,17 +37,25 @@ export default function useWeb3() {
       }
     }
     
-    if (!signer.value) {
-      let isConnectedAddress = null
+    let isConnectedAddress = null
+    if (signer.value) {
+      try {
+        isConnectedAddress = await signer.value.getAddress()
+      } catch (error) {
+        console.error('[checkForAnyContractAction error:] ', error);
+      }
+    }
+
+    if (!signer.value || !isConnectedAddress) {
   
       try {
-        const signer = await web3Provider.value.getSigner()
-        isConnectedAddress = await signer.getAddress()
+        const signerLoc = await web3Provider.value.getSigner()
+        isConnectedAddress = await signerLoc.getAddress()
       } catch (error) {
-        console.error('error: ', error)
+        console.error('error:', error)
       }
   
-      if (isConnectedAddress) {
+      if (!isConnectedAddress) {
         if (confirm('Connect to this dapp and continue?')) {
           await connectWallet()
         } else {
@@ -137,7 +145,6 @@ export default function useWeb3() {
   const switchToChainByHexId = (chainIdHex: string) => {
     const selectedChain = Object.entries(chains).find(([,chainValue]) => chainValue.chainIdHex === chainIdHex)
     connectedChain.value = selectedChain?.[1]
-    console.log('connectedChain.value: ', connectedChain.value)
   }
 
 
@@ -159,7 +166,6 @@ export default function useWeb3() {
       });
       switchToChainByHexId(chainIdHex)
     } catch (switchError) {
-      console.log('switchError: ', switchError);
       if ((switchError as any).code === CHAIN_NOT_ADDED_TO_METAMASK_CODE) {
         
         try {
