@@ -11,8 +11,6 @@ import '@openzeppelin/contracts/interfaces/IERC2981.sol';
 import '@openzeppelin/contracts/utils/Strings.sol';
 import '@openzeppelin/contracts/utils/Base64.sol';
 
-// import "@openzeppelin/contracts/utils/ContextMixin.sol";
-
 contract NftHat is
     ERC1155,
     IERC2981,

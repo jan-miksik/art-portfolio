@@ -54,7 +54,7 @@
 <script setup lang="ts">
 
 // TODOS
-
+// warning if user does not have enough funds
 
 
 
