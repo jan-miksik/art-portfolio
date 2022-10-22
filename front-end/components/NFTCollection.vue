@@ -46,6 +46,7 @@
     </form>
     <!-- <div @click="handleOpenseaAssetLink">TEST</div>-->
     <div @click="isMinted = !isMinted">Like a Minted</div> 
+    <div class="nft-collection__collection-label">collection</div>
   </div>
 </template>
 
@@ -213,6 +214,7 @@ onMounted(async () => {
   width 35rem
   height 39rem
   background-size 190%
+  // animation morphing 2s infinite alternate ease-in-out
 
   @media screen and (min-width 370px)
     height 35rem
@@ -344,6 +346,14 @@ onMounted(async () => {
     &:hover
       scale 1.17
 
+  &__collection-label
+    position absolute
+    bottom 16px
+    right 61px
+    rotate 50deg
+    color black
+    text-shadow -1px 1px 0 #fff
+
 
 .dark-mode .nft-collection__successfully-minted
 .dark-mode .nft-collection__limit-exceeded
@@ -405,6 +415,7 @@ animation morphing 60s infinite alternate ease-in-out
   100%
     border-radius 33% 67% 58% 42% / 63% 68% 32% 37%
 */
+
 </style>
 
 

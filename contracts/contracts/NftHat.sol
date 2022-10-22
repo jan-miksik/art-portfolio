@@ -9,12 +9,7 @@ import '@openzeppelin/contracts/interfaces/IERC2981.sol';
 import '@openzeppelin/contracts/utils/Strings.sol';
 import '@openzeppelin/contracts/utils/Base64.sol';
 
-contract NftHat is
-    ERC1155,
-    IERC2981,
-    Ownable,
-    ReentrancyGuard
-{
+contract NftHat is ERC1155, IERC2981, Ownable, ReentrancyGuard {
     /**
      * @dev `_uri` is set only to satisfy the constructor of ERC1155. Otherwise uri for NFT token metadata is set on-chain.
      */
@@ -23,8 +18,6 @@ contract NftHat is
     }
 
     /** MINTING **/
-
-    event PermanentURI(string _value, uint256 indexed _id);
 
     using Counters for Counters.Counter;
 
@@ -36,6 +29,8 @@ contract NftHat is
     uint256 public constant MINT_LIMIT_PER_WALLET = 7;
 
     Counters.Counter private supplyCounter;
+
+    event PermanentURI(string _value, uint256 indexed _id);
 
     function allowedMintCount(address minter) public view returns (uint256) {
         return MINT_LIMIT_PER_WALLET - mintCountMap[minter];

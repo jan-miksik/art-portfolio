@@ -88,24 +88,24 @@
 
     <h1
       :class="[
-        'homepage__title  homepage__title-nft-collection',
+        'homepage__title  homepage__nft-collection-link',
         {
           'homepage__animate-selected-nft-collection':
             selectedTopic === Topics.NFT_COLLECTION
         },
         {
-          'homepage__unselected-title animate-unselected-nft-collection':
+          'animate-unselected-nft-collection':
             selectedTopic && selectedTopic !== Topics.NFT_COLLECTION
         }
       ]"
       @click="selectTopic(Topics.NFT_COLLECTION)"
     >
-    Collect
-      <!-- <Image
-        :image-file="puzzleImage"
-        class="homepage__title-puzzle-img"
-        alt="puzzle"
-      /> -->
+      <Image
+        :image-file="collect"
+        class="homepage__nft-collection-thumbnail-img"
+        alt="collect"
+      />
+      <span class="homepage__nft-collection-label">Collect</span>
     </h1>
   </div>
   <Contact />
@@ -182,6 +182,15 @@ const puzzleImage = ref(
     lastUpdated: new Date('1992').getTime()
   })
 )
+
+const collect = ref(
+  new ImageFile({
+    url: 'collect.png',
+    id: 'collect',
+    lastUpdated: new Date('1990').getTime()
+  })
+)
+
 
 
 // const selectedTopic = ref(currentRoute.value.params.topic as Topics | undefined)
@@ -383,36 +392,63 @@ code
   backdrop-filter grayscale(1)
 
 // NFT Collection
-.homepage__title-nft-collection
-  // padding 0
+.homepage__nft-collection-link
   right calc(45% - 75px)
-  top 45vh
+  top 42vh
   position absolute
   cursor crosshair
   padding 0.5rem 1rem
-  font-size 1.5rem
+  font-size 1rem
+  display flex
+  flex-direction column
 
   @media (min-width 700px)
     padding 0.5rem 1rem 1.5rem
     right calc(22% - 75px)
 
+.homepage__nft-collection-thumbnail-img
+  width 90px
 
-.homepage__title-nft-collection-img
+.homepage__nft-collection-link-img
   width 310px
   height auto
 
   @media (min-width 700px)
     width 410px
 
-.animate-unselected-nft-collection
-  transform scale(0.5, 0.5) rotate(90deg)
-  height 28px
-  right -38px
+.homepage__nft-collection-label
+  visibility hidden
+  // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
+  font-family bungeehairline
+
+.homepage__animate-selected-nft-collection .homepage__nft-collection-label
+  position absolute
+  visibility visible
+  left -25px
+  top 7px
 
   @media (min-width 700px)
-    height 20px
-    right -38px
+    left -60px
 
+.animate-unselected-nft-collection .homepage__nft-collection-label
+  visibility hidden
+
+.homepage__nft-collection-link:hover .homepage__nft-collection-label
+  visibility visible
+
+.homepage__animate-selected-nft-collection .homepage__nft-collection-thumbnail-img
+  opacity 0.3
+
+.animate-unselected-nft-collection
+  transform scale(0.8, 0.8)
+  height 20px
+  right -8px
+  padding 0
+
+
+  // @media (min-width 700px)
+  //   height 20px
+  //   right -38px
 
 .homepage__animate-selected-nft-collection
   top 0
