@@ -1,4 +1,4 @@
-import { Topics } from '~/components/piecesData'
+import { Topics } from '~/components/piecesData';
 import ImageFile from '~/models/ImageFile'
 
 const generateRandomNumberPlusMinus = (max: number) => {

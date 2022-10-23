@@ -25,13 +25,13 @@
 
     <h1
       :class="[
-        'homepage__title  homepage__title-geometry',
+        'homepage__title  homepage__geometry-link',
         {
           'homepage__animate-selected-geometry':
             selectedTopic === Topics.GEOMETRY
         },
         {
-          'homepage__unselected-title animate-unselected-geometry':
+          'animate-unselected-geometry':
             selectedTopic && selectedTopic !== Topics.GEOMETRY
         }
       ]"
@@ -39,9 +39,10 @@
     >
       <Image
         :image-file="geometryImage"
-        class="homepage__title-geometry-img"
+        class="homepage__geometry-link-img"
         alt="geometry"
       />
+      <span class="homepage__geometry-link-label">Geometry</span>
     </h1>
 
     <h1
@@ -138,7 +139,7 @@
 </template>
 
 <script setup lang="ts">
-import { Topics } from '~/components/piecesData'
+import { Topics } from '~/components/piecesData';
 import usePieces from '~/J/usePieces'
 import ImageFile from '~/models/ImageFile'
 
@@ -161,7 +162,7 @@ const sansTopicImage = ref(
 
 const geometryImage = ref(
   new ImageFile({
-    url: 'geometry-title.webp',
+    url: 'geometry-icon.png',
     id: 'geometry-title-img',
     lastUpdated: new Date('1990').getTime()
   })
@@ -252,7 +253,11 @@ code
   // background-image none
 
 
+// /
+// /
 // Node Avatars
+// /
+// /
 .homepage__title-node-avatars
   font-family RalewayDots, Helvetica, Arial, sans-serif
   font-size 1.2rem
@@ -288,31 +293,40 @@ code
   @media (min-width 700px)
     width 250px
 
+// /
+// /
 // Geometry
-.homepage__title-geometry
+// /
+// /
+.homepage__geometry-link
   font-family BungeeHairline, Helvetica, Arial, sans-serif
-  font-size 1.5rem
-  font-weight normal
-  line-height 1
-  color initial
+  font-size 1rem
+  // font-weight normal
+  // line-height 1
   position absolute
   top 55vh
   left 15vw
+  display flex
+  flex-direction column
 
-.homepage__title-geometry-img
-  width 150px
+.homepage__geometry-link-img
   height auto
+  width 80px
+  filter drop-shadow(0 1px 2px #7baac6)
 
   @media (min-width 700px)
-    width 180px
+    width 100px
 
 .animate-unselected-geometry
-  transform scale(0.6) rotate(-92deg)
-  left -75px
+  transform scale(0.6)
+  left -30px
 
   @media (min-width 700px)
-    left -90px
+    left -30px
 
+.homepage__geometry-link-label
+  visibility hidden
+  // color black
 
 .homepage__animate-selected-geometry
   font-size 2.5rem
@@ -320,10 +334,37 @@ code
   top 0
   left calc(50% - 125px)
   position fixed
-  backdrop-filter grayscale(1)
+  // backdrop-filter grayscale(1)
 
+.dark-mode
+  .homepage__geometry-link
+    filter invert(1)
 
+  .homepage__geometry-link-label
+    color white
+
+.homepage__animate-selected-geometry .homepage__geometry-link-img
+  opacity 0.2
+  margin-left 5rem
+
+.homepage__animate-selected-geometry .homepage__geometry-link-label
+  position absolute
+  visibility visible
+  top 12px
+  left 25px
+
+  @media (min-width 700px)
+    left 25px
+
+.homepage__geometry-link:hover .homepage__geometry-link-label
+  opacity 1
+  visibility visible
+
+// /
+// /
 // Sans Topic
+// /
+// /
 .homepage__title-sans-topic
   // padding 0
   right calc(50% - 150px)
@@ -361,7 +402,12 @@ code
   padding 0.3rem 0.5rem 0
   backdrop-filter grayscale(1)
 
+
+// /
+// /
 // Puzzle
+// /
+// /
 .homepage__title-puzzle
   line-height 1
   position absolute
@@ -391,7 +437,11 @@ code
   position fixed
   backdrop-filter grayscale(1)
 
+// /
+// /
 // NFT Collection
+// /
+// /
 .homepage__nft-collection-link
   right calc(45% - 75px)
   top 42vh
@@ -406,8 +456,12 @@ code
     padding 0.5rem 1rem 1.5rem
     right calc(22% - 75px)
 
+.dark-mode .homepage__nft-collection-link
+  filter invert(1)
+
 .homepage__nft-collection-thumbnail-img
   width 90px
+  filter drop-shadow(0 1px 0 gray)
 
 .homepage__nft-collection-link-img
   width 310px
@@ -457,7 +511,7 @@ code
   font-size 2.1rem
   position fixed
   padding 0.3rem 0.5rem 0
-  backdrop-filter grayscale(1)
+  // backdrop-filter grayscale(1)
 
   @media (min-width 700px)
     font-size 3rem

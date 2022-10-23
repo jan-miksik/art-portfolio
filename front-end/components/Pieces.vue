@@ -58,7 +58,6 @@
 <script setup lang="ts">
 import Piece from '~/models/Piece'
 import { Topics } from '~/components/piecesData'
-import Image from './Image.vue'
 
 const activeImage = ref()
 const props = defineProps<{

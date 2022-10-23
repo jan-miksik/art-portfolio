@@ -48,6 +48,7 @@
     <div @click="isMinted = !isMinted">Like a Minted</div> 
     <div class="nft-collection__collection-label">collection</div>
   </div>
+  <!-- <ThreeJsTesting /> -->
 </template>
 
 
