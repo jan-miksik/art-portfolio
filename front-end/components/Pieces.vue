@@ -51,6 +51,7 @@
         :class="[{ 'pieces__is-active-image-backdrop': activeImage }]"
         @click="activeImage = undefined"
       />
+      <ThreeJsTesting v-if="Topics.GEOMETRY === props.type" />
     </div>
   </Transition>
 </template>

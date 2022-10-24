@@ -21,41 +21,41 @@ onMounted(() => {
   
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(500, 500);
-  camera.position.setZ(30);
+  camera.position.setZ(10);
   camera.position.setX(-3);
   
   renderer.render(scene, camera);
 
   // Cube
   
-  const cubeTexture = new THREE.TextureLoader().load('cubeTest.jpg');
+  // const cubeTexture = new THREE.TextureLoader().load('cubeTest.jpg');
   
-  const cube = new THREE.Mesh(new THREE.BoxGeometry(3, 3, 3), new THREE.MeshBasicMaterial({ map: cubeTexture }));
+  // const cube = new THREE.Mesh(new THREE.BoxGeometry(3, 3, 3), new THREE.MeshBasicMaterial({ map: cubeTexture }));
   // cube.rotation.x += 0;
   // cube.rotation.y += 0;
   // cube.rotation.z += 0;
   
-  scene.add(cube);
+  // scene.add(cube);
 
 
   // sphere
 
-  // const sphereTexture = new THREE.TextureLoader().load('sphereTest.jpg');
+  const sphereTexture = new THREE.TextureLoader().load('sphereTest2.jpg');
   // const normalTexture = new THREE.TextureLoader().load('normal.jpg');
 
   const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(1.8, 75, 30),
-    // new THREE.MeshStandardMaterial({
-    //   // map: sphereTexture,
-    //   // normalMap: normalTexture,
-    // })
+    new THREE.MeshStandardMaterial({
+      map: sphereTexture,
+      // normalMap: normalTexture,
+    })
   );
 
   scene.add(sphere);
 
-  sphere.position.z = -2;
-  sphere.position.y = 3;
-  sphere.position.x = 3;
+  // sphere.position.z = -2;
+  // sphere.position.y = 3;
+  // sphere.position.x = 3;
   // sphere.position.setX(2);
 
   // Lights
@@ -68,9 +68,9 @@ onMounted(() => {
 
   // Helpers
 
-  const lightHelper = new THREE.PointLightHelper(pointLight)
-  // const gridHelper = new THREE.GridHelper(100, 20);
-  scene.add(lightHelper)
+  // const lightHelper = new THREE.PointLightHelper(pointLight)
+  const gridHelper = new THREE.GridHelper(100, 20);
+  // scene.add(lightHelper)
 
   const controls = new OrbitControls(camera, renderer.domElement);
 
