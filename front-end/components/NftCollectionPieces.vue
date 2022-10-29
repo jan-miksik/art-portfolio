@@ -235,7 +235,7 @@ const selectImage = (id: string) => {
 /* / Animation / */
 .images-enter-active,
 .images-leave-active {
-  transition: all 2.5s;
+  transition: all 0.5s;
 }
 
 .images-enter-from {

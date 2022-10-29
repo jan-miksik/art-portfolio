@@ -2,7 +2,7 @@
   <!-- <Web3ConnectionInfo /> -->
   <div class="nft-collection">
     <h2 class="nft-collection__title-breeze-edit">Hat</h2>
-    <img src="collect/kalo(ceb) - hat - klobouk,2020,drawing on paper,30x21cm.jpg" class="nft-collection__mint-image" />
+    <img src="collect/collect.webp" class="nft-collection__mint-image" />
     <div class="nft-collection__amount">{{ maxSupply?.toNumber() }} / {{mintedNfts?.toNumber()}}</div>
 
     <div class="nft-collection__successfully-minted">

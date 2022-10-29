@@ -3,7 +3,7 @@
     <div
       v-if="props.pieces && props.type === props.selectedTopic"
       :class="[
-        'pieces__images',
+        'pieces__images', `pieces__images--${props.selectedTopic}`,
         { 'pieces__selected-image': activeImage },
         props.pieces && props.type === props.selectedTopic
           ? 'pieces__is-section-visible'
@@ -51,7 +51,7 @@
         :class="[{ 'pieces__is-active-image-backdrop': activeImage }]"
         @click="activeImage = undefined"
       />
-      <ThreeJsTesting v-if="Topics.GEOMETRY === props.type" />
+      <BallThreeJs v-if="Topics.GEOMETRY === props.type" />
     </div>
   </Transition>
 </template>
@@ -146,6 +146,10 @@ const selectImage = (id: string) => {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.pieces__images--geometry {
+  padding: 10rem 1.5rem 45rem;
 }
 
 @media (min-width: 1000px) {
@@ -276,7 +280,7 @@ const selectImage = (id: string) => {
 /* / Animation / */
 .images-enter-active,
 .images-leave-active {
-  transition: all 2.5s;
+  transition: all 0.5s;
 
   /* transition-delay: 10s; */
 }

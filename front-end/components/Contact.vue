@@ -5,7 +5,15 @@
     draggable="true"
     @click="showContactModal"
   >
-    <span ref="contactText" class="homepage__contact-text">CONTACT</span>
+    
+    <img
+      loading="lazy"
+      class="homepage__contact-img"
+      src="/contact.svg"
+      width="27"
+      alt="contact"
+    />
+    <span class="homepage__contact-text">CONTACT</span>
   </div>
   <Transition name="fade">
     <div
@@ -122,35 +130,43 @@ const randomizePosition = () => {
 
 .homepage__contact
   position absolute
-  box-shadow inset 1px 0 4px -2px #000
   bottom 2rem
   left 1rem
-  padding 0.3rem
-  color rgb(0 183 255)
-  color #2395ff
+  padding 0.2rem
   cursor cell
-  // transform rotate(-5deg)
-  border-radius 103px
+  opacity 0.75
   width 50px
   height 50px
-  display flex
-  align-items center
-  justify-content center
-  border dotted 5px
+  transition opacity 0.3s
+  // display flex
+  // flex-direction column
+  // align-items center
+  // gap 0.3rem
+
+  &:hover
+    opacity 1 !important
+
+.homepage__contact-img
+  width 50px
+  height 50px
+  filter drop-shadow(0 2px 2px white)
 
 .homepage__contact-text
-  animation animation-rotate-contact 10s linear infinite
-  animation-play-state paused
-  font-size 0.7rem
-  background transparent
-  // transform rotate(-5deg)
+  font-size 0.9rem
+  // position absolute
+  font-weight bold
+  color black
+  opacity 0
+  font-family BungeeHairline, Helvetica, Arial, sans-serif
+  position absolute
+  rotate -90deg
+  top 18px
+  left -39px
+  // transition all 0.3s
+  // font-size 1rem
 
 .homepage__contact:hover .homepage__contact-text
-  animation-play-state running
-
-.homepage__contact:hover
-  // box-shadow inset 1px 0 4px 30px #000
-  // transition all 0.3s
+  opacity 1
 
 .homepage__contact-modal-backdrop
   position fixed
@@ -167,12 +183,11 @@ const randomizePosition = () => {
 
 
 .dark-mode .homepage__contact-modal-backdrop
-  // background-color rgb(255 255 255 / 50%)
   background-color #ebebebe3
 
 
 .homepage__contact-modal
-  transition all 0.2s
+  transition opacity 0.2s
   background-color #eee
   padding 1rem
   text-align left
@@ -188,15 +203,6 @@ const randomizePosition = () => {
 
 .dark-mode .homepage__contact-modal
   background-color #272727
-
-
-@keyframes animation-rotate
-  from
-    transform rotate(0deg)
-
-  to
-    transform rotate(-360deg)
-
 
 .homepage__contact-modal-content
   text-align center
@@ -220,12 +226,7 @@ const randomizePosition = () => {
   filter brightness(0) saturate(100%) invert(1) sepia(98%) saturate(8%) hue-rotate(174deg) brightness(96%) contrast(102%)
 
 .homepage__soc-link-img:hover
-  // box-shadow inset 0 0 2px 1px rgb(0 0 0 / 31%)
-  // transform scale(1.05) !important
-  // transition all 0.2s !important
-  // filter drop-shadow(-200px -500px 1px black)
   z-index 100
-
 
 .homepage__soc-links
   margin-top 3.5rem
@@ -239,11 +240,7 @@ const randomizePosition = () => {
 .fade-leave-active
   transition all 0.5s
 
-
 .fade-enter-from
-  opacity 0
-
-
 .fade-leave-to
   opacity 0
 </style>

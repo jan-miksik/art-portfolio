@@ -10,7 +10,7 @@
             selectedTopic === Topics.SANS_TOPIC
         },
         {
-          'homepage__unselected-title animate-unselected-sans-topic':
+          'animate-unselected-sans-topic':
             selectedTopic && selectedTopic !== Topics.SANS_TOPIC
         }
       ]"
@@ -47,13 +47,13 @@
 
     <h1
       :class="[
-        'homepage__title  homepage__title-node-avatars',
+        'homepage__title  homepage__node-avatars-link',
         {
           'homepage__animate-selected-node-avatars':
             selectedTopic === Topics.NODE_AVATARS
         },
         {
-          'homepage__unselected-title animate-unselected-node-avatars':
+          'animate-unselected-node-avatars':
             selectedTopic && selectedTopic !== Topics.NODE_AVATARS
         }
       ]"
@@ -61,20 +61,21 @@
     >
       <Image
         :image-file="nodeAvatarsImage"
-        class="homepage__title-node-avatars-img"
+        class="homepage__node-avatars-link-img"
         alt="node avatars"
       />
+      <span class="homepage__node-avatars-label">Node Avatars</span>
     </h1>
 
     <h1
       :class="[
-        'homepage__title  homepage__title-puzzle',
+        'homepage__title  homepage__puzzle-link',
         {
           'homepage__animate-selected-puzzle':
             selectedTopic === Topics.PUZZLE
         },
         {
-          'homepage__unselected-title animate-unselected-puzzle':
+          'animate-unselected-puzzle':
             selectedTopic && selectedTopic !== Topics.PUZZLE
         }
       ]"
@@ -82,12 +83,13 @@
     >
       <Image
         :image-file="puzzleImage"
-        class="homepage__title-puzzle-img"
+        class="homepage__puzzle-link-img"
         alt="puzzle"
       />
+      <span class="homepage__puzzle-link-label">Puzzle</span>
     </h1>
 
-    <h1
+    <!-- <h1
       :class="[
         'homepage__title  homepage__nft-collection-link',
         {
@@ -107,7 +109,7 @@
         alt="collect"
       />
       <span class="homepage__nft-collection-label">Collect</span>
-    </h1>
+    </h1> -->
   </div>
   <Contact />
 
@@ -154,7 +156,7 @@ useHead({
 
 const sansTopicImage = ref(
   new ImageFile({
-    url: 'sans-topic-title-letters.webp',
+    url: 'topics-entry-icons/sans-topic-title-letters.webp',
     id: 'title-sans-topic-img',
     lastUpdated: new Date('1990').getTime()
   })
@@ -162,23 +164,23 @@ const sansTopicImage = ref(
 
 const geometryImage = ref(
   new ImageFile({
-    url: 'geometry-icon.png',
+    url: 'topics-entry-icons/geometry-icon.png',
     id: 'geometry-title-img',
-    lastUpdated: new Date('1990').getTime()
+    lastUpdated: new Date('1991').getTime()
   })
 )
 
 const nodeAvatarsImage = ref(
   new ImageFile({
-    url: 'node-avatars-title.webp',
+    url: 'topics-entry-icons/node-avatars-icon.webp',
     id: 'node-avatars-title-img',
-    lastUpdated: new Date('1990').getTime()
+    lastUpdated: new Date('1993').getTime()
   })
 )
 
 const puzzleImage = ref(
   new ImageFile({
-    url: 'puzzle-title.png',
+    url: 'topics-entry-icons/puzzle-icon.webp',
     id: 'puzzle-title-img',
     lastUpdated: new Date('1992').getTime()
   })
@@ -186,9 +188,9 @@ const puzzleImage = ref(
 
 const collect = ref(
   new ImageFile({
-    url: 'collect.png',
+    url: 'topics-entry-icons/collect-icon.webp',
     id: 'collect',
-    lastUpdated: new Date('1990').getTime()
+    lastUpdated: new Date('1992').getTime()
   })
 )
 
@@ -239,43 +241,38 @@ code
   padding 0.3rem 1rem
   border-radius 2px
 
-
 .homepage__unselected-title
   background-image linear-gradient(#fff, ghostwhite)
   box-shadow 2px 1px 10px 0 rgb(0 0 0 / 20%)
 
-
 .homepage__title:hover
   transition all 0.2s
   opacity 1
-  // background-color black
-  // color #fff
-  // background-image none
-
 
 // /
 // /
 // Node Avatars
 // /
 // /
-.homepage__title-node-avatars
-  font-family RalewayDots, Helvetica, Arial, sans-serif
-  font-size 1.2rem
-  top 10vh
-  font-weight normal
+.homepage__node-avatars-link
   position absolute
-  margin-left auto
+  top 9vh
+  left 10vw
+  display flex
+  flex-direction column
+  align-items center
+  font-family BungeeHairline, Helvetica, Arial, sans-serif
+  font-size 1rem
   text-transform uppercase
-  left 15vw
 
 
 .animate-unselected-node-avatars
-  transform scale(0.55) rotate(-89deg)
-  left -105px
   top 150px
+  transform scale(0.55)
+  left -45px
 
   @media (min-width 700px)
-    left -120px
+    left -45px
 
 
 .homepage__animate-selected-node-avatars
@@ -286,12 +283,41 @@ code
   position fixed
   backdrop-filter grayscale(1)
 
-.homepage__title-node-avatars-img
-  width 210px
+.homepage__node-avatars-link-img
   height auto
+  width 105px
+  filter drop-shadow(0 0 1px #eae2c4)
+
+.dark-mode .homepage__node-avatars-link-img
+  filter drop-shadow(0 0 1px #eae2c4) invert(1)
 
   @media (min-width 700px)
-    width 250px
+    width 120px
+
+.homepage__node-avatars-label
+  visibility hidden
+
+.dark-mode .homepage__node-avatars-label
+  color white
+  filter invert(1)
+
+
+.homepage__animate-selected-node-avatars .homepage__node-avatars-link-img
+  opacity 0.2
+  margin-left 6.5rem
+
+.homepage__animate-selected-node-avatars .homepage__node-avatars-label
+  position absolute
+  visibility visible
+  top 35px
+  left 25px
+
+  @media (min-width 700px)
+    left 25px
+
+.homepage__node-avatars-link:hover .homepage__node-avatars-label
+  opacity 1
+  visibility visible
 
 // /
 // /
@@ -301,8 +327,6 @@ code
 .homepage__geometry-link
   font-family BungeeHairline, Helvetica, Arial, sans-serif
   font-size 1rem
-  // font-weight normal
-  // line-height 1
   position absolute
   top 55vh
   left 15vw
@@ -326,26 +350,10 @@ code
 
 .homepage__geometry-link-label
   visibility hidden
-  // color black
+  margin-top 0.5rem
 
-.homepage__animate-selected-geometry
-  font-size 2.5rem
-  transform initial
-  top 0
-  left calc(50% - 125px)
-  position fixed
-  // backdrop-filter grayscale(1)
-
-.dark-mode
-  .homepage__geometry-link
-    filter invert(1)
-
-  .homepage__geometry-link-label
-    color white
-
-.homepage__animate-selected-geometry .homepage__geometry-link-img
-  opacity 0.2
-  margin-left 5rem
+.dark-mode .homepage__geometry-link-label
+  color white
 
 .homepage__animate-selected-geometry .homepage__geometry-link-label
   position absolute
@@ -359,6 +367,24 @@ code
 .homepage__geometry-link:hover .homepage__geometry-link-label
   opacity 1
   visibility visible
+
+.homepage__animate-selected-geometry
+  font-size 2.5rem
+  transform initial
+  top 0
+  left calc(50% - 125px)
+  position fixed
+  // backdrop-filter grayscale(1)
+
+.dark-mode
+  .homepage__geometry-link
+    filter invert(1)
+
+
+.homepage__animate-selected-geometry .homepage__geometry-link-img
+  opacity 0.2
+  margin-left 5rem
+
 
 // /
 // /
@@ -408,34 +434,72 @@ code
 // Puzzle
 // /
 // /
-.homepage__title-puzzle
+.homepage__puzzle-link
   line-height 1
   position absolute
+  font-family BungeeHairline, Helvetica, Arial, sans-serif
+  font-size 1rem
   top 70vh
   right 20vw
+  display flex
+  flex-direction column
+  justify-content center
+  transition all 0.3s
 
-.homepage__title-puzzle-img
-  width 180px
+.homepage__puzzle-link-img
+  width 100px
   height auto
+  filter drop-shadow(1px 1px 1px black)
 
   @media (min-width 700px)
-    width 200px
+    width 115px
+
+.dark-mode .homepage__puzzle-link-img
+  filter drop-shadow(1px 1px 1px #eae2c4)
 
 .animate-unselected-puzzle
-  transform scale(0.6) rotate(90.5deg)
-  right -80px
+  transform scale(0.6)
+  right -35px
 
   @media (min-width 700px)
-    right -90px
+    right -35px
 
+.homepage__puzzle-link-label
+  visibility hidden
+  margin-top 0.5rem
+
+.dark-mode .homepage__puzzle-link-label
+  color white
+
+.homepage__animate-selected-puzzle .homepage__puzzle-link-label
+  position absolute
+  visibility visible
+  // right 20vw
+
+  @media (min-width 700px)
+    // right 20vw
+
+.homepage__puzzle-link:hover .homepage__puzzle-link-label
+  opacity 1
+  visibility visible
 
 .homepage__animate-selected-puzzle
-  font-size 2.5rem
+  font-size 3rem
   transform initial
   top 0
-  left calc(50% - 125px)
+  right calc(50% - 60px)
   position fixed
-  backdrop-filter grayscale(1)
+  transition all 0.3s
+
+.dark-mode
+  .homepage__puzzle-link
+    filter invert(1)
+
+
+.homepage__animate-selected-puzzle .homepage__puzzle-link-img
+  opacity 0.2
+  margin-left 2.5rem
+
 
 // /
 // /
@@ -456,8 +520,17 @@ code
     padding 0.5rem 1rem 1.5rem
     right calc(22% - 75px)
 
-.dark-mode .homepage__nft-collection-link
-  filter invert(1)
+.homepage__nft-collection-label
+  visibility hidden
+  // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
+  font-family bungeehairline
+
+.dark-mode
+  .homepage__nft-collection-link
+    filter invert(1)
+
+  .homepage__nft-collection-label
+    color white
 
 .homepage__nft-collection-thumbnail-img
   width 90px
@@ -470,10 +543,6 @@ code
   @media (min-width 700px)
     width 410px
 
-.homepage__nft-collection-label
-  visibility hidden
-  // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
-  font-family bungeehairline
 
 .homepage__animate-selected-nft-collection .homepage__nft-collection-label
   position absolute
@@ -498,11 +567,6 @@ code
   height 20px
   right -8px
   padding 0
-
-
-  // @media (min-width 700px)
-  //   height 20px
-  //   right -38px
 
 .homepage__animate-selected-nft-collection
   top 0
