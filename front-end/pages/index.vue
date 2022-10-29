@@ -182,7 +182,7 @@ const puzzleImage = ref(
   new ImageFile({
     url: 'topics-entry-icons/puzzle-icon.webp',
     id: 'puzzle-title-img',
-    lastUpdated: new Date('1992').getTime()
+    lastUpdated: new Date('1993').getTime()
   })
 )
 
