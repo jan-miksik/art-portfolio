@@ -2,7 +2,7 @@
   <!-- <Web3ConnectionInfo /> -->
   <div class="nft-collection">
     <h2 class="nft-collection__title-breeze-edit">Hat</h2>
-    <img src="collect/collect.webp" class="nft-collection__mint-image" />
+    <img src="/collect/collect.webp" class="nft-collection__mint-image" />
     <div class="nft-collection__amount">{{ maxSupply?.toNumber() }} / {{mintedNfts?.toNumber()}}</div>
 
     <div class="nft-collection__successfully-minted">
@@ -10,10 +10,10 @@
         <span class="nft-collection__successfully-minted-message" v-if="isMinted && !mintInProgress">
           𓀆 !minted! 𓀊
         <a :href="getExplorerLink({type: 'asset', marketplace: 'opensea', nftId: nftId})" class="nft-collection__opensea-link" target="_blank">
-          <img src="opensea-blue-ship.svg" width="30" height="30" alt="opensea logo"/>
+          <img src="/opensea-blue-ship.svg" width="30" height="30" alt="opensea logo"/>
         </a>
         <a :href="getExplorerLink({type: 'asset', marketplace: 'looksrare', nftId})" class="nft-collection__looksrare-link" target="_blank">
-          <img src="looksrare.svg" width="45" height="45" alt="looksrare logo"/>
+          <img src="/looksrare.svg" width="45" height="45" alt="looksrare logo"/>
         </a>
         <div @click="isMinted = false" class="nft-collection__hide-is-minted-msg">✖</div>
         </span>
@@ -38,10 +38,10 @@
       </Button>
 
       <a :href="getExplorerLink({type: 'collection', marketplace: 'opensea'})" title="collection on Opensea" class="nft-collection__opensea-collection-link" target="_blank">
-          <img src="opensea-blue-ship.svg" width="25" height="25" alt="opensea logo"/>
+          <img src="/opensea-blue-ship.svg" width="25" height="25" alt="opensea logo"/>
         </a>
         <a :href="getExplorerLink({type: 'collection', marketplace: 'looksrare'})" title="collection on Looksrare" class="nft-collection__looksrare-collection-link" target="_blank">
-          <img src="looksrare.svg" width="35" height="35" alt="looksrare logo"/>
+          <img src="/looksrare.svg" width="35" height="35" alt="looksrare logo"/>
         </a>
     </form>
     <!-- <div @click="handleOpenseaAssetLink">TEST</div>-->
