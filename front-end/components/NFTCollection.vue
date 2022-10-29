@@ -89,7 +89,7 @@ import { BigNumber, ethers } from 'ethers'
 import useWeb3 from '~/J/useWeb3'
 import { mainSupportedChain } from '~/appSetup'
 import { connectedChain } from '~/constants/chains'
-import contractAbi from '~/../contracts/artifacts/contracts/NftHat.sol/NftHat.json'
+import contractAbi from '~/abi/NftHat.json'
 import useCryptoExplorer from '~/J/useCryptoExplorer'
 
 const { initDapp, signer, checkForAnyContractAction, connectedAddress } =
