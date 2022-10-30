@@ -1,12 +1,12 @@
 
 <template>
-  <canvas id="ball"></canvas>
+  <canvas class="ball-three-js" ref="canvasRef"></canvas>
 </template>
 <script setup lang="ts">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-
+const canvasRef = ref<HTMLCanvasElement>()
 onMounted(() => {
 
   // Setup
@@ -16,12 +16,16 @@ onMounted(() => {
   const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
   
   const renderer = new THREE.WebGLRenderer({
-    canvas: document.querySelector('#ball') as HTMLCanvasElement,
+    canvas: canvasRef.value,
     alpha: true,
   });
   
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(500, 500);
+  if (window.innerWidth > 600) {
+    renderer.setSize(500, 500);
+  } else {
+    renderer.setSize(320, 320);
+  }
   camera.position.setZ(10);
   camera.position.setX(-3);
   
@@ -43,7 +47,7 @@ onMounted(() => {
   const sphereTexture = new THREE.TextureLoader().load('sphereTest2.jpg');
 
   const sphere = new THREE.Mesh(
-    new THREE.SphereGeometry(3, 75, 30),
+    new THREE.SphereGeometry(1.5, 75, 75),
     new THREE.MeshStandardMaterial({
       map: sphereTexture,
     })
@@ -63,9 +67,8 @@ onMounted(() => {
   // Helpers
 
   // const lightHelper = new THREE.PointLightHelper(pointLight)
-  const gridHelper = new THREE.GridHelper(100, 20);
+  // const gridHelper = new THREE.GridHelper(100, 20);
   // scene.add(lightHelper)
-
   const controls = new OrbitControls(camera, renderer.domElement);
 
 
@@ -83,12 +86,12 @@ animate();
 
 
 <style lang="stylus" scoped>
-#ball
+.ball-three-js
   position absolute
   bottom 0
   margin-bottom 10rem
 
-.dark-mode #ball
+.dark-mode .ball-three-js
   filter invert(1)
 
 </style>

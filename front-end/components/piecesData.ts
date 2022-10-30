@@ -8,6 +8,14 @@ export enum Topics {
   NFT_COLLECTION = 'nft collection'
 }
 
+// export enum TopicIcon {
+//   SANS_TOPIC = 'sans topic',
+//   GEOMETRY = 'geometry',
+//   NODE_AVATARS = 'node avatars',
+//   PUZZLE = 'puzzle',
+//   NFT_COLLECTION = 'nft collection'
+// }
+
 export enum Techniques {
   DRAWING = 'DRAWING',
   PAINTING = 'PAINTING',

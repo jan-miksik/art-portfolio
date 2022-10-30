@@ -5,11 +5,9 @@
     draggable="true"
     @click="showContactModal"
   >
-    
-    <img
-      loading="lazy"
-      class="homepage__contact-img"
-      src="/contact.svg"
+    <Image
+      :image-file="emailIcon"
+      class="homepage__contact-img" 
       width="27"
       alt="contact"
     />
@@ -32,51 +30,54 @@
         </p> -->
         <div class="homepage__soc-links">
           <a class="homepage__soc-link" href="mailto: jan.miksik.g@gmail.com">
-            <img
-              loading="lazy"
-              class="homepage__soc-link-img"
-              src="/email.svg"
+            <Image
+              :image-file="emailIcon"
+              class="homepage__soc-link-img" 
               width="35"
               alt="email"
               :style="randomizePosition()"
-          /></a>
+            />
+          </a>
           <a
             class="homepage__soc-link"
             href="https://www.instagram.com/miksik.jan/"
             target="_blank"
-            ><img
-              loading="lazy"
-              class="homepage__soc-link-img"
-              src="/instagram.svg"
+            >
+            <Image
+              :image-file="instagramIcon"
+              class="homepage__soc-link-img" 
               width="27"
               alt="instagram"
               :style="randomizePosition()"
-          /></a>
+            />
+          </a>
 
           <a
             class="homepage__soc-link"
             href="https://www.facebook.com/jan.miksik.1/"
             target="_blank"
-            ><img
-              loading="lazy"
-              class="homepage__soc-link-img"
-              src="/fb.svg"
+            >
+            <Image
+              :image-file="facebookIcon"
+              class="homepage__soc-link-img" 
               width="26"
               alt="facebook"
               :style="randomizePosition()"
-          /></a>
+            />
+           </a>
           <a
             class="homepage__soc-link"
             href="https://twitter.com/MiksikJan"
             target="_blank"
-            ><img
-              loading="lazy"
-              class="homepage__soc-link-img"
-              src="/twitter.svg"
+            >
+            <Image
+              :image-file="twitterIcon"
+              class="homepage__soc-link-img" 
               width="30"
               alt="twitter"
               :style="randomizePosition()"
-          /></a>
+            />
+            </a>
         </div>
       </div>
     </div>
@@ -85,6 +86,8 @@
 
 <script setup lang="ts">
 import useDragAndDrop from '~/J/useDragAndDrop'
+import ImageFile from '~/models/ImageFile'
+
 const contactRef = ref<HTMLElement>()
 const { dragAndDrop, isDragging } = useDragAndDrop()
 onMounted(() => {
@@ -92,6 +95,46 @@ onMounted(() => {
     dragAndDrop(contactRef.value)
   }
 })
+
+const emailIcon = ref(
+  new ImageFile({
+    url: '/email.svg',
+    id: 'email-icon',
+    lastUpdated: new Date('1991').getTime()
+  })
+)
+
+const instagramIcon = ref(
+  new ImageFile({
+    url: '/instagram.svg',
+    id: 'instagram-icon',
+    lastUpdated: new Date('1995').getTime()
+  })
+)
+
+const facebookIcon = ref(
+  new ImageFile({
+    url: '/fb.svg',
+    id: 'facebook-icon',
+    lastUpdated: new Date('1993').getTime()
+  })
+)
+
+const twitterIcon = ref(
+  new ImageFile({
+    url: '/twitter.svg',
+    id: 'twitter-icon',
+    lastUpdated: new Date('1992').getTime()
+  })
+)
+
+const contactIcon = ref(
+  new ImageFile({
+    url: '/contact.svg',
+    id: 'contact-icon',
+    lastUpdated: new Date('1992').getTime()
+  })
+)
 
 const isContactModalVisible = ref(false)
 const contactText = ref()

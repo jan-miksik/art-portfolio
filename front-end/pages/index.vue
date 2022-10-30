@@ -7,11 +7,11 @@
         'homepage__title homepage__title-sans-topic',
         {
           'homepage__animate-selected-sans-topic':
-            selectedTopic === Topics.SANS_TOPIC
+            selectedTopicIcon === Topics.SANS_TOPIC
         },
         {
           'animate-unselected-sans-topic':
-            selectedTopic && selectedTopic !== Topics.SANS_TOPIC
+            selectedTopicIcon && selectedTopicIcon !== Topics.SANS_TOPIC
         }
       ]"
       @click="selectTopic(Topics.SANS_TOPIC)"
@@ -28,11 +28,11 @@
         'homepage__title  homepage__geometry-link',
         {
           'homepage__animate-selected-geometry':
-            selectedTopic === Topics.GEOMETRY
+            selectedTopicIcon === Topics.GEOMETRY
         },
         {
           'animate-unselected-geometry':
-            selectedTopic && selectedTopic !== Topics.GEOMETRY
+            selectedTopicIcon && selectedTopicIcon !== Topics.GEOMETRY
         }
       ]"
       @click="selectTopic(Topics.GEOMETRY)"
@@ -50,11 +50,11 @@
         'homepage__title  homepage__node-avatars-link',
         {
           'homepage__animate-selected-node-avatars':
-            selectedTopic === Topics.NODE_AVATARS
+            selectedTopicIcon === Topics.NODE_AVATARS
         },
         {
           'animate-unselected-node-avatars':
-            selectedTopic && selectedTopic !== Topics.NODE_AVATARS
+            selectedTopicIcon && selectedTopicIcon !== Topics.NODE_AVATARS
         }
       ]"
       @click="selectTopic(Topics.NODE_AVATARS)"
@@ -72,11 +72,11 @@
         'homepage__title  homepage__puzzle-link',
         {
           'homepage__animate-selected-puzzle':
-            selectedTopic === Topics.PUZZLE
+            selectedTopicIcon === Topics.PUZZLE
         },
         {
           'animate-unselected-puzzle':
-            selectedTopic && selectedTopic !== Topics.PUZZLE
+            selectedTopicIcon && selectedTopicIcon !== Topics.PUZZLE
         }
       ]"
       @click="selectTopic(Topics.PUZZLE)"
@@ -89,16 +89,16 @@
       <span class="homepage__puzzle-link-label">Puzzle</span>
     </h1>
 
-    <!-- <h1
+    <h1
       :class="[
         'homepage__title  homepage__nft-collection-link',
         {
           'homepage__animate-selected-nft-collection':
-            selectedTopic === Topics.NFT_COLLECTION
+            selectedTopicIcon === Topics.NFT_COLLECTION
         },
         {
           'animate-unselected-nft-collection':
-            selectedTopic && selectedTopic !== Topics.NFT_COLLECTION
+            selectedTopicIcon && selectedTopicIcon !== Topics.NFT_COLLECTION
         }
       ]"
       @click="selectTopic(Topics.NFT_COLLECTION)"
@@ -109,7 +109,7 @@
         alt="collect"
       />
       <span class="homepage__nft-collection-label">Collect</span>
-    </h1> -->
+    </h1>
   </div>
   <Contact />
 
@@ -174,7 +174,7 @@ const nodeAvatarsImage = ref(
   new ImageFile({
     url: 'topics-entry-icons/node-avatars-icon.webp',
     id: 'node-avatars-title-img',
-    lastUpdated: new Date('1993').getTime()
+    lastUpdated: new Date('1995').getTime()
   })
 )
 
@@ -194,19 +194,22 @@ const collect = ref(
   })
 )
 
-
-
-// const selectedTopic = ref(currentRoute.value.params.topic as Topics | undefined)
-
 const selectedTopic = ref<Topics>()
+const selectedTopicIcon = ref<Topics>()
 
-const selectTopic = (topic: Topics) => {
+const selectTopic = async (topic: Topics) => {
+  if (selectedTopic.value === topic) {
+    selectedTopicIcon.value = undefined
+  } else {
+    selectedTopicIcon.value = topic
+  }
+  
+  await new Promise(resolve => setTimeout(resolve, 200))
+
   if (selectedTopic.value === topic) {
     selectedTopic.value = undefined
-    // router.push('/')
     return
   }
-  // router.push(`/${topic}`)
   selectedTopic.value = topic
 }
 </script>
@@ -238,7 +241,7 @@ code
   white-space nowrap
   cursor cell
   margin 0
-  padding 0.3rem 1rem
+  // padding 0.3rem 1rem
   border-radius 2px
 
 .homepage__unselected-title
@@ -269,19 +272,19 @@ code
 .animate-unselected-node-avatars
   top 150px
   transform scale(0.55)
-  left -45px
-
-  @media (min-width 700px)
-    left -45px
+  left -29px
 
 
 .homepage__animate-selected-node-avatars
   top 0
   transform initial
   left calc(50% - 160px)
-  font-size 2.5rem
+  font-size 2.15rem
   position fixed
   backdrop-filter grayscale(1)
+
+  @media (min-width 700px)
+    font-size 2.5rem
 
 .homepage__node-avatars-link-img
   height auto
@@ -309,8 +312,8 @@ code
 .homepage__animate-selected-node-avatars .homepage__node-avatars-label
   position absolute
   visibility visible
-  top 35px
-  left 25px
+  top 20px
+  left 0
 
   @media (min-width 700px)
     left 25px
@@ -343,10 +346,7 @@ code
 
 .animate-unselected-geometry
   transform scale(0.6)
-  left -30px
-
-  @media (min-width 700px)
-    left -30px
+  left -15px
 
 .homepage__geometry-link-label
   visibility hidden
@@ -404,7 +404,7 @@ code
 
 
 .homepage__title-sans-topic-img
-  width 310px
+  width 250px
   height auto
 
   @media (min-width 700px)
@@ -413,7 +413,7 @@ code
 .animate-unselected-sans-topic
   transform scale(0.35, 0.3) rotate(89deg)
   height 55px
-  right -154px
+  right -120px
 
   @media (min-width 700px)
     right -200px
@@ -422,11 +422,14 @@ code
 .homepage__animate-selected-sans-topic
   top 0
   transform initial
-  right calc(50% - 150px)
+  right calc(50% - 125px)
   font-size 3.5rem
   position fixed
   padding 0.3rem 0.5rem 0
   backdrop-filter grayscale(1)
+
+  @media (min-width 700px)
+    right calc(50% - 150px)
 
 
 // /
@@ -459,10 +462,7 @@ code
 
 .animate-unselected-puzzle
   transform scale(0.6)
-  right -35px
-
-  @media (min-width 700px)
-    right -35px
+  right -17px
 
 .homepage__puzzle-link-label
   visibility hidden
@@ -515,6 +515,7 @@ code
   font-size 1rem
   display flex
   flex-direction column
+  gap 0.25rem
 
   @media (min-width 700px)
     padding 0.5rem 1rem 1.5rem
