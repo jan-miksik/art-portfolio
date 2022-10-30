@@ -89,7 +89,7 @@
       <span class="homepage__puzzle-link-label">Puzzle</span>
     </h1>
 
-    <h1
+    <!-- <h1
       :class="[
         'homepage__title  homepage__nft-collection-link',
         {
@@ -109,7 +109,7 @@
         alt="collect"
       />
       <span class="homepage__nft-collection-label">Collect</span>
-    </h1>
+    </h1> -->
   </div>
   <Contact />
 
