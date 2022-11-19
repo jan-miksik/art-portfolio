@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
@@ -62,7 +62,13 @@ contract NftHat is ERC1155, IERC2981, Ownable, ReentrancyGuard {
      * `amount` in _mint is set 1 to restrict multimint
      * `data` in _mint is set to `''` because are not used in this contract
      */
-    function _mintWrapper(address account) internal virtual returns (uint256) {
+    function mint(address account)
+        public
+        payable
+        virtual
+        nonReentrant
+        returns (uint256)
+    {
         _checkIfCanMint();
         _mint(account, Counters.current(supplyCounter), 1, '');
         emit PermanentURI(
@@ -71,10 +77,6 @@ contract NftHat is ERC1155, IERC2981, Ownable, ReentrancyGuard {
         );
         supplyCounter.increment();
         return Counters.current(supplyCounter);
-    }
-
-    function mint(address account) public payable virtual nonReentrant {
-        _mintWrapper(account);
     }
 
     /** PAYOUT **/
@@ -139,7 +141,7 @@ contract NftHat is ERC1155, IERC2981, Ownable, ReentrancyGuard {
             '{',
             '"name": "Hat ~^~",',
             '"description": "Outsourcing mint price decision to customers",',
-            '"image": "ipfs://bafybeibwr75ag7yw4m34brikrrlt6k3ntvo6kwavz5u6e2tk5vkeckv3du",',
+            '"image": "ipfs://bafkreifivloyeuiky6ozz7w7uke2lb2amutsu4bnb76i2pv4hdqvv7uv4i",',
             '"external_link": "https://janmiksik.ooo",',
             '"seller_fee_basis_points": 500,',
             '"fee_recipient": "',
@@ -170,7 +172,7 @@ contract NftHat is ERC1155, IERC2981, Ownable, ReentrancyGuard {
             '",',
             '"description": "Outsourcing mint price decision to customers",',
             '"image": "',
-            'ipfs://bafybeibwr75ag7yw4m34brikrrlt6k3ntvo6kwavz5u6e2tk5vkeckv3du',
+            'ipfs://bafkreifivloyeuiky6ozz7w7uke2lb2amutsu4bnb76i2pv4hdqvv7uv4i',
             '"',
             '}'
         );

@@ -109,7 +109,7 @@ import { BigNumber, ethers } from 'ethers'
 // import contractAbi from '~/../contracts/artifacts/contracts/TestNFT.sol/TestNFT.json'
 import useWeb3 from '~/J/useWeb3'
 import chains, {connectedChain} from '~/constants/chains'
-import contractAbi from '~/../contracts/artifacts/contracts/NftArbitraryPrice.sol/NftArbitraryPrice.json';
+import contractAbi from '~/../contracts/artifacts/contracts/NftHat.sol/NftHat.json';
 
 // import Web3Modal from "web3modal";
 interface Message {

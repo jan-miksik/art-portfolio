@@ -21,17 +21,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC2981__factory>;
     getContractFactory(
-      name: "Pausable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Pausable__factory>;
-    getContractFactory(
       name: "ERC1155",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC1155__factory>;
-    getContractFactory(
-      name: "ERC1155Supply",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC1155Supply__factory>;
     getContractFactory(
       name: "IERC1155MetadataURI",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -45,6 +37,18 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC1155Receiver__factory>;
     getContractFactory(
+      name: "IERC20Permit",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20Permit__factory>;
+    getContractFactory(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20__factory>;
+    getContractFactory(
+      name: "IERC721",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC721__factory>;
+    getContractFactory(
       name: "ERC165",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC165__factory>;
@@ -53,9 +57,53 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC165__factory>;
     getContractFactory(
-      name: "NftArbitraryPrice",
+      name: "Coin",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.NftArbitraryPrice__factory>;
+    ): Promise<Contracts.Coin__factory>;
+    getContractFactory(
+      name: "GoodSamaritan",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GoodSamaritan__factory>;
+    getContractFactory(
+      name: "INotifyable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.INotifyable__factory>;
+    getContractFactory(
+      name: "Wallet",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Wallet__factory>;
+    getContractFactory(
+      name: "Coin",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Coin__factory>;
+    getContractFactory(
+      name: "GoodSamaritan",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GoodSamaritan__factory>;
+    getContractFactory(
+      name: "INotifyable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.INotifyable__factory>;
+    getContractFactory(
+      name: "Wallet",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Wallet__factory>;
+    getContractFactory(
+      name: "Coin",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Coin__factory>;
+    getContractFactory(
+      name: "GoodSamaritan",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GoodSamaritan__factory>;
+    getContractFactory(
+      name: "INotifyable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.INotifyable__factory>;
+    getContractFactory(
+      name: "Wallet",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Wallet__factory>;
     getContractFactory(
       name: "NftHat",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -72,20 +120,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC2981>;
     getContractAt(
-      name: "Pausable",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Pausable>;
-    getContractAt(
       name: "ERC1155",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ERC1155>;
-    getContractAt(
-      name: "ERC1155Supply",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ERC1155Supply>;
     getContractAt(
       name: "IERC1155MetadataURI",
       address: string,
@@ -102,6 +140,21 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC1155Receiver>;
     getContractAt(
+      name: "IERC20Permit",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20Permit>;
+    getContractAt(
+      name: "IERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20>;
+    getContractAt(
+      name: "IERC721",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC721>;
+    getContractAt(
       name: "ERC165",
       address: string,
       signer?: ethers.Signer
@@ -112,10 +165,65 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC165>;
     getContractAt(
-      name: "NftArbitraryPrice",
+      name: "Coin",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.NftArbitraryPrice>;
+    ): Promise<Contracts.Coin>;
+    getContractAt(
+      name: "GoodSamaritan",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GoodSamaritan>;
+    getContractAt(
+      name: "INotifyable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.INotifyable>;
+    getContractAt(
+      name: "Wallet",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Wallet>;
+    getContractAt(
+      name: "Coin",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Coin>;
+    getContractAt(
+      name: "GoodSamaritan",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GoodSamaritan>;
+    getContractAt(
+      name: "INotifyable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.INotifyable>;
+    getContractAt(
+      name: "Wallet",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Wallet>;
+    getContractAt(
+      name: "Coin",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Coin>;
+    getContractAt(
+      name: "GoodSamaritan",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GoodSamaritan>;
+    getContractAt(
+      name: "INotifyable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.INotifyable>;
+    getContractAt(
+      name: "Wallet",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Wallet>;
     getContractAt(
       name: "NftHat",
       address: string,

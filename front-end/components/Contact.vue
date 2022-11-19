@@ -6,7 +6,7 @@
     @click="showContactModal"
   >
     <Image
-      :image-file="emailIcon"
+      :image-file="contactIcon"
       class="homepage__contact-img" 
       width="27"
       alt="contact"

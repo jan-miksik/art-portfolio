@@ -7,10 +7,12 @@ const main = async () => {
   // await TestNFTContract.deployed();
 
 
-  const ContractFactory = await ethers.getContractFactory('NftHat');
+  const ContractFactory = await ethers.getContractFactory('MultiToken');
   // @params uri(single NFT) contactURI(collection)
-  const Contract = await ContractFactory.deploy('ipfs://bafkreihx3yvxe3o6x7hlx3v4nhbpdries6ovjtvyoyz7qyexnqrfhif74y');
+  const Contract = await ContractFactory.deploy();
   await Contract.deployed();
+  // const Contract = await ContractFactory.deploy('ipfs://bafkreihx3yvxe3o6x7hlx3v4nhbpdries6ovjtvyoyz7qyexnqrfhif74y');
+  // await Contract.deployed();
 
   console.log('deployed contract address: ', Contract.address);
 };
