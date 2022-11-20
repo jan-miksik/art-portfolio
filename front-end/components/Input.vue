@@ -1,6 +1,6 @@
 <template>
   <div class="input">
-    <label class="input__label">setup price by feel</label>
+    <label class="input__label">setup price</label>
     <input class="input__body" 
     :step="step" 
     :required="required" 

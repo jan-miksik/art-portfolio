@@ -6,6 +6,7 @@ export interface IChain {
   name:string
   rpcUrls?:string[]
   nftHatCollectionName?: string
+  nftShowingPortfolioContract?: string
   isChainSupported: boolean
   keyName: string | 'goerli'
   nativeCurrency: {
@@ -36,6 +37,7 @@ const chains: Record<string, IChain> = {
     keyName: 'goerli',
     name: 'Goerli',
     nftHatContract: '0xf3dEd36A5288eC57b478fe2F7ffe0A458bb19025',
+    nftShowingPortfolioContract: '0x47488CA96d736E63365d75C471050b5074CBD076',
     // nftHatContract: '0xB77Bd694BC9F0C158439629F69A4FA1ee05C5E40',
     // nftHatContract: '0x1121855fafF7FEC9d802F1E66B84F3fa90BFE2f7',
     nftHatCollectionName: 'hat-1',

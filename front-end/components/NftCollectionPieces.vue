@@ -10,7 +10,7 @@
             : 'nft-collection-pieces__is-section-hidden'
         ]"
       >
-      <NFTCollection />
+      <NFTCollectionSetupOwnPrice />
       </div>
   </Transition>
 </template>

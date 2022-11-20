@@ -37,18 +37,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC1155Receiver__factory>;
     getContractFactory(
-      name: "IERC20Permit",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC20Permit__factory>;
-    getContractFactory(
-      name: "IERC20",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC20__factory>;
-    getContractFactory(
-      name: "IERC721",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC721__factory>;
-    getContractFactory(
       name: "ERC165",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC165__factory>;
@@ -57,57 +45,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC165__factory>;
     getContractFactory(
-      name: "Coin",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Coin__factory>;
-    getContractFactory(
-      name: "GoodSamaritan",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.GoodSamaritan__factory>;
-    getContractFactory(
-      name: "INotifyable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.INotifyable__factory>;
-    getContractFactory(
-      name: "Wallet",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Wallet__factory>;
-    getContractFactory(
-      name: "Coin",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Coin__factory>;
-    getContractFactory(
-      name: "GoodSamaritan",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.GoodSamaritan__factory>;
-    getContractFactory(
-      name: "INotifyable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.INotifyable__factory>;
-    getContractFactory(
-      name: "Wallet",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Wallet__factory>;
-    getContractFactory(
-      name: "Coin",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Coin__factory>;
-    getContractFactory(
-      name: "GoodSamaritan",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.GoodSamaritan__factory>;
-    getContractFactory(
-      name: "INotifyable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.INotifyable__factory>;
-    getContractFactory(
-      name: "Wallet",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Wallet__factory>;
-    getContractFactory(
       name: "NftHat",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.NftHat__factory>;
+    getContractFactory(
+      name: "NftShowingPortfolio",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.NftShowingPortfolio__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -140,21 +84,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC1155Receiver>;
     getContractAt(
-      name: "IERC20Permit",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC20Permit>;
-    getContractAt(
-      name: "IERC20",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC20>;
-    getContractAt(
-      name: "IERC721",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC721>;
-    getContractAt(
       name: "ERC165",
       address: string,
       signer?: ethers.Signer
@@ -165,70 +94,15 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC165>;
     getContractAt(
-      name: "Coin",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Coin>;
-    getContractAt(
-      name: "GoodSamaritan",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.GoodSamaritan>;
-    getContractAt(
-      name: "INotifyable",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.INotifyable>;
-    getContractAt(
-      name: "Wallet",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Wallet>;
-    getContractAt(
-      name: "Coin",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Coin>;
-    getContractAt(
-      name: "GoodSamaritan",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.GoodSamaritan>;
-    getContractAt(
-      name: "INotifyable",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.INotifyable>;
-    getContractAt(
-      name: "Wallet",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Wallet>;
-    getContractAt(
-      name: "Coin",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Coin>;
-    getContractAt(
-      name: "GoodSamaritan",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.GoodSamaritan>;
-    getContractAt(
-      name: "INotifyable",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.INotifyable>;
-    getContractAt(
-      name: "Wallet",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Wallet>;
-    getContractAt(
       name: "NftHat",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.NftHat>;
+    getContractAt(
+      name: "NftShowingPortfolio",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.NftShowingPortfolio>;
 
     // default types
     getContractFactory(
