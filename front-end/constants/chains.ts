@@ -112,6 +112,22 @@ const chains: Record<string, IChain> = {
       decimals: 18,
     },
   },
+  arbitrumGoerli: { 
+    chainIdHex: '0x66eed',
+    chainIdDec: 421613,
+    keyName: 'arbitrumGoerli',
+    name: 'Arbitrum Goerli',
+    nftHatContract: '0xBE5b9Bc68ac970337b6A9C92A319D3a3750beFfe',
+    // nftShowingPortfolioContract: '0x47488CA96d736E63365d75C471050b5074CBD076',
+    nftHatCollectionName: 'hat-v2-1',
+    rpcUrls: ['https://arb-goerli.g.alchemy.com/v2/demo'],
+    isChainSupported: true,
+    nativeCurrency: {
+      name: 'Arbitrum Goerli ETH',
+      symbol: 'AGOR',
+      decimals: 18,
+    },
+  },
   localhost: {
     chainIdHex: '0x7a69',
     chainIdDec: 31337,

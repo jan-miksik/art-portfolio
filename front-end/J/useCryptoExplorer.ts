@@ -15,35 +15,48 @@ export default function useCryptoExplorer() {
         getAssetLink: (contractAddress: string) => `https://goerli.looksrare.org/collections/${contractAddress.toLowerCase()}`,
       },
     },
+    arbitrumGoerli: {
+      opensea: {
+        getAssetLink: (contractAddressAndNftId: string) => `https://testnets.opensea.io/assets/arbitrum-goerli/${contractAddressAndNftId.toLowerCase()}`,
+        getCollectionLink: (collectionName: string) => `https://testnets.opensea.io/collection/${collectionName}`,
+      },
+      looksrare: {
+        getAssetLink: (contractAddressAndNftId: string) => `https://goerli.looksrare.org/collections/${contractAddressAndNftId.toLowerCase()}`,
+        getCollectionLink: (collectionName: string) => `https://testnets.opensea.io/collections/${collectionName}`,
+      },
+      etherscan: { 
+        getAssetLink: (contractAddress: string) => `https://goerli.looksrare.org/collections/${contractAddress.toLowerCase()}`,
+      },
+    },
   }
 
-  const getLooksrareAssetLink = (nftId: number | string) => {
-    if (mainSupportedChain.keyName === 'goerli') {
+  const getLooksrareCollectionLink = () => {
+    if (mainSupportedChain.keyName === 'arbitrumGoerli') {
+      const link = explorers[mainSupportedChain.keyName].looksrare.getAssetLink(`${mainSupportedChain.nftHatContract}`)
+      return link
+    }
+  }
   
-      const link = explorers.goerli.looksrare.getAssetLink(`${mainSupportedChain.nftHatContract}/${nftId}`)
+  const getLooksrareAssetLink = (nftId: number | string) => {
+    if (mainSupportedChain.keyName === 'arbitrumGoerli') {
+  
+      const link = explorers[mainSupportedChain.keyName].looksrare.getAssetLink(`${mainSupportedChain.nftHatContract}/${nftId}`)
       return link
     }
   }
   
   const getOpenseaCollectionLink = () => {
-    if (mainSupportedChain.keyName === 'goerli') {
+    if (mainSupportedChain.keyName === 'arbitrumGoerli') {
   
-      const link = explorers.goerli.opensea.getCollectionLink(`${mainSupportedChain.nftHatCollectionName}`)
-      return link
-    }
-  }
-  
-  const getLooksrareCollectionLink = () => {
-    if (mainSupportedChain.keyName === 'goerli') {
-      const link = explorers.goerli.looksrare.getAssetLink(`${mainSupportedChain.nftHatContract}`)
+      const link = explorers[mainSupportedChain.keyName].opensea.getCollectionLink(`${mainSupportedChain.nftHatCollectionName}`)
       return link
     }
   }
 
   const getOpenseaAssetLink = (nftId: number | string) => {
-    if (mainSupportedChain.keyName === 'goerli') {
+    if (mainSupportedChain.keyName === 'arbitrumGoerli') {
   
-      const link = explorers.goerli.opensea.getAssetLink(`${mainSupportedChain.nftHatContract}/${nftId}`)
+      const link = explorers[mainSupportedChain.keyName].opensea.getAssetLink(`${mainSupportedChain.nftHatContract}/${nftId}`)
       return link
     }
   }
@@ -55,7 +68,7 @@ export default function useCryptoExplorer() {
   }
 
   const getExplorerLink = ({type, marketplace, nftId}: ExplorerLinkTypes) => {
-    if (type === 'asset' && nftId) {
+    if (type === 'asset' && (nftId === 0 || nftId)) {
       switch (marketplace) {
         case 'looksrare':
           return getLooksrareAssetLink(nftId)

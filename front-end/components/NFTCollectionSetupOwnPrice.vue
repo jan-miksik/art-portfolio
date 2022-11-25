@@ -3,7 +3,7 @@
   <div class="nft-collection">
     <h2 class="nft-collection__title-breeze-edit">Hat</h2>
     <img src="/collect/collect.webp" class="nft-collection__mint-image" />
-    <div class="nft-collection__amount">{{ maxSupply?.toNumber() }} / {{mintedNfts?.toNumber()}}</div>
+    <div class="nft-collection__amount">{{ maxSupply }} / {{ mintedNfts }}</div>
 
     <div class="nft-collection__successfully-minted">
       <Transition name="fade">
@@ -56,8 +56,7 @@
 <script setup lang="ts">
 
 // TODOS
-
-
+// show price in USD for mint
 
 //////// extra stuff /////////
   // restyling #2
@@ -75,17 +74,9 @@
 
 
 // DONOS
-// warning if user does not have enough funds
-// links to opensea and another open markets
-// create description text, name and select or modify picture
-// restyling
-// polygon/mumbai version
-// add maxSupply/minted
 
-// error messages limit exceeded
-// info about wallet and connected chain
 
-import { BigNumber, ethers } from 'ethers'
+import { BigNumber, BigNumberish, ethers } from 'ethers'
 import useWeb3 from '~/J/useWeb3'
 import { mainSupportedChain } from '~/appSetup'
 import { connectedChain } from '~/constants/chains'
@@ -103,9 +94,9 @@ const requestedPrice = ref()
 const contract = ref()
 const mintInProgress = ref(false)
 const isMinted = ref(false)
-const maxSupply = ref<BigNumber>()
+const maxSupply = ref<BigNumberish>()
 const mintLimitExceeded = ref(false)
-const mintedNfts = ref<BigNumber>()
+const mintedNfts = ref<BigNumberish>()
 
 const handleMintNFT = async () => {
   
@@ -117,11 +108,16 @@ const handleMintNFT = async () => {
   if (confirmation) {
     requestedPrice.value = undefined
     mintedNfts.value = await contractReadOnly.mintedNFTs()
+    console.log('mintedNfts.value: ', mintedNfts.value)
     isMinted.value = true
   }
 }
 
-const nftId = computed(() => mintedNfts.value?.toNumber() ? mintedNfts.value?.toNumber() - 1 : 0)
+const nftId = computed(() => mintedNfts.value ? Number(mintedNfts.value) - 1 : 0)
+console.log('mintedNfts.value: ', mintedNfts.value)
+console.log('nftId: ', )
+const explorerLink = computed(() => getExplorerLink({type: 'asset', marketplace: 'opensea', nftId: nftId.value}))
+
 
 const mintAction = async () => {
   
@@ -132,7 +128,7 @@ const mintAction = async () => {
     )
 
   try {
-    const txMint = await contract.value.mint(connectedAddress.value, {
+    const txMint = await contract.value.safeMint(connectedAddress.value, {
       value: ethers.utils.parseEther(requestedPrice.value.toString())
     })
     return await txMint.wait()
@@ -165,10 +161,10 @@ const contractActions = async (action: string) => {
 
 const checkMintingLimit = async (account?: string) => {
   if (account || connectedAddress.value) {
-    const remainingMints: BigNumber = await contractReadOnly.allowedMintCount(
+    const remainingMints: BigNumberish = await contractReadOnly.allowedMintCount(
       account || connectedAddress.value
-    )
-    mintLimitExceeded.value = remainingMints.toNumber() === 0
+      )
+    mintLimitExceeded.value = remainingMints === 0
   }
 }
 
@@ -189,7 +185,7 @@ const loadContractData = async () => {
   window.jsonRpcProvider = useWeb3().jsonRpcProvider
 
   maxSupply.value = await contractReadOnly.MAX_SUPPLY()
-  mintedNfts.value = await contractReadOnly.mintedNFTs()
+  mintedNfts.value = +await contractReadOnly.mintedNFTs()
 
   checkMintingLimit()
 }
@@ -296,6 +292,7 @@ onMounted(async () => {
 
   &__opensea-link
     position absolute
+    cursor pointer
     bottom 37px
     left 12px
     transition all 0.391s
@@ -308,6 +305,7 @@ onMounted(async () => {
 
   &__looksrare-link
     position absolute
+    cursor pointer
     top 47px
     right 20px
     transition all 0.391s
@@ -369,53 +367,11 @@ onMounted(async () => {
 .fade-leave-active
   transition opacity 0.5s
 
-
 .fade-enter-from
   opacity 0
-  // translate 0 0
-  // rotate 20deg
 
 .fade-leave-to
   opacity 0
-  // translate 0 100px
-  // rotate 20deg
-
-/* unused variant with morphing circle
-.nft-collection
-
-background ghostwhite
-background-clip padding-box // !importanté
-border solid 5px transparent // !importanté
-border-radius 33% 67% 58% 42% / 63% 68% 32% 37%
-animation morphing 60s infinite alternate ease-in-out
-
-&::before
-  content ""
-  position absolute
-  top 0
-  right 0
-  bottom 0
-  left 0
-  z-index -1
-  margin -1px // !importanté
-  border-radius inherit // !importanté
-  // margin -1px
-  // border-radius inherit
-  background linear-gradient(346deg, #1e9e6aa8, #0d0a023b 28%, #0f0d000a 80%, #448acc8a)
-
-@keyframes morphing
-  0%
-    border-radius 78% 80% 78% 89%/66% 59% 91% 57%
-
-  25%
-    border-radius 58% 42% 75% 25% / 76% 46% 54% 24%
-
-  50%
-    border-radius 50% 50% 33% 67% / 55% 27% 73% 45%
-
-  100%
-    border-radius 33% 67% 58% 42% / 63% 68% 32% 37%
-*/
 
 </style>
 
