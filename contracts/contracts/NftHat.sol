@@ -116,8 +116,8 @@ contract NftHat is ERC721, IERC2981, Ownable, ReentrancyGuard {
     function contractURI() public view returns (string memory) {
         bytes memory dataURI = abi.encodePacked(
             '{',
-            '"name": "Hat",',
-            '"description": "While there are not many official records of hats before 3,000 BC, they probably were commonplace before that (wiki)",',
+            '"name": "Hello",',
+            '"description": "An expression or gesture of greeting, used interjectionally in greeting, in answering the telephone, or to express surprise. plural - hellos",',
             '"image": "ipfs://bafkreifivloyeuiky6ozz7w7uke2lb2amutsu4bnb76i2pv4hdqvv7uv4i",',
             '"external_link": "https://janmiksik.ooo",',
             '"seller_fee_basis_points": 500,',
@@ -144,7 +144,7 @@ contract NftHat is ERC721, IERC2981, Ownable, ReentrancyGuard {
     {
         bytes memory dataURI = abi.encodePacked(
             '{',
-            '"name": "Hat ~',
+            '"name": "Hello ~',
             Strings.toString(tokenId),
             '",',
             '"description": "",',

@@ -1,7 +1,7 @@
 <template>
   <!-- <Web3ConnectionInfo /> -->
   <div class="nft-collection">
-    <h2 class="nft-collection__title-breeze-edit">Hat</h2>
+    <h2 class="nft-collection__title-breeze-edit">Hello</h2>
     <img src="/collect/collect.webp" class="nft-collection__mint-image" />
     <div class="nft-collection__amount">{{ maxSupply }} / {{ mintedNfts }}</div>
 
