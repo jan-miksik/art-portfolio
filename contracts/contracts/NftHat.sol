@@ -58,7 +58,7 @@ contract NftHat is ERC721, IERC2981, Ownable, ReentrancyGuard {
 
     /** PAYOUT **/
 
-    function withdraw() public onlyOwner nonReentrant {
+    function withdraw() public onlyOwner {
         uint256 balance = address(this).balance;
 
         Address.sendValue(payable(owner()), balance);
@@ -116,7 +116,7 @@ contract NftHat is ERC721, IERC2981, Ownable, ReentrancyGuard {
     function contractURI() public view returns (string memory) {
         bytes memory dataURI = abi.encodePacked(
             '{',
-            '"name": "Hat",',
+            '"name": "Digital merch",',
             '"description": "While there are not many official records of hats before 3,000 BC, they probably were commonplace before that (wiki)",',
             '"image": "ipfs://bafkreifivloyeuiky6ozz7w7uke2lb2amutsu4bnb76i2pv4hdqvv7uv4i",',
             '"external_link": "https://janmiksik.ooo",',
