@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0 <0.9.0;
+pragma solidity >=0.8.0 <0.8.17;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
@@ -9,10 +9,10 @@ import '@openzeppelin/contracts/utils/Strings.sol';
 import '@openzeppelin/contracts/utils/Base64.sol';
 import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 
-contract NftHat is ERC721, IERC2981, Ownable, ReentrancyGuard {
+contract HelloNft is ERC721, IERC2981, Ownable, ReentrancyGuard {
     using Counters for Counters.Counter;
 
-    constructor() ERC721('Hat', 'HAT') {
+    constructor() ERC721('Hello', 'HEO') {
         _royaltyReciever = owner();
     }
 

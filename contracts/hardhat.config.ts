@@ -7,7 +7,7 @@ dotenv.config()
 const { TESTNET_PRIVATE_KEY, ALCHEMY_API_KEY,ALCHEMY_API_KEY_ARBITRUM_GOERLI, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, ALCHEMY_API_KEY_MUMBAI, ARBISCAN_API_KEY } = process.env as Record<string, string>;
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.17",
+  solidity: "0.8.16",
   networks: {
     goerli: {
       url: `https://eth-goerli.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,

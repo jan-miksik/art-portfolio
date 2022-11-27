@@ -21,22 +21,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC2981__factory>;
     getContractFactory(
-      name: "ERC1155",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC1155__factory>;
-    getContractFactory(
-      name: "IERC1155MetadataURI",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC1155MetadataURI__factory>;
-    getContractFactory(
-      name: "IERC1155",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC1155__factory>;
-    getContractFactory(
-      name: "IERC1155Receiver",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC1155Receiver__factory>;
-    getContractFactory(
       name: "ERC721",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC721__factory>;
@@ -61,13 +45,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC165__factory>;
     getContractFactory(
-      name: "NftHat",
+      name: "TestHelloNft",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.NftHat__factory>;
+    ): Promise<Contracts.TestHelloNft__factory>;
     getContractFactory(
-      name: "NftShowingPortfolio",
+      name: "HelloNft",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.NftShowingPortfolio__factory>;
+    ): Promise<Contracts.HelloNft__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -79,26 +63,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IERC2981>;
-    getContractAt(
-      name: "ERC1155",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ERC1155>;
-    getContractAt(
-      name: "IERC1155MetadataURI",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC1155MetadataURI>;
-    getContractAt(
-      name: "IERC1155",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC1155>;
-    getContractAt(
-      name: "IERC1155Receiver",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC1155Receiver>;
     getContractAt(
       name: "ERC721",
       address: string,
@@ -130,15 +94,15 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC165>;
     getContractAt(
-      name: "NftHat",
+      name: "TestHelloNft",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.NftHat>;
+    ): Promise<Contracts.TestHelloNft>;
     getContractAt(
-      name: "NftShowingPortfolio",
+      name: "HelloNft",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.NftShowingPortfolio>;
+    ): Promise<Contracts.HelloNft>;
 
     // default types
     getContractFactory(
