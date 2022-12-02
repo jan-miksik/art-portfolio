@@ -1,12 +1,12 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/jm/projects/own/art-portfolio/contracts/contracts/NftHat.sol": {
-      "lastModificationDate": 1666351177025,
-      "contentHash": "0187abd7d431336db387df163d0dae95",
-      "sourceName": "contracts/NftHat.sol",
+    "/home/training/contracts/echidnaTest.sol": {
+      "lastModificationDate": 1669489658674,
+      "contentHash": "6c8c34ca2d530d3b03ed50ece42a8019",
+      "sourceName": "contracts/echidnaTest.sol",
       "solcConfig": {
-        "version": "0.8.9",
+        "version": "0.8.16",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -29,108 +29,62 @@
         }
       },
       "imports": [
-        "@openzeppelin/contracts/token/ERC1155/ERC1155.sol",
-        "@openzeppelin/contracts/security/Pausable.sol",
+        "./HelloNft.sol"
+      ],
+      "versionPragmas": [],
+      "artifacts": [
+        "TestHelloNft"
+      ]
+    },
+    "/home/training/contracts/HelloNft.sol": {
+      "lastModificationDate": 1669485972190,
+      "contentHash": "ee9d3c524ace686b2654f0232a8685f7",
+      "sourceName": "contracts/HelloNft.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
         "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol",
         "@openzeppelin/contracts/security/ReentrancyGuard.sol",
         "@openzeppelin/contracts/utils/Counters.sol",
         "@openzeppelin/contracts/interfaces/IERC2981.sol",
         "@openzeppelin/contracts/utils/Strings.sol",
-        "@openzeppelin/contracts/utils/Base64.sol"
+        "@openzeppelin/contracts/utils/Base64.sol",
+        "@openzeppelin/contracts/token/ERC721/ERC721.sol"
       ],
       "versionPragmas": [
-        "^0.8.9"
+        ">=0.8.0 <0.8.17"
       ],
       "artifacts": [
-        "NftHat"
+        "HelloNft"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC1155/ERC1155.sol": {
-      "lastModificationDate": 1665666837067,
-      "contentHash": "9be05ac5a08ad0370e3cc36665ca490c",
-      "sourceName": "@openzeppelin/contracts/token/ERC1155/ERC1155.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./IERC1155.sol",
-        "./IERC1155Receiver.sol",
-        "./extensions/IERC1155MetadataURI.sol",
-        "../../utils/Address.sol",
-        "../../utils/Context.sol",
-        "../../utils/introspection/ERC165.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "ERC1155"
-      ]
-    },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/security/Pausable.sol": {
-      "lastModificationDate": 1665666834759,
-      "contentHash": "25c8108f36fdd472bc78d4c4af240c11",
-      "sourceName": "@openzeppelin/contracts/security/Pausable.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../utils/Context.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "Pausable"
-      ]
-    },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
-      "lastModificationDate": 1665666834755,
+    "/home/training/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1669232642296,
       "contentHash": "e436cea06129be2c73cda4b1acc848b5",
       "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
       "solcConfig": {
-        "version": "0.8.9",
+        "version": "0.8.16",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -162,49 +116,12 @@
         "Ownable"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol": {
-      "lastModificationDate": 1665666837947,
-      "contentHash": "6a99607f60a77d468b7ed41303ea4a6c",
-      "sourceName": "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../ERC1155.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "ERC1155Supply"
-      ]
-    },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol": {
-      "lastModificationDate": 1665666834759,
+    "/home/training/node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol": {
+      "lastModificationDate": 1669232642296,
       "contentHash": "92f9448b23a90ea3bb932ee55cc3ccce",
       "sourceName": "@openzeppelin/contracts/security/ReentrancyGuard.sol",
       "solcConfig": {
-        "version": "0.8.9",
+        "version": "0.8.16",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -234,12 +151,12 @@
         "ReentrancyGuard"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Counters.sol": {
-      "lastModificationDate": 1665666834759,
+    "/home/training/node_modules/@openzeppelin/contracts/utils/Counters.sol": {
+      "lastModificationDate": 1669232642297,
       "contentHash": "74654e3ae5d7f39555055dfe244dab7a",
       "sourceName": "@openzeppelin/contracts/utils/Counters.sol",
       "solcConfig": {
-        "version": "0.8.9",
+        "version": "0.8.16",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -269,12 +186,12 @@
         "Counters"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/interfaces/IERC2981.sol": {
-      "lastModificationDate": 1665666834759,
+    "/home/training/node_modules/@openzeppelin/contracts/interfaces/IERC2981.sol": {
+      "lastModificationDate": 1669232642297,
       "contentHash": "608566bc5327454ba54e487e7c226ff6",
       "sourceName": "@openzeppelin/contracts/interfaces/IERC2981.sol",
       "solcConfig": {
-        "version": "0.8.9",
+        "version": "0.8.16",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -306,12 +223,12 @@
         "IERC2981"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
-      "lastModificationDate": 1665666834759,
+    "/home/training/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
+      "lastModificationDate": 1669232642297,
       "contentHash": "cf46906c4035f51639a22265066a9e78",
       "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
       "solcConfig": {
-        "version": "0.8.9",
+        "version": "0.8.16",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -341,12 +258,12 @@
         "Strings"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Base64.sol": {
-      "lastModificationDate": 1665666834759,
+    "/home/training/node_modules/@openzeppelin/contracts/utils/Base64.sol": {
+      "lastModificationDate": 1669232642297,
       "contentHash": "8f868da0a90e46a85baa348a896d1702",
       "sourceName": "@openzeppelin/contracts/utils/Base64.sol",
       "solcConfig": {
-        "version": "0.8.9",
+        "version": "0.8.16",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -376,12 +293,12 @@
         "Base64"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC1155/IERC1155.sol": {
-      "lastModificationDate": 1665666837067,
-      "contentHash": "d5a8f6e07ca38ec384856cfe9f08a867",
-      "sourceName": "@openzeppelin/contracts/token/ERC1155/IERC1155.sol",
+    "/home/training/node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
+      "lastModificationDate": 1669232643145,
+      "contentHash": "79ff1a7eb801a525aa315fb7a679eede",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/ERC721.sol",
       "solcConfig": {
-        "version": "0.8.9",
+        "version": "0.8.16",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -404,130 +321,27 @@
         }
       },
       "imports": [
-        "../../utils/introspection/IERC165.sol"
+        "./IERC721.sol",
+        "./IERC721Receiver.sol",
+        "./extensions/IERC721Metadata.sol",
+        "../../utils/Address.sol",
+        "../../utils/Context.sol",
+        "../../utils/Strings.sol",
+        "../../utils/introspection/ERC165.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
       ],
       "artifacts": [
-        "IERC1155"
+        "ERC721"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol": {
-      "lastModificationDate": 1665666837067,
-      "contentHash": "9f8822b72fe2702979e40160cb6d9636",
-      "sourceName": "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../../utils/introspection/IERC165.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IERC1155Receiver"
-      ]
-    },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol": {
-      "lastModificationDate": 1665666837947,
-      "contentHash": "9148c2e10c4efb12c71a7f080da5559b",
-      "sourceName": "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../IERC1155.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IERC1155MetadataURI"
-      ]
-    },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Address.sol": {
-      "lastModificationDate": 1665666834759,
-      "contentHash": "c476b3895a94798b88a4bb97399e6dfe",
-      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.1"
-      ],
-      "artifacts": [
-        "Address"
-      ]
-    },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1665666834759,
+    "/home/training/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1669232642297,
       "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
       "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
-        "version": "0.8.9",
+        "version": "0.8.16",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -557,12 +371,191 @@
         "Context"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
-      "lastModificationDate": 1665666837071,
+    "/home/training/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+      "lastModificationDate": 1669232643147,
+      "contentHash": "03e6768535ac4da0e9756f1d8a4a018a",
+      "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC165"
+      ]
+    },
+    "/home/training/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+      "lastModificationDate": 1669232643145,
+      "contentHash": "ec99d946db3685a3630554aa6055bd7f",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../utils/introspection/IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC721"
+      ]
+    },
+    "/home/training/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
+      "lastModificationDate": 1669232643145,
+      "contentHash": "c22d4395e33763de693fd440c6fd10e1",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC721Receiver"
+      ]
+    },
+    "/home/training/node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
+      "lastModificationDate": 1669232643411,
+      "contentHash": "efbc0d15b80a74e34dbe8da0f3e879bb",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../IERC721.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC721Metadata"
+      ]
+    },
+    "/home/training/node_modules/@openzeppelin/contracts/utils/Address.sol": {
+      "lastModificationDate": 1669232642297,
+      "contentHash": "c476b3895a94798b88a4bb97399e6dfe",
+      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.1"
+      ],
+      "artifacts": [
+        "Address"
+      ]
+    },
+    "/home/training/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
+      "lastModificationDate": 1669232643147,
       "contentHash": "0e7db055ce108f9da7bb6686a00287c0",
       "sourceName": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
       "solcConfig": {
-        "version": "0.8.9",
+        "version": "0.8.16",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -592,41 +585,6 @@
       ],
       "artifacts": [
         "ERC165"
-      ]
-    },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
-      "lastModificationDate": 1665666837075,
-      "contentHash": "03e6768535ac4da0e9756f1d8a4a018a",
-      "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IERC165"
       ]
     }
   }

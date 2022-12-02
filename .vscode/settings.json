@@ -1,0 +1,6 @@
+{
+  "hardhat-language-server.trace.server.verbosity": "verbose",
+  "hardhat.formatter": "forge",
+  "hardhat.telemetry": true,
+  "solidity.defaultCompiler": "localNodeModule"
+}

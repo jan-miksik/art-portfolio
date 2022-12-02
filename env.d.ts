@@ -9,4 +9,5 @@ interface Window {
   contractReadOnly: any;
   jsonRpcProvider: any;
   ethers: any;
+  contractStpReadOnly: any;
 }

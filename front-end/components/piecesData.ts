@@ -5,7 +5,7 @@ export enum Topics {
   GEOMETRY = 'geometry',
   NODE_AVATARS = 'node avatars',
   PUZZLE = 'puzzle',
-  NFT_COLLECTION = 'nft collection'
+  NFT_COLLECTION = 'collection'
 }
 
 // export enum TopicIcon {

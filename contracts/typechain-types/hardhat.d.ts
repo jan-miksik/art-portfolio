@@ -21,29 +21,21 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC2981__factory>;
     getContractFactory(
-      name: "Pausable",
+      name: "ERC721",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Pausable__factory>;
+    ): Promise<Contracts.ERC721__factory>;
     getContractFactory(
-      name: "ERC1155",
+      name: "IERC721Metadata",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC1155__factory>;
+    ): Promise<Contracts.IERC721Metadata__factory>;
     getContractFactory(
-      name: "ERC1155Supply",
+      name: "IERC721",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC1155Supply__factory>;
+    ): Promise<Contracts.IERC721__factory>;
     getContractFactory(
-      name: "IERC1155MetadataURI",
+      name: "IERC721Receiver",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC1155MetadataURI__factory>;
-    getContractFactory(
-      name: "IERC1155",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC1155__factory>;
-    getContractFactory(
-      name: "IERC1155Receiver",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC1155Receiver__factory>;
+    ): Promise<Contracts.IERC721Receiver__factory>;
     getContractFactory(
       name: "ERC165",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -53,13 +45,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC165__factory>;
     getContractFactory(
-      name: "NftArbitraryPrice",
+      name: "TestHelloNft",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.NftArbitraryPrice__factory>;
+    ): Promise<Contracts.TestHelloNft__factory>;
     getContractFactory(
-      name: "NftHat",
+      name: "HelloNft",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.NftHat__factory>;
+    ): Promise<Contracts.HelloNft__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -72,35 +64,25 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC2981>;
     getContractAt(
-      name: "Pausable",
+      name: "ERC721",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Pausable>;
+    ): Promise<Contracts.ERC721>;
     getContractAt(
-      name: "ERC1155",
+      name: "IERC721Metadata",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ERC1155>;
+    ): Promise<Contracts.IERC721Metadata>;
     getContractAt(
-      name: "ERC1155Supply",
+      name: "IERC721",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ERC1155Supply>;
+    ): Promise<Contracts.IERC721>;
     getContractAt(
-      name: "IERC1155MetadataURI",
+      name: "IERC721Receiver",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.IERC1155MetadataURI>;
-    getContractAt(
-      name: "IERC1155",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC1155>;
-    getContractAt(
-      name: "IERC1155Receiver",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC1155Receiver>;
+    ): Promise<Contracts.IERC721Receiver>;
     getContractAt(
       name: "ERC165",
       address: string,
@@ -112,15 +94,15 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC165>;
     getContractAt(
-      name: "NftArbitraryPrice",
+      name: "TestHelloNft",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.NftArbitraryPrice>;
+    ): Promise<Contracts.TestHelloNft>;
     getContractAt(
-      name: "NftHat",
+      name: "HelloNft",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.NftHat>;
+    ): Promise<Contracts.HelloNft>;
 
     // default types
     getContractFactory(

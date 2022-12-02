@@ -1,96 +1,75 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity >=0.8.0 <0.8.17;
 
-import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 import '@openzeppelin/contracts/interfaces/IERC2981.sol';
 import '@openzeppelin/contracts/utils/Strings.sol';
 import '@openzeppelin/contracts/utils/Base64.sol';
+import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 
-contract NftHat is ERC1155, IERC2981, Ownable, ReentrancyGuard {
-    /**
-     * @dev `_uri` is set only to satisfy the constructor of ERC1155. Otherwise uri for NFT token metadata is set on-chain.
-     */
-    constructor(string memory _uri) ERC1155(_uri) {
+contract HelloNft is ERC721, IERC2981, Ownable, ReentrancyGuard {
+    using Counters for Counters.Counter;
+
+    constructor() ERC721('Hello', 'HEO') {
         _royaltyReciever = owner();
     }
 
     /** MINTING **/
+    mapping(address => uint8) private mintCountMap;
 
-    using Counters for Counters.Counter;
+    uint16 public constant MAX_SUPPLY = 1000;
 
-    // counting of minted NFTs by address
-    mapping(address => uint256) private mintCountMap;
+    uint8 public constant MINT_LIMIT_PER_WALLET = 7;
 
-    uint256 public constant MAX_SUPPLY = 1000;
+    Counters.Counter private _supplyCounter;
 
-    uint256 public constant MINT_LIMIT_PER_WALLET = 7;
-
-    Counters.Counter private supplyCounter;
-
-    event PermanentURI(string _value, uint256 indexed _id);
-
-    function allowedMintCount(address minter) public view returns (uint256) {
+    function allowedMintCount(address minter) public view returns (uint8) {
         return MINT_LIMIT_PER_WALLET - mintCountMap[minter];
     }
 
-    function updateMintCount(address minter, uint256 count) private {
+    function updateMintCount(address minter, uint8 count) private {
         mintCountMap[minter] += count;
     }
 
     function _checkIfCanMint() internal {
+        require(
+            Counters.current(_supplyCounter) < MAX_SUPPLY,
+            'Exceeds max supply'
+        );
         if (allowedMintCount(msg.sender) >= 1) {
             updateMintCount(msg.sender, 1);
         } else {
             revert('Minting limit exceeded');
         }
-        require(
-            Counters.current(supplyCounter) < MAX_SUPPLY,
-            'Exceeds max supply'
-        );
     }
 
     function mintedNFTs() public view returns (uint256) {
-        return Counters.current(supplyCounter);
+        return Counters.current(_supplyCounter);
     }
 
-    /**
-     * @dev
-     * `id` for token id in _mint is `Counters.current(supplyCounter)`. Each NFT token has unique id
-     * `amount` in _mint is set 1 to restrict multimint
-     * `data` in _mint is set to `''` because are not used in this contract
-     */
-    function _mintWrapper(address account) internal virtual returns (uint256) {
+    function safeMint(address to) public payable nonReentrant {
         _checkIfCanMint();
-        _mint(account, Counters.current(supplyCounter), 1, '');
-        emit PermanentURI(
-            uri(Counters.current(supplyCounter)),
-            Counters.current(supplyCounter)
-        );
-        supplyCounter.increment();
-        return Counters.current(supplyCounter);
-    }
-
-    function mint(address account) public payable virtual nonReentrant {
-        _mintWrapper(account);
+        uint256 tokenId = _supplyCounter.current();
+        _safeMint(to, tokenId);
+        _supplyCounter.increment();
     }
 
     /** PAYOUT **/
 
-    function withdraw() public nonReentrant {
+    function withdraw() public onlyOwner {
         uint256 balance = address(this).balance;
 
         Address.sendValue(payable(owner()), balance);
     }
 
-    /** ROYALTIES **/
+    // /** ROYALTIES **/
 
-    /**
-     * @dev _royaltyReciever is accepted by some marketplaces.
-     * Other marketplaces may send royalty based on specification in contractURI metadata.
-     */
+    // /**
+    //  * @dev _royaltyReciever is accepted by some marketplaces.
+    //  * Other marketplaces may send royalty based on specification in contractURI metadata.
+    //  */
     address private _royaltyReciever = address(this);
 
     function _setRoyaltyReciever(address newRoyaltyReceiver)
@@ -118,12 +97,12 @@ contract NftHat is ERC1155, IERC2981, Ownable, ReentrancyGuard {
         return (_royaltyReciever, (salePrice * 500) / 10000);
     }
 
-    // EIP2981 standard Interface return. Adds to ERC1155 and ERC165 Interface returns.
+    // EIP2981 standard Interface return. Adds to ERC721 and ERC165 Interface returns.
     function supportsInterface(bytes4 interfaceId)
         public
         view
         virtual
-        override(ERC1155, IERC165)
+        override(ERC721, IERC165)
         returns (bool)
     {
         return (interfaceId == type(IERC2981).interfaceId ||
@@ -137,9 +116,9 @@ contract NftHat is ERC1155, IERC2981, Ownable, ReentrancyGuard {
     function contractURI() public view returns (string memory) {
         bytes memory dataURI = abi.encodePacked(
             '{',
-            '"name": "Hat ~^~",',
-            '"description": "Outsourcing mint price decision to customers",',
-            '"image": "ipfs://bafybeibwr75ag7yw4m34brikrrlt6k3ntvo6kwavz5u6e2tk5vkeckv3du",',
+            '"name": "Hello",',
+            '"description": "An expression or gesture of greeting, used interjectionally in greeting, in answering the telephone, or to express surprise. plural - hellos",',
+            '"image": "ipfs://bafkreifivloyeuiky6ozz7w7uke2lb2amutsu4bnb76i2pv4hdqvv7uv4i",',
             '"external_link": "https://janmiksik.ooo",',
             '"seller_fee_basis_points": 500,',
             '"fee_recipient": "',
@@ -156,7 +135,7 @@ contract NftHat is ERC1155, IERC2981, Ownable, ReentrancyGuard {
             );
     }
 
-    function uri(uint256 tokenId)
+    function tokenURI(uint256 tokenId)
         public
         view
         virtual
@@ -165,12 +144,12 @@ contract NftHat is ERC1155, IERC2981, Ownable, ReentrancyGuard {
     {
         bytes memory dataURI = abi.encodePacked(
             '{',
-            '"name": "Hat @',
+            '"name": "Hello ~',
             Strings.toString(tokenId),
             '",',
-            '"description": "Outsourcing mint price decision to customers",',
+            '"description": "",',
             '"image": "',
-            'ipfs://bafybeibwr75ag7yw4m34brikrrlt6k3ntvo6kwavz5u6e2tk5vkeckv3du',
+            'ipfs://bafkreifivloyeuiky6ozz7w7uke2lb2amutsu4bnb76i2pv4hdqvv7uv4i',
             '"',
             '}'
         );

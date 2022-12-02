@@ -1,3 +1,3 @@
 import chains from "~/constants/chains";
 
-export const mainSupportedChain = chains.goerli
+export const mainSupportedChain = chains.arbitrumGoerli
