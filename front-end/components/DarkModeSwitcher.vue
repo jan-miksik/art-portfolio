@@ -49,7 +49,7 @@ const switchMode = () => {
     document.documentElement.style.setProperty('--image-filter-invert', '0')
   }
 
-  if (amountOfSwitching.value === 25) {
+  if (amountOfSwitching.value % 25 === 25) {
     // alert('filter switch')
     document.body.classList.toggle('rotate-all')
     setTimeout(() => {
@@ -63,8 +63,8 @@ const switchMode = () => {
     // amountOfSwitching.value = 0
   }
 
-  if (amountOfSwitching.value === 21) {
-    // alert('Seems, that you like switching')
+  if (amountOfSwitching.value === 20) {
+    // alert('Seems, you like switching')
   }
 
   // if (amountOfSwitching.value === 32) {
@@ -125,7 +125,7 @@ const switchMode = () => {
   position absolute
   width 76px
   right 0
-  top 5rem
+  bottom 5rem
   font-size 14px
   font-weight 500
   color white

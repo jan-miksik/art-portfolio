@@ -100,30 +100,8 @@ const collectIcon = ref(
   })
 )
 
-// const topicOpenIcon = {
-//   icon: collectIcon,
-//   topic: Topics.NFT_COLLECTION
-// }
-
 </script>
 
-<style scoped lang="stylus">
-a
-  color #42b983
-
-
-label
-  margin 0 0.5em
-  font-weight bold
-
-
-code
-  background-color #eee
-  padding 2px 4px
-  border-radius 4px
-  color #304455
-
-</style>
 <style lang="stylus">
 // /
 // Sans Topic
@@ -159,7 +137,7 @@ code
 // Node Avatars
 // /
 .homepage__node-avatars-link
-  top 9vh
+  top 20vh
   left 10vw
   width 100px
 
