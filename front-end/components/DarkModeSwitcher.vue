@@ -124,7 +124,7 @@ const switchMode = () => {
 #dark-mode-switcher
   position absolute
   width 76px
-  right 0
+  left calc(100vw - 76px)
   bottom 5rem
   font-size 14px
   font-weight 500

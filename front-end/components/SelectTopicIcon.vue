@@ -78,7 +78,7 @@ const mainStyleClasses = computed(() => [
   &__is-selected-topic
     top 0
     transform initial
-    right calc(50%)
+    left calc(50% - 115px)
     position fixed
 
   &__is-selected-topic .open-topic-icon__topic-thumbnail-img
