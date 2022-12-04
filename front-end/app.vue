@@ -27,6 +27,8 @@ onMounted(async () => {
 html
   scroll-behavior smooth
   transition all 0.6s
+  overflow-y scroll
+  overflow-x hidden
 
 @font-face
   font-family RalewayDots
@@ -48,6 +50,23 @@ body
   margin 0
   overflow-x hidden
   background-color ghostwhite
+
+// Scrollbar
+body
+  --scrollbar-foreground rgb(248 248 255)
+  --scrollbar-background #000
+  // Foreground, Background
+  scrollbar-color var(--scrollbar-foreground) var(--scrollbar-background)
+
+body::-webkit-scrollbar
+  width 5px
+  height 5px
+
+body::-webkit-scrollbar-thumb // Foreground
+  background var(--scrollbar-foreground)
+
+body::-webkit-scrollbar-track // Background
+  background var(--scrollbar-background)
 
 
 .dark-mode

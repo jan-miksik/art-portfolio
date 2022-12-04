@@ -107,15 +107,25 @@ const collectIcon = ref(
 // Sans Topic
 // /
 .homepage__sans-topic-link
-  left 50vw
-  top 25vh
-  width 110px
+  right 10vw
+  top 30vh
+  width 135px
 
   @media (min-width 700px)
-    width 135px
+    right 35vw
+    width 165px
 
 .open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
-  left calc(100vw - 135px)
+  right -10px
+
+.open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
+  .open-topic-icon__topic-thumbnail-img
+    transform scale(0.65, 0.65)
+    translate 25px 25px
+
+.open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon)
+  .open-topic-icon__topic-thumbnail-img
+    filter drop-shadow(0 0 2px gray)
 
 
 // /
@@ -124,14 +134,17 @@ const collectIcon = ref(
 .homepage__geometry-link
   top 55vh
   left 15vw
-  width 80px
+  width 50px
 
   @media (min-width 700px)
-    width 100px
+    width 65px
 
 .open-topic-icon:is(.homepage__geometry-link):is(.open-topic-icon__is-unselected-topic)
-  left -8px
+  left -3px
 
+.open-topic-icon:is(.homepage__geometry-link):is(.open-topic-icon)
+  .open-topic-icon__topic-thumbnail-img
+    filter drop-shadow(0 0 2px #4488ff9e)
 
 // /
 // Node Avatars
@@ -147,19 +160,27 @@ const collectIcon = ref(
 .open-topic-icon:is(.homepage__node-avatars-link):is(.open-topic-icon__is-unselected-topic)
   left -8px
 
+.open-topic-icon:is(.homepage__node-avatars-link):is(.open-topic-icon)
+  .open-topic-icon__topic-thumbnail-img
+    filter drop-shadow(0 0 1px #b2d5ff)
+
 // /
 // Puzzle
 // /
 .homepage__puzzle-link
   top 70vh
-  left 80vw
-  width 100px
+  right 38vw
+  width 80px
 
   @media (min-width 700px)
-    width 115px
+    width 95px
 
 .open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon__is-unselected-topic)
-  left calc(100vw - 125px)
+  right -8px
+
+.open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon)
+  .open-topic-icon__topic-thumbnail-img
+    filter drop-shadow(0 1px 1px gray)
 
 // /
 // NFT Collection

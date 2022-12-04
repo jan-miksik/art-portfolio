@@ -52,8 +52,8 @@ const mainStyleClasses = computed(() => [
   flex-direction column
   gap 0.25rem
 
-  &__topic-thumbnail-img
-    filter drop-shadow(0 1px 0 gray)
+  // &__topic-thumbnail-img
+  //   // filter drop-shadow(0 0 0 gray)
 
   &__topic-label
     font-size 1rem
@@ -62,6 +62,7 @@ const mainStyleClasses = computed(() => [
 
   &__is-unselected-topic
     transform scale(0.8, 0.8)
+    opacity 0.75
 
   &__is-unselected-topic .open-topic-icon__topic-label
     visibility hidden
@@ -78,11 +79,12 @@ const mainStyleClasses = computed(() => [
   &__is-selected-topic
     top 0
     transform initial
-    left calc(50% - 115px)
+    // left calc(50% - 115px)
+    right calc(50% - 35px)
     position fixed
 
   &__is-selected-topic .open-topic-icon__topic-thumbnail-img
-    opacity 0.3
+    opacity 0.1
     translate 50px
 
 .open-topic-icon:hover .open-topic-icon__topic-label
