@@ -229,7 +229,7 @@ const selectImage = (id: string) => {
 }
 
 .dark-mode .nft-collection-pieces__is-active-image-backdrop {
-  background-color: rgb(255 255 255 / 50%);
+  background-color: unset
 }
 
 /* / Animation / */
