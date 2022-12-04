@@ -254,6 +254,106 @@ const piecesData: {[key: string]: IPiece[]} = {
 
   GEOMETRY: [
     {
+      id: '100',
+      name: 'hranice - border - सरहद्‌द(doi)',
+      description: '',
+      image: {
+        id: '100',
+        url:
+        'geometry/hranice - border - सरहद्‌द(doi),2019,drawing on paper,30x21cm.jpg',
+        lastUpdated: new Date('2019').getTime()
+      },
+      topic: Topics.GEOMETRY,
+      price: 0,
+      technique: Techniques.DRAWING,
+      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
+      sizeInCm: {
+        x: 30,
+        y: 21
+      },
+      tags: [],
+      created: new Date('2019'),
+      updated: undefined
+    },
+    {
+      id: '101',
+      name: 'mnohoúhelník - (he)מְצוּלָע - polygon',
+      description: '',
+      image: {
+        id: '101',
+        url:
+        'geometry/mnohoúhelník - (he)מְצוּלָע - polygon,2019,30x21cm.jpg',
+        lastUpdated: new Date('2019').getTime()
+      },
+      topic: Topics.GEOMETRY,
+      price: 0,
+      technique: Techniques.DRAWING,
+      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
+      sizeInCm: {
+        x: 30,
+        y: 21
+      },
+      tags: [],
+      created: new Date('2019'),
+      updated: undefined
+    },
+    {
+      id: '15',
+      name: '簡略化(jp) - zjednodušování - simplification',
+      description: '',
+      image: {
+        id: '15',
+        url:
+        'geometry/簡略化(jp) - zjednodušování - simplification,2019,drawing on paper,30x42cm.jpg',
+        lastUpdated: new Date('2020').getTime()
+      },
+      price: 0,
+      topic: Topics.NODE_AVATARS,
+      technique: Techniques.DRAWING,
+      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
+      sizeInCm: {
+        x: 30,
+        y: 42
+      },
+      tags: [],
+      created: new Date('2019'),
+      updated: undefined
+    },
+    {
+      id: '14',
+      name: 'Jiri and Jirina',
+      description: '',
+      image: { id: '14', url: 'geometry/Jiri and Jirina,2018,drawing on paper,30x21cm.jpg', lastUpdated: new Date('2020').getTime() },
+      price: 0,
+      topic: Topics.NODE_AVATARS,
+      technique: Techniques.DRAWING,
+      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
+      sizeInCm: {
+        x: 30,
+        y: 21
+      },
+      tags: [],
+      created: new Date('2018'),
+      updated: undefined
+    },
+    {
+      id: '13',
+      name: 'indoor',
+      description: '',
+      image: { id: '13', url: 'geometry/indoor,2018,drawing on paper,21x30cm.jpg', lastUpdated: new Date('2020').getTime() },
+      topic: Topics.GEOMETRY,
+      price: 0,
+      technique: Techniques.DRAWING,
+      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
+      sizeInCm: {
+        x: 21,
+        y: 30
+      },
+      tags: [],
+      created: new Date('2018'),
+      updated: undefined
+    },
+    {
       id: '11',
       name: 'A and B',
       description: '',
@@ -292,71 +392,15 @@ const piecesData: {[key: string]: IPiece[]} = {
       created: new Date('2019'),
       updated: undefined
     },
-    // {
-    //   id: '13',
-    //   name: 'indoor',
-    //   description: '',
-    //   image: { id: '13', url: 'geometry/indoor,2018,drawing on paper,21x30cm.jpg', lastUpdated: new Date('2020').getTime() },
-    //   topic: Topics.GEOMETRY,
-    //   price: 0,
-    //   technique: Techniques.DRAWING,
-    //   techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
-    //   sizeInCm: {
-    //     x: 21,
-    //     y: 30
-    //   },
-    //   tags: [],
-    //   created: new Date('2018'),
-    //   updated: undefined
-    // },
-    {
-      id: '14',
-      name: 'Jiri and Jirina',
-      description: '',
-      image: { id: '14', url: 'geometry/Jiri and Jirina,2018,drawing on paper,30x21cm.jpg', lastUpdated: new Date('2020').getTime() },
-      price: 0,
-      topic: Topics.NODE_AVATARS,
-      technique: Techniques.DRAWING,
-      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
-      sizeInCm: {
-        x: 30,
-        y: 21
-      },
-      tags: [],
-      created: new Date('2018'),
-      updated: undefined
-    },
-    {
-      id: '15',
-      name: '簡略化(jp) - zjednodušování - simplification',
-      description: '',
-      image: {
-        id: '15',
-        url:
-        'geometry/簡略化(jp) - zjednodušování - simplification,2019,drawing on paper,30x42cm.jpg',
-        lastUpdated: new Date('2020').getTime()
-      },
-      price: 0,
-      topic: Topics.NODE_AVATARS,
-      technique: Techniques.DRAWING,
-      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
-      sizeInCm: {
-        x: 30,
-        y: 42
-      },
-      tags: [],
-      created: new Date('2019'),
-      updated: undefined
-    }
   ],
   NODE_AVATARS: [
     {
-      id: '16',
-      name: 'about',
+      id: '206',
+      name: 'air',
       description: '',
-      image: { id: '16', url: 'node-avatars/about,2019,drawing on paper,7x10cm.png', lastUpdated: new Date('2020').getTime() },
-      price: 0,
+      image: { id: '206', url: 'node-avatars/air,2022,drawing on paper,7x10cm.webp', lastUpdated: new Date('2022').getTime() },
       topic: Topics.NODE_AVATARS,
+      price: 0,
       technique: Techniques.DRAWING,
       techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
       sizeInCm: {
@@ -364,58 +408,92 @@ const piecesData: {[key: string]: IPiece[]} = {
         y: 10
       },
       tags: [],
-      created: new Date('2019'),
-      updated: undefined
-    },
-    {
-      id: '17',
-      name: 'above',
-      description: '',
-      image: { id: '17', url: 'node-avatars/above,2018,drawing on paper,8x8cm.webp', lastUpdated: new Date('2020').getTime() },
-      topic: Topics.NODE_AVATARS,
-      price: 0,
-      technique: Techniques.DRAWING,
-      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
-      sizeInCm: {
-        x: 8,
-        y: 8
-      },
-      tags: [],
-      created: new Date('2018'),
+      created: new Date('2022'),
       updated: new Date()
     },
     {
-      id: '18',
-      name: 'absent',
+      id: '205',
+      name: 'aim',
       description: '',
-      image: { id: '18', url: 'node-avatars/absent,2018,drawing on paper,8x7cm.png', lastUpdated: new Date('2020').getTime() },
+      image: { id: '205', url: 'node-avatars/aim,2022,drawing on paper,7x7cm.webp', lastUpdated: new Date('2022').getTime() },
       topic: Topics.NODE_AVATARS,
       price: 0,
       technique: Techniques.DRAWING,
       techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
       sizeInCm: {
-        x: 8,
+        x: 7,
         y: 7
       },
       tags: [],
-      created: new Date('2019'),
+      created: new Date('2022'),
       updated: new Date()
     },
     {
-      id: '19',
-      name: 'absorb',
+      id: '204',
+      name: 'agree',
       description: '',
-      image: { id: '19', url: 'node-avatars/absorb,2018,drawing on paper,15x11cm.webp', lastUpdated: new Date('2020').getTime() },
+      image: { id: '204', url: 'node-avatars/agree,2022,drawing on paper,4x5cm.webp', lastUpdated: new Date('2022').getTime() },
       topic: Topics.NODE_AVATARS,
       price: 0,
       technique: Techniques.DRAWING,
       techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
       sizeInCm: {
-        x: 15,
-        y: 11
+        x: 4,
+        y: 5
       },
       tags: [],
-      created: new Date('2019'),
+      created: new Date('2022'),
+      updated: new Date()
+    },
+    {
+      id: '203',
+      name: 'agent',
+      description: '',
+      image: { id: '203', url: 'node-avatars/agent,2022,drawing on paper,10x10cm.webp', lastUpdated: new Date('2022').getTime() },
+      topic: Topics.NODE_AVATARS,
+      price: 0,
+      technique: Techniques.DRAWING,
+      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
+      sizeInCm: {
+        x: 10,
+        y: 10
+      },
+      tags: [],
+      created: new Date('2022'),
+      updated: new Date()
+    },
+    {
+      id: '201',
+      name: 'age',
+      description: '',
+      image: { id: '201', url: 'node-avatars/age,2022,drawing on paper,10x12cm.webp', lastUpdated: new Date('2022').getTime() },
+      topic: Topics.NODE_AVATARS,
+      price: 0,
+      technique: Techniques.DRAWING,
+      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
+      sizeInCm: {
+        x: 10,
+        y: 12
+      },
+      tags: [],
+      created: new Date('2022'),
+      updated: new Date()
+    },
+    {
+      id: '200',
+      name: 'again',
+      description: '',
+      image: { id: '200', url: 'node-avatars/again,2022,drawing on paper,12x9cm.webp', lastUpdated: new Date('2022').getTime() },
+      topic: Topics.NODE_AVATARS,
+      price: 0,
+      technique: Techniques.DRAWING,
+      techniqueDescription: TechniqueDescription.DRAWING_ON_PAPER,
+      sizeInCm: {
+        x: 12,
+        y: 9
+      },
+      tags: [],
+      created: new Date('2022'),
       updated: new Date()
     },
     {

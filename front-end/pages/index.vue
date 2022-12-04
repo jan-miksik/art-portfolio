@@ -80,7 +80,7 @@ const nodeAvatarsIcon = ref(
   new ImageFile({
     url: 'topics-entry-icons/node-avatars-icon.webp',
     id: 'node-avatars-title-img',
-    lastUpdated: new Date('1995').getTime()
+    lastUpdated: new Date('1997').getTime()
   })
 )
 
