@@ -1,9 +1,9 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/training/contracts/echidnaTest.sol": {
-      "lastModificationDate": 1669489658674,
-      "contentHash": "6c8c34ca2d530d3b03ed50ece42a8019",
+    "/home/jm/projects/own/art-portfolio/contracts/contracts/echidnaTest.sol": {
+      "lastModificationDate": 1675516515282,
+      "contentHash": "b565d384efec2483ae5581f785933484",
       "sourceName": "contracts/echidnaTest.sol",
       "solcConfig": {
         "version": "0.8.16",
@@ -36,8 +36,8 @@
         "TestHelloNft"
       ]
     },
-    "/home/training/contracts/HelloNft.sol": {
-      "lastModificationDate": 1669485972190,
+    "/home/jm/projects/own/art-portfolio/contracts/contracts/HelloNft.sol": {
+      "lastModificationDate": 1675516515282,
       "contentHash": "ee9d3c524ace686b2654f0232a8685f7",
       "sourceName": "contracts/HelloNft.sol",
       "solcConfig": {
@@ -79,8 +79,8 @@
         "HelloNft"
       ]
     },
-    "/home/training/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
-      "lastModificationDate": 1669232642296,
+    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1665666834755,
       "contentHash": "e436cea06129be2c73cda4b1acc848b5",
       "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
       "solcConfig": {
@@ -116,8 +116,8 @@
         "Ownable"
       ]
     },
-    "/home/training/node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol": {
-      "lastModificationDate": 1669232642296,
+    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol": {
+      "lastModificationDate": 1665666834759,
       "contentHash": "92f9448b23a90ea3bb932ee55cc3ccce",
       "sourceName": "@openzeppelin/contracts/security/ReentrancyGuard.sol",
       "solcConfig": {
@@ -151,8 +151,8 @@
         "ReentrancyGuard"
       ]
     },
-    "/home/training/node_modules/@openzeppelin/contracts/utils/Counters.sol": {
-      "lastModificationDate": 1669232642297,
+    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Counters.sol": {
+      "lastModificationDate": 1665666834759,
       "contentHash": "74654e3ae5d7f39555055dfe244dab7a",
       "sourceName": "@openzeppelin/contracts/utils/Counters.sol",
       "solcConfig": {
@@ -186,8 +186,8 @@
         "Counters"
       ]
     },
-    "/home/training/node_modules/@openzeppelin/contracts/interfaces/IERC2981.sol": {
-      "lastModificationDate": 1669232642297,
+    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/interfaces/IERC2981.sol": {
+      "lastModificationDate": 1665666834759,
       "contentHash": "608566bc5327454ba54e487e7c226ff6",
       "sourceName": "@openzeppelin/contracts/interfaces/IERC2981.sol",
       "solcConfig": {
@@ -223,8 +223,8 @@
         "IERC2981"
       ]
     },
-    "/home/training/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
-      "lastModificationDate": 1669232642297,
+    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
+      "lastModificationDate": 1665666834759,
       "contentHash": "cf46906c4035f51639a22265066a9e78",
       "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
       "solcConfig": {
@@ -258,8 +258,8 @@
         "Strings"
       ]
     },
-    "/home/training/node_modules/@openzeppelin/contracts/utils/Base64.sol": {
-      "lastModificationDate": 1669232642297,
+    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Base64.sol": {
+      "lastModificationDate": 1665666834759,
       "contentHash": "8f868da0a90e46a85baa348a896d1702",
       "sourceName": "@openzeppelin/contracts/utils/Base64.sol",
       "solcConfig": {
@@ -293,8 +293,8 @@
         "Base64"
       ]
     },
-    "/home/training/node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
-      "lastModificationDate": 1669232643145,
+    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
+      "lastModificationDate": 1665666837071,
       "contentHash": "79ff1a7eb801a525aa315fb7a679eede",
       "sourceName": "@openzeppelin/contracts/token/ERC721/ERC721.sol",
       "solcConfig": {
@@ -336,8 +336,8 @@
         "ERC721"
       ]
     },
-    "/home/training/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1669232642297,
+    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1665666834759,
       "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
       "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
@@ -371,8 +371,8 @@
         "Context"
       ]
     },
-    "/home/training/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
-      "lastModificationDate": 1669232643147,
+    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+      "lastModificationDate": 1665666837075,
       "contentHash": "03e6768535ac4da0e9756f1d8a4a018a",
       "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
       "solcConfig": {
@@ -406,8 +406,8 @@
         "IERC165"
       ]
     },
-    "/home/training/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
-      "lastModificationDate": 1669232643145,
+    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+      "lastModificationDate": 1665666837071,
       "contentHash": "ec99d946db3685a3630554aa6055bd7f",
       "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721.sol",
       "solcConfig": {
@@ -443,8 +443,8 @@
         "IERC721"
       ]
     },
-    "/home/training/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
-      "lastModificationDate": 1669232643145,
+    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
+      "lastModificationDate": 1665666837071,
       "contentHash": "c22d4395e33763de693fd440c6fd10e1",
       "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
       "solcConfig": {
@@ -478,8 +478,8 @@
         "IERC721Receiver"
       ]
     },
-    "/home/training/node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
-      "lastModificationDate": 1669232643411,
+    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
+      "lastModificationDate": 1665666837955,
       "contentHash": "efbc0d15b80a74e34dbe8da0f3e879bb",
       "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
       "solcConfig": {
@@ -515,8 +515,8 @@
         "IERC721Metadata"
       ]
     },
-    "/home/training/node_modules/@openzeppelin/contracts/utils/Address.sol": {
-      "lastModificationDate": 1669232642297,
+    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Address.sol": {
+      "lastModificationDate": 1665666834759,
       "contentHash": "c476b3895a94798b88a4bb97399e6dfe",
       "sourceName": "@openzeppelin/contracts/utils/Address.sol",
       "solcConfig": {
@@ -550,8 +550,8 @@
         "Address"
       ]
     },
-    "/home/training/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
-      "lastModificationDate": 1669232643147,
+    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
+      "lastModificationDate": 1665666837071,
       "contentHash": "0e7db055ce108f9da7bb6686a00287c0",
       "sourceName": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
       "solcConfig": {
