@@ -7,17 +7,10 @@ const piecesSansTopic = ref<Piece[] | undefined>()
 const piecesGeometry = ref<Piece[] | undefined>()
 const piecesPuzzle = ref<Piece[] | undefined>()
 
-const addRandomlyEmptySpacesIntoArray = (array: Piece[], isLog?: boolean) => {
+const addRandomlyEmptySpacesIntoArray = (array: Piece[]) => {
   array.forEach((piece, index) => {
     const isAddEmptySpace = Math.floor(Math.random() * 10) >= 2
     const randomIndex = Math.floor(Math.random() * array.length)
-    // if(isLog) {
-    //   console.group()
-    //   console.log('array.length: ', array.length)
-    //   console.log('array: ', array)
-    //   console.log('randomIndex: ',piece, randomIndex)
-    //   console.groupEnd();
-    // }
     if (isAddEmptySpace) {
       array.splice(randomIndex, 0, '' as any)
     }
@@ -31,7 +24,7 @@ export default function usePieces() {
     (pieceData: any) => new Piece(pieceData)
   )
   
-  piecesNodeAvatars.value = addRandomlyEmptySpacesIntoArray(nodeAvatars, true)
+  piecesNodeAvatars.value = addRandomlyEmptySpacesIntoArray(nodeAvatars)
 
   const sansTopic = piecesData.SANS_TOPIC.map(
     (pieceData: any) => new Piece(pieceData)
