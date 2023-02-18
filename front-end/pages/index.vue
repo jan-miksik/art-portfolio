@@ -197,4 +197,8 @@ const collectIcon = ref(
 .open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon__is-unselected-topic)
   right -8px
 
+.open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon)
+  .open-topic-icon__topic-thumbnail-img
+    filter drop-shadow(0 1px 1px gray)
+
 </style>
