@@ -203,9 +203,9 @@ onMounted(async () => {
   justify-content center
   align-items center
   flex-direction column
-  color floralwhite
+  color black
   position relative
-  background-image url("collect/breeze-edit-bg.png")
+  // background-image url("collect/breeze-edit-bg.png")
   background-repeat no-repeat
   border-radius 100%
   width 35rem
@@ -288,7 +288,7 @@ onMounted(async () => {
   &__title-breeze-edit
     margin 0 0 0.5rem
     font-family system-ui
-    color whitesmoke
+    color black
 
   &__opensea-link
     position absolute
