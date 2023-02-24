@@ -24,13 +24,15 @@ import { ethers } from "hardhat";
 // tokenURI
 
 
+// TODOS test for all requirments
+
 
 describe("Hello Nft test", function () {
-  let HelloNft, helloContract: any, owner: SignerWithAddress, addr1: SignerWithAddress, addr2: SignerWithAddress, addr3, addrs
+  let IntoPieces, intoPiecesContract: any, owner: SignerWithAddress, addr1: SignerWithAddress, addr2: SignerWithAddress, addr3, addrs
   beforeEach(async function () {
-    HelloNft = await ethers.getContractFactory('HelloNft')
+    IntoPieces = await ethers.getContractFactory('IntoPieces')
     ;[owner, addr1, addr2, addr3, ...addrs] = await ethers.getSigners()
-    helloContract = await HelloNft.deploy();
+    intoPiecesContract = await IntoPieces.deploy();
   })
 
   ////////////////////////
@@ -38,7 +40,7 @@ describe("Hello Nft test", function () {
   ////////////////////////
   describe("Deployment", function () {
     it('should set the right owner', async function () {
-      expect(await helloContract.owner()).to.equal(owner.address)
+      expect(await intoPiecesContract.owner()).to.equal(owner.address)
     })
   })
 
@@ -49,138 +51,67 @@ describe("Hello Nft test", function () {
   // royaltyInfo
   ////////////////////////
 
-  describe.only("getRoyaltyReciever", function () {
+  describe("getRoyaltyReciever", function () {
     it('Royalty reciver is owner by default', async function () {
-      expect(await helloContract.getRoyaltyReciever()).to.equal(owner.address)
+      expect(await intoPiecesContract.getRoyaltyReciever()).to.equal(owner.address)
     })
   })
 
 
-  describe.only("setRoyaltyReciever", function () {
+  describe("setRoyaltyReciever", function () {
     it('Royalty reciever can be changed only by owner', async function () {
-      await helloContract.connect(owner).setRoyaltyReciever(addr2.address)
-      expect(await helloContract.setRoyaltyReciever()).to.equal(addr2.address)
+      await intoPiecesContract.connect(owner).setRoyaltyReciever(addr2.address)
+      expect(await intoPiecesContract.getRoyaltyReciever()).to.equal(addr2.address)
+    })
+
+    it('Royalty info returns the new royalty reciever and 5% royalty', async function () {
+      await intoPiecesContract.connect(owner).setRoyaltyReciever(addr2.address)
+      const royaltyInfo = await intoPiecesContract.connect(addr1).royaltyInfo(1, 100)
+      expect(royaltyInfo[0]).to.equal(addr2.address)
+      expect(royaltyInfo[1].toNumber()).to.equal(5)
     })
   })
 
-  
+  describe("royaltyInfo", function () {
+    it('Should return 5% royalty and default royalty reciever (owner)', async function () {
+      const royaltyInfo = await intoPiecesContract.connect(addr1).royaltyInfo(1, 100)
+      expect(royaltyInfo[0]).to.equal(owner.address)
+      expect(royaltyInfo[1].toNumber()).to.equal(5)
+    })
+  })
+
+
+  ////////////////////////
+  // safeMint
+  // allowedMintCount
+  // updateMintCount
+  // mintedNFTs
+  ////////////////////////
+
+  describe("safeMint", function () {
+    it.only('Is possible to mint NFT', async function () {
+      await intoPiecesContract.connect(addr1).safeMint(addr1.address)
+      // expect(await intoPiecesContract.getRoyaltyReciever()).to.equal(owner.address)
+    })
+
+    it('Block minting if address mint more than allowed amount per address', async function () {
+
+      for (let i = 0; i < 7; i++) {
+        await intoPiecesContract.connect(addr1).safeMint(addr1.address)
+        // ([addrs[i].address], 200)
+        // await intoPiecesContract.connect(addrs[i]).mintAllowList(200, overrides)
+      }
+      await expect(
+        intoPiecesContract.connect(addr1).safeMint(addr1.address)
+      ).to.be.revertedWith('Minting limit exceeded')
+      // expect(await intoPiecesContract.getRoyaltyReciever()).to.equal(owner.address)
+    })
+  })
 
 })
 
 
-
-
-// const { expect } = require('chai')
-// const { ethers } = require('hardhat')
-
-// describe('Doodles', function () {
-
-
-//   describe('setIsAllowListActive', function () {
-//     it('Should be reverted because the caller is not owner', async function () {
-//       await expect(
-//         doodlesContract.connect(addr1).setIsAllowListActive(true),
-//       ).to.be.revertedWith('Ownable: caller is not the owner')
-//     })
-
-//     it('Should should set isAllowListActive by owner', async function () {
-//       const expectedValue = true
-
-//       await doodlesContract.connect(owner).setIsAllowListActive(expectedValue)
-
-//       expect(await doodlesContract.isAllowListActive()).to.equal(expectedValue)
-//     })
-//   })
-
-//   describe('setAllowList', function () {
-//     it('Should be reverted because the caller is not owner', async function () {
-//       await expect(
-//         doodlesContract.connect(addr1).setAllowList([addr1.address], 10),
-//       ).to.be.revertedWith('caller is not the owner')
-//     })
-
-//     // THIS IS NOT WORKING, BECAUSE _allowList is private
-//     // it('Should should set _allowList by owner', async function () {
-//     //   const expectedValue = 10
-
-//     //   await doodlesContract
-//     //     .connect(owner)
-//     //     .setAllowList([addr1.address, addr2.address], expectedValue)
-
-//     //   expect(
-//     //     await doodlesContract.connect(owner)._allowList(addr1.address),
-//     //   ).to.equal(expectedValue)
-//     //   expect(
-//     //     await doodlesContract.connect(owner)._allowList(addr2.address),
-//     //   ).to.equal(expectedValue)
-//     // })
-
-//     it('Should should set _allowList by owner', async function () {
-//       const expectedValue = 10
-
-//       await doodlesContract
-//         .connect(owner)
-//         .setAllowList([addr1.address, addr2.address], expectedValue)
-
-//       expect(await doodlesContract.numAvailableToMint(addr1.address)).to.equal(
-//         expectedValue,
-//       )
-//       expect(await doodlesContract.numAvailableToMint(addr2.address)).to.equal(
-//         expectedValue,
-//       )
-//     })
-
-//     it('Should should set _allowList by owner', async function () {
-//       await doodlesContract.connect(owner).setIsAllowListActive(true)
-//       const overrides = {
-//         value: ethers.utils.parseEther('0.123'), // ether in this case MUST be a string
-//       }
-//       await expect(
-//         doodlesContract.connect(addr1).mintAllowList(1, overrides),
-//       ).to.be.revertedWith('Exceeded max available to purchase')
-
-//       await doodlesContract.connect(owner).setAllowList([addr1.address], 1)
-//       await doodlesContract.connect(addr1).mintAllowList(1, overrides)
-
-//       //assert
-//       expect(await doodlesContract.ownerOf(0)).to.equal(addr1.address)
-//       await expect(doodlesContract.ownerOf(1)).to.be.revertedWith(
-//         'URI query for nonexistent token',
-//       )
-//     })
-//   })
-
-//   describe('numAvailableToMint', function () {
-//     it('Should show numAvailableToMint', async function () {
-//       const expectedValue = 5
-
-//       await doodlesContract
-//         .connect(owner)
-//         .setAllowList([addr1.address, addr2.address], expectedValue)
-
-//       expect(await doodlesContract.numAvailableToMint(addr1.address)).to.equal(
-//         expectedValue,
-//       )
-//       expect(await doodlesContract.numAvailableToMint(addr2.address)).to.equal(
-//         expectedValue,
-//       )
-//       expect(await doodlesContract.numAvailableToMint(addr3.address)).to.equal(
-//         0,
-//       )
-//     })
-//   })
-
 //   describe('mintAllowList', function () {
-//     it('Should be reverted because the isAllowListActive is false', async function () {
-//       await doodlesContract.connect(owner).setIsAllowListActive(false)
-//       const overrides = {
-//         value: ethers.utils.parseEther('0.123'), // ether in this case MUST be a string
-//       }
-//       await doodlesContract.connect(owner).setAllowList([addr1.address], 1)
-//       await expect(
-//         doodlesContract.connect(addr1).mintAllowList(1, overrides),
-//       ).to.be.revertedWith('Allow list is not active')
-//     })
 
 //     it('Should be reverted if exceeded max available to purchase', async function () {
 //       await doodlesContract.connect(owner).setIsAllowListActive(true)

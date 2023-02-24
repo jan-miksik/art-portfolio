@@ -1,6 +1,9 @@
-import './HelloNft.sol';
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.8.0 <0.8.17;
 
-contract TestHelloNft is HelloNft {
+import './IntoPieces.sol';
+
+contract TestHelloNft is IntoPieces {
     address echidna_caller = msg.sender;
 
     // constructor() public {

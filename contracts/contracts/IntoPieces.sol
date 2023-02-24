@@ -9,10 +9,10 @@ import '@openzeppelin/contracts/utils/Strings.sol';
 import '@openzeppelin/contracts/utils/Base64.sol';
 import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 
-contract HelloNft is ERC721, IERC2981, Ownable, ReentrancyGuard {
+contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
     using Counters for Counters.Counter;
 
-    constructor() ERC721('Hello', 'HEO') {
+    constructor() ERC721('Into Pieces', 'IP') {
         _royaltyReciever = owner();
     }
 
@@ -88,6 +88,8 @@ contract HelloNft is ERC721, IERC2981, Ownable, ReentrancyGuard {
         return _royaltyReciever;
     }
 
+    // @param _tokenId - the NFT asset queried for royalty information
+    // @param _salePrice - the sale price of the NFT asset specified by _tokenId
     function royaltyInfo(uint256, uint256 salePrice)
         external
         view
@@ -116,8 +118,8 @@ contract HelloNft is ERC721, IERC2981, Ownable, ReentrancyGuard {
     function contractURI() public view returns (string memory) {
         bytes memory dataURI = abi.encodePacked(
             '{',
-            '"name": "Hello",',
-            '"description": "An expression or gesture of greeting, used interjectionally in greeting, in answering the telephone, or to express surprise. plural - hellos",',
+            '"name": "Into Pieces",',
+            '"description": "Test your imagination",',
             '"image": "ipfs://bafkreifivloyeuiky6ozz7w7uke2lb2amutsu4bnb76i2pv4hdqvv7uv4i",',
             '"external_link": "https://janmiksik.ooo",',
             '"seller_fee_basis_points": 500,',
@@ -144,7 +146,7 @@ contract HelloNft is ERC721, IERC2981, Ownable, ReentrancyGuard {
     {
         bytes memory dataURI = abi.encodePacked(
             '{',
-            '"name": "Hello ~',
+            '"name": "Into Pieces',
             Strings.toString(tokenId),
             '",',
             '"description": "",',

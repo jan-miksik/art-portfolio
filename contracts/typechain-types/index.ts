@@ -24,5 +24,5 @@ export type { IERC165 } from "./@openzeppelin/contracts/utils/introspection/IERC
 export { IERC165__factory } from "./factories/@openzeppelin/contracts/utils/introspection/IERC165__factory";
 export type { TestHelloNft } from "./contracts/echidnaTest.sol/TestHelloNft";
 export { TestHelloNft__factory } from "./factories/contracts/echidnaTest.sol/TestHelloNft__factory";
-export type { HelloNft } from "./contracts/HelloNft";
-export { HelloNft__factory } from "./factories/contracts/HelloNft__factory";
+export type { IntoPieces } from "./contracts/IntoPieces";
+export { IntoPieces__factory } from "./factories/contracts/IntoPieces__factory";

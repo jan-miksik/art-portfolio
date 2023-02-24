@@ -7,7 +7,7 @@ const main = async () => {
   // await TestNFTContract.deployed();
 
 
-  const ContractFactory = await ethers.getContractFactory('HelloNft');
+  const ContractFactory = await ethers.getContractFactory('IntoPieces');
   // @params uri(single NFT) contactURI(collection)
   const Contract = await ContractFactory.deploy();
   await Contract.deployed();
