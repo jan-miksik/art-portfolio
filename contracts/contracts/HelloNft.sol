@@ -29,7 +29,7 @@ contract HelloNft is ERC721, IERC2981, Ownable, ReentrancyGuard {
         return MINT_LIMIT_PER_WALLET - mintCountMap[minter];
     }
 
-    function updateMintCount(address minter, uint8 count) private {
+    function _updateMintCount(address minter, uint8 count) private {
         mintCountMap[minter] += count;
     }
 
@@ -39,7 +39,7 @@ contract HelloNft is ERC721, IERC2981, Ownable, ReentrancyGuard {
             'Exceeds max supply'
         );
         if (allowedMintCount(msg.sender) >= 1) {
-            updateMintCount(msg.sender, 1);
+            _updateMintCount(msg.sender, 1);
         } else {
             revert('Minting limit exceeded');
         }

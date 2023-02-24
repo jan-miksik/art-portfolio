@@ -37,8 +37,8 @@
       ]
     },
     "/home/jm/projects/own/art-portfolio/contracts/contracts/HelloNft.sol": {
-      "lastModificationDate": 1675516515282,
-      "contentHash": "ee9d3c524ace686b2654f0232a8685f7",
+      "lastModificationDate": 1677244198064,
+      "contentHash": "f79483e0e85de1c29eba159186f5b224",
       "sourceName": "contracts/HelloNft.sol",
       "solcConfig": {
         "version": "0.8.16",
