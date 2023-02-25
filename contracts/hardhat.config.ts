@@ -57,8 +57,11 @@ const config: HardhatUserConfig = {
       accounts: [TESTNET_PRIVATE_KEY]
     },
     hardhat: {
-      forking: {
-        url: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
+      // forking: {
+      //   url: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
+      // },
+      accounts: {
+        count: 500,
       },
       chainId: 1
     },
