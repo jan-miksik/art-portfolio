@@ -9,7 +9,7 @@ dotenv.config()
 const { TESTNET_PRIVATE_KEY, ALCHEMY_API_KEY,ALCHEMY_API_KEY_ARBITRUM_GOERLI, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, ALCHEMY_API_KEY_MUMBAI, ARBISCAN_API_KEY, ALCHEMY_API_KEY_OPTIMSM_GOERLI } = process.env as Record<string, string>;
 
 const config: HardhatUserConfig = {
-  // solidity: "0.8.16",
+  solidity: "0.8.16",
   // {
   //   version: "0.8.16",
   //   compilers: [
@@ -25,16 +25,16 @@ const config: HardhatUserConfig = {
   //     }
   //   ]
   // },
-  solidity: {
-    version: "0.8.16",
-    settings: {
-      outputSelection: {
-        "*": {
-          "*": ["storageLayout"],
-        },
-      },
-    },
-  },
+  // solidity: {
+  //   version: "0.8.16",
+  //   settings: {
+  //     outputSelection: {
+  //       "*": {
+  //         "*": ["storageLayout"],
+  //       },
+  //     },
+  //   },
+  // },
   networks: {
     goerli: {
       url: `https://eth-goerli.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
