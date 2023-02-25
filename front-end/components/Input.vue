@@ -1,6 +1,6 @@
 <template>
   <div class="input">
-    <label class="input__label">setup own price</label>
+    <label class="input__label">{{ label }}</label>
     <input class="input__body" 
     :step="step" 
     :required="required" 
@@ -18,6 +18,7 @@ interface Props {
   modelValue?: string | number
   step?: string
   required?: boolean
+  label?: string
 }
 
 const emit = defineEmits<{

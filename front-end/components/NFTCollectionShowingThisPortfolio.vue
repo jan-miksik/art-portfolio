@@ -103,7 +103,7 @@ const nftId = computed(() => mintedNfts.value?.toNumber() ? mintedNfts.value?.to
 const mintAction = async () => {
   
   contract.value = new ethers.Contract(
-    connectedChain.value?.nftHatContract || '',
+    connectedChain.value?.nftIntoPiecesContract || '',
     contractAbi.abi,
     signer.value
     )

@@ -13,7 +13,7 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
     using Counters for Counters.Counter;
 
     constructor() ERC721('Into Pieces', 'IP') {
-        _royaltyReciever = owner();
+        _royaltyReceiver = owner();
     }
 
     /** MINTING **/
@@ -67,25 +67,25 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
     // /** ROYALTIES **/
 
     // /**
-    //  * @dev _royaltyReciever is accepted by some marketplaces.
+    //  * @dev _royaltyReceiver is accepted by some marketplaces.
     //  * Other marketplaces may send royalty based on specification in contractURI metadata.
     //  */
-    address private _royaltyReciever = address(this);
+    address private _royaltyReceiver = address(this);
 
-    function _setRoyaltyReciever(address newRoyaltyReceiver)
+    function _setRoyaltyReceiver(address newRoyaltyReceiver)
         internal
         onlyOwner
     {
         require(newRoyaltyReceiver != address(0), 'Invalid address');
-        _royaltyReciever = newRoyaltyReceiver;
+        _royaltyReceiver = newRoyaltyReceiver;
     }
 
-    function setRoyaltyReciever(address newRoyaltyReceiver) external onlyOwner {
-        _setRoyaltyReciever(newRoyaltyReceiver);
+    function setRoyaltyReceiver(address newRoyaltyReceiver) external onlyOwner {
+        _setRoyaltyReceiver(newRoyaltyReceiver);
     }
 
-    function getRoyaltyReciever() public view returns (address) {
-        return _royaltyReciever;
+    function getRoyaltyReceiver() public view returns (address) {
+        return _royaltyReceiver;
     }
 
     // @param _tokenId - the NFT asset queried for royalty information
@@ -96,7 +96,7 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
         override
         returns (address receiver, uint256 royaltyAmount)
     {
-        return (_royaltyReciever, (salePrice * 500) / 10000);
+        return (_royaltyReceiver, (salePrice * 500) / 10000);
     }
 
     // EIP2981 standard Interface return. Adds to ERC721 and ERC165 Interface returns.
@@ -124,7 +124,7 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
             '"external_link": "https://janmiksik.ooo",',
             '"seller_fee_basis_points": 500,',
             '"fee_recipient": "',
-            Strings.toHexString(uint160(_royaltyReciever), 20),
+            Strings.toHexString(uint160(_royaltyReceiver), 20),
             '"',
             '}'
         );

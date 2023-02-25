@@ -1,7 +1,7 @@
 <template>
   <!-- <Web3ConnectionInfo /> -->
   <div class="nft-collection">
-    <h2 class="nft-collection__title-breeze-edit">Hello</h2>
+    <h2 class="nft-collection__title-breeze-edit">Into Pieces</h2>
     <img src="/collect/collect.webp" class="nft-collection__mint-image" />
     <div class="nft-collection__amount">{{ maxSupply }} / {{ mintedNfts }}</div>
 
@@ -29,7 +29,7 @@
 
     <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
       <div class="nft-collection__input-and-currency">
-        <Input required type="number" step="any" v-model="requestedPrice"/>
+        <Input required type="number" step="any" v-model="requestedPrice" label="custom price"/>
         <span>{{mainSupportedChain?.nativeCurrency.symbol}}</span>
       </div>
 
@@ -45,8 +45,8 @@
         </a>
     </form>
     <!-- <div @click="handleOpenseaAssetLink">TEST</div>-->
-    <div @click="isMinted = !isMinted">Like a Minted</div> 
-    <div class="nft-collection__collection-label">collection</div>
+    <!-- <div @click="isMinted = !isMinted">Like a Minted</div>  -->
+    <!-- <div class="nft-collection__collection-label">collection</div> -->
   </div>
   <!-- <ThreeJsTesting /> -->
 </template>
@@ -122,7 +122,7 @@ const explorerLink = computed(() => getExplorerLink({type: 'asset', marketplace:
 const mintAction = async () => {
   
   contract.value = new ethers.Contract(
-    connectedChain.value?.nftHatContract || '',
+    connectedChain.value?.nftIntoPiecesContract || '',
     contractAbi.abi,
     signer.value
     )
@@ -176,7 +176,7 @@ const listenForAccountChange = () => {
 
 const loadContractData = async () => {
   contractReadOnly = new ethers.Contract(
-    mainSupportedChain.nftHatContract || '',
+    mainSupportedChain.nftIntoPiecesContract || '',
     contractAbi.abi,
     useWeb3().jsonRpcProvider
     )
@@ -329,7 +329,7 @@ onMounted(async () => {
 
   &__opensea-collection-link
     position absolute
-    bottom 27px
+    bottom 5px
     right 70px
     transition all 0.391s
 

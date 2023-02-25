@@ -1,20 +1,17 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/jm/projects/own/art-portfolio/contracts/contracts/echidnaTest.sol": {
-      "lastModificationDate": 1677250444280,
-      "contentHash": "02104a439b7566d4a34de9086fb077b1",
-      "sourceName": "contracts/echidnaTest.sol",
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/contracts/IntoPieces.sol": {
+      "lastModificationDate": 1677271222655,
+      "contentHash": "a8339bc7c6d6d76ad1bfe197da5cd5f0",
+      "sourceName": "contracts/IntoPieces.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -25,33 +22,40 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
       "imports": [
-        "./IntoPieces.sol"
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/utils/Counters.sol",
+        "@openzeppelin/contracts/interfaces/IERC2981.sol",
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "@openzeppelin/contracts/utils/Base64.sol",
+        "@openzeppelin/contracts/token/ERC721/ERC721.sol"
       ],
       "versionPragmas": [
         ">=0.8.0 <0.8.17"
       ],
       "artifacts": [
-        "TestHelloNft"
+        "IntoPieces"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
-      "lastModificationDate": 1665666834755,
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1677272561354,
       "contentHash": "e436cea06129be2c73cda4b1acc848b5",
       "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -62,6 +66,10 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
@@ -75,20 +83,17 @@
         "Ownable"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol": {
-      "lastModificationDate": 1665666834759,
-      "contentHash": "92f9448b23a90ea3bb932ee55cc3ccce",
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol": {
+      "lastModificationDate": 1677272561356,
+      "contentHash": "a8e2d1c30042f64ed89c9d4157eb6cb9",
       "sourceName": "@openzeppelin/contracts/security/ReentrancyGuard.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -99,6 +104,10 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
@@ -110,20 +119,17 @@
         "ReentrancyGuard"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Counters.sol": {
-      "lastModificationDate": 1665666834759,
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Counters.sol": {
+      "lastModificationDate": 1677272561356,
       "contentHash": "74654e3ae5d7f39555055dfe244dab7a",
       "sourceName": "@openzeppelin/contracts/utils/Counters.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -134,6 +140,10 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
@@ -145,20 +155,17 @@
         "Counters"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/interfaces/IERC2981.sol": {
-      "lastModificationDate": 1665666834759,
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/interfaces/IERC2981.sol": {
+      "lastModificationDate": 1677272561356,
       "contentHash": "608566bc5327454ba54e487e7c226ff6",
       "sourceName": "@openzeppelin/contracts/interfaces/IERC2981.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -169,6 +176,10 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
@@ -182,20 +193,17 @@
         "IERC2981"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
-      "lastModificationDate": 1665666834759,
-      "contentHash": "cf46906c4035f51639a22265066a9e78",
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
+      "lastModificationDate": 1677272561360,
+      "contentHash": "396031251978f8febfd90cb62cb240ec",
       "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -206,10 +214,16 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
-      "imports": [],
+      "imports": [
+        "./math/Math.sol"
+      ],
       "versionPragmas": [
         "^0.8.0"
       ],
@@ -217,20 +231,17 @@
         "Strings"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Base64.sol": {
-      "lastModificationDate": 1665666834759,
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Base64.sol": {
+      "lastModificationDate": 1677272561356,
       "contentHash": "8f868da0a90e46a85baa348a896d1702",
       "sourceName": "@openzeppelin/contracts/utils/Base64.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -241,6 +252,10 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
@@ -252,20 +267,17 @@
         "Base64"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
-      "lastModificationDate": 1665666837071,
-      "contentHash": "79ff1a7eb801a525aa315fb7a679eede",
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
+      "lastModificationDate": 1677272561787,
+      "contentHash": "190f627b9302b9602d3a313e28205cc5",
       "sourceName": "@openzeppelin/contracts/token/ERC721/ERC721.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -276,6 +288,10 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
@@ -295,20 +311,17 @@
         "ERC721"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1665666834759,
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1677272561356,
       "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
       "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -319,6 +332,10 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
@@ -330,20 +347,17 @@
         "Context"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
-      "lastModificationDate": 1665666837075,
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+      "lastModificationDate": 1677272561789,
       "contentHash": "03e6768535ac4da0e9756f1d8a4a018a",
       "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -354,6 +368,10 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
@@ -365,20 +383,17 @@
         "IERC165"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
-      "lastModificationDate": 1665666837071,
-      "contentHash": "ec99d946db3685a3630554aa6055bd7f",
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+      "lastModificationDate": 1677272561787,
+      "contentHash": "eb7e61db29f31d88b3c1cef1b063d338",
       "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -389,6 +404,10 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
@@ -402,20 +421,17 @@
         "IERC721"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
-      "lastModificationDate": 1665666837071,
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
+      "lastModificationDate": 1677272561787,
       "contentHash": "c22d4395e33763de693fd440c6fd10e1",
       "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -426,6 +442,10 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
@@ -437,20 +457,17 @@
         "IERC721Receiver"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
-      "lastModificationDate": 1665666837955,
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
+      "lastModificationDate": 1677272561946,
       "contentHash": "efbc0d15b80a74e34dbe8da0f3e879bb",
       "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -461,6 +478,10 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
@@ -474,20 +495,17 @@
         "IERC721Metadata"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Address.sol": {
-      "lastModificationDate": 1665666834759,
-      "contentHash": "c476b3895a94798b88a4bb97399e6dfe",
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/Address.sol": {
+      "lastModificationDate": 1677272561356,
+      "contentHash": "f31ad6fc4bbf9c06203987220156a6ba",
       "sourceName": "@openzeppelin/contracts/utils/Address.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -498,6 +516,10 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
@@ -509,20 +531,17 @@
         "Address"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
-      "lastModificationDate": 1665666837071,
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
+      "lastModificationDate": 1677272561789,
       "contentHash": "0e7db055ce108f9da7bb6686a00287c0",
       "sourceName": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -533,6 +552,10 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
@@ -546,20 +569,17 @@
         "ERC165"
       ]
     },
-    "/home/jm/projects/own/art-portfolio/contracts/contracts/IntoPieces.sol": {
-      "lastModificationDate": 1677251864239,
-      "contentHash": "b4e1ef56ccd85d24d086949378689b42",
-      "sourceName": "contracts/IntoPieces.sol",
+    "/home/j/projects/own/art-portfolio all/art-portfolio/contracts/node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
+      "lastModificationDate": 1677272561789,
+      "contentHash": "b9c58920ce74d6dc819161786112e7ee",
+      "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
           "outputSelection": {
             "*": {
               "*": [
+                "storageLayout",
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
@@ -570,23 +590,19 @@
                 "ast"
               ]
             }
+          },
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
           }
         }
       },
-      "imports": [
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
-        "@openzeppelin/contracts/utils/Counters.sol",
-        "@openzeppelin/contracts/interfaces/IERC2981.sol",
-        "@openzeppelin/contracts/utils/Strings.sol",
-        "@openzeppelin/contracts/utils/Base64.sol",
-        "@openzeppelin/contracts/token/ERC721/ERC721.sol"
-      ],
+      "imports": [],
       "versionPragmas": [
-        ">=0.8.0 <0.8.17"
+        "^0.8.0"
       ],
       "artifacts": [
-        "IntoPieces"
+        "Math"
       ]
     }
   }
