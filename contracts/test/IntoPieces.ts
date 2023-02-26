@@ -1,7 +1,7 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
-
+import { IntoPieces } from '../typechain-types';
 
 //***** Contract methods to test *****/
 ///// Royalty //////
@@ -30,7 +30,7 @@ const MAX_SUPPLY = 1000
 
 describe('Hunt and gather NFT test', function () {
   let IntoPieces,
-    intoPiecesContract: any,
+    intoPiecesContract: IntoPieces,
     owner: SignerWithAddress,
     addr1: SignerWithAddress,
     addr2: SignerWithAddress,
@@ -307,11 +307,11 @@ describe('Hunt and gather NFT test', function () {
     })
   })
 
-  describe('tokenURI', function () {
+  describe.only('tokenURI', function () {
     it('tokenURI give expected data', async function () {
       const tokenURI = await intoPiecesContract.connect(addr1).tokenURI(0)
       const tokenUriObject = {
-        name: 'Into Pieces0',
+        name: 'Into Pieces @0',
         description: '',
         image:
           'ipfs://bafkreifivloyeuiky6ozz7w7uke2lb2amutsu4bnb76i2pv4hdqvv7uv4i'

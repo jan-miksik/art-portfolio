@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.8.17;
 
-import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
-import '@openzeppelin/contracts/utils/Counters.sol';
-import '@openzeppelin/contracts/interfaces/IERC2981.sol';
-import '@openzeppelin/contracts/utils/Strings.sol';
-import '@openzeppelin/contracts/utils/Base64.sol';
-import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import './Ownable.sol';
+import './ReentrancyGuard.sol';
+import './Counters.sol';
+import './IERC2981.sol';
+import './Strings.sol';
+import './Base64.sol';
+import './ERC721.sol';
 
 contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
     using Counters for Counters.Counter;
@@ -146,7 +146,7 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
     {
         bytes memory dataURI = abi.encodePacked(
             '{',
-            '"name": "Into Pieces @',
+            '"name": "Into Pieces',
             Strings.toString(tokenId),
             '",',
             '"description": "",',

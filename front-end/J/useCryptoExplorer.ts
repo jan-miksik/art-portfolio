@@ -28,6 +28,19 @@ export default function useCryptoExplorer() {
         getAssetLink: (contractAddress: string) => `https://goerli.looksrare.org/collections/${contractAddress.toLowerCase()}`,
       },
     },
+    optimismGoerli: {
+      opensea: {
+        getAssetLink: (contractAddressAndNftId: string) => `https://testnets.opensea.io/assets/optimism-goerli/${contractAddressAndNftId.toLowerCase()}`,
+        getCollectionLink: (collectionName: string) => `https://testnets.opensea.io/collection/${collectionName}`,
+      },
+      looksrare: {
+        getAssetLink: (contractAddressAndNftId: string) => `https://goerli.looksrare.org/collections/${contractAddressAndNftId.toLowerCase()}`,
+        getCollectionLink: (collectionName: string) => `https://testnets.opensea.io/collections/${collectionName}`,
+      },
+      etherscan: { 
+        getAssetLink: (contractAddress: string) => `https://goerli.looksrare.org/collections/${contractAddress.toLowerCase()}`,
+      },
+    },
   }
 
   const getLooksrareCollectionLink = () => {
@@ -35,10 +48,21 @@ export default function useCryptoExplorer() {
       const link = explorers[mainSupportedChain.keyName].looksrare.getAssetLink(`${mainSupportedChain.nftIntoPiecesContract}`)
       return link
     }
+
+    if (mainSupportedChain.keyName === 'optimismGoerli') {
+      const link = explorers[mainSupportedChain.keyName].looksrare.getAssetLink(`${mainSupportedChain.nftIntoPiecesContract}`)
+      return link
+    }
   }
   
   const getLooksrareAssetLink = (nftId: number | string) => {
     if (mainSupportedChain.keyName === 'arbitrumGoerli') {
+  
+      const link = explorers[mainSupportedChain.keyName].looksrare.getAssetLink(`${mainSupportedChain.nftIntoPiecesContract}/${nftId}`)
+      return link
+    }
+
+    if (mainSupportedChain.keyName === 'optimismGoerli') {
   
       const link = explorers[mainSupportedChain.keyName].looksrare.getAssetLink(`${mainSupportedChain.nftIntoPiecesContract}/${nftId}`)
       return link
@@ -51,10 +75,22 @@ export default function useCryptoExplorer() {
       const link = explorers[mainSupportedChain.keyName].opensea.getCollectionLink(`${mainSupportedChain.nftIntoPiecesCollectionName}`)
       return link
     }
+
+    if (mainSupportedChain.keyName === 'optimismGoerli') {
+  
+      const link = explorers[mainSupportedChain.keyName].opensea.getCollectionLink(`${mainSupportedChain.nftIntoPiecesCollectionName}`)
+      return link
+    }
   }
 
   const getOpenseaAssetLink = (nftId: number | string) => {
     if (mainSupportedChain.keyName === 'arbitrumGoerli') {
+  
+      const link = explorers[mainSupportedChain.keyName].opensea.getAssetLink(`${mainSupportedChain.nftIntoPiecesContract}/${nftId}`)
+      return link
+    }
+
+    if (mainSupportedChain.keyName === 'optimismGoerli') {
   
       const link = explorers[mainSupportedChain.keyName].opensea.getAssetLink(`${mainSupportedChain.nftIntoPiecesContract}/${nftId}`)
       return link

@@ -53,7 +53,11 @@ const config: HardhatUserConfig = {
       accounts: [TESTNET_PRIVATE_KEY]
     },
     optimisticGoerli: {
-      url: `https://opt-goerli.g.alchemy.com/v2/${ALCHEMY_API_KEY_OPTIMSM_GOERLI}`,
+      url: `https://opt-goerli.g.alchemy.com/v2/${ALCHEMY_API_KEY_ARBITRUM_GOERLI}`,
+      accounts: [TESTNET_PRIVATE_KEY]
+    },
+    'optimism-goerli': {
+      url: "https://goerli.optimism.io",
       accounts: [TESTNET_PRIVATE_KEY]
     },
     hardhat: {
