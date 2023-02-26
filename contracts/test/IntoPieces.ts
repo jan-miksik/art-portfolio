@@ -2,23 +2,33 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
 
+
+//***** Contract methods to test *****/
+///// Royalty //////
 // setRoyaltyReceiver
 // getRoyaltyReceiver
 // royaltyInfo
+// supportsInterface
 
+///// Minting //////
 // safeMint
 // allowedMintCount
 // mintedNFTs
 
+///// Withdraw //////
 // withdraw
 
+///// Metadata //////
 // contractURI
 // tokenURI
+
+
+
 
 const MINT_LIMIT_PER_WALLET = 7
 const MAX_SUPPLY = 1000
 
-describe('Into Pieces Nft test', function () {
+describe('Hunt and gather NFT test', function () {
   let IntoPieces,
     intoPiecesContract: any,
     owner: SignerWithAddress,
@@ -48,10 +58,11 @@ describe('Into Pieces Nft test', function () {
     })
   })
 
-  ////////////////////////
+  ////// Royalty //////////
   // setRoyaltyReceiver
   // getRoyaltyReceiver
   // royaltyInfo
+  // supportsInterface
   ////////////////////////
 
   describe('getRoyaltyReceiver', function () {
@@ -90,7 +101,25 @@ describe('Into Pieces Nft test', function () {
     })
   })
 
-  ////////////////////////
+  describe('supportsInterface', function () {
+    const INVALID_ID = '0xffffffff'
+    const ERC165_ID = '0x01ffc9a7'
+
+    it('Should return true for ERC 165 id', async function () {
+      expect(await intoPiecesContract
+        .connect(addr1)
+        .supportsInterface(ERC165_ID)).to.equal(true)
+    })
+
+    it('Should return false for invalid id', async function () {
+      expect(await intoPiecesContract
+        .connect(addr1)
+        .supportsInterface(INVALID_ID)).to.equal(false)
+    })
+
+  })
+
+  ////// Minting //////////
   // safeMint
   // allowedMintCount
   // mintedNFTs
@@ -197,7 +226,7 @@ describe('Into Pieces Nft test', function () {
     })
   })
 
-  ////////////////////////
+  /////// Withdraw ////////
   // withdraw
   ////////////////////////
 
@@ -247,7 +276,7 @@ describe('Into Pieces Nft test', function () {
     })
   })
 
-  ////////////////////////
+  /////// Metadata ////////
   // contractURI
   // tokenURI
   ////////////////////////
@@ -281,7 +310,6 @@ describe('Into Pieces Nft test', function () {
   describe('tokenURI', function () {
     it('tokenURI give expected data', async function () {
       const tokenURI = await intoPiecesContract.connect(addr1).tokenURI(0)
-      console.log('tokenURI: ', tokenURI)
       const tokenUriObject = {
         name: 'Into Pieces0',
         description: '',

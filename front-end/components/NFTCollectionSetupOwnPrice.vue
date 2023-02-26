@@ -29,7 +29,7 @@
 
     <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
       <div class="nft-collection__input-and-currency">
-        <Input required type="number" step="any" v-model="requestedPrice" label="custom price"/>
+        <Input required type="number" step="any" v-model="requestedPrice" label="custom valuation"/>
         <span>{{mainSupportedChain?.nativeCurrency.symbol}}</span>
       </div>
 
@@ -63,6 +63,7 @@
   // links to markets - styling #2
   // refactor useWeb3 into more general usage
   // ?replace browser alert & confirm pop-ups with modal windows, (if user does not have installed metamask). (if user is on different chain)
+
   // create description text, name and select or modify picture #2
 
   // refactoring after testing on testnet
@@ -70,7 +71,7 @@
   
   // add web3 modal?
   //support for multiple wallets?
-  //better manage eht provider
+  //better manage eth provider
 
 
 // DONOS
@@ -108,14 +109,11 @@ const handleMintNFT = async () => {
   if (confirmation) {
     requestedPrice.value = undefined
     mintedNfts.value = await contractReadOnly.mintedNFTs()
-    console.log('mintedNfts.value: ', mintedNfts.value)
     isMinted.value = true
   }
 }
 
 const nftId = computed(() => mintedNfts.value ? Number(mintedNfts.value) - 1 : 0)
-console.log('mintedNfts.value: ', mintedNfts.value)
-console.log('nftId: ', )
 const explorerLink = computed(() => getExplorerLink({type: 'asset', marketplace: 'opensea', nftId: nftId.value}))
 
 
@@ -148,8 +146,9 @@ const contractActions = async (action: string) => {
       return await mintAction()
     }
   } catch (error) { 
+    mintInProgress.value = false
     if (!(error as Error).message) return alert('Error')
-    if ((error as Error).message.startsWith('insufficient funds for')) {
+    if ((error as Error).message.startsWith('err: insufficient funds') || (error as any).data.message.startsWith('err: insufficient funds')) {
       alert('insufficient funds for transaction')
     } else {
       alert((error as Error).message)

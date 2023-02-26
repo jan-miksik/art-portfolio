@@ -70,7 +70,7 @@ body::-webkit-scrollbar-track // Background
 
 
 .dark-mode
-  filter invert(1)
+  filter invert(0.97)
 
 
 .dark-mode img

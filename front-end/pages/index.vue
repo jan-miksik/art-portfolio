@@ -109,11 +109,11 @@ const collectIcon = ref(
 .homepage__sans-topic-link
   right 10vw
   top 30vh
-  width 135px
+  width 200px
 
   @media (min-width 700px)
     right 35vw
-    width 165px
+    width 230px
 
 .open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
   right -10px
@@ -134,10 +134,10 @@ const collectIcon = ref(
 .homepage__geometry-link
   top 55vh
   left 15vw
-  width 50px
+  width 45px
 
   @media (min-width 700px)
-    width 65px
+    width 50px
 
 .open-topic-icon:is(.homepage__geometry-link):is(.open-topic-icon__is-unselected-topic)
   left -3px
@@ -152,10 +152,10 @@ const collectIcon = ref(
 .homepage__node-avatars-link
   top 20vh
   left 10vw
-  width 100px
+  width 115px
 
   @media (min-width 700px)
-    width 115px
+    width 135px
 
 .open-topic-icon:is(.homepage__node-avatars-link):is(.open-topic-icon__is-unselected-topic)
   left -8px
@@ -170,10 +170,10 @@ const collectIcon = ref(
 .homepage__puzzle-link
   top 70vh
   right 38vw
-  width 80px
+  width 55px
 
   @media (min-width 700px)
-    width 95px
+    width 70px
 
 .open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon__is-unselected-topic)
   right -8px
@@ -188,11 +188,11 @@ const collectIcon = ref(
 .homepage__nft-collection-link
   right calc(45% - 75px)
   top 42vh
-  width 90px
+  width 60px
 
   @media (min-width 700px)
     right calc(22% - 75px)
-    width 100px
+    width 70px
 
 .open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon__is-unselected-topic)
   right -8px
