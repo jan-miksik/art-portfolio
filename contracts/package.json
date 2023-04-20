@@ -27,7 +27,6 @@
     "chai": "^4.2.0",
     "ethers": "^5.4.7",
     "hardhat": "^2.10.1",
-    "hardhat-gas-reporter": "^1.0.8",
     "solidity-coverage": "^0.8.2",
     "ts-node": ">=8.0.0",
     "typechain": "^8.1.0",
@@ -35,6 +34,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "hardhat-gas-reporter": "^1.0.9"
   }
 }
