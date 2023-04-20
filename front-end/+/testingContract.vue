@@ -3,7 +3,6 @@
     
     <br />
     <br />
-    <br />
     <textarea v-model="message" cols="30" rows="5"/>
     <br />
     <br />
