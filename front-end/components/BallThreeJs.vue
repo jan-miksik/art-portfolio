@@ -93,6 +93,7 @@ animate();
 
 .dark-mode .ball-three-js
   filter invert(1)
+  color red
 
 </style>
 

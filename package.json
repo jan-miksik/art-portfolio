@@ -17,7 +17,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-vue": "^9.1.1",
-    "nuxt": "3.0.0-rc.6",
+    "nuxt": "3.4.2",
     "postcss": "^8.4.14",
     "postcss-html": "^1.5.0",
     "postcss-nesting": "^10.1.10",
@@ -32,8 +32,10 @@
     "vue-tsc": "^0.34.7"
   },
   "dependencies": {
+    "@nuxt/kit": "^3.4.2",
     "dexie": "^3.2.2",
     "ethers": "^5.6.9",
+    "http-proxy-middleware": "^2.0.6",
     "three": "^0.145.0",
     "web3modal": "^1.9.8"
   }
