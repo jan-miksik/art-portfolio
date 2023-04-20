@@ -10,7 +10,7 @@
 
       <SelectTopicIcon :icon="puzzleIcon" label="Puzzle" :topic="Topics.PUZZLE" class="homepage__puzzle-link"/>
 
-      <SelectTopicIcon :icon="collectIcon" label="Collect" :topic="Topics.NFT_COLLECTION" class="homepage__nft-collection-link"/>
+      <!-- <SelectTopicIcon :icon="collectIcon" label="Collect" :topic="Topics.NFT_COLLECTION" class="homepage__nft-collection-link"/> -->
     </div>
 
     <Contact />
@@ -35,10 +35,10 @@
       :type="Topics.PUZZLE"
       :selected-topic="selectedTopic"
     />
-    <NftCollectionPieces
+    <!-- <NftCollectionPieces
       :type="Topics.NFT_COLLECTION"
       :selected-topic="selectedTopic"
-    />
+    /> -->
   </div>
 </template>
 
@@ -109,7 +109,7 @@ const collectIcon = ref(
 .homepage__sans-topic-link
   right 10vw
   top 30vh
-  width 200px
+  width 170px
 
   @media (min-width 700px)
     right 35vw
@@ -150,7 +150,7 @@ const collectIcon = ref(
 // Node Avatars
 // /
 .homepage__node-avatars-link
-  top 20vh
+  top 16vh
   left 10vw
   width 115px
 
