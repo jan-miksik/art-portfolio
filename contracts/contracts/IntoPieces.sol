@@ -90,13 +90,14 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
 
     // @param _tokenId - the NFT asset queried for royalty information
     // @param _salePrice - the sale price of the NFT asset specified by _tokenId
+    // `_royaltyReceiver, salePrice / 20` is optimazed code of `_royaltyReceiver (salePrice * 500) / 10000)` for 5% royalty 
     function royaltyInfo(uint256, uint256 salePrice)
         external
         view
         override
         returns (address receiver, uint256 royaltyAmount)
     {
-        return (_royaltyReceiver, (salePrice * 500) / 10000);
+        return (_royaltyReceiver, salePrice / 20);
     }
 
     // EIP2981 standard Interface return. Adds to ERC721 and ERC165 Interface returns.

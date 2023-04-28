@@ -10,7 +10,7 @@
 
       <SelectTopicIcon :icon="puzzleIcon" label="Puzzle" :topic="Topics.PUZZLE" class="homepage__puzzle-link"/>
 
-      <!-- <SelectTopicIcon :icon="collectIcon" label="Collect" :topic="Topics.NFT_COLLECTION" class="homepage__nft-collection-link"/> -->
+      <SelectTopicIcon :icon="collectIcon" label="Collect" :topic="Topics.NFT_COLLECTION" class="homepage__nft-collection-link"/>
     </div>
 
     <Contact />
@@ -35,10 +35,10 @@
       :type="Topics.PUZZLE"
       :selected-topic="selectedTopic"
     />
-    <!-- <NftCollectionPieces
+    <NftCollectionPieces
       :type="Topics.NFT_COLLECTION"
       :selected-topic="selectedTopic"
-    /> -->
+    />
   </div>
 </template>
 

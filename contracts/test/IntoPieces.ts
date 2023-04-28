@@ -28,7 +28,7 @@ import { IntoPieces } from '../typechain-types';
 const MINT_LIMIT_PER_WALLET = 7
 const MAX_SUPPLY = 1000
 
-describe('Hunt and gather NFT test', function () {
+describe('Into pieces NFT test', function () {
   let IntoPieces,
     intoPiecesContract: IntoPieces,
     owner: SignerWithAddress,
@@ -307,7 +307,7 @@ describe('Hunt and gather NFT test', function () {
     })
   })
 
-  describe.only('tokenURI', function () {
+  describe('tokenURI', function () {
     it('tokenURI give expected data', async function () {
       const tokenURI = await intoPiecesContract.connect(addr1).tokenURI(0)
       const tokenUriObject = {
