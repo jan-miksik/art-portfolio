@@ -230,7 +230,7 @@ onMounted(async () => {
 
   &__mint-image
     object-fit contain
-    max-height 250px
+    max-height 370px
     margin-bottom 0.3rem
     border-radius 3px
     max-width 100%
