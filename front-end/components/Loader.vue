@@ -57,8 +57,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 
 .loader__content-large
-  width 70px
-  height 70px
+  width 170px
+  height 170px
 
 
 .loader__content span
