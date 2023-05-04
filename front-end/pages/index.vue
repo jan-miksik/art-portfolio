@@ -94,9 +94,9 @@ const puzzleIcon = ref(
 
 const collectIcon = ref(
   new ImageFile({
-    url: 'topics-entry-icons/collect-icon.webp',
+    url: 'topics-entry-icons/collect-icon.png',
     id: 'collect',
-    lastUpdated: new Date('1992').getTime()
+    lastUpdated: new Date('1993').getTime()
   })
 )
 
