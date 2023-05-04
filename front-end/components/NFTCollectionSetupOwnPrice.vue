@@ -33,9 +33,9 @@
         <span>{{mainSupportedChain?.nativeCurrency.symbol}}</span>
       </div>
 
-      <Button class="nft-collection__mint-button" :disabled="mintInProgress || mintLimitExceeded">
+      <MintIntoPiecesButton class="nft-collection__mint-button" :is-disabled="mintInProgress || mintLimitExceeded">
         {{mintInProgress ? 'Minting' : 'Mint'}}
-      </Button>
+      </MintIntoPiecesButton>
 
       <a :href="getExplorerLink({type: 'collection', marketplace: 'opensea'})" title="collection on Opensea" class="nft-collection__opensea-collection-link" target="_blank">
           <img src="/opensea-blue-ship.svg" width="25" height="25" alt="opensea logo"/>
@@ -207,13 +207,13 @@ onMounted(async () => {
   // background-image url("collect/breeze-edit-bg.png")
   background-repeat no-repeat
   border-radius 100%
-  width 35rem
+  width 37rem
   height 39rem
   background-size 190%
   // animation morphing 2s infinite alternate ease-in-out
 
   @media screen and (min-width 370px)
-    height 35rem
+    height 37rem
     background-size 160%
 
   @media screen and (min-width 410px)
@@ -355,7 +355,7 @@ onMounted(async () => {
 
 .dark-mode .nft-collection__successfully-minted
 .dark-mode .nft-collection__limit-exceeded
-.dark-mode .nft-collection__mint-button
+// .dark-mode .nft-collection__mint-button
 .dark-mode .nft-collection__looksrare-link
 .dark-mode .nft-collection__opensea-link
   filter invert(1)

@@ -1,7 +1,10 @@
 <template>
-  <button type="submit" class="button animated-button"
+  <button type="submit" :class="['mint-into-pieces-button', {'animated-button': !isDisabled, 'button--disabled': isDisabled}]"
     :disabled="isDisabled">
     <slot/>
+    <div v-if="!isDisabled" class="animated-button__hover">
+      <img src="/collect/wavelight-mint.png" class="mint-into-pieces-button__mint-image" />
+    </div>
   </button>
 </template>
 
@@ -20,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <style lang="stylus" scoped>
-.button
+.mint-into-pieces-button
   border-radius 5px
   font-size 1rem
   border 1px solid transparent
@@ -39,18 +42,24 @@ const props = withDefaults(defineProps<Props>(), {
   // box-shadow 0 1px 2px 0 #1e9e6a, 0 1px 5px 0 #979797
   // border 1px solid black
 
+  &--disabled
+    opacity 0.5
+    cursor not-allowed
 
-  &:hover
-    opacity 1
-    transition all 0.2s
-    // box-shadow 0 1px 0 0 #1e9e6a
+.dark-mode .mint-into-pieces-button
+  background #db6394
+  color black
 
-.animated-button:hover
-  background-color #1e9e6a
+.mint-into-pieces-button:hover:not(:disabled)
+  opacity 1
+  transition all 0.2s
+  // box-shadow 0 1px 0 0 #1e9e6a
 
+// .animated-button:hover
+//   background-color #1e9e6a
 
 .animated-button::before
-  content "mint"
+  content ""
   position absolute
   top 50%
   left 50%
@@ -62,10 +71,29 @@ const props = withDefaults(defineProps<Props>(), {
   transform translate(-50%, -50%) scale(0)
   transition width 0.3s, height 0.3s
 
-
 .animated-button:hover::before
   width 100%
   height 100%
   transform translate(-50%, -50%) scale(1)
+
+.animated-button__hover
+  display none
+  position absolute
+  font-size 5rem
+  transform translate(-64%, -91%) scale(1)
+  width 100%
+  height 100%
+  color white
+
+.dark-mode .animated-button__hover
+.dark-mode .animated-button::before
+  filter invert(1)
+
+
+.animated-button:hover .animated-button__hover
+  display flex
+  justify-content center
+  align-items center
+
 
 </style>
