@@ -2,7 +2,7 @@
   <!-- <Web3ConnectionInfo /> -->
   <div class="nft-collection">
     <h2 class="nft-collection__title-breeze-edit">Into Pieces</h2>
-    <img src="/collect/collect.webp" class="nft-collection__mint-image" />
+    <img src="/collect/collect.png" class="nft-collection__mint-image" />
     <div class="nft-collection__amount">{{ maxSupply }} / {{ mintedNfts }}</div>
 
     <div class="nft-collection__successfully-minted">
@@ -234,7 +234,7 @@ onMounted(async () => {
     margin-bottom 0.3rem
     border-radius 3px
     max-width 100%
-    box-shadow 0 1px 3px 1px #cac9cf
+    // box-shadow 0 1px 3px 1px #cac9cf
 
   &__amount
     margin-bottom 1rem
