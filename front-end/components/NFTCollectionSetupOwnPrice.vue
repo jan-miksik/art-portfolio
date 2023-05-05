@@ -30,12 +30,14 @@
     <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
       <div class="nft-collection__input-and-currency">
         <Input required type="number" step="any" v-model="requestedPrice" label="custom valuation"/>
-        <span>{{mainSupportedChain?.nativeCurrency.symbol}}</span>
+        <span>{{mainSupportedChain?.nativeCurrency.symbol}}</span> <span>~{{mainSupportedChain?.nativeCurrency.symbol}}</span>
       </div>
 
       <MintIntoPiecesButton class="nft-collection__mint-button" :is-disabled="mintInProgress || mintLimitExceeded">
         {{mintInProgress ? 'minting' : 'mint'}}
       </MintIntoPiecesButton>
+
+      <button @click="getMintPrice"> test </button>
 
       <a :href="getExplorerLink({type: 'collection', marketplace: 'opensea'})" title="collection on Opensea" class="nft-collection__opensea-collection-link" target="_blank">
           <img src="/opensea-blue-ship.svg" width="25" height="25" alt="opensea logo"/>
@@ -84,7 +86,7 @@ import { connectedChain } from '~/constants/chains'
 import contractAbi from '~/abi/IntoPieces.json'
 import useCryptoExplorer from '~/J/useCryptoExplorer'
 
-const { initDapp, signer, checkForAnyContractAction, connectedAddress } =
+const { initDapp, signer, checkForAnyContractAction, connectedAddress, web3Provider } =
   useWeb3()
 
 const { getExplorerLink } = useCryptoExplorer()
@@ -173,6 +175,28 @@ const listenForAccountChange = () => {
   })
 }
 
+async function getEthToUsdExchangeRate() {
+  const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd");
+  const data = await response.json();
+  const ethToUsdRate = data.ethereum.usd;
+  console.log("ETH to USD rate:", ethToUsdRate);
+  return ethToUsdRate;
+}
+
+const getMintPrice = async () => {
+  const gasPrice = await web3Provider.value.getGasPrice();
+  const gasEstimate = await contractReadOnly.estimateGas.safeMint('0x70ABD75498bE15Ca935C4c514B49D58D9Ae17B51', {
+    value: ethers.utils.parseEther('0')
+  });
+  const totalCostWei = gasPrice.mul(gasEstimate);
+  const totalCostEth = ethers.utils.formatEther(totalCostWei);
+  const ethToUsdRate = await getEthToUsdExchangeRate();
+  const totalCostUsd = parseFloat(totalCostEth) * ethToUsdRate;
+
+  console.log("Total cost in USD:", totalCostUsd);
+
+}
+
 const loadContractData = async () => {
   contractReadOnly = new ethers.Contract(
     mainSupportedChain.nftIntoPiecesContract || '',
@@ -208,7 +232,7 @@ onMounted(async () => {
   background-repeat no-repeat
   border-radius 100%
   width 37rem
-  height 39rem
+  height 32rem
   background-size 190%
   // animation morphing 2s infinite alternate ease-in-out
 

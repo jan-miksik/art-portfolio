@@ -95,7 +95,7 @@ const selectImage = (id: string) => {
 <style scoped>
 .nft-collection-pieces__images {
   position: absolute;
-  padding: 10rem 1.5rem 5rem;
+  padding: 5rem 1.5rem;
   left: 0;
   right: 0;
   margin: auto;

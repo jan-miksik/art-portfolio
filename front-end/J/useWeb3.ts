@@ -216,6 +216,14 @@ export default function useWeb3() {
     }
   }
 
+  async function getGasPrice() {
+    const gasPrice = await web3Provider.value.getGasPrice();
+    console.log("Gas price:", gasPrice.toString());
+    return gasPrice;
+  }
+
+
+
   return {
     listenForChainChange,
     checkWindowEthereum,

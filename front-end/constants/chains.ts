@@ -137,8 +137,8 @@ const chains: Record<string, IChain> = {
     rpcUrls: ['https://goerli.optimism.io'],
     isChainSupported: true,
     nativeCurrency: {
-      name: 'Optimism Goerli WETH',
-      symbol: 'WETH',
+      name: 'Optimism Goerli ETH',
+      symbol: 'ETH',
       decimals: 18,
     },
   },
