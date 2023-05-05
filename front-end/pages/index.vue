@@ -2,7 +2,7 @@
   <div>
     <DarkModeSwitcher />
     <div class="homepage__open-topic-icons">
-      <SelectTopicIcon :icon="sansTopicIcon" label="Sans Topic" :topic="Topics.SANS_TOPIC" class="homepage__sans-topic-link"/>
+      <SelectTopicIcon :icon="sansTopicIcon" label="Free Topic" :topic="Topics.SANS_TOPIC" class="homepage__sans-topic-link"/>
 
       <SelectTopicIcon :icon="geometryIcon" label="Geometry" :topic="Topics.GEOMETRY" class="homepage__geometry-link"/>
 
@@ -10,7 +10,7 @@
 
       <SelectTopicIcon :icon="puzzleIcon" label="Puzzle" :topic="Topics.PUZZLE" class="homepage__puzzle-link"/>
 
-      <SelectTopicIcon :icon="collectIcon" label="Collect" :topic="Topics.NFT_COLLECTION" class="homepage__nft-collection-link"/>
+      <SelectTopicIcon :icon="collectIcon" label="Into Pieces" :topic="Topics.NFT_COLLECTION" class="homepage__nft-collection-link"/>
     </div>
 
     <Contact />
@@ -108,15 +108,15 @@ const collectIcon = ref(
 // /
 .homepage__sans-topic-link
   right 10vw
-  top 30vh
-  width 170px
+  top 28vh
+  width 140px
 
   @media (min-width 700px)
     right 35vw
     width 230px
 
 .open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
-  right -10px
+  right 0
 
 .open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
   .open-topic-icon__topic-thumbnail-img
@@ -150,9 +150,9 @@ const collectIcon = ref(
 // Node Avatars
 // /
 .homepage__node-avatars-link
-  top 16vh
+  top 12vh
   left 10vw
-  width 115px
+  width 80px
 
   @media (min-width 700px)
     width 135px
@@ -168,15 +168,15 @@ const collectIcon = ref(
 // Puzzle
 // /
 .homepage__puzzle-link
-  top 70vh
-  right 38vw
+  top 77vh
+  right 32vw
   width 55px
 
   @media (min-width 700px)
     width 70px
 
 .open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon__is-unselected-topic)
-  right -8px
+  right 0
 
 .open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon)
   .open-topic-icon__topic-thumbnail-img
@@ -186,16 +186,19 @@ const collectIcon = ref(
 // NFT Collection
 // /
 .homepage__nft-collection-link
-  right calc(45% - 75px)
-  top 42vh
+  right calc(45% - 100px)
+  top 52vh
   width 60px
+  // font-family Neonderthaw, sans-serif
+  // font-size 3rem
+  // font-weight 300
 
   @media (min-width 700px)
     right calc(22% - 75px)
     width 70px
 
 .open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon__is-unselected-topic)
-  right -8px
+  right 0
 
 .open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon)
   .open-topic-icon__topic-thumbnail-img

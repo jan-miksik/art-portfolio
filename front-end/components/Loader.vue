@@ -42,7 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
   align-items center
 
   // color: #fff;
-  font-family "Courier New", Courier, monospace
+  // font-family "Courier New", Courier, monospace
   font-weight 500
 
 

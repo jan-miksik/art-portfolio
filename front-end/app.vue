@@ -31,22 +31,31 @@ html
   overflow-x hidden
 
 @font-face
-  font-family RalewayDots
+  font-family AlumniSans
+  font-weight 300
   unicode-range U+000-5FF
-  src url("~/assets/fonts/Raleway_Dots/RalewayDots-Regular.ttf")
+  src url("~/assets/fonts/Alumni_Sans_Collegiate_One/AlumniSansCollegiateOne-Regular.ttf")
 
 @font-face
-  font-family BungeeHairline
+  font-family GowunDodum
   font-weight normal
   unicode-range U+000-5FF
-  src url("~/assets/fonts/Bungee_Hairline/BungeeHairline-Regular.ttf")
+  src url("~/assets/fonts/Gowun_Dodum/GowunDodum-Regular.ttf")
+
+@font-face
+  font-family Neonderthaw
+  // font-weight normal
+  font-weight 300
+  unicode-range U+000-5FF
+  src url("~/assets/fonts/Neonderthaw/Neonderthaw-Regular.ttf")
 
 body
-  font-family Avenir, Helvetica, Arial, sans-serif
+  font-family GowunDodum, Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased
   -moz-osx-font-smoothing grayscale
   text-align center
-  color #2c3e50
+  // letter-spacing 2px
+  color #0e0e0e
   margin 0
   overflow-x hidden
   background-color ghostwhite

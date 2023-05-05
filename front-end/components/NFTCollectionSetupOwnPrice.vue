@@ -1,7 +1,7 @@
 <template>
   <!-- <Web3ConnectionInfo /> -->
   <div class="nft-collection">
-    <h2 class="nft-collection__title-breeze-edit">Into Pieces</h2>
+    <!-- <h2 class="nft-collection__title">Into Pieces</h2> -->
     <img src="/collect/collect.png" class="nft-collection__mint-image" />
     <div class="nft-collection__amount">{{ maxSupply }} / {{ mintedNfts }}</div>
 
@@ -34,7 +34,7 @@
       </div>
 
       <MintIntoPiecesButton class="nft-collection__mint-button" :is-disabled="mintInProgress || mintLimitExceeded">
-        {{mintInProgress ? 'Minting' : 'Mint'}}
+        {{mintInProgress ? 'minting' : 'mint'}}
       </MintIntoPiecesButton>
 
       <a :href="getExplorerLink({type: 'collection', marketplace: 'opensea'})" title="collection on Opensea" class="nft-collection__opensea-collection-link" target="_blank">
@@ -239,7 +239,7 @@ onMounted(async () => {
   &__amount
     margin-bottom 1rem
     border-radius 5px
-    font-family system-ui
+    // font-family system-ui
 
   &__mint-form
     display flex
@@ -284,10 +284,14 @@ onMounted(async () => {
   &__limit-exceeded
     color tomato
 
-  &__title-breeze-edit
+  &__title
     margin 0 0 0.5rem
-    font-family system-ui
-    color black
+    font-family Neonderthaw, sans-serif
+    font-size 3rem
+    font-weight 300
+
+    // font-family AlumniSans, sans-serif
+    // color white
 
   &__opensea-link
     position absolute

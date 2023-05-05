@@ -3,7 +3,7 @@
     :disabled="isDisabled">
     <slot/>
     <div v-if="!isDisabled" class="animated-button__hover">
-      <img src="/collect/wavelight-mint.png" class="mint-into-pieces-button__mint-image" />
+      <img src="/collect/leaffy-mint.png" class="mint-into-pieces-button__mint-image" />
     </div>
   </button>
 </template>
@@ -84,6 +84,7 @@ const props = withDefaults(defineProps<Props>(), {
   width 100%
   height 100%
   color white
+  max-width 75%
 
 .dark-mode .animated-button__hover
 .dark-mode .animated-button::before
@@ -95,5 +96,7 @@ const props = withDefaults(defineProps<Props>(), {
   justify-content center
   align-items center
 
+.mint-into-pieces-button__mint-image
+  max-width 100%
 
 </style>

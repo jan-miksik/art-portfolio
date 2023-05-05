@@ -200,7 +200,7 @@ const randomizePosition = () => {
   font-weight bold
   color black
   opacity 0
-  font-family BungeeHairline, Helvetica, Arial, sans-serif
+  // font-family BungeeHairline, Helvetica, Arial, sans-serif
   position absolute
   rotate -90deg
   top 18px
