@@ -48,8 +48,8 @@ const props = withDefaults(defineProps<Props>(), {
   margin 0 0.5rem 1rem
 
   &__label
-    opacity 0.7
-    font-size 0.9rem
+    opacity 0.5
+    font-size 0.8rem
 
   &__body
     padding 0.5rem

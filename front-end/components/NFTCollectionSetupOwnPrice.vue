@@ -23,29 +23,49 @@
     <Transition name="fade">
       <Loader v-if="mintInProgress" size="large" class="nft-collection__minting-in-progress" />
     </Transition>
+
     <span class="nft-collection__limit-exceeded" v-if="mintLimitExceeded">
       max 7 pieces per address
     </span>
 
-    <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
-      <div class="nft-collection__input-and-currency">
-        <Input required type="number" step="any" v-model="requestedPrice" label="custom valuation"/>
-        <span>{{mainSupportedChain?.nativeCurrency.symbol}}</span> <span>~{{mainSupportedChain?.nativeCurrency.symbol}}</span>
+    <div>
+      <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
+        <div class="nft-collection__input-and-currency">
+          <Input required type="number" step="any" v-model="requestedPrice" label="custom valuation"/>
+          <span title="Optimism - second layer of Ethereum">
+            <span>{{mainSupportedChain?.nativeCurrency.symbol}}</span>
+            <img class="nft-collection__optimism-logo" src="/optimism-ethereum-logo.svg" width="12" height="12" alt="optimism logo"/>
+
+          </span>
+        </div>
+
+        <MintIntoPiecesButton class="nft-collection__mint-button" :is-disabled="mintInProgress || mintLimitExceeded">
+          {{mintInProgress ? 'minting' : 'mint'}}
+        </MintIntoPiecesButton>
+      </form>
+
+      
+      <div class="nft-collection__valuation">
+        <span class="nft-collection__valuation-full-price">~${{fullMintPrice}}~</span>
+        <!-- <span class="nft-collection__valuation-info">(${{customPriceUsd}} custom valuation
+        + ${{feeCostUsd}} Network fee)</span> -->
       </div>
 
-      <MintIntoPiecesButton class="nft-collection__mint-button" :is-disabled="mintInProgress || mintLimitExceeded">
-        {{mintInProgress ? 'minting' : 'mint'}}
-      </MintIntoPiecesButton>
-
-      <button @click="getMintPrice"> test </button>
-
-      <a :href="getExplorerLink({type: 'collection', marketplace: 'opensea'})" title="collection on Opensea" class="nft-collection__opensea-collection-link" target="_blank">
+      <div class="nft-collection__links">
+        <a :href="getExplorerLink({type: 'collection', marketplace: 'opensea'})" title="collection on Opensea" class="nft-collection__opensea-collection-link" target="_blank">
           <img src="/opensea-blue-ship.svg" width="25" height="25" alt="opensea logo"/>
         </a>
-        <a :href="getExplorerLink({type: 'collection', marketplace: 'looksrare'})" title="collection on Looksrare" class="nft-collection__looksrare-collection-link" target="_blank">
-          <img src="/looksrare.svg" width="35" height="35" alt="looksrare logo"/>
+        <!-- <a :href="getExplorerLink({type: 'collection', marketplace: 'looksrare'})" title="collection on Looksrare" class="nft-collection__looksrare-collection-link" target="_blank">
+          <img src="/looksrare.svg" width="20" height="20" alt="looksrare logo"/>
+        </a> -->
+        <a :href="mainSupportedChain?.linkToEtherscanIntoPiecesContract" title="contract on Etherscan" class="nft-collection__etherscan-link" target="_blank">
+          <img src="/etherscan-logo.svg" width="20" height="20" alt="etherscan logo"/>
         </a>
-    </form>
+      </div>
+    </div>
+
+
+    <!-- <button @click="getMintPrice"> test </button> -->
     <!-- <div @click="handleOpenseaAssetLink">TEST</div>-->
     <!-- <div @click="isMinted = !isMinted">Like a Minted</div>  -->
     <!-- <div class="nft-collection__collection-label">collection</div> -->
@@ -58,7 +78,10 @@
 <script setup lang="ts">
 
 // TODOS
-// show price in USD for mint
+// add web3Modal v2
+// check correct chain - prompt switch chain
+// check connected address
+
 
 //////// extra stuff /////////
   // restyling #2
@@ -71,12 +94,12 @@
   // refactoring after testing on testnet
   // successfully minted - next iteration
   
-  // add web3 modal?
   //support for multiple wallets?
   //better manage eth provider
 
 
 // DONOS
+// show price in USD for mint
 
 
 import { BigNumber, BigNumberish, ethers } from 'ethers'
@@ -85,9 +108,13 @@ import { mainSupportedChain } from '~/appSetup'
 import { connectedChain } from '~/constants/chains'
 import contractAbi from '~/abi/IntoPieces.json'
 import useCryptoExplorer from '~/J/useCryptoExplorer'
+import useWeb3Modal from '~/J/useWeb3Modal'
+import { fetchSigner } from '@wagmi/core'
 
-const { initDapp, signer, checkForAnyContractAction, connectedAddress, web3Provider } =
+const { initDapp, signer, checkForAnyContractAction, connectedAddress, connectWallet, optimismProvider } =
   useWeb3()
+
+
 
 const { getExplorerLink } = useCryptoExplorer()
 
@@ -100,9 +127,20 @@ const isMinted = ref(false)
 const maxSupply = ref<BigNumberish>()
 const mintLimitExceeded = ref(false)
 const mintedNfts = ref<BigNumberish>()
+const mintPrice = ref()
+const fetchingMintPrice = ref()
+const ethToUsdExchangeRate = ref()
 
 const handleMintNFT = async () => {
-  
+
+  // signer.value = await fetchSigner()
+  // console.log('signer: ', signer.value);
+  // if (!signer.value) {
+  //   const { web3modal } = useWeb3Modal()
+  //   await web3modal.openModal()
+  // }
+  await connectWallet()
+
   isMinted.value = false
   mintInProgress.value = true
   const confirmation = await contractActions('mint')
@@ -118,6 +156,18 @@ const handleMintNFT = async () => {
 const nftId = computed(() => mintedNfts.value ? Number(mintedNfts.value) - 1 : 0)
 const explorerLink = computed(() => getExplorerLink({type: 'asset', marketplace: 'opensea', nftId: nftId.value}))
 
+const fullMintPrice = computed(() => {
+  if(fetchingMintPrice.value) {
+    return '...'
+  }
+  if(requestedPrice.value || requestedPrice.value === 0) {
+    return mintPrice.value?.fullPriceUsd
+  }
+  return '?'
+})
+
+const customPriceUsd = computed(() => fetchingMintPrice.value ? '...' : mintPrice.value?.customPriceUsd)
+const feeCostUsd = computed(() => fetchingMintPrice.value ? '...' : mintPrice.value?.feeCostUsd)
 
 const mintAction = async () => {
   
@@ -141,7 +191,7 @@ const mintAction = async () => {
 
 const contractActions = async (action: string) => {
   
-  await checkForAnyContractAction()
+  // await checkForAnyContractAction()
 
   try {
     if (action == 'mint') {
@@ -169,33 +219,56 @@ const checkMintingLimit = async (account?: string) => {
   }
 }
 
-const listenForAccountChange = () => {
-  window.ethereum.on('accountsChanged', async ([account]: string) => {
-    checkMintingLimit(account)
-  })
-}
+// const listenForAccountChange = () => {
+//   window.ethereum.on('accountsChanged', async ([account]: string) => {
+//     checkMintingLimit(account)
+//   })
+// }
+
+const roundUp = (num: number, decimals: number) => Math.ceil(num * 10 ** decimals) / 10 ** decimals;
+
 
 async function getEthToUsdExchangeRate() {
-  const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd");
-  const data = await response.json();
-  const ethToUsdRate = data.ethereum.usd;
-  console.log("ETH to USD rate:", ethToUsdRate);
-  return ethToUsdRate;
+  try {
+    const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd");
+    const data = await response.json();
+    ethToUsdExchangeRate.value = data.ethereum.usd;
+    return data.ethereum.usd;
+  } catch (err) {
+    console.log('err: ', err);
+    return ethToUsdExchangeRate.value
+  }
 }
 
 const getMintPrice = async () => {
-  const gasPrice = await web3Provider.value.getGasPrice();
-  const gasEstimate = await contractReadOnly.estimateGas.safeMint('0x70ABD75498bE15Ca935C4c514B49D58D9Ae17B51', {
+  console.log('getMintPrice: ');
+
+  fetchingMintPrice.value = true
+
+
+  const DEMO_ADDRESS = '0x70ABD75498bE15Ca935C4c514B49D58D9Ae17B51'
+  const gasPrice = await optimismProvider.getGasPrice();
+  const gasEstimate = await contractReadOnly.estimateGas.safeMint(DEMO_ADDRESS, {
     value: ethers.utils.parseEther('0')
   });
-  const totalCostWei = gasPrice.mul(gasEstimate);
-  const totalCostEth = ethers.utils.formatEther(totalCostWei);
   const ethToUsdRate = await getEthToUsdExchangeRate();
-  const totalCostUsd = parseFloat(totalCostEth) * ethToUsdRate;
+  
+  const feeCostWei = gasPrice.mul(gasEstimate);
+  const feeCostEth = ethers.utils.formatEther(feeCostWei);
+  const feeCostUsd = roundUp(parseFloat(feeCostEth) * ethToUsdRate, 1);
+  
+  const customPriceUsd = roundUp((requestedPrice.value || 0) * ethToUsdRate, 1);
 
-  console.log("Total cost in USD:", totalCostUsd);
+  const fullPriceUsd = roundUp(feeCostUsd + customPriceUsd, 1)
 
+  fetchingMintPrice.value = false
+  
+  mintPrice.value = { feeCostUsd, customPriceUsd, fullPriceUsd }
 }
+
+watch(requestedPrice, async () => {
+  await getMintPrice()
+})
 
 const loadContractData = async () => {
   contractReadOnly = new ethers.Contract(
@@ -216,7 +289,8 @@ const loadContractData = async () => {
 onMounted(async () => {
   await initDapp()
   await loadContractData()
-  listenForAccountChange()
+  getMintPrice();
+  // listenForAccountChange()
 })
 </script>
 
@@ -263,6 +337,7 @@ onMounted(async () => {
   &__amount
     margin-bottom 1rem
     border-radius 5px
+    opacity 0.2
     // font-family system-ui
 
   &__mint-form
@@ -271,7 +346,10 @@ onMounted(async () => {
     justify-content center
     flex-wrap wrap
     gap 0.5rem
-    margin 0.5rem 1.5rem 2rem
+    margin 0.5rem 1.5rem
+
+    @media screen and (min-width 330px)
+      margin 0.5rem 1.5rem -0.5rem
 
   &__mint-input
     width 135px
@@ -300,7 +378,7 @@ onMounted(async () => {
   &__minting-in-progress
     font-size 3.2rem
     position relative
-    bottom 12rem
+    bottom 15rem
     left 0
     height 0
     filter drop-shadow(-2px 7px 7px #000) drop-shadow(-2px 7px 25px #fff) drop-shadow(-2px 7px 25px #000) drop-shadow(-2px 7px 25px #fff)
@@ -354,23 +432,37 @@ onMounted(async () => {
     &:hover
       color red
 
-  &__opensea-collection-link
-    position absolute
-    bottom 5px
-    right 70px
-    transition all 0.391s
+  &__links
+    display flex
+    align-items center
+    justify-content flex-end
+    gap 0.5rem
+    margin-top 2rem
 
-    &:hover
-      scale 1.17
+  // &__opensea-collection-link
+  //   bottom -15px
+  //   right -10px
+
+  //   @media screen and (min-width 500px)
+  //     right 70px
+
+  // &__looksrare-collection-link
+  //   bottom -20px
+  //   right 20px
+
+  //   @media screen and (min-width 500px)
+  //     right 100px
+
 
   &__looksrare-collection-link
-    position absolute
-    bottom 0
-    right 100px
+  &__opensea-collection-link
+  &__etherscan-link
+    filter grayscale(1) opacity(0.5)
     transition all 0.391s
 
     &:hover
       scale 1.17
+      filter grayscale(1) opacity(1)
 
   &__collection-label
     position absolute
@@ -380,6 +472,24 @@ onMounted(async () => {
     color black
     text-shadow -1px 1px 0 #fff
 
+  &__valuation
+    display flex
+    align-items center
+    justify-content center
+    // gap: 0.2rem;
+    flex-direction column
+
+  &__valuation-info
+    opacity 0.2
+    font-size 0.6rem
+
+  &__valuation-full-price
+    opacity 0.6
+
+  &__optimism-logo
+    position relative
+    top -8px
+    filter grayscale(1) opacity(0.3)
 
 .dark-mode .nft-collection__successfully-minted
 .dark-mode .nft-collection__limit-exceeded

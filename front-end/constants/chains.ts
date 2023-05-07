@@ -7,6 +7,7 @@ export interface IChain {
   rpcUrls?:string[]
   nftIntoPiecesCollectionName?: string
   nftShowingPortfolioContract?: string
+  linkToEtherscanIntoPiecesContract?: string
   isChainSupported: boolean
   keyName: string | 'goerli'
   nativeCurrency: {
@@ -132,6 +133,7 @@ const chains: Record<string, IChain> = {
     keyName: 'optimismGoerli',
     name: 'Optimism Goerli',
     nftIntoPiecesContract: '0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2',
+    linkToEtherscanIntoPiecesContract: 'https://goerli-optimism.etherscan.io/address/0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2',
     // nftShowingPortfolioContract: '0x47488CA96d736E63365d75C471050b5074CBD076',
     nftIntoPiecesCollectionName: 'into-pieces',
     rpcUrls: ['https://goerli.optimism.io'],

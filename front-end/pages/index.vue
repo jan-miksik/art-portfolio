@@ -52,7 +52,7 @@ const { piecesNodeAvatars, piecesSansTopic, piecesGeometry, piecesPuzzle } = use
 const { selectedTopic } = useSelectedTopic()
 
 useHead({
-  title: 'Portfolio of Jan Mikšík',
+  title: 'Jan Mikšík',
   meta: [{
     content: 'Portfolio of Jan Mikšík. Drawings, paintings and other pieces'
   }]
@@ -117,7 +117,7 @@ const collectIcon = ref(
 
 .open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
   right 0
-  filter opacity(0.3)
+  // filter opacity(0.3)
 
 .open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
   .open-topic-icon__topic-thumbnail-img
@@ -142,7 +142,7 @@ const collectIcon = ref(
 
 .open-topic-icon:is(.homepage__geometry-link):is(.open-topic-icon__is-unselected-topic)
   left -3px
-  filter opacity(0.3)
+  // filter opacity(0.3)
 
 .open-topic-icon:is(.homepage__geometry-link):is(.open-topic-icon)
   .open-topic-icon__topic-thumbnail-img
@@ -161,7 +161,7 @@ const collectIcon = ref(
 
 .open-topic-icon:is(.homepage__node-avatars-link):is(.open-topic-icon__is-unselected-topic)
   left -8px
-  filter opacity(0.3)
+  // filter opacity(0.3)
 
 .open-topic-icon:is(.homepage__node-avatars-link):is(.open-topic-icon)
   .open-topic-icon__topic-thumbnail-img
@@ -180,7 +180,7 @@ const collectIcon = ref(
 
 .open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon__is-unselected-topic)
   right 0
-  filter opacity(0.3)
+  // filter opacity(0.3)
 
 .open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon)
   .open-topic-icon__topic-thumbnail-img
@@ -203,10 +203,18 @@ const collectIcon = ref(
 
 .open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon__is-unselected-topic)
   right 0
-  filter opacity(0.3)
+  // filter opacity(0.3)
 
 .open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon)
   .open-topic-icon__topic-thumbnail-img
     filter drop-shadow(0 1px 1px gray)
 
+.open-topic-icon__is-unselected-topic
+  filter opacity(0.3)
+
+  &:hover
+    filter opacity(0.85)
+
+.dark-mode .open-topic-icon__is-unselected-topic
+  filter opacity(0.3) invert(1) !important
 </style>

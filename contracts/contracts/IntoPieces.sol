@@ -148,7 +148,7 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
         bytes memory dataURI = abi.encodePacked(
             '{',
             '"name": "Into Pieces @',
-            Strings.toString(tokenId),
+            Strings.toString(tokenId + 1),
             '",',
             '"description": "",',
             '"image": "',
