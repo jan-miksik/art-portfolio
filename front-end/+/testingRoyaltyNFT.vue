@@ -118,7 +118,7 @@ interface Message {
   datetime: Date
 }
 
-const {initDapp, connectWallet, web3Provider, signer, checkWindowEthereum, chain, switchToSupportedChain, handleWalletConnection, connectedAddress } = useWeb3()
+const {initDapp, connectWallet, web3Provider, signer, checkWindowEthereum, chain, switchToSupportedChain, connectedAddress } = useWeb3()
 
 const baseUri = import.meta.env.VITE_APP_TEST_NFT_BASE_URI as string || ''
 

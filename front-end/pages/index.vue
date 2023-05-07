@@ -107,16 +107,19 @@ const collectIcon = ref(
 // Free Topic
 // /
 .homepage__sans-topic-link
-  right 10vw
+  left 37vw
   top 28vh
   width 140px
 
   @media (min-width 700px)
-    right 35vw
+    left 45vw
     width 230px
 
 .open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
-  right 0
+  left calc(100vw - 140px)
+
+  @media (min-width 700px)
+    left calc(100vw - 230px)
   // filter opacity(0.3)
 
 .open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
@@ -172,25 +175,27 @@ const collectIcon = ref(
 // /
 .homepage__puzzle-link
   top 77vh
-  right 32vw
+  left 52vw
   width 55px
 
   @media (min-width 700px)
     width 70px
 
 .open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon__is-unselected-topic)
-  right 0
-  // filter opacity(0.3)
+  left calc(100vw - 55px)
+
+  @media (min-width 700px)
+    left calc(100vw - 70px)
 
 .open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon)
   .open-topic-icon__topic-thumbnail-img
     filter drop-shadow(0 1px 1px gray)
 
 // /
-// NFT Collection
+// Into Pieces - NFT Collection Into Pieces
 // /
 .homepage__nft-collection-link
-  right calc(45% - 100px)
+  left 65vw
   top 52vh
   width 60px
   // font-family Neonderthaw, sans-serif
@@ -198,11 +203,14 @@ const collectIcon = ref(
   // font-weight 300
 
   @media (min-width 700px)
-    right calc(22% - 75px)
+    left 75vw
     width 70px
 
 .open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon__is-unselected-topic)
-  right 0
+  left calc(100vw - 60px)
+
+  @media (min-width 700px)
+    left calc(100vw - 70px)
   // filter opacity(0.3)
 
 .open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon)

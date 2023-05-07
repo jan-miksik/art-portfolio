@@ -15,6 +15,8 @@ class="container"
 
 <script setup lang="ts">
 import useDragAndDrop from '~/J/useDragAndDrop'
+// import isMobile from '~/J/isMobile'
+
 const isDarkMode = ref(false)
 const amountOfSwitching = ref(0)
 const modeRef = ref<HTMLElement>()
@@ -125,11 +127,14 @@ const switchMode = () => {
   position absolute
   width 76px
   left calc(100vw - 76px)
-  bottom 5rem
+  top 2.5rem
   font-size 14px
   font-weight 500
   color white
   line-height 18px
+
+  @media (min-width: 600px)
+    top 90vh
 
 
 .dark-mode .mode

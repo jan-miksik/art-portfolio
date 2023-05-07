@@ -13,20 +13,6 @@ const { fetchContentfulData } = useContentful()
 const { mergeContentfulDataWithLocalData } = usePieces()
 
 onMounted(async () => {
-  console.log('000000000000');
-//   if (!crypto.randomUUID) {
-//   //@ts-ignore
-//   crypto.randomUUID = function () {
-//     let randomBytes = new Uint8Array(16);
-//     crypto.getRandomValues(randomBytes);
-//     randomBytes[6] = (randomBytes[6] & 0x0f) | 0x40; // Set the 13th byte to 0100 (UUID version 4)
-//     randomBytes[8] = (randomBytes[8] & 0x3f) | 0x80; // Set the 17th byte to 1000 (variant 1)
-//     return [...randomBytes]
-//       .map((b) => b.toString(16).padStart(2, "0"))
-//       .join("")
-//       .replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, "$1-$2-$3-$4-$5");
-//   };
-// }
   await fetchContentfulData()
   mergeContentfulDataWithLocalData()
 })
@@ -92,7 +78,7 @@ body::-webkit-scrollbar-track // Background
   background var(--scrollbar-background)
 
 
-.dark-mode
+.dark-mode:not(.w3m-active)
   filter invert(0.97)
 
 
@@ -114,5 +100,7 @@ input::-webkit-inner-spin-button
 input[type="number"]
   appearance textfield
 
+// .dark-mode .w3m-active
+//   filter invert(1)
 
 </style>

@@ -12,9 +12,9 @@
         <a :href="getExplorerLink({type: 'asset', marketplace: 'opensea', nftId: nftId})" class="nft-collection__opensea-link" target="_blank">
           <img src="/opensea-blue-ship.svg" width="30" height="30" alt="opensea logo"/>
         </a>
-        <a :href="getExplorerLink({type: 'asset', marketplace: 'looksrare', nftId})" class="nft-collection__looksrare-link" target="_blank">
+        <!-- <a :href="getExplorerLink({type: 'asset', marketplace: 'looksrare', nftId})" class="nft-collection__looksrare-link" target="_blank">
           <img src="/looksrare.svg" width="45" height="45" alt="looksrare logo"/>
-        </a>
+        </a> -->
         <div @click="isMinted = false" class="nft-collection__hide-is-minted-msg">✖</div>
         </span>
       </Transition>
@@ -59,7 +59,7 @@
           <img src="/looksrare.svg" width="20" height="20" alt="looksrare logo"/>
         </a> -->
         <a :href="mainSupportedChain?.linkToEtherscanIntoPiecesContract" title="contract on Etherscan" class="nft-collection__etherscan-link" target="_blank">
-          <img src="/etherscan-logo.svg" width="20" height="20" alt="etherscan logo"/>
+          <img src="/etherscan-logo.svg" width="23" height="23" alt="etherscan logo"/>
         </a>
       </div>
     </div>
@@ -78,16 +78,12 @@
 <script setup lang="ts">
 
 // TODOS
-// add web3Modal v2
-// check correct chain - prompt switch chain
-// check connected address
-
 
 //////// extra stuff /////////
   // restyling #2
   // links to markets - styling #2
   // refactor useWeb3 into more general usage
-  // ?replace browser alert & confirm pop-ups with modal windows, (if user does not have installed metamask). (if user is on different chain)
+  // ?replace browser alert & confirm pop-ups with modal windows
 
   // create description text, name and select or modify picture #2
 
@@ -100,6 +96,9 @@
 
 // DONOS
 // show price in USD for mint
+// add web3Modal v2
+// check correct chain - prompt switch chain
+// check connected address
 
 
 import { BigNumber, BigNumberish, ethers } from 'ethers'
@@ -111,11 +110,7 @@ import useCryptoExplorer from '~/J/useCryptoExplorer'
 import useWeb3Modal from '~/J/useWeb3Modal'
 import { fetchSigner } from '@wagmi/core'
 
-const { initDapp, signer, checkForAnyContractAction, connectedAddress, connectWallet, optimismProvider } =
-  useWeb3()
-
-
-
+const { initDapp, signer, checkForAnyContractAction, connectedAddress, connectWallet, optimismProvider } = useWeb3()
 const { getExplorerLink } = useCryptoExplorer()
 
 let contractReadOnly: any = null
@@ -131,46 +126,43 @@ const mintPrice = ref()
 const fetchingMintPrice = ref()
 const ethToUsdExchangeRate = ref()
 
-const handleMintNFT = async () => {
-
-  // signer.value = await fetchSigner()
-  // console.log('signer: ', signer.value);
-  // if (!signer.value) {
-  //   const { web3modal } = useWeb3Modal()
-  //   await web3modal.openModal()
-  // }
-  await connectWallet()
-
-  isMinted.value = false
-  mintInProgress.value = true
-  const confirmation = await contractActions('mint')
-  
-  mintInProgress.value = false
-  if (confirmation) {
-    requestedPrice.value = undefined
-    mintedNfts.value = await contractReadOnly.mintedNFTs()
-    isMinted.value = true
-  }
-}
-
 const nftId = computed(() => mintedNfts.value ? Number(mintedNfts.value) - 1 : 0)
-const explorerLink = computed(() => getExplorerLink({type: 'asset', marketplace: 'opensea', nftId: nftId.value}))
+// const explorerLink = computed(() => getExplorerLink({type: 'asset', marketplace: 'opensea', nftId: nftId.value}))
 
 const fullMintPrice = computed(() => {
-  if(fetchingMintPrice.value) {
+  const hasRequestedPrice = requestedPrice.value || requestedPrice.value === 0
+  if(fetchingMintPrice.value && hasRequestedPrice) {
     return '...'
   }
-  if(requestedPrice.value || requestedPrice.value === 0) {
+  if(hasRequestedPrice) {
     return mintPrice.value?.fullPriceUsd
   }
   return '?'
 })
+// const customPriceUsd = computed(() => fetchingMintPrice.value ? '...' : mintPrice.value?.customPriceUsd)
+// const feeCostUsd = computed(() => fetchingMintPrice.value ? '...' : mintPrice.value?.feeCostUsd)
 
-const customPriceUsd = computed(() => fetchingMintPrice.value ? '...' : mintPrice.value?.customPriceUsd)
-const feeCostUsd = computed(() => fetchingMintPrice.value ? '...' : mintPrice.value?.feeCostUsd)
+const getMintPrice = async () => {
+  fetchingMintPrice.value = true
 
-const mintAction = async () => {
+  const DEMO_ADDRESS = '0x70ABD75498bE15Ca935C4c514B49D58D9Ae17B51'
+  const gasPrice = await optimismProvider.getGasPrice();
+  const gasEstimate = await contractReadOnly.estimateGas.safeMint(DEMO_ADDRESS, {
+    value: ethers.utils.parseEther('0')
+  });
+  const ethToUsdRate = await getEthToUsdExchangeRate();
+  const feeCostWei = gasPrice.mul(gasEstimate);
+  const feeCostEth = ethers.utils.formatEther(feeCostWei);
+  const feeCostUsd = roundUp(parseFloat(feeCostEth) * ethToUsdRate, 1);
+  const customPriceUsd = roundUp((requestedPrice.value || 0) * ethToUsdRate, 1);
+  const fullPriceUsd = roundUp(feeCostUsd + customPriceUsd, 1)
+  fetchingMintPrice.value = false
   
+  mintPrice.value = { feeCostUsd, customPriceUsd, fullPriceUsd }
+}
+
+
+const mintAction = async () => {  
   contract.value = new ethers.Contract(
     connectedChain.value?.nftIntoPiecesContract || '',
     contractAbi.abi,
@@ -178,6 +170,7 @@ const mintAction = async () => {
     )
 
   try {
+    const address = signer.value.getAddress()
     const txMint = await contract.value.safeMint(connectedAddress.value, {
       value: ethers.utils.parseEther(requestedPrice.value.toString())
     })
@@ -190,25 +183,41 @@ const mintAction = async () => {
 }
 
 const contractActions = async (action: string) => {
-  
-  // await checkForAnyContractAction()
-
+  const canContinue = await checkForAnyContractAction()
+  if (!canContinue) return
   try {
     if (action == 'mint') {
       return await mintAction()
     }
   } catch (error) { 
     mintInProgress.value = false
-    if (!(error as Error).message) return alert('Error')
-    if ((error as Error).message.startsWith('err: insufficient funds') || (error as any).data.message.startsWith('err: insufficient funds')) {
+    if (!(error as Error)?.message) return alert('Error')
+    if ((error as Error)?.message.startsWith('err: insufficient funds') || (error as any).data?.message.startsWith('err: insufficient funds')) {
       alert('insufficient funds for transaction')
     } else {
-      alert((error as Error).message)
+      alert((error as Error)?.message)
     }
-
-    
   }
 }
+
+
+
+
+const handleMintNFT = async () => {
+  await connectWallet()
+  isMinted.value = false
+  mintInProgress.value = true
+  const confirmation = await contractActions('mint')
+  mintInProgress.value = false
+  if (confirmation) {
+    requestedPrice.value = undefined
+    mintedNfts.value = await contractReadOnly.mintedNFTs()
+    isMinted.value = true
+  }
+}
+
+
+
 
 const checkMintingLimit = async (account?: string) => {
   if (account || connectedAddress.value) {
@@ -218,12 +227,6 @@ const checkMintingLimit = async (account?: string) => {
     mintLimitExceeded.value = remainingMints === 0
   }
 }
-
-// const listenForAccountChange = () => {
-//   window.ethereum.on('accountsChanged', async ([account]: string) => {
-//     checkMintingLimit(account)
-//   })
-// }
 
 const roundUp = (num: number, decimals: number) => Math.ceil(num * 10 ** decimals) / 10 ** decimals;
 
@@ -235,36 +238,11 @@ async function getEthToUsdExchangeRate() {
     ethToUsdExchangeRate.value = data.ethereum.usd;
     return data.ethereum.usd;
   } catch (err) {
-    console.log('err: ', err);
     return ethToUsdExchangeRate.value
   }
 }
 
-const getMintPrice = async () => {
-  console.log('getMintPrice: ');
 
-  fetchingMintPrice.value = true
-
-
-  const DEMO_ADDRESS = '0x70ABD75498bE15Ca935C4c514B49D58D9Ae17B51'
-  const gasPrice = await optimismProvider.getGasPrice();
-  const gasEstimate = await contractReadOnly.estimateGas.safeMint(DEMO_ADDRESS, {
-    value: ethers.utils.parseEther('0')
-  });
-  const ethToUsdRate = await getEthToUsdExchangeRate();
-  
-  const feeCostWei = gasPrice.mul(gasEstimate);
-  const feeCostEth = ethers.utils.formatEther(feeCostWei);
-  const feeCostUsd = roundUp(parseFloat(feeCostEth) * ethToUsdRate, 1);
-  
-  const customPriceUsd = roundUp((requestedPrice.value || 0) * ethToUsdRate, 1);
-
-  const fullPriceUsd = roundUp(feeCostUsd + customPriceUsd, 1)
-
-  fetchingMintPrice.value = false
-  
-  mintPrice.value = { feeCostUsd, customPriceUsd, fullPriceUsd }
-}
 
 watch(requestedPrice, async () => {
   await getMintPrice()
@@ -438,20 +416,6 @@ onMounted(async () => {
     justify-content flex-end
     gap 0.5rem
     margin-top 2rem
-
-  // &__opensea-collection-link
-  //   bottom -15px
-  //   right -10px
-
-  //   @media screen and (min-width 500px)
-  //     right 70px
-
-  // &__looksrare-collection-link
-  //   bottom -20px
-  //   right 20px
-
-  //   @media screen and (min-width 500px)
-  //     right 100px
 
 
   &__looksrare-collection-link

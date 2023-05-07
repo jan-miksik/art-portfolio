@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   modules: [
     '@vueuse/nuxt',
   ],
-  plugins: ['~/plugins/uuid-polyfill.js'],
+  // plugins: ['~/plugins/uuid-polyfill.js'],
   // vite: {
   //   server: {
   //     // Povolte HMR prostřednictvím zabezpečeného WebSocketu (wss)

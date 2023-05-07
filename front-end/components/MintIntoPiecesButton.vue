@@ -53,13 +53,16 @@ const props = withDefaults(defineProps<Props>(), {
 .mint-into-pieces-button:hover:not(:disabled)
   opacity 1
   transition all 0.2s
+
+  @media (min-width: 600px)
+    opacity 1
   // box-shadow 0 1px 0 0 #1e9e6a
 
 // .animated-button:hover
 //   background-color #1e9e6a
 
 .animated-button::before
-  content ""
+  // content ""
   position absolute
   top 50%
   left 50%
@@ -70,6 +73,9 @@ const props = withDefaults(defineProps<Props>(), {
   border-radius 5%
   transform translate(-50%, -50%) scale(0)
   transition width 0.3s, height 0.3s
+
+  @media (min-width: 600px)
+    content ""
 
 .animated-button:hover::before
   width 100%
@@ -92,9 +98,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 
 .animated-button:hover .animated-button__hover
-  display flex
-  justify-content center
-  align-items center
+  display none
+  
+  @media (min-width: 600px)
+    display flex
+    justify-content center
+    align-items center
 
 .mint-into-pieces-button__mint-image
   max-width 100%
