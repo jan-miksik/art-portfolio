@@ -43,6 +43,12 @@ html
   src url("~/assets/fonts/Gowun_Dodum/GowunDodum-Regular.ttf")
 
 @font-face
+  font-family Kurland
+  font-weight normal
+  unicode-range U+000-5FF
+  src url("~/assets/fonts/Kurland/Kurland.ttf")
+
+@font-face
   font-family Neonderthaw
   // font-weight normal
   font-weight 300

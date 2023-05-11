@@ -1,8 +1,10 @@
 <template>
   <!-- <Web3ConnectionInfo /> -->
-  <div class="nft-collection">
+  <div class="nft-collection" >
     <!-- <h2 class="nft-collection__title">Into Pieces</h2> -->
-    <img src="/collect/collect.png" class="nft-collection__mint-image" />
+
+
+    <img src="/collect/collect.png" class="nft-collection__mint-image" ref="intoPiecesRef" draggable="true"/>
     <div class="nft-collection__amount">{{ maxSupply }} / {{ mintedNfts }}</div>
 
     <div class="nft-collection__successfully-minted">
@@ -63,12 +65,6 @@
         </a>
       </div>
     </div>
-
-
-    <!-- <button @click="getMintPrice"> test </button> -->
-    <!-- <div @click="handleOpenseaAssetLink">TEST</div>-->
-    <!-- <div @click="isMinted = !isMinted">Like a Minted</div>  -->
-    <!-- <div class="nft-collection__collection-label">collection</div> -->
   </div>
   <!-- <ThreeJsTesting /> -->
 </template>
@@ -78,6 +74,10 @@
 <script setup lang="ts">
 
 // TODOS
+  // switch chains on mobile
+
+  // no wallet desktop -harder to use so far
+  // no wallet mobile -harder to use so far
 
 //////// extra stuff /////////
   // restyling #2
@@ -85,30 +85,40 @@
   // refactor useWeb3 into more general usage
   // ?replace browser alert & confirm pop-ups with modal windows
 
-  // create description text, name and select or modify picture #2
-
   // refactoring after testing on testnet
   // successfully minted - next iteration
-  
-  //support for multiple wallets?
-  //better manage eth provider
 
 
 // DONOS
+// order of wallets on desktop
+// without added chain
+//support for multiple wallets? should be with web3modal v2
 // show price in USD for mint
 // add web3Modal v2
 // check correct chain - prompt switch chain
 // check connected address
 
 
-import { BigNumber, BigNumberish, ethers } from 'ethers'
+import { BigNumberish, ethers } from 'ethers'
 import useWeb3 from '~/J/useWeb3'
 import { mainSupportedChain } from '~/appSetup'
 import { connectedChain } from '~/constants/chains'
 import contractAbi from '~/abi/IntoPieces.json'
 import useCryptoExplorer from '~/J/useCryptoExplorer'
-import useWeb3Modal from '~/J/useWeb3Modal'
-import { fetchSigner } from '@wagmi/core'
+// import useWeb3Modal from '~/J/useWeb3Modal'
+// import { fetchSigner } from '@wagmi/core'
+
+// import useDragAndDrop from '~/J/useDragAndDrop';
+
+// const { dragAndDrop, isDragging } = useDragAndDrop()
+
+// const intoPiecesRef = ref<HTMLElement>()
+// onMounted(() => {
+//   console.log('intoPiecesRef.value: ', intoPiecesRef.value);
+//   if (intoPiecesRef.value) {
+//     dragAndDrop(intoPiecesRef.value)
+//   }
+// })
 
 const { initDapp, signer, checkForAnyContractAction, connectedAddress, connectWallet, optimismProvider } = useWeb3()
 const { getExplorerLink } = useCryptoExplorer()
@@ -162,7 +172,7 @@ const getMintPrice = async () => {
 }
 
 
-const mintAction = async () => {  
+const mintAction = async () => {
   contract.value = new ethers.Contract(
     connectedChain.value?.nftIntoPiecesContract || '',
     contractAbi.abi,
@@ -170,13 +180,11 @@ const mintAction = async () => {
     )
 
   try {
-    const address = signer.value.getAddress()
     const txMint = await contract.value.safeMint(connectedAddress.value, {
       value: ethers.utils.parseEther(requestedPrice.value.toString())
     })
     return await txMint.wait()
   } catch (error) {
-    console.error('mintAction error: ', error)
     throw error
   }
  
@@ -184,26 +192,41 @@ const mintAction = async () => {
 
 const contractActions = async (action: string) => {
   const canContinue = await checkForAnyContractAction()
+  console.log('canContinue: ', canContinue);
   if (!canContinue) return
   try {
     if (action == 'mint') {
-      return await mintAction()
+      await mintAction()
+      return true
     }
   } catch (error) { 
+    console.log('error: ', error);
     mintInProgress.value = false
-    if (!(error as Error)?.message) return alert('Error')
-    if ((error as Error)?.message.startsWith('err: insufficient funds') || (error as any).data?.message.startsWith('err: insufficient funds')) {
+    if (!(error as Error)?.message) {
+      alert('Error')
+      return
+    }
+    
+    if ((error as Error)?.message?.startsWith('err: insufficient funds') || (error as any).data?.message?.startsWith('err: insufficient funds')) {
       alert('insufficient funds for transaction')
+      return
+    }
+
+    if ((error as any)?.message?.startsWith('user rejected transaction')) {
+      alert('Transaction rejected')
+      return
     } else {
       alert((error as Error)?.message)
     }
+    return false
   }
 }
 
 
 
 
-const handleMintNFT = async () => {
+const handleMintNFT = async (event: Event) => {
+  event.preventDefault()
   await connectWallet()
   isMinted.value = false
   mintInProgress.value = true
@@ -306,6 +329,8 @@ onMounted(async () => {
 
   &__mint-image
     object-fit contain
+    // position absolute
+    // min-width 100%
     max-height 370px
     margin-bottom 0.3rem
     border-radius 3px
@@ -323,7 +348,7 @@ onMounted(async () => {
     align-items center
     justify-content center
     flex-wrap wrap
-    gap 0.5rem
+    gap 0 1rem
     margin 0.5rem 1.5rem
 
     @media screen and (min-width 330px)
@@ -376,8 +401,8 @@ onMounted(async () => {
   &__opensea-link
     position absolute
     cursor pointer
-    bottom 37px
-    left 12px
+    top: -20px;
+    right: 7px;
     transition all 0.391s
     opacity 0.5
 

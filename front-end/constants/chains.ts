@@ -136,10 +136,30 @@ const chains: Record<string, IChain> = {
     linkToEtherscanIntoPiecesContract: 'https://goerli-optimism.etherscan.io/address/0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2',
     // nftShowingPortfolioContract: '0x47488CA96d736E63365d75C471050b5074CBD076',
     nftIntoPiecesCollectionName: 'into-pieces',
-    rpcUrls: ['https://goerli.optimism.io'],
+    rpcUrls: ['https://goerli.optimism.io','https://optimism-goerli.public.blastapi.io'],
     isChainSupported: true,
     nativeCurrency: {
       name: 'Optimism Goerli ETH',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+  },
+  optimism: { 
+    chainIdHex: '0xa',
+    chainIdDec: 10,
+    keyName: 'optimism',
+    name: 'Optimism',
+    
+    // https://optimistic.etherscan.io
+
+    // nftIntoPiecesContract: '0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2',
+    // linkToEtherscanIntoPiecesContract: 'https://goerli-optimism.etherscan.io/address/0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2',
+    // nftShowingPortfolioContract: '0x47488CA96d736E63365d75C471050b5074CBD076',
+    nftIntoPiecesCollectionName: 'into-pieces',
+    rpcUrls: ['https://mainnet.optimism.io', 'https://optimism.blockpi.network/v1/rpc/public', 'https://1rpc.io/op'],
+    isChainSupported: true,
+    nativeCurrency: {
+      name: 'Ethereum',
       symbol: 'ETH',
       decimals: 18,
     },
