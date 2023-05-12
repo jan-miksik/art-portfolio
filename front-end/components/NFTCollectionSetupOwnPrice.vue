@@ -4,7 +4,7 @@
     <!-- <h2 class="nft-collection__title">Into Pieces</h2> -->
 
 
-    <img src="/collect/collect.png" class="nft-collection__mint-image" ref="intoPiecesRef" draggable="true"/>
+    <img src="/collect/IntoPieces.webp" class="nft-collection__mint-image"/>
     <div class="nft-collection__amount">{{ maxSupply }} / {{ mintedNfts }}</div>
 
     <div class="nft-collection__successfully-minted">
@@ -401,8 +401,8 @@ onMounted(async () => {
   &__opensea-link
     position absolute
     cursor pointer
-    top: -20px;
-    right: 7px;
+    top -20px
+    right 7px
     transition all 0.391s
     opacity 0.5
 

@@ -2,7 +2,7 @@
   <!-- <Web3ConnectionInfo /> -->
   <div class="nft-collection-stp">
     <h2 class="nft-collection-stp__title-breeze-edit">Showing you portfolio web</h2>
-    <img src="/collect/collect.webp" class="nft-collection-stp__mint-image" />
+    <!-- <img src="/collect/collect.webp" class="nft-collection-stp__mint-image" /> -->
     <!-- <div class="nft-collection-stp__amount">{{ maxSupply?.toNumber() }} / {{mintedNfts?.toNumber()}}</div> -->
 
     <div class="nft-collection-stp__successfully-minted">
