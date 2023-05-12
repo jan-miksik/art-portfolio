@@ -1,7 +1,7 @@
 <template>
 
   <div class="web3-connection-info">
-    <div :class="['web3-connection-info__chain', {'web3-connection-info__chain--hover': !connectedChain?.isChainSupported }]" @click="switchToSupportedChain(mainSupportedChain)" :title="connectedChain?.isChainSupported ? 'connected chain' : 'please connect to supported chain'">
+    <div :class="['web3-connection-info__chain', {'web3-connection-info__chain--hover': !connectedChain?.isChainSupported }]" @click="switchToSupportedChain()" :title="connectedChain?.isChainSupported ? 'connected chain' : 'please connect to supported chain'">
       <span v-if="connectedChain" >
         {{connectedChain?.name}}
       </span>

@@ -82,7 +82,7 @@ import { ethers } from 'ethers'
 // import contractAbi from '~/../contracts/artifacts/contracts/MessagePortal.sol/MessagePortal.json'
 import useWeb3 from '~/J/useWeb3'
 // import Web3Modal from "web3modal";
-const {initDapp, connectWallet, web3Provider, signer, checkWindowEthereum, chain, switchToSupportedChain, handleWalletConnection, connectedAddress } = useWeb3()
+const {initDapp, connectWallet, web3Provider, signer, chain, switchToSupportedChain, connectedAddress } = useWeb3()
 
 let jsonRpcProvider: any = null;
 
@@ -140,7 +140,7 @@ const sendMessage = async function () {
 
 
 const contractActions = async (action: string) => {
-  if(!checkWindowEthereum()) return
+  // if(!checkWindowEthereum()) return
 
   if (!signer.value) {
     

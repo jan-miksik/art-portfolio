@@ -4,7 +4,7 @@
     <!-- <h2 class="nft-collection__title">Into Pieces</h2> -->
 
 
-    <img src="/collect/collect.png" class="nft-collection__mint-image" ref="intoPiecesRef" draggable="true"/>
+    <img src="/into-pieces/IntoPieces.webp" class="nft-collection__mint-image"/>
     <div class="nft-collection__amount">{{ maxSupply }} / {{ mintedNfts }}</div>
 
     <div class="nft-collection__successfully-minted">
@@ -42,7 +42,9 @@
         </div>
 
         <MintIntoPiecesButton class="nft-collection__mint-button" :is-disabled="mintInProgress || mintLimitExceeded">
-          {{mintInProgress ? 'minting' : 'mint'}}
+          <span class="nft-collection__mint-button-text">
+            {{mintInProgress ? 'minting' : 'mint'}}
+          </span>
         </MintIntoPiecesButton>
       </form>
 
@@ -479,6 +481,9 @@ onMounted(async () => {
     position relative
     top -8px
     filter grayscale(1) opacity(0.3)
+
+  &__mint-button-text:hover
+    scale 0.9 1
 
 .dark-mode .nft-collection__successfully-minted
 .dark-mode .nft-collection__limit-exceeded

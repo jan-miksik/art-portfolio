@@ -37,23 +37,23 @@ const unwatch = watchSigner(
   }
 )
 
-const checkWindowEthereum = () => {
-  if (window.ethereum === undefined) {
-    if (confirm('To use this dapp, please install crypto wallet, such as for example Metamask. Click OK to open Metamask.')) {
-      window.open('https://metamask.io/')
-    }
-  }
+// const checkWindowEthereum = () => {
+//   if (window.ethereum === undefined) {
+//     if (confirm('To use this dapp, please install crypto wallet, such as for example Metamask. Click OK to open Metamask.')) {
+//       window.open('https://metamask.io/')
+//     }
+//   }
 
-  if (!web3Provider.value && window.ethereum) {
-    web3Provider.value = new ethers.providers.Web3Provider(
-      window.ethereum,
-      'any'
-    )
-  } else {
-    web3Provider.value = new ethers.providers.JsonRpcProvider(optimismRpcUrl)
-  }
-  return true
-}
+//   if (!web3Provider.value && window.ethereum) {
+//     web3Provider.value = new ethers.providers.Web3Provider(
+//       window.ethereum,
+//       'any'
+//     )
+//   } else {
+//     web3Provider.value = new ethers.providers.JsonRpcProvider(optimismRpcUrl)
+//   }
+//   return true
+// }
 
 const connectWallet = async () => {
   const fetchedSigner = await fetchSigner()
@@ -183,7 +183,7 @@ export default function useWeb3() {
 
 
   return {
-    checkWindowEthereum,
+    // checkWindowEthereum,
     switchToSupportedChain,
     checkForAnyContractAction,
     chain,

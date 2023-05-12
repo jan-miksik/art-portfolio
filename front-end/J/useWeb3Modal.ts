@@ -2,9 +2,12 @@ import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Modal } from '@web3modal/html'
 import { configureChains, createClient } from '@wagmi/core'
 import { arbitrum, mainnet, optimism, optimismGoerli, polygon } from '@wagmi/core/chains'
+import { mainSupportedChain } from '~/appSetup'
 
 const chains = [optimismGoerli, optimism, arbitrum, mainnet, polygon]
 const projectId = import.meta.env.VITE_APP_WALLET_CONNECT_ID as string
+
+const defaultChain = chains.find(chain => chain.id === mainSupportedChain.chainIdDec)
 
 const { provider } = configureChains(chains, [w3mProvider({ projectId })])
 const wagmiClient = createClient({
@@ -31,6 +34,7 @@ const web3modal = new Web3Modal({
     // Coinbase
     'fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa',
   ],
+  defaultChain,
  }, ethereumClient)
 
 export default function useWeb3Modal() {
