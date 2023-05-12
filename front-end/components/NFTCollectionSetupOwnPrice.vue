@@ -403,8 +403,8 @@ onMounted(async () => {
   &__opensea-link
     position absolute
     cursor pointer
-    top: -20px;
-    right: 7px;
+    top -20px
+    right 7px
     transition all 0.391s
     opacity 0.5
 
