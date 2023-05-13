@@ -2,6 +2,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { IntoPieces } from '../typechain-types';
+import { Contract } from 'ethers';
 
 //***** Contract methods to test *****/
 ///// Royalty //////
@@ -17,6 +18,8 @@ import { IntoPieces } from '../typechain-types';
 
 ///// Withdraw //////
 // withdraw
+// withdrawERC20Token
+// checkERC20Balance
 
 ///// Metadata //////
 // contractURI
@@ -34,11 +37,18 @@ describe('Into pieces NFT test', function () {
     owner: SignerWithAddress,
     addr1: SignerWithAddress,
     addr2: SignerWithAddress,
-    addrs: SignerWithAddress[]
+    addrs: SignerWithAddress[],
+    tokenErc20: Contract;
   beforeEach(async function () {
     IntoPieces = await ethers.getContractFactory('IntoPieces')
     ;[owner, addr1, addr2, ...addrs] = await ethers.getSigners()
     intoPiecesContract = await IntoPieces.deploy()
+
+    const Token = await ethers.getContractFactory("ERC20Mock");
+    tokenErc20 = await Token.deploy();
+
+    // Mint some tokens to the contract
+    await tokenErc20.mint(intoPiecesContract.address, ethers.utils.parseEther("1000"));
   })
 
   ////////////////////////
@@ -79,6 +89,18 @@ describe('Into pieces NFT test', function () {
       expect(await intoPiecesContract.getRoyaltyReceiver()).to.equal(
         addr2.address
       )
+    })
+
+    it('Should revert if new royalty receiver is the same as the current one', async function () {
+      await intoPiecesContract.connect(owner).setRoyaltyReceiver(addr2.address)
+      await expect(intoPiecesContract.connect(owner).setRoyaltyReceiver(addr2.address)).to.be.revertedWith("New royalty receiver is the same as the current one");
+      expect(await intoPiecesContract.getRoyaltyReceiver()).to.equal(
+        addr2.address
+      )
+    })
+
+    it('Should revert if address is zero', async function () {
+      await expect(intoPiecesContract.connect(owner).setRoyaltyReceiver(ethers.constants.AddressZero)).to.be.revertedWith("New royalty receiver cannot be the zero address");
     })
 
     it('Royalty info returns the new royalty receiver and 5% royalty', async function () {
@@ -228,6 +250,8 @@ describe('Into pieces NFT test', function () {
 
   /////// Withdraw ////////
   // withdraw
+  // withdrawERC20Token
+  // checkERC20Balance
   ////////////////////////
 
   describe('withdraw', function () {
@@ -274,7 +298,45 @@ describe('Into pieces NFT test', function () {
         intoPiecesContract.connect(addr1).withdraw()
       ).to.be.revertedWith('Ownable: caller is not the owner')
     })
+
+    it("Should revert if there are no Ether to withdraw", async function () {
+      await expect(intoPiecesContract.connect(owner).withdraw()).to.be.revertedWith("No Ether available for withdrawal");
+    });
   })
+
+  describe('withdrawERC20Token', function () {
+
+    it("Owner should withdraw all ERC20 tokens to a specific address", async function() {
+      await intoPiecesContract.connect(owner).withdrawERC20Token(tokenErc20.address, owner.address);
+      expect(await tokenErc20.balanceOf(intoPiecesContract.address)).to.equal(0);
+      expect(await tokenErc20.balanceOf(owner.address)).to.equal(
+        ethers.utils.parseEther("1000")
+      );
+    });
+
+    it("Should fail if there are no tokens to withdraw", async function () {
+      await intoPiecesContract.connect(owner).withdrawERC20Token(tokenErc20.address, owner.address);
+      await expect(
+        intoPiecesContract.withdrawERC20Token(tokenErc20.address, owner.address)
+      ).to.be.revertedWith("No tokens to withdraw");
+    });
+
+    it("Should fail if called by non-owner", async function () {
+      await expect(
+        intoPiecesContract.connect(addr1).withdrawERC20Token(tokenErc20.address, addr1.address)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+  })
+
+  describe('checkERC20Balance', function () {
+    it("Should return the balance of the ERC20 tokens", async function() {
+
+      const balance = await intoPiecesContract.connect(owner).checkERC20Balance(tokenErc20.address);
+      expect(balance).to.equal(ethers.utils.parseEther("1000"));
+    });
+  })
+
+
 
   /////// Metadata ////////
   // contractURI
@@ -296,7 +358,7 @@ describe('Into pieces NFT test', function () {
         name: 'Into Pieces',
         description: 'Test your imagination',
         image:
-          'ipfs://bafkreifivloyeuiky6ozz7w7uke2lb2amutsu4bnb76i2pv4hdqvv7uv4i',
+          'ipfs://bafybeidr3ssynrir4wez5bayz36qxk557irrrkwsplxeq3xdwieysxzlqq',
         external_link: 'https://janmiksik.ooo',
         seller_fee_basis_points: 500,
         fee_recipient: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
@@ -314,7 +376,7 @@ describe('Into pieces NFT test', function () {
         name: 'Into Pieces @1',
         description: '',
         image:
-          'ipfs://bafkreifivloyeuiky6ozz7w7uke2lb2amutsu4bnb76i2pv4hdqvv7uv4i'
+          'ipfs://bafybeidr3ssynrir4wez5bayz36qxk557irrrkwsplxeq3xdwieysxzlqq'
       }
 
       // substring(29) removing "data:application/json;base64"
