@@ -67,7 +67,7 @@ const props = withDefaults(defineProps<Props>(), {
     // caret-color: #1464a2;
     font-size 1rem
     // outline: none;
-    border 1px solid #000
+    border 1px solid #515151
 
     &:focus
       animation 7s infinite alternate caret-anim

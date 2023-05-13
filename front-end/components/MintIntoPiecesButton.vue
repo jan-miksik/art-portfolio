@@ -55,7 +55,8 @@ const props = withDefaults(defineProps<Props>(), {
 .mint-into-pieces-button:hover:not(:disabled)
   opacity 1
   // filter: drop-shadow(0px 0px 1px #1e9e6a);
-  scale: 1.1 0.9;
+  // scale: 1.1 0.9;
+  color: #a9ffb4;
   // transition all 0.2s
   // animation-name background-color-palette
   // animation-duration 3.5s

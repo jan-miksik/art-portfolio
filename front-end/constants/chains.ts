@@ -102,7 +102,7 @@ const chains: Record<string, IChain> = {
     name: 'Mumbai',
     keyName: 'mumbai',
     nftIntoPiecesContract: '0x985f6e98755666155B36e73c78c345949b844BcE',
-    // nftIntoPiecesContract: '0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2',
+    // nftIntoPiecesContract: '0x8E072dcd26eAe73C172bF6ed2a5D00Aa18bD4D20',
     rpcUrls: ['https://matic-mumbai.chainstacklabs.com'],
     isChainSupported: true,
     nativeCurrency: {
@@ -132,15 +132,15 @@ const chains: Record<string, IChain> = {
     chainIdDec: 420,
     keyName: 'optimismGoerli',
     name: 'Optimism Goerli',
-    nftIntoPiecesContract: '0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2',
-    linkToEtherscanIntoPiecesContract: 'https://goerli-optimism.etherscan.io/address/0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2',
+    nftIntoPiecesContract: '0x8E072dcd26eAe73C172bF6ed2a5D00Aa18bD4D20',
+    linkToEtherscanIntoPiecesContract: 'https://goerli-optimism.etherscan.io/address/0x8E072dcd26eAe73C172bF6ed2a5D00Aa18bD4D20',
     // nftShowingPortfolioContract: '0x47488CA96d736E63365d75C471050b5074CBD076',
-    nftIntoPiecesCollectionName: 'into-pieces',
+    nftIntoPiecesCollectionName: 'into-pieces-1',
     rpcUrls: ['https://goerli.optimism.io','https://optimism-goerli.public.blastapi.io'],
     isChainSupported: true,
     nativeCurrency: {
       name: 'Optimism Goerli ETH',
-      symbol: 'ETH',
+      symbol: 'G-ETH',
       decimals: 18,
     },
   },
@@ -152,8 +152,8 @@ const chains: Record<string, IChain> = {
     
     // https://optimistic.etherscan.io
 
-    // nftIntoPiecesContract: '0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2',
-    // linkToEtherscanIntoPiecesContract: 'https://goerli-optimism.etherscan.io/address/0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2',
+    // nftIntoPiecesContract: '0x8E072dcd26eAe73C172bF6ed2a5D00Aa18bD4D20',
+    // linkToEtherscanIntoPiecesContract: 'https://goerli-optimism.etherscan.io/address/0x8E072dcd26eAe73C172bF6ed2a5D00Aa18bD4D20',
     // nftShowingPortfolioContract: '0x47488CA96d736E63365d75C471050b5074CBD076',
     nftIntoPiecesCollectionName: 'into-pieces',
     rpcUrls: ['https://mainnet.optimism.io', 'https://optimism.blockpi.network/v1/rpc/public', 'https://1rpc.io/op'],
@@ -164,7 +164,7 @@ const chains: Record<string, IChain> = {
       decimals: 18,
     },
   },
-  // 0xcc23d543Ef646976E29f2C737D50f3C24D42c0e2
+  // 0x8E072dcd26eAe73C172bF6ed2a5D00Aa18bD4D20
   localhost: {
     chainIdHex: '0x7a69',
     chainIdDec: 31337,

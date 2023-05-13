@@ -20,7 +20,7 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
     /** MINTING **/
     mapping(address => uint8) private mintCountMap;
 
-    uint16 public constant MAX_SUPPLY = 1000;
+    uint16 public constant MAX_SUPPLY = 1001;
 
     uint8 public constant MINT_LIMIT_PER_WALLET = 7;
 
@@ -102,7 +102,7 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
 
     // @param _tokenId - the NFT asset queried for royalty information
     // @param _salePrice - the sale price of the NFT asset specified by _tokenId
-    // `_royaltyReceiver, salePrice / 20` is optimazed code of `_royaltyReceiver (salePrice * 500) / 10000)` for 5% royalty 
+    // `_royaltyReceiver, salePrice / 20` is optimized code of `_royaltyReceiver (salePrice * 500) / 10000)` for 5% royalty 
     function royaltyInfo(uint256, uint256 salePrice)
         external
         view
@@ -160,9 +160,9 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
         bytes memory dataURI = abi.encodePacked(
             '{',
             '"name": "Into Pieces @',
-            Strings.toString(tokenId + 1),
+            Strings.toString(tokenId),
             '",',
-            '"description": "",',
+            '"description": "Test your imagination",',
             '"image": "',
             'ipfs://bafybeidr3ssynrir4wez5bayz36qxk557irrrkwsplxeq3xdwieysxzlqq',
             '"',

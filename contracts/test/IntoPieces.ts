@@ -29,7 +29,7 @@ import { Contract } from 'ethers';
 
 
 const MINT_LIMIT_PER_WALLET = 7
-const MAX_SUPPLY = 1000
+const MAX_SUPPLY = 1001
 
 describe('Into pieces NFT test', function () {
   let IntoPieces,
@@ -59,8 +59,8 @@ describe('Into pieces NFT test', function () {
       expect(await intoPiecesContract.owner()).to.equal(owner.address)
     })
 
-    it('Should have max supply 1000', async () => {
-      expect(await intoPiecesContract.MAX_SUPPLY()).to.equal(1000)
+    it('Should have max supply 1001', async () => {
+      expect(await intoPiecesContract.MAX_SUPPLY()).to.equal(1001)
     })
 
     it('Should have mint limit per wallet 7', async () => {
@@ -234,13 +234,17 @@ describe('Into pieces NFT test', function () {
     })
 
     it('mintedNFTs should not exceed max supply', async function () {
-      const amountOfLoops = MAX_SUPPLY / 5
+      // workaround for MAX_SUPPLY 1001
+      const amountOfLoops = 1000 / 5
 
       for (let i = 0; i < amountOfLoops; i++) {
         for (let j = 0; j < 5; j++) {
           await intoPiecesContract.connect(addrs[i]).safeMint(addrs[i].address)
         }
       }
+
+      // workaround for MAX_SUPPLY 1001
+      await intoPiecesContract.connect(addr1).safeMint(addr1.address)
 
       await expect(
         intoPiecesContract.connect(addr1).safeMint(addr1.address)
@@ -373,8 +377,8 @@ describe('Into pieces NFT test', function () {
     it('tokenURI give expected data', async function () {
       const tokenURI = await intoPiecesContract.connect(addr1).tokenURI(0)
       const tokenUriObject = {
-        name: 'Into Pieces @1',
-        description: '',
+        name: 'Into Pieces @0',
+        description: 'Test your imagination',
         image:
           'ipfs://bafybeidr3ssynrir4wez5bayz36qxk557irrrkwsplxeq3xdwieysxzlqq'
       }
