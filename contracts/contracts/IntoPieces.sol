@@ -159,7 +159,7 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
     {
         bytes memory dataURI = abi.encodePacked(
             '{',
-            '"name": "Into Pieces @',
+            '"name": "Into Pieces ~',
             Strings.toString(tokenId),
             '",',
             '"description": "If we meet and you prove ownership of this NFT, you can claim a reward from me. JM",',
