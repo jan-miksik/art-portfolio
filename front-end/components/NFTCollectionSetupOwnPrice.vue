@@ -11,7 +11,7 @@
       <Transition name="fade">
         <span class="nft-collection__successfully-minted-message" v-if="isMinted && !mintInProgress">
           𓀆 !minted! 𓀊
-        <a :href="getExplorerLink({type: 'asset', marketplace: 'opensea', nftId: nftId})" class="nft-collection__opensea-link" target="_blank">
+        <a :href="getExplorerLink({type: 'asset', marketplace: 'opensea', nftId})" class="nft-collection__opensea-link" target="_blank">
           <img src="/opensea-blue-ship.svg" width="30" height="30" alt="opensea logo"/>
         </a>
         <!-- <a :href="getExplorerLink({type: 'asset', marketplace: 'looksrare', nftId})" class="nft-collection__looksrare-link" target="_blank">
@@ -27,7 +27,7 @@
     </Transition>
 
     <span class="nft-collection__limit-exceeded" v-if="mintLimitExceeded">
-      max 7 pieces per address
+      max 3 pieces per address
     </span>
 
     <div>
@@ -56,16 +56,19 @@
       </div>
 
       <div class="nft-collection__links">
-        <a :href="getExplorerLink({type: 'collection', marketplace: 'opensea'})" title="collection on Opensea" class="nft-collection__opensea-collection-link" target="_blank">
+        <!-- <a :href="getExplorerLink({type: 'collection', marketplace: 'quix'})" title="collection on Quix" class="nft-collection__collection-link" target="_blank">
+          <img src="/quix.svg" width="23" height="23" alt="quix logo"/>
+        </a> -->
+        <a :href="getExplorerLink({type: 'collection', marketplace: 'opensea'})" title="collection on Opensea" class="nft-collection__collection-link" target="_blank">
           <img src="/opensea-blue-ship.svg" width="25" height="25" alt="opensea logo"/>
         </a>
-        <!-- <a :href="getExplorerLink({type: 'collection', marketplace: 'looksrare'})" title="collection on Looksrare" class="nft-collection__looksrare-collection-link" target="_blank">
-          <img src="/looksrare.svg" width="20" height="20" alt="looksrare logo"/>
-        </a> -->
-        <a :href="mainSupportedChain?.linkToEtherscanIntoPiecesContract" title="contract on Etherscan" class="nft-collection__etherscan-link" target="_blank">
+        <a :href="mainSupportedChain?.linkToEtherscanIntoPiecesContract" title="contract on Etherscan" class="nft-collection__collection-link" target="_blank">
           <img src="/etherscan-logo.svg" width="23" height="23" alt="etherscan logo"/>
         </a>
       </div>
+      <p class="nft-collection__info">
+        If we meet and you prove ownership of this NFT, you can claim a reward from me.
+      </p>
     </div>
   </div>
   <!-- <ThreeJsTesting /> -->
@@ -445,9 +448,8 @@ onMounted(async () => {
     margin-top 2rem
 
 
-  &__looksrare-collection-link
-  &__opensea-collection-link
-  &__etherscan-link
+
+  &__collection-link
     filter grayscale(1) opacity(0.5)
     transition all 0.391s
 
@@ -484,6 +486,10 @@ onMounted(async () => {
 
   &__mint-button-text:hover
     scale 0.9 1
+
+  &__info
+    margin-top: 3rem;
+    max-width: 21rem;
 
 .dark-mode .nft-collection__successfully-minted
 .dark-mode .nft-collection__limit-exceeded

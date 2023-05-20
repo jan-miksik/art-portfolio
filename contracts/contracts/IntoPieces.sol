@@ -20,9 +20,9 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
     /** MINTING **/
     mapping(address => uint8) private mintCountMap;
 
-    uint16 public constant MAX_SUPPLY = 1001;
+    uint16 public constant MAX_SUPPLY = 73;
 
-    uint8 public constant MINT_LIMIT_PER_WALLET = 7;
+    uint8 public constant MINT_LIMIT_PER_WALLET = 3;
 
     Counters.Counter private _supplyCounter;
 
@@ -162,7 +162,7 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
             '"name": "Into Pieces @',
             Strings.toString(tokenId),
             '",',
-            '"description": "Test your imagination",',
+            '"description": "If we meet and you prove ownership of this NFT, you can claim a reward from me. JM",',
             '"image": "',
             'ipfs://bafybeidr3ssynrir4wez5bayz36qxk557irrrkwsplxeq3xdwieysxzlqq',
             '"',

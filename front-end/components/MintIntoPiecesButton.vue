@@ -53,10 +53,10 @@ const props = withDefaults(defineProps<Props>(), {
   color black
 
 .mint-into-pieces-button:hover:not(:disabled)
-  opacity 1
+  // opacity 1
   // filter: drop-shadow(0px 0px 1px #1e9e6a);
   // scale: 1.1 0.9;
-  color: #a9ffb4;
+  color: #b0f9db;
   // transition all 0.2s
   // animation-name background-color-palette
   // animation-duration 3.5s
@@ -66,7 +66,8 @@ const props = withDefaults(defineProps<Props>(), {
   @media (min-width: 600px)
     opacity 1
   // box-shadow 0 1px 0 0 #1e9e6a
-
+.dark-mode .mint-into-pieces-button:hover:not(:disabled)
+  color: #520d29;
 // .animated-button:hover
 //   background-color #1e9e6a
 
