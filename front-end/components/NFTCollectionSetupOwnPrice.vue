@@ -67,7 +67,7 @@
         </a>
       </div>
       <p class="nft-collection__info">
-        If we meet and you prove ownership of this NFT, you can claim a reward from me.
+        When we meet,<br/> this NFT will be your ticket to a reward.
       </p>
     </div>
   </div>
@@ -314,6 +314,7 @@ onMounted(async () => {
   width 37rem
   height 32rem
   background-size 190%
+  margin-top: 5rem;
   // animation morphing 2s infinite alternate ease-in-out
 
   @media screen and (min-width 370px)

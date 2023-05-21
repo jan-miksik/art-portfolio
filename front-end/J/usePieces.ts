@@ -6,6 +6,7 @@ const piecesNodeAvatars = ref<Piece[] | undefined>()
 const piecesSansTopic = ref<Piece[] | undefined>()
 const piecesGeometry = ref<Piece[] | undefined>()
 const piecesPuzzle = ref<Piece[] | undefined>()
+const mapOfImagesInSelectedTopic = ref()
 
 const addRandomlyEmptySpacesIntoArray = (array: Piece[]) => {
   array.forEach((piece, index) => {
@@ -36,10 +37,10 @@ export default function usePieces() {
   )
   piecesGeometry.value = addRandomlyEmptySpacesIntoArray(geometry)
 
-  const puzzle = piecesData.PUZZLE.map(
+  piecesPuzzle.value = piecesData.PUZZLE.map(
     (pieceData: any) => new Piece(pieceData)
   )
-  piecesPuzzle.value = addRandomlyEmptySpacesIntoArray(puzzle)
+  // piecesPuzzle.value = addRandomlyEmptySpacesIntoArray(puzzle)
 
   const mergeContentfulDataWithLocalData = async () => {
     const { contentfulData } = useContentful()
@@ -115,6 +116,7 @@ export default function usePieces() {
     piecesSansTopic,
     piecesPuzzle,
     mergeContentfulDataWithLocalData,
-    piecesGeometry
+    piecesGeometry,
+    mapOfImagesInSelectedTopic
   }
 }

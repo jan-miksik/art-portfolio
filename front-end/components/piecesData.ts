@@ -531,12 +531,15 @@ const piecesData: {[key: string]: IPiece[]} = {
       updated: new Date()
     }
   ],
+  ////////////////////////////////////////////////
+  //////////////////// PUZZLE ////////////////////
+  ////////////////////////////////////////////////
   PUZZLE: [
     {
       id: '22',
       name: 'puzzle 1',
       description: '',
-      image: { id: '22', url: 'puzzle/puzzle 1,2013,70x50cm.webp', lastUpdated: new Date('2021').getTime() },
+      image: { id: '22', url: 'puzzle/puzzle 1,2013,70x50cm.webp', lastUpdated: new Date('2020').getTime() },
       topic: Topics.PUZZLE,
       price: 0,
       technique: Techniques.MIXED_MEDIA,
@@ -544,6 +547,14 @@ const piecesData: {[key: string]: IPiece[]} = {
       sizeInCm: {
         x: 70,
         y: 50
+      },
+      sizeOnWeb: {
+        width: 700
+      },
+      position: {
+        x: 250,
+        y: 175,
+        deg: 0
       },
       tags: [],
       created: new Date('2013'),
@@ -562,6 +573,14 @@ const piecesData: {[key: string]: IPiece[]} = {
         x: 70,
         y: 50
       },
+      sizeOnWeb: {
+        width: 390
+      },
+      position: {
+        x: 300,
+        y: 725,
+        deg: 0
+      },
       tags: [],
       created: new Date('2013'),
       updated: new Date()
@@ -578,6 +597,14 @@ const piecesData: {[key: string]: IPiece[]} = {
       sizeInCm: {
         x: 70,
         y: 50
+      },
+      sizeOnWeb: {
+        width: 650
+      },
+      position: {
+        x: 1100,
+        y: 650,
+        deg: 0
       },
       tags: [],
       created: new Date('2014'),
@@ -596,6 +623,14 @@ const piecesData: {[key: string]: IPiece[]} = {
         x: 70,
         y: 50
       },
+      sizeOnWeb: {
+        width: 420
+      },
+      position: {
+        x: 1250,
+        y: 1200,
+        deg: 0
+      },
       tags: [],
       created: new Date('2014'),
       updated: new Date()
@@ -613,6 +648,14 @@ const piecesData: {[key: string]: IPiece[]} = {
         x: 40,
         y: 100
       },
+      sizeOnWeb: {
+        width: 670
+      },
+      position: {
+        x: 200,
+        y: 1500,
+        deg: 0
+      },
       tags: [],
       created: new Date('2016'),
       updated: new Date()
@@ -629,6 +672,14 @@ const piecesData: {[key: string]: IPiece[]} = {
       sizeInCm: {
         x: 40,
         y: 100
+      },
+      sizeOnWeb: {
+        width: 350
+      },
+      position: {
+        x: 820,
+        y: 1650,
+        deg: 0
       },
       tags: [],
       created: new Date('2016'),

@@ -51,6 +51,7 @@ const mainStyleClasses = computed(() => [
   display flex
   flex-direction column
   gap 0.25rem
+  z-index 100
 
   // &__topic-thumbnail-img
   //   // filter drop-shadow(0 0 0 gray)

@@ -1,5 +1,4 @@
 <template>
-  <div>
     <DarkModeSwitcher />
     <div class="homepage__open-topic-icons">
       <SelectTopicIcon :icon="sansTopicIcon" label="Free Topic" :topic="Topics.SANS_TOPIC" class="homepage__sans-topic-link" />
@@ -39,7 +38,6 @@
       :type="Topics.NFT_COLLECTION"
       :selected-topic="selectedTopic"
     />
-  </div>
 </template>
 
 <script setup lang="ts">

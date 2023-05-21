@@ -22,6 +22,16 @@ export type IPiece = {
     y: number
     z?: number
   }
+  sizeOnWeb?: {
+    width?: number
+    height?: number
+  }
+  position?: {
+    x: number
+    y: number
+    deg: number
+  }
+
   randomizedPosition?: { transform: string }
 
   tags?: string[]
@@ -39,8 +49,10 @@ export default class Piece {
   public created
   public image
   public sizeInCm
+  public sizeOnWeb
+  public position
 
-  public randomizedPosition
+  // public randomizedPosition
   public tags
   public description
   public price
@@ -54,49 +66,51 @@ export default class Piece {
     this.techniqueDescription = data.techniqueDescription || ''
     this.image = new ImageFile({ id: data.id, url: data.image.url, lastUpdated: data.image.lastUpdated })
     this.sizeInCm = data.sizeInCm || { x: 0, y: 0 }
+    this.sizeOnWeb = data.sizeOnWeb || { width: 500 }
+    this.position = data.position || { x: 0, y: 0, deg: 0 }
     this.price = data.price || 0
     this.topic = data.topic || ''
     this.tags = data.tags || ''
     this.created = data.created || Date
     this.updated = data.updated || Date
-    this.randomizedPosition = this.getRandomizedPosition()
   }
-
+  
+  // this.randomizedPosition = this.getRandomizedPosition()
   getRandomizedPosition() {
     if (this.topic === Topics.SANS_TOPIC) {
       return {
-        transform: `rotate(${generateRandomNumberPlusMinus(9)}deg) scale(${
-          randomRange(3, 12) / 10
+        transform: `rotate(${generateRandomNumberPlusMinus(3)}deg) scale(${
+          randomRange(7, 11) / 10
         }) translateY(${generateRandomNumberPlusMinus(
           170
-        )}px) translateX(${generateRandomNumberPlusMinus(100)}px)`
+        )}px) translateX(${generateRandomNumberPlusMinus(10)}px)`
       }
     }
     if (this.topic === Topics.GEOMETRY) {
       return {
         transform: `scale(${
-          randomRange(3, 12) / 10
+          randomRange(7, 11) / 10
         }) translateY(${generateRandomNumberPlusMinus(
           180
-        )}px) translateX(${generateRandomNumberPlusMinus(110)}px)`
+        )}px) translateX(${generateRandomNumberPlusMinus(10)}px)`
       }
     }
     if (this.topic === Topics.NODE_AVATARS) {
       return {
         transform: `scale(${
-          randomRange(3, 8) / 10
+          randomRange(7, 10) / 10
         }) translateY(${generateRandomNumberPlusMinus(
           110
-        )}px) translateX(${generateRandomNumberPlusMinus(110)}px)`
+        )}px) translateX(${generateRandomNumberPlusMinus(10)}px)`
       }
     }
     if (this.topic === Topics.PUZZLE) {
       return {
         transform: `scale(${
-          randomRange(7, 12) / 10
+          randomRange(8, 10) / 10
         }) translateY(${generateRandomNumberPlusMinus(
           180
-        )}px) translateX(${generateRandomNumberPlusMinus(110)}px)`
+        )}px) translateX(${generateRandomNumberPlusMinus(10)}px)`
       }
     }
   }
