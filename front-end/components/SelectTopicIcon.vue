@@ -51,6 +51,7 @@ const mainStyleClasses = computed(() => [
   display flex
   flex-direction column
   gap 0.25rem
+  z-index 100
 
   // &__topic-thumbnail-img
   //   // filter drop-shadow(0 0 0 gray)
@@ -58,7 +59,8 @@ const mainStyleClasses = computed(() => [
   &__topic-label
     font-size 1rem
     visibility hidden
-    font-family bungeehairline, sans-serif
+    // text-transform lowercase
+    // font-family bungeehairline, sans-serif
 
   &__is-unselected-topic
     transform scale(0.8, 0.8)
@@ -79,9 +81,10 @@ const mainStyleClasses = computed(() => [
   &__is-selected-topic
     top 0
     transform initial
-    // left calc(50% - 115px)
-    right calc(50% - 35px)
+    left calc(50% - 115px)
+    // right calc(50%)
     position fixed
+    // translate -50%
 
   &__is-selected-topic .open-topic-icon__topic-thumbnail-img
     opacity 0.1

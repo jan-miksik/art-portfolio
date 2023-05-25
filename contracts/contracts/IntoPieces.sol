@@ -8,6 +8,7 @@ import '@openzeppelin/contracts/interfaces/IERC2981.sol';
 import '@openzeppelin/contracts/utils/Strings.sol';
 import '@openzeppelin/contracts/utils/Base64.sol';
 import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 
 contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
     using Counters for Counters.Counter;
@@ -19,9 +20,9 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
     /** MINTING **/
     mapping(address => uint8) private mintCountMap;
 
-    uint16 public constant MAX_SUPPLY = 1000;
+    uint16 public constant MAX_SUPPLY = 73;
 
-    uint8 public constant MINT_LIMIT_PER_WALLET = 7;
+    uint8 public constant MINT_LIMIT_PER_WALLET = 3;
 
     Counters.Counter private _supplyCounter;
 
@@ -60,8 +61,18 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
 
     function withdraw() public onlyOwner {
         uint256 balance = address(this).balance;
-
+        require(balance > 0, "No Ether available for withdrawal");
         Address.sendValue(payable(owner()), balance);
+    }
+
+    function withdrawERC20Token(IERC20 token, address to) external onlyOwner {
+        uint256 amount = token.balanceOf(address(this));
+        require(amount > 0, "No tokens to withdraw");
+        require(token.transfer(to, amount), "Token transfer failed");
+    }  
+
+    function checkERC20Balance(IERC20 token) external view returns (uint256) {
+        return token.balanceOf(address(this));
     }
 
     // /** ROYALTIES **/
@@ -76,7 +87,8 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
         internal
         onlyOwner
     {
-        require(newRoyaltyReceiver != address(0), 'Invalid address');
+        require(newRoyaltyReceiver != _royaltyReceiver, 'New royalty receiver is the same as the current one');
+        require(newRoyaltyReceiver != address(0), 'New royalty receiver cannot be the zero address');
         _royaltyReceiver = newRoyaltyReceiver;
     }
 
@@ -90,13 +102,14 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
 
     // @param _tokenId - the NFT asset queried for royalty information
     // @param _salePrice - the sale price of the NFT asset specified by _tokenId
+    // `_royaltyReceiver, salePrice / 20` is optimized code of `_royaltyReceiver (salePrice * 500) / 10000)` for 5% royalty 
     function royaltyInfo(uint256, uint256 salePrice)
         external
         view
         override
         returns (address receiver, uint256 royaltyAmount)
     {
-        return (_royaltyReceiver, (salePrice * 500) / 10000);
+        return (_royaltyReceiver, salePrice / 20);
     }
 
     // EIP2981 standard Interface return. Adds to ERC721 and ERC165 Interface returns.
@@ -120,7 +133,7 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
             '{',
             '"name": "Into Pieces",',
             '"description": "Test your imagination",',
-            '"image": "ipfs://bafkreifivloyeuiky6ozz7w7uke2lb2amutsu4bnb76i2pv4hdqvv7uv4i",',
+            '"image": "ipfs://bafybeidr3ssynrir4wez5bayz36qxk557irrrkwsplxeq3xdwieysxzlqq",',
             '"external_link": "https://janmiksik.ooo",',
             '"seller_fee_basis_points": 500,',
             '"fee_recipient": "',
@@ -146,12 +159,12 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
     {
         bytes memory dataURI = abi.encodePacked(
             '{',
-            '"name": "Into Pieces @',
+            '"name": "Into Pieces ~',
             Strings.toString(tokenId),
             '",',
-            '"description": "",',
+            '"description": "When we meet, this NFT will allow you to claim a reward. JM",',
             '"image": "',
-            'ipfs://bafkreifivloyeuiky6ozz7w7uke2lb2amutsu4bnb76i2pv4hdqvv7uv4i',
+            'ipfs://bafybeidr3ssynrir4wez5bayz36qxk557irrrkwsplxeq3xdwieysxzlqq',
             '"',
             '}'
         );

@@ -1,19 +1,15 @@
 <template>
   <!-- <Web3ConnectionInfo /> -->
-  <div class="nft-collection">
-    <h2 class="nft-collection__title-breeze-edit">Into Pieces</h2>
-    <img src="/collect/collect.webp" class="nft-collection__mint-image" />
+  <div class="nft-collection" >
+    <img src="/into-pieces/IntoPieces.webp" class="nft-collection__mint-image"/>
     <div class="nft-collection__amount">{{ maxSupply }} / {{ mintedNfts }}</div>
 
     <div class="nft-collection__successfully-minted">
       <Transition name="fade">
         <span class="nft-collection__successfully-minted-message" v-if="isMinted && !mintInProgress">
           𓀆 !minted! 𓀊
-        <a :href="getExplorerLink({type: 'asset', marketplace: 'opensea', nftId: nftId})" class="nft-collection__opensea-link" target="_blank">
+        <a :href="openseaAssetLink" class="nft-collection__opensea-link" target="_blank">
           <img src="/opensea-blue-ship.svg" width="30" height="30" alt="opensea logo"/>
-        </a>
-        <a :href="getExplorerLink({type: 'asset', marketplace: 'looksrare', nftId})" class="nft-collection__looksrare-link" target="_blank">
-          <img src="/looksrare.svg" width="45" height="45" alt="looksrare logo"/>
         </a>
         <div @click="isMinted = false" class="nft-collection__hide-is-minted-msg">✖</div>
         </span>
@@ -23,71 +19,58 @@
     <Transition name="fade">
       <Loader v-if="mintInProgress" size="large" class="nft-collection__minting-in-progress" />
     </Transition>
+
     <span class="nft-collection__limit-exceeded" v-if="mintLimitExceeded">
-      max 7 pieces per address
+      max 3 pieces per address
     </span>
 
-    <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
-      <div class="nft-collection__input-and-currency">
-        <Input required type="number" step="any" v-model="requestedPrice" label="custom valuation"/>
-        <span>{{mainSupportedChain?.nativeCurrency.symbol}}</span>
+    <div>
+      <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
+        <div class="nft-collection__input-and-currency">
+          <Input required type="number" step="any" v-model="requestedPrice" label="custom valuation"/>
+          <span title="Optimism - second layer of Ethereum">
+            <span>{{mainSupportedChain?.nativeCurrency.symbol}}</span>
+            <img class="nft-collection__optimism-logo" src="/optimism-ethereum-logo.svg" width="12" height="12" alt="optimism logo"/>
+          </span>
+        </div>
+        <MintIntoPiecesButton class="nft-collection__mint-button" :is-disabled="mintInProgress || mintLimitExceeded">
+          <span class="nft-collection__mint-button-text">
+            {{mintInProgress ? 'minting' : 'mint'}}
+          </span>
+        </MintIntoPiecesButton>
+      </form>
+
+      <div class="nft-collection__valuation">
+        <span class="nft-collection__valuation-full-price">~${{fullMintPrice}}~</span>
       </div>
 
-      <Button class="nft-collection__mint-button" :disabled="mintInProgress || mintLimitExceeded">
-        {{mintInProgress ? 'Minting' : 'Mint'}}
-      </Button>
-
-      <a :href="getExplorerLink({type: 'collection', marketplace: 'opensea'})" title="collection on Opensea" class="nft-collection__opensea-collection-link" target="_blank">
+      <div class="nft-collection__links">
+        <a :href="openseaCollectionLink" title="collection on Opensea" class="nft-collection__collection-link" target="_blank">
           <img src="/opensea-blue-ship.svg" width="25" height="25" alt="opensea logo"/>
         </a>
-        <a :href="getExplorerLink({type: 'collection', marketplace: 'looksrare'})" title="collection on Looksrare" class="nft-collection__looksrare-collection-link" target="_blank">
-          <img src="/looksrare.svg" width="35" height="35" alt="looksrare logo"/>
+        <a :href="mainSupportedChain?.linkToEtherscanIntoPiecesContract" title="contract on Etherscan" class="nft-collection__collection-link" target="_blank">
+          <img src="/etherscan-logo.svg" width="23" height="23" alt="etherscan logo"/>
         </a>
-    </form>
-    <!-- <div @click="handleOpenseaAssetLink">TEST</div>-->
-    <!-- <div @click="isMinted = !isMinted">Like a Minted</div>  -->
-    <!-- <div class="nft-collection__collection-label">collection</div> -->
+      </div>
+      <p class="nft-collection__info">
+        When we meet,<br/> this NFT will allow you to claim a reward.
+      </p>
+    </div>
   </div>
-  <!-- <ThreeJsTesting /> -->
 </template>
 
 
 
 <script setup lang="ts">
 
-// TODOS
-// show price in USD for mint
 
-//////// extra stuff /////////
-  // restyling #2
-  // links to markets - styling #2
-  // refactor useWeb3 into more general usage
-  // ?replace browser alert & confirm pop-ups with modal windows, (if user does not have installed metamask). (if user is on different chain)
-
-  // create description text, name and select or modify picture #2
-
-  // refactoring after testing on testnet
-  // successfully minted - next iteration
-  
-  // add web3 modal?
-  //support for multiple wallets?
-  //better manage eth provider
-
-
-// DONOS
-
-
-import { BigNumber, BigNumberish, ethers } from 'ethers'
+import { BigNumberish, ethers } from 'ethers'
 import useWeb3 from '~/J/useWeb3'
 import { mainSupportedChain } from '~/appSetup'
 import { connectedChain } from '~/constants/chains'
 import contractAbi from '~/abi/IntoPieces.json'
-import useCryptoExplorer from '~/J/useCryptoExplorer'
 
-const { initDapp, signer, checkForAnyContractAction, connectedAddress } =
-  useWeb3()
-
-const { getExplorerLink } = useCryptoExplorer()
+const { initDapp, signer, checkForAnyContractAction, connectedAddress, connectWallet, optimismProvider } = useWeb3()
 
 let contractReadOnly: any = null
 
@@ -98,27 +81,46 @@ const isMinted = ref(false)
 const maxSupply = ref<BigNumberish>()
 const mintLimitExceeded = ref(false)
 const mintedNfts = ref<BigNumberish>()
-
-const handleMintNFT = async () => {
-  
-  isMinted.value = false
-  mintInProgress.value = true
-  const confirmation = await contractActions('mint')
-  
-  mintInProgress.value = false
-  if (confirmation) {
-    requestedPrice.value = undefined
-    mintedNfts.value = await contractReadOnly.mintedNFTs()
-    isMinted.value = true
-  }
-}
+const mintPrice = ref()
+const fetchingMintPrice = ref()
+const ethToUsdExchangeRate = ref()
 
 const nftId = computed(() => mintedNfts.value ? Number(mintedNfts.value) - 1 : 0)
-const explorerLink = computed(() => getExplorerLink({type: 'asset', marketplace: 'opensea', nftId: nftId.value}))
+const openseaAssetLink = computed(() => (`https://opensea.io/assets/optimism/${mainSupportedChain.nftIntoPiecesContract}/${nftId.value}`))
+const openseaCollectionLink = computed(() => (`https://opensea.io/collection/${mainSupportedChain.nftIntoPiecesCollectionName}`))
+
+const fullMintPrice = computed(() => {
+  const hasRequestedPrice = requestedPrice.value || requestedPrice.value === 0
+  if(fetchingMintPrice.value && hasRequestedPrice) {
+    return '...'
+  }
+  if(hasRequestedPrice) {
+    return mintPrice.value?.fullPriceUsd
+  }
+  return '?'
+})
+
+const getMintPrice = async () => {
+  fetchingMintPrice.value = true
+
+  const DEMO_ADDRESS = '0x70ABD75498bE15Ca935C4c514B49D58D9Ae17B51'
+  const gasPrice = await optimismProvider.getGasPrice();
+  const gasEstimate = await contractReadOnly.estimateGas.safeMint(DEMO_ADDRESS, {
+    value: ethers.utils.parseEther('0')
+  });
+  const ethToUsdRate = await getEthToUsdExchangeRate();
+  const feeCostWei = gasPrice.mul(gasEstimate);
+  const feeCostEth = ethers.utils.formatEther(feeCostWei);
+  const feeCostUsd = roundUp(parseFloat(feeCostEth) * ethToUsdRate, 1);
+  const customPriceUsd = roundUp((requestedPrice.value || 0) * ethToUsdRate, 1);
+  const fullPriceUsd = roundUp(feeCostUsd + customPriceUsd, 1)
+  fetchingMintPrice.value = false
+  
+  mintPrice.value = { feeCostUsd, customPriceUsd, fullPriceUsd }
+}
 
 
 const mintAction = async () => {
-  
   contract.value = new ethers.Contract(
     connectedChain.value?.nftIntoPiecesContract || '',
     contractAbi.abi,
@@ -131,32 +133,62 @@ const mintAction = async () => {
     })
     return await txMint.wait()
   } catch (error) {
-    console.error('mintAction error: ', error)
     throw error
   }
  
 }
 
 const contractActions = async (action: string) => {
-  
-  await checkForAnyContractAction()
-
+  const canContinue = await checkForAnyContractAction()
+  console.log('canContinue: ', canContinue);
+  if (!canContinue) return
   try {
     if (action == 'mint') {
-      return await mintAction()
+      await mintAction()
+      return true
     }
   } catch (error) { 
+    console.log('error: ', error);
     mintInProgress.value = false
-    if (!(error as Error).message) return alert('Error')
-    if ((error as Error).message.startsWith('err: insufficient funds') || (error as any).data.message.startsWith('err: insufficient funds')) {
+    if (!(error as Error)?.message) {
+      alert('Error')
+      return
+    }
+    
+    if ((error as Error)?.message?.startsWith('err: insufficient funds') || (error as any).data?.message?.startsWith('err: insufficient funds')) {
       alert('insufficient funds for transaction')
-    } else {
-      alert((error as Error).message)
+      return
     }
 
-    
+    if ((error as any)?.message?.startsWith('user rejected transaction')) {
+      alert('Transaction rejected')
+      return
+    } else {
+      alert((error as Error)?.message)
+    }
+    return false
   }
 }
+
+
+
+
+const handleMintNFT = async (event: Event) => {
+  event.preventDefault()
+  await connectWallet()
+  isMinted.value = false
+  mintInProgress.value = true
+  const confirmation = await contractActions('mint')
+  mintInProgress.value = false
+  if (confirmation) {
+    requestedPrice.value = undefined
+    mintedNfts.value = await contractReadOnly.mintedNFTs()
+    isMinted.value = true
+  }
+}
+
+
+
 
 const checkMintingLimit = async (account?: string) => {
   if (account || connectedAddress.value) {
@@ -167,11 +199,25 @@ const checkMintingLimit = async (account?: string) => {
   }
 }
 
-const listenForAccountChange = () => {
-  window.ethereum.on('accountsChanged', async ([account]: string) => {
-    checkMintingLimit(account)
-  })
+const roundUp = (num: number, decimals: number) => Math.ceil(num * 10 ** decimals) / 10 ** decimals;
+
+
+async function getEthToUsdExchangeRate() {
+  try {
+    const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd");
+    const data = await response.json();
+    ethToUsdExchangeRate.value = data.ethereum.usd;
+    return data.ethereum.usd;
+  } catch (err) {
+    return ethToUsdExchangeRate.value
+  }
 }
+
+
+
+watch(requestedPrice, async () => {
+  await getMintPrice()
+})
 
 const loadContractData = async () => {
   contractReadOnly = new ethers.Contract(
@@ -192,7 +238,8 @@ const loadContractData = async () => {
 onMounted(async () => {
   await initDapp()
   await loadContractData()
-  listenForAccountChange()
+  getMintPrice();
+  // listenForAccountChange()
 })
 </script>
 
@@ -207,13 +254,14 @@ onMounted(async () => {
   // background-image url("collect/breeze-edit-bg.png")
   background-repeat no-repeat
   border-radius 100%
-  width 35rem
-  height 39rem
+  width 37rem
+  height 32rem
   background-size 190%
+  margin-top: 5rem;
   // animation morphing 2s infinite alternate ease-in-out
 
   @media screen and (min-width 370px)
-    height 35rem
+    height 37rem
     background-size 160%
 
   @media screen and (min-width 410px)
@@ -230,24 +278,30 @@ onMounted(async () => {
 
   &__mint-image
     object-fit contain
-    max-height 250px
+    // position absolute
+    // min-width 100%
+    max-height 370px
     margin-bottom 0.3rem
     border-radius 3px
     max-width 100%
-    box-shadow 0 1px 3px 1px #cac9cf
+    // box-shadow 0 1px 3px 1px #cac9cf
 
   &__amount
     margin-bottom 1rem
     border-radius 5px
-    font-family system-ui
+    opacity 0.2
+    // font-family system-ui
 
   &__mint-form
     display flex
     align-items center
     justify-content center
     flex-wrap wrap
-    gap 0.5rem
-    margin 0.5rem 1.5rem 2rem
+    gap 0 1rem
+    margin 0.5rem 1.5rem
+
+    @media screen and (min-width 330px)
+      margin 0.5rem 1.5rem -0.5rem
 
   &__mint-input
     width 135px
@@ -276,7 +330,7 @@ onMounted(async () => {
   &__minting-in-progress
     font-size 3.2rem
     position relative
-    bottom 12rem
+    bottom 15rem
     left 0
     height 0
     filter drop-shadow(-2px 7px 7px #000) drop-shadow(-2px 7px 25px #fff) drop-shadow(-2px 7px 25px #000) drop-shadow(-2px 7px 25px #fff)
@@ -284,16 +338,20 @@ onMounted(async () => {
   &__limit-exceeded
     color tomato
 
-  &__title-breeze-edit
+  &__title
     margin 0 0 0.5rem
-    font-family system-ui
-    color black
+    font-family Neonderthaw, sans-serif
+    font-size 3rem
+    font-weight 300
+
+    // font-family AlumniSans, sans-serif
+    // color white
 
   &__opensea-link
     position absolute
     cursor pointer
-    bottom 37px
-    left 12px
+    top -20px
+    right 7px
     transition all 0.391s
     opacity 0.5
 
@@ -326,23 +384,22 @@ onMounted(async () => {
     &:hover
       color red
 
-  &__opensea-collection-link
-    position absolute
-    bottom 5px
-    right 70px
+  &__links
+    display flex
+    align-items center
+    justify-content flex-end
+    gap 0.5rem
+    margin-top 2rem
+
+
+
+  &__collection-link
+    filter grayscale(1) opacity(0.5)
     transition all 0.391s
 
     &:hover
       scale 1.17
-
-  &__looksrare-collection-link
-    position absolute
-    bottom 0
-    right 100px
-    transition all 0.391s
-
-    &:hover
-      scale 1.17
+      filter grayscale(1) opacity(1)
 
   &__collection-label
     position absolute
@@ -352,10 +409,35 @@ onMounted(async () => {
     color black
     text-shadow -1px 1px 0 #fff
 
+  &__valuation
+    display flex
+    align-items center
+    justify-content center
+    // gap: 0.2rem;
+    flex-direction column
+
+  &__valuation-info
+    opacity 0.2
+    font-size 0.6rem
+
+  &__valuation-full-price
+    opacity 0.6
+
+  &__optimism-logo
+    position relative
+    top -8px
+    filter grayscale(1) opacity(0.3)
+
+  &__mint-button-text:hover
+    scale 0.9 1
+
+  &__info
+    margin-top: 3rem;
+    max-width: 21rem;
 
 .dark-mode .nft-collection__successfully-minted
 .dark-mode .nft-collection__limit-exceeded
-.dark-mode .nft-collection__mint-button
+// .dark-mode .nft-collection__mint-button
 .dark-mode .nft-collection__looksrare-link
 .dark-mode .nft-collection__opensea-link
   filter invert(1)

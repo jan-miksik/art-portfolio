@@ -4,6 +4,7 @@ import "@nomiclabs/hardhat-etherscan";
 import 'solidity-coverage'
 
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import { optimism } from '@wagmi/core/chains';
 dotenv.config()
 
 const { TESTNET_PRIVATE_KEY, ALCHEMY_API_KEY,ALCHEMY_API_KEY_ARBITRUM_GOERLI, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, ALCHEMY_API_KEY_MUMBAI, ARBISCAN_API_KEY, ALCHEMY_API_KEY_OPTIMSM_GOERLI } = process.env as Record<string, string>;
@@ -56,6 +57,9 @@ const config: HardhatUserConfig = {
       url: `https://opt-goerli.g.alchemy.com/v2/${ALCHEMY_API_KEY_ARBITRUM_GOERLI}`,
       accounts: [TESTNET_PRIVATE_KEY]
     },
+    optimisticEthereum: {
+      url: 'https://1rpc.io/op'
+    },
     'optimism-goerli': {
       url: "https://goerli.optimism.io",
       accounts: [TESTNET_PRIVATE_KEY]
@@ -80,7 +84,8 @@ const config: HardhatUserConfig = {
         goerli: ETHERSCAN_API_KEY,
         kovan: ETHERSCAN_API_KEY,
         arbitrumGoerli: ARBISCAN_API_KEY,
-        optimisticGoerli: ETHERSCAN_API_KEY 
+        optimisticGoerli: ETHERSCAN_API_KEY,
+        optimisticEthereum: ETHERSCAN_API_KEY,
     //     //polygon
     //     polygon: POLYGONSCAN_API_KEY,
     //     polygonMumbai: POLYGONSCAN_API_KEY

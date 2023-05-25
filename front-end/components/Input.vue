@@ -48,20 +48,32 @@ const props = withDefaults(defineProps<Props>(), {
   margin 0 0.5rem 1rem
 
   &__label
-    opacity 0.7
-    font-size 0.9rem
+    opacity 0.5
+    font-size 0.8rem
 
   &__body
     padding 0.5rem
     border-radius 5px
     caret-color #1464a2
-    outline none
-    border 2px solid #e8e8e8
-    border-style ridge
-    box-shadow inset 0 0 11px 0 #f1f1ff
+    // outline none
+    // border 2px solid #e8e8e8
+    // border-style ridge
+    // box-shadow inset 0 0 11px 0 #f1f1ff
+
+    // padding 0.5rem
+    // border-radius 5px
+    text-align center
+    width 6rem
+    // caret-color: #1464a2;
+    font-size 1rem
+    // outline: none;
+    border 1px solid #515151
 
     &:focus
-      // animation 7s infinite alternate caret-anim
+      animation 7s infinite alternate caret-anim
+      outline none
+    // &:focus-visible
+    //   border 1px solid #000
 
 @keyframes caret-anim
   0%

@@ -40,8 +40,15 @@ export default function useCryptoExplorer() {
       etherscan: { 
         getAssetLink: (contractAddress: string) => `https://goerli.looksrare.org/collections/${contractAddress.toLowerCase()}`,
       },
+      quix: {
+        getAssetLink: (contractAddressAndNftId: string) => `https://testnet.qx.app/asset/${contractAddressAndNftId.toLowerCase()}`,
+        getCollectionLink: (collectionContract: string) => `https://testnet.qx.app/collection/${collectionContract}`,
+      }
     },
   }
+
+  // https://testnet.qx.app/asset/0x8E072dcd26eAe73C172bF6ed2a5D00Aa18bD4D20/0
+  // https://testnet.qx.app/collection/0x8E072dcd26eAe73C172bF6ed2a5D00Aa18bD4D20
 
   const getLooksrareCollectionLink = () => {
     if (mainSupportedChain.keyName === 'arbitrumGoerli') {
@@ -51,6 +58,13 @@ export default function useCryptoExplorer() {
 
     if (mainSupportedChain.keyName === 'optimismGoerli') {
       const link = explorers[mainSupportedChain.keyName].looksrare.getAssetLink(`${mainSupportedChain.nftIntoPiecesContract}`)
+      return link
+    }
+  }
+
+  const getQuixCollectionLink = () => {
+    if (mainSupportedChain.keyName === 'optimismGoerli') {
+      const link = explorers[mainSupportedChain.keyName].quix.getAssetLink(`${mainSupportedChain.nftIntoPiecesContract}`)
       return link
     }
   }
@@ -97,9 +111,16 @@ export default function useCryptoExplorer() {
     }
   }
 
+  const getQuixAssetLink = (nftId: number | string) => {
+    if (mainSupportedChain.keyName === 'optimismGoerli') {
+      const link = explorers[mainSupportedChain.keyName].quix.getAssetLink(`${mainSupportedChain.nftIntoPiecesContract}/${nftId}`)
+      return link
+    }
+  }
+
   type ExplorerLinkTypes = {
     type: 'asset' | 'collection'
-    marketplace: 'looksrare' | 'opensea'
+    marketplace: 'looksrare' | 'opensea' | 'quix'
     nftId?: string | number
   }
 
@@ -110,6 +131,8 @@ export default function useCryptoExplorer() {
           return getLooksrareAssetLink(nftId)
         case 'opensea':
           return getOpenseaAssetLink(nftId)
+        case 'quix':
+          return getQuixAssetLink(nftId)
       }
     }
 
@@ -119,6 +142,8 @@ export default function useCryptoExplorer() {
           return getLooksrareCollectionLink()
         case 'opensea':
           return getOpenseaCollectionLink()
+        case 'quix':
+          return getQuixCollectionLink()
       }
     }
   }

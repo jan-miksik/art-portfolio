@@ -1,8 +1,7 @@
 <template>
-  <div>
     <DarkModeSwitcher />
     <div class="homepage__open-topic-icons">
-      <SelectTopicIcon :icon="sansTopicIcon" label="Sans Topic" :topic="Topics.SANS_TOPIC" class="homepage__sans-topic-link"/>
+      <SelectTopicIcon :icon="sansTopicIcon" label="Free Topic" :topic="Topics.SANS_TOPIC" class="homepage__sans-topic-link" />
 
       <SelectTopicIcon :icon="geometryIcon" label="Geometry" :topic="Topics.GEOMETRY" class="homepage__geometry-link"/>
 
@@ -10,7 +9,7 @@
 
       <SelectTopicIcon :icon="puzzleIcon" label="Puzzle" :topic="Topics.PUZZLE" class="homepage__puzzle-link"/>
 
-      <!-- <SelectTopicIcon :icon="collectIcon" label="Collect" :topic="Topics.NFT_COLLECTION" class="homepage__nft-collection-link"/> -->
+      <SelectTopicIcon :icon="collectIcon" label="Into Pieces" :topic="Topics.NFT_COLLECTION" class="homepage__nft-collection-link"/>
     </div>
 
     <Contact />
@@ -35,11 +34,10 @@
       :type="Topics.PUZZLE"
       :selected-topic="selectedTopic"
     />
-    <!-- <NftCollectionPieces
+    <NftCollectionPieces
       :type="Topics.NFT_COLLECTION"
       :selected-topic="selectedTopic"
-    /> -->
-  </div>
+    />
 </template>
 
 <script setup lang="ts">
@@ -52,7 +50,7 @@ const { piecesNodeAvatars, piecesSansTopic, piecesGeometry, piecesPuzzle } = use
 const { selectedTopic } = useSelectedTopic()
 
 useHead({
-  title: 'Portfolio of Jan Mikšík',
+  title: 'Jan Mikšík',
   meta: [{
     content: 'Portfolio of Jan Mikšík. Drawings, paintings and other pieces'
   }]
@@ -94,9 +92,9 @@ const puzzleIcon = ref(
 
 const collectIcon = ref(
   new ImageFile({
-    url: 'topics-entry-icons/collect-icon.webp',
+    url: 'topics-entry-icons/collect-icon.png',
     id: 'collect',
-    lastUpdated: new Date('1992').getTime()
+    lastUpdated: new Date('1993').getTime()
   })
 )
 
@@ -104,19 +102,23 @@ const collectIcon = ref(
 
 <style lang="stylus">
 // /
-// Sans Topic
+// Free Topic
 // /
 .homepage__sans-topic-link
-  right 10vw
-  top 30vh
-  width 170px
+  left 37vw
+  top 28vh
+  width 140px
 
   @media (min-width 700px)
-    right 35vw
+    left 45vw
     width 230px
 
 .open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
-  right -10px
+  left calc(100vw - 140px)
+
+  @media (min-width 700px)
+    left calc(100vw - 230px)
+  // filter opacity(0.3)
 
 .open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
   .open-topic-icon__topic-thumbnail-img
@@ -141,6 +143,7 @@ const collectIcon = ref(
 
 .open-topic-icon:is(.homepage__geometry-link):is(.open-topic-icon__is-unselected-topic)
   left -3px
+  // filter opacity(0.3)
 
 .open-topic-icon:is(.homepage__geometry-link):is(.open-topic-icon)
   .open-topic-icon__topic-thumbnail-img
@@ -150,15 +153,16 @@ const collectIcon = ref(
 // Node Avatars
 // /
 .homepage__node-avatars-link
-  top 16vh
+  top 12vh
   left 10vw
-  width 115px
+  width 80px
 
   @media (min-width 700px)
     width 135px
 
 .open-topic-icon:is(.homepage__node-avatars-link):is(.open-topic-icon__is-unselected-topic)
   left -8px
+  // filter opacity(0.3)
 
 .open-topic-icon:is(.homepage__node-avatars-link):is(.open-topic-icon)
   .open-topic-icon__topic-thumbnail-img
@@ -168,37 +172,55 @@ const collectIcon = ref(
 // Puzzle
 // /
 .homepage__puzzle-link
-  top 70vh
-  right 38vw
+  top 77vh
+  left 52vw
   width 55px
 
   @media (min-width 700px)
     width 70px
 
 .open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon__is-unselected-topic)
-  right -8px
+  left calc(100vw - 55px)
+
+  @media (min-width 700px)
+    left calc(100vw - 70px)
 
 .open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon)
   .open-topic-icon__topic-thumbnail-img
     filter drop-shadow(0 1px 1px gray)
 
 // /
-// NFT Collection
+// Into Pieces - NFT Collection Into Pieces
 // /
 .homepage__nft-collection-link
-  right calc(45% - 75px)
-  top 42vh
+  left 65vw
+  top 52vh
   width 60px
+  // font-family Neonderthaw, sans-serif
+  // font-size 3rem
+  // font-weight 300
 
   @media (min-width 700px)
-    right calc(22% - 75px)
+    left 75vw
     width 70px
 
 .open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon__is-unselected-topic)
-  right -8px
+  left calc(100vw - 60px)
+
+  @media (min-width 700px)
+    left calc(100vw - 70px)
+  // filter opacity(0.3)
 
 .open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon)
   .open-topic-icon__topic-thumbnail-img
     filter drop-shadow(0 1px 1px gray)
 
+.open-topic-icon__is-unselected-topic
+  filter opacity(0.3)
+
+  &:hover
+    filter opacity(0.85)
+
+.dark-mode .open-topic-icon__is-unselected-topic
+  filter opacity(0.3) invert(1) !important
 </style>

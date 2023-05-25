@@ -199,7 +199,7 @@ const selectImage = (id: string) => {
   transition all 0.2s
   background-color #eee
   padding 1rem 0.7rem
-  font-size 0.7rem
+  font-size 1rem
   text-align left
   color #919191
   border-radius 2px

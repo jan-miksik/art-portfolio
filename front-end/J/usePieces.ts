@@ -6,6 +6,7 @@ const piecesNodeAvatars = ref<Piece[] | undefined>()
 const piecesSansTopic = ref<Piece[] | undefined>()
 const piecesGeometry = ref<Piece[] | undefined>()
 const piecesPuzzle = ref<Piece[] | undefined>()
+const mapOfImagesInSelectedTopic = ref()
 
 const addRandomlyEmptySpacesIntoArray = (array: Piece[]) => {
   array.forEach((piece, index) => {
@@ -115,6 +116,7 @@ export default function usePieces() {
     piecesSansTopic,
     piecesPuzzle,
     mergeContentfulDataWithLocalData,
-    piecesGeometry
+    piecesGeometry,
+    mapOfImagesInSelectedTopic
   }
 }

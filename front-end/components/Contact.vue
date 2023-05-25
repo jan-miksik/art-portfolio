@@ -1,17 +1,19 @@
 <template>
   <div
-    ref="contactRef"
-    class="homepage__contact"
-    draggable="true"
-    @click="showContactModal"
+  ref="contactRef"
+  class="homepage__contact"
+  draggable="true"
   >
+    <a class="homepage__soc-link" href="mailto: to@janmiksik.ooo">
+  <!-- @click="showContactModal" -->
     <Image
-      :image-file="contactIcon"
+      :image-file="emailIcon"
       class="homepage__contact-img" 
       width="27"
       alt="contact"
     />
-    <span class="homepage__contact-text">CONTACT</span>
+    <!-- <span class="homepage__contact-text">CONTACT</span> -->
+  </a>
   </div>
   <Transition name="fade">
     <div
@@ -29,7 +31,7 @@
            ... email is the most certain  ..
         </p> -->
         <div class="homepage__soc-links">
-          <a class="homepage__soc-link" href="mailto: jan.miksik.g@gmail.com">
+          <a class="homepage__soc-link" href="mailto: to@janmiksik.ooo">
             <Image
               :image-file="emailIcon"
               class="homepage__soc-link-img" 
@@ -38,7 +40,7 @@
               :style="randomizePosition()"
             />
           </a>
-          <a
+          <!-- <a
             class="homepage__soc-link"
             href="https://www.instagram.com/miksik.jan/"
             target="_blank"
@@ -50,9 +52,9 @@
               alt="instagram"
               :style="randomizePosition()"
             />
-          </a>
+          </a> -->
 
-          <a
+          <!-- <a
             class="homepage__soc-link"
             href="https://www.facebook.com/jan.miksik.1/"
             target="_blank"
@@ -64,8 +66,8 @@
               alt="facebook"
               :style="randomizePosition()"
             />
-           </a>
-          <a
+           </a> -->
+          <!-- <a
             class="homepage__soc-link"
             href="https://twitter.com/MiksikJan"
             target="_blank"
@@ -77,7 +79,7 @@
               alt="twitter"
               :style="randomizePosition()"
             />
-            </a>
+            </a> -->
         </div>
       </div>
     </div>
@@ -190,8 +192,8 @@ const randomizePosition = () => {
     opacity 1 !important
 
 .homepage__contact-img
-  width 50px
-  height 50px
+  width 37px
+  height 37px
   filter drop-shadow(0 2px 2px white)
 
 .homepage__contact-text
@@ -200,7 +202,7 @@ const randomizePosition = () => {
   font-weight bold
   color black
   opacity 0
-  font-family BungeeHairline, Helvetica, Arial, sans-serif
+  // font-family BungeeHairline, Helvetica, Arial, sans-serif
   position absolute
   rotate -90deg
   top 18px
