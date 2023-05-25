@@ -162,7 +162,7 @@ contract IntoPieces is ERC721, IERC2981, Ownable, ReentrancyGuard {
             '"name": "Into Pieces ~',
             Strings.toString(tokenId),
             '",',
-            '"description": "When we meet, this NFT will be your ticket to a reward. JM",',
+            '"description": "When we meet, this NFT will allow you to claim a reward. JM",',
             '"image": "',
             'ipfs://bafybeidr3ssynrir4wez5bayz36qxk557irrrkwsplxeq3xdwieysxzlqq',
             '"',

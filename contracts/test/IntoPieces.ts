@@ -378,7 +378,7 @@ describe('Into pieces NFT test', function () {
       const tokenURI = await intoPiecesContract.connect(addr1).tokenURI(0)
       const tokenUriObject = {
         name: 'Into Pieces ~0',
-        description: 'When we meet, this NFT will be your ticket to a reward. JM',
+        description: 'When we meet, this NFT will allow you to claim a reward. JM',
         image:
           'ipfs://bafybeidr3ssynrir4wez5bayz36qxk557irrrkwsplxeq3xdwieysxzlqq'
       }
