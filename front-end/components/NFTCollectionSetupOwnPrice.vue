@@ -1,9 +1,6 @@
 <template>
   <!-- <Web3ConnectionInfo /> -->
   <div class="nft-collection" >
-    <!-- <h2 class="nft-collection__title">Into Pieces</h2> -->
-
-
     <img src="/into-pieces/IntoPieces.webp" class="nft-collection__mint-image"/>
     <div class="nft-collection__amount">{{ maxSupply }} / {{ mintedNfts }}</div>
 
@@ -11,12 +8,9 @@
       <Transition name="fade">
         <span class="nft-collection__successfully-minted-message" v-if="isMinted && !mintInProgress">
           𓀆 !minted! 𓀊
-        <a :href="getExplorerLink({type: 'asset', marketplace: 'opensea', nftId})" class="nft-collection__opensea-link" target="_blank">
+        <a :href="openseaAssetLink" class="nft-collection__opensea-link" target="_blank">
           <img src="/opensea-blue-ship.svg" width="30" height="30" alt="opensea logo"/>
         </a>
-        <!-- <a :href="getExplorerLink({type: 'asset', marketplace: 'looksrare', nftId})" class="nft-collection__looksrare-link" target="_blank">
-          <img src="/looksrare.svg" width="45" height="45" alt="looksrare logo"/>
-        </a> -->
         <div @click="isMinted = false" class="nft-collection__hide-is-minted-msg">✖</div>
         </span>
       </Transition>
@@ -37,10 +31,8 @@
           <span title="Optimism - second layer of Ethereum">
             <span>{{mainSupportedChain?.nativeCurrency.symbol}}</span>
             <img class="nft-collection__optimism-logo" src="/optimism-ethereum-logo.svg" width="12" height="12" alt="optimism logo"/>
-
           </span>
         </div>
-
         <MintIntoPiecesButton class="nft-collection__mint-button" :is-disabled="mintInProgress || mintLimitExceeded">
           <span class="nft-collection__mint-button-text">
             {{mintInProgress ? 'minting' : 'mint'}}
@@ -48,18 +40,12 @@
         </MintIntoPiecesButton>
       </form>
 
-      
       <div class="nft-collection__valuation">
         <span class="nft-collection__valuation-full-price">~${{fullMintPrice}}~</span>
-        <!-- <span class="nft-collection__valuation-info">(${{customPriceUsd}} custom valuation
-        + ${{feeCostUsd}} Network fee)</span> -->
       </div>
 
       <div class="nft-collection__links">
-        <!-- <a :href="getExplorerLink({type: 'collection', marketplace: 'quix'})" title="collection on Quix" class="nft-collection__collection-link" target="_blank">
-          <img src="/quix.svg" width="23" height="23" alt="quix logo"/>
-        </a> -->
-        <a :href="getExplorerLink({type: 'collection', marketplace: 'opensea'})" title="collection on Opensea" class="nft-collection__collection-link" target="_blank">
+        <a :href="openseaCollectionLink" title="collection on Opensea" class="nft-collection__collection-link" target="_blank">
           <img src="/opensea-blue-ship.svg" width="25" height="25" alt="opensea logo"/>
         </a>
         <a :href="mainSupportedChain?.linkToEtherscanIntoPiecesContract" title="contract on Etherscan" class="nft-collection__collection-link" target="_blank">
@@ -67,41 +53,15 @@
         </a>
       </div>
       <p class="nft-collection__info">
-        When we meet,<br/> this NFT will be your ticket to a reward.
+        When we meet,<br/> this NFT will allow you to claim a reward.
       </p>
     </div>
   </div>
-  <!-- <ThreeJsTesting /> -->
 </template>
 
 
 
 <script setup lang="ts">
-
-// TODOS
-  // switch chains on mobile
-
-  // no wallet desktop -harder to use so far
-  // no wallet mobile -harder to use so far
-
-//////// extra stuff /////////
-  // restyling #2
-  // links to markets - styling #2
-  // refactor useWeb3 into more general usage
-  // ?replace browser alert & confirm pop-ups with modal windows
-
-  // refactoring after testing on testnet
-  // successfully minted - next iteration
-
-
-// DONOS
-// order of wallets on desktop
-// without added chain
-//support for multiple wallets? should be with web3modal v2
-// show price in USD for mint
-// add web3Modal v2
-// check correct chain - prompt switch chain
-// check connected address
 
 
 import { BigNumberish, ethers } from 'ethers'
@@ -109,24 +69,8 @@ import useWeb3 from '~/J/useWeb3'
 import { mainSupportedChain } from '~/appSetup'
 import { connectedChain } from '~/constants/chains'
 import contractAbi from '~/abi/IntoPieces.json'
-import useCryptoExplorer from '~/J/useCryptoExplorer'
-// import useWeb3Modal from '~/J/useWeb3Modal'
-// import { fetchSigner } from '@wagmi/core'
-
-// import useDragAndDrop from '~/J/useDragAndDrop';
-
-// const { dragAndDrop, isDragging } = useDragAndDrop()
-
-// const intoPiecesRef = ref<HTMLElement>()
-// onMounted(() => {
-//   console.log('intoPiecesRef.value: ', intoPiecesRef.value);
-//   if (intoPiecesRef.value) {
-//     dragAndDrop(intoPiecesRef.value)
-//   }
-// })
 
 const { initDapp, signer, checkForAnyContractAction, connectedAddress, connectWallet, optimismProvider } = useWeb3()
-const { getExplorerLink } = useCryptoExplorer()
 
 let contractReadOnly: any = null
 
@@ -142,7 +86,8 @@ const fetchingMintPrice = ref()
 const ethToUsdExchangeRate = ref()
 
 const nftId = computed(() => mintedNfts.value ? Number(mintedNfts.value) - 1 : 0)
-// const explorerLink = computed(() => getExplorerLink({type: 'asset', marketplace: 'opensea', nftId: nftId.value}))
+const openseaAssetLink = computed(() => (`https://opensea.io/assets/optimism/${mainSupportedChain.nftIntoPiecesContract}/${nftId.value}`))
+const openseaCollectionLink = computed(() => (`https://opensea.io/collection/${mainSupportedChain.nftIntoPiecesCollectionName}`))
 
 const fullMintPrice = computed(() => {
   const hasRequestedPrice = requestedPrice.value || requestedPrice.value === 0
@@ -154,8 +99,6 @@ const fullMintPrice = computed(() => {
   }
   return '?'
 })
-// const customPriceUsd = computed(() => fetchingMintPrice.value ? '...' : mintPrice.value?.customPriceUsd)
-// const feeCostUsd = computed(() => fetchingMintPrice.value ? '...' : mintPrice.value?.feeCostUsd)
 
 const getMintPrice = async () => {
   fetchingMintPrice.value = true

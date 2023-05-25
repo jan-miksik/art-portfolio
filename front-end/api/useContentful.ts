@@ -48,6 +48,7 @@ export default function useContentful() {
       const JSONResponse = await response.json()
 
       contentfulData.value = JSONResponse.data.pieceCollection.items
+      console.log('contentfulData.value: ', contentfulData.value);
     } catch (error) {
       throw new Error('Could not receive the data from Contentful!')
     }

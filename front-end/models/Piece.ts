@@ -52,7 +52,7 @@ export default class Piece {
   public sizeOnWeb
   public position
 
-  // public randomizedPosition
+  public randomizedPosition
   public tags
   public description
   public price
@@ -73,44 +73,44 @@ export default class Piece {
     this.tags = data.tags || ''
     this.created = data.created || Date
     this.updated = data.updated || Date
+    this.randomizedPosition = this.getRandomizedPosition()
   }
   
-  // this.randomizedPosition = this.getRandomizedPosition()
   getRandomizedPosition() {
     if (this.topic === Topics.SANS_TOPIC) {
       return {
         transform: `rotate(${generateRandomNumberPlusMinus(3)}deg) scale(${
-          randomRange(7, 11) / 10
+          randomRange(6, 12) / 10
         }) translateY(${generateRandomNumberPlusMinus(
           170
-        )}px) translateX(${generateRandomNumberPlusMinus(10)}px)`
+        )}px) translateX(${generateRandomNumberPlusMinus(50)}px)`
       }
     }
     if (this.topic === Topics.GEOMETRY) {
       return {
         transform: `scale(${
-          randomRange(7, 11) / 10
+          randomRange(7, 12) / 10
         }) translateY(${generateRandomNumberPlusMinus(
           180
-        )}px) translateX(${generateRandomNumberPlusMinus(10)}px)`
+        )}px) translateX(${generateRandomNumberPlusMinus(50)}px)`
       }
     }
     if (this.topic === Topics.NODE_AVATARS) {
       return {
         transform: `scale(${
-          randomRange(7, 10) / 10
+          randomRange(5, 8) / 10
         }) translateY(${generateRandomNumberPlusMinus(
           110
-        )}px) translateX(${generateRandomNumberPlusMinus(10)}px)`
+        )}px) translateX(${generateRandomNumberPlusMinus(50)}px)`
       }
     }
     if (this.topic === Topics.PUZZLE) {
       return {
         transform: `scale(${
-          randomRange(8, 10) / 10
+          randomRange(9, 12) / 10
         }) translateY(${generateRandomNumberPlusMinus(
           180
-        )}px) translateX(${generateRandomNumberPlusMinus(10)}px)`
+        )}px) translateX(${generateRandomNumberPlusMinus(50)}px)`
       }
     }
   }

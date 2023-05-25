@@ -149,13 +149,11 @@ const chains: Record<string, IChain> = {
     chainIdDec: 10,
     keyName: 'optimism',
     name: 'Optimism',
-    
-    // https://optimistic.etherscan.io
-
+    // https://opensea.io/collection/into-pieces-1
     nftIntoPiecesContract: '0xe75b8ffd5df1311d68FfFC93e3bB95F489C7df1A',
     linkToEtherscanIntoPiecesContract: 'https://optimistic.etherscan.io/address/0xe75b8ffd5df1311d68fffc93e3bb95f489c7df1a',
     // nftShowingPortfolioContract: '0x47488CA96d736E63365d75C471050b5074CBD076',
-    nftIntoPiecesCollectionName: 'into-pieces',
+    nftIntoPiecesCollectionName: 'into-pieces-1',
     rpcUrls: ['https://mainnet.optimism.io', 'https://optimism.blockpi.network/v1/rpc/public', 'https://1rpc.io/op'],
     isChainSupported: true,
     nativeCurrency: {

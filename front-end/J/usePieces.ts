@@ -37,10 +37,10 @@ export default function usePieces() {
   )
   piecesGeometry.value = addRandomlyEmptySpacesIntoArray(geometry)
 
-  piecesPuzzle.value = piecesData.PUZZLE.map(
+  const puzzle = piecesData.PUZZLE.map(
     (pieceData: any) => new Piece(pieceData)
   )
-  // piecesPuzzle.value = addRandomlyEmptySpacesIntoArray(puzzle)
+  piecesPuzzle.value = addRandomlyEmptySpacesIntoArray(puzzle)
 
   const mergeContentfulDataWithLocalData = async () => {
     const { contentfulData } = useContentful()
