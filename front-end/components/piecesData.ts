@@ -539,7 +539,7 @@ const piecesData: {[key: string]: IPiece[]} = {
       id: '22',
       name: 'puzzle 1',
       description: '',
-      image: { id: '22', url: 'puzzle/puzzle 1,2013,70x50cm.webp', lastUpdated: new Date('2020').getTime() },
+      image: { id: '22', url: 'puzzle/puzzle 1,2013,70x50cm.webp', lastUpdated: new Date('2021').getTime() },
       topic: Topics.PUZZLE,
       price: 0,
       technique: Techniques.MIXED_MEDIA,
