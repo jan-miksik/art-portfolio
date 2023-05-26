@@ -34,7 +34,7 @@
       :type="Topics.PUZZLE"
       :selected-topic="selectedTopic"
     />
-    <NftCollectionPieces
+    <IntoPiecesMain
       :type="Topics.NFT_COLLECTION"
       :selected-topic="selectedTopic"
     />

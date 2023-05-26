@@ -10,7 +10,7 @@
             : 'nft-collection-pieces__is-section-hidden'
         ]"
       >
-      <NFTCollectionSetupOwnPrice />
+      <IntoPiecesCollection />
       </div>
   </Transition>
 </template>
@@ -26,70 +26,70 @@ const props = defineProps<{
   selectedTopic?: Topics
 }>()
 
-const getScale = (coordinates: any) => {
-  const widthRatio = window.innerWidth / coordinates.width
-  const heightRatio = window.innerHeight / (coordinates.height + 50)
-  const scale = widthRatio > heightRatio ? heightRatio : widthRatio
+// const getScale = (coordinates: any) => {
+//   const widthRatio = window.innerWidth / coordinates.width
+//   const heightRatio = window.innerHeight / (coordinates.height + 50)
+//   const scale = widthRatio > heightRatio ? heightRatio : widthRatio
 
-  if (scale > 2.2) return 2.2
-  return scale
-}
+//   if (scale > 2.2) return 2.2
+//   return scale
+// }
 
-const handleImagePosition = (piece: Piece) => {
-  if (piece.id !== activeImage.value || window.innerWidth <= 1000) {
-    return piece.randomizedPosition
-  }
-  const selectedImage = document.getElementById(piece.id)
-  const coordinates = selectedImage?.getBoundingClientRect()
-  if (!coordinates || !selectedImage) return
-  const translateY = coordinates.height < 320 ? 110 : 100
+// const handleImagePosition = (piece: Piece) => {
+//   if (piece.id !== activeImage.value || window.innerWidth <= 1000) {
+//     return piece.randomizedPosition
+//   }
+//   const selectedImage = document.getElementById(piece.id)
+//   const coordinates = selectedImage?.getBoundingClientRect()
+//   if (!coordinates || !selectedImage) return
+//   const translateY = coordinates.height < 320 ? 110 : 100
 
-  return {
-    transform: `rotate(0deg) scale(${getScale(
-      coordinates
-    )}) translateY(${translateY}px) translateX(${
-      (window.innerWidth / 2 - (coordinates.width / 2 + coordinates.left)) / 2
-    }px) !important`
-  }
-}
+//   return {
+//     transform: `rotate(0deg) scale(${getScale(
+//       coordinates
+//     )}) translateY(${translateY}px) translateX(${
+//       (window.innerWidth / 2 - (coordinates.width / 2 + coordinates.left)) / 2
+//     }px) !important`
+//   }
+// }
 
-const handleImageClass = (piece: Piece) => {
-  const selectedImage = document.getElementById(piece.id)
-  const coordinates = selectedImage?.getBoundingClientRect()
-  if (!coordinates || !selectedImage) return
-  const heightRatio = coordinates.height / coordinates.width
+// const handleImageClass = (piece: Piece) => {
+//   const selectedImage = document.getElementById(piece.id)
+//   const coordinates = selectedImage?.getBoundingClientRect()
+//   if (!coordinates || !selectedImage) return
+//   const heightRatio = coordinates.height / coordinates.width
 
-  const isHigherThanWider = heightRatio > 1
+//   const isHigherThanWider = heightRatio > 1
 
-  return isHigherThanWider && coordinates.height > 350
-    ? 'nft-collection-pieces__piece-description-selected-higher-img'
-    : 'nft-collection-pieces__piece-description-selected'
-}
+//   return isHigherThanWider && coordinates.height > 350
+//     ? 'nft-collection-pieces__piece-description-selected-higher-img'
+//     : 'nft-collection-pieces__piece-description-selected'
+// }
 
-const selectImage = (id: string) => {
-  if (activeImage.value === id) {
-    activeImage.value = undefined
-    return
-  }
-  const selectedImage = document.getElementById(id)
-  const coordinates = selectedImage?.getBoundingClientRect()
-  if (!coordinates || !selectedImage) return
+// const selectImage = (id: string) => {
+//   if (activeImage.value === id) {
+//     activeImage.value = undefined
+//     return
+//   }
+//   const selectedImage = document.getElementById(id)
+//   const coordinates = selectedImage?.getBoundingClientRect()
+//   if (!coordinates || !selectedImage) return
 
-  const heightRatio = coordinates.height / coordinates.width
+//   const heightRatio = coordinates.height / coordinates.width
 
-  const isHigherThanWider = heightRatio > 1.15
+//   const isHigherThanWider = heightRatio > 1.15
 
-  if (window.innerHeight > window.innerWidth) {
-    const targetPosition = window.scrollY + (coordinates?.y || 0) - 185
-    window.scrollTo(0, targetPosition)
-  } else {
-    const targetPosition =
-      window.scrollY + (coordinates?.y || 0) + (isHigherThanWider ? 85 : 0)
+//   if (window.innerHeight > window.innerWidth) {
+//     const targetPosition = window.scrollY + (coordinates?.y || 0) - 185
+//     window.scrollTo(0, targetPosition)
+//   } else {
+//     const targetPosition =
+//       window.scrollY + (coordinates?.y || 0) + (isHigherThanWider ? 85 : 0)
 
-    window.scrollTo(0, targetPosition)
-  }
-  activeImage.value = id
-}
+//     window.scrollTo(0, targetPosition)
+//   }
+//   activeImage.value = id
+// }
 </script>
 
 <style scoped>

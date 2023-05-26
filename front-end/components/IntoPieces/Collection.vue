@@ -41,11 +41,11 @@
           </span>
         </div>
 
-        <MintIntoPiecesButton class="nft-collection__mint-button" :is-disabled="mintInProgress || mintLimitExceeded">
+        <IntoPiecesMintButton class="nft-collection__mint-button" :is-disabled="mintInProgress || mintLimitExceeded">
           <span class="nft-collection__mint-button-text">
             {{mintInProgress ? 'minting' : 'mint'}}
           </span>
-        </MintIntoPiecesButton>
+        </IntoPiecesMintButton>
       </form>
 
       
@@ -78,52 +78,12 @@
 
 <script setup lang="ts">
 
-// TODOS
-  // switch chains on mobile
-
-  // no wallet desktop -harder to use so far
-  // no wallet mobile -harder to use so far
-
-//////// extra stuff /////////
-  // restyling #2
-  // links to markets - styling #2
-  // refactor useWeb3 into more general usage
-  // ?replace browser alert & confirm pop-ups with modal windows
-
-  // refactoring after testing on testnet
-  // successfully minted - next iteration
-
-
-// DONOS
-// order of wallets on desktop
-// without added chain
-//support for multiple wallets? should be with web3modal v2
-// show price in USD for mint
-// add web3Modal v2
-// check correct chain - prompt switch chain
-// check connected address
-
-
 import { BigNumberish, ethers } from 'ethers'
 import useWeb3 from '~/J/useWeb3'
 import { mainSupportedChain } from '~/appSetup'
 import { connectedChain } from '~/constants/chains'
 import contractAbi from '~/abi/IntoPieces.json'
 import useCryptoExplorer from '~/J/useCryptoExplorer'
-// import useWeb3Modal from '~/J/useWeb3Modal'
-// import { fetchSigner } from '@wagmi/core'
-
-// import useDragAndDrop from '~/J/useDragAndDrop';
-
-// const { dragAndDrop, isDragging } = useDragAndDrop()
-
-// const intoPiecesRef = ref<HTMLElement>()
-// onMounted(() => {
-//   console.log('intoPiecesRef.value: ', intoPiecesRef.value);
-//   if (intoPiecesRef.value) {
-//     dragAndDrop(intoPiecesRef.value)
-//   }
-// })
 
 const { initDapp, signer, checkForAnyContractAction, connectedAddress, connectWallet, optimismProvider } = useWeb3()
 const { getExplorerLink } = useCryptoExplorer()
