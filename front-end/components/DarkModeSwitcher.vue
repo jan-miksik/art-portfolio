@@ -1,35 +1,51 @@
 <template>
-<div
-id="dark-mode-switcher"
-ref="darkModeSwitcher"
-draggable="true"
-class="container"
->
-    <div
-  ref="modeRef"
-  class="mode"
-  @click="switchMode"
-  />
-</div>
+  <div
+    id="dark-mode-switcher"
+    class="container"
+    ref="darkModeSwitcherRef"
+    :style="dragAndDropStyle"
+    @mousedown="mouseDownHandler"
+    @mousemove="mouseMoveHandler"
+    @mouseup="mouseUpHandler"
+    >
+    <div ref="modeRef" class="mode" @click="switchMode" />
+  </div>
 </template>
 
 <script setup lang="ts">
-import useDragAndDrop from '~/J/useDragAndDrop'
-// import isMobile from '~/J/isMobile'
+import interact from 'interactjs'
+import useMouseActionDetector from '~/J/useMouseActionDetector'
+// import useDraggable from '~/J/useDraggable'
 
 const isDarkMode = ref(false)
 const amountOfSwitching = ref(0)
 const modeRef = ref<HTMLElement>()
-const darkModeSwitcher = ref<HTMLElement>()
-const { dragAndDrop, isDragging } = useDragAndDrop()
+
+
+const darkModeSwitcherRef = ref<HTMLElement>()
+const styleRef = ref({left: 0, top: 0})
+const { mouseDownHandler, mouseMoveHandler, mouseUpHandler, isDragging } = useMouseActionDetector()
+// const { dragAndDropStyle} = useDraggable(darkModeSwitcherRef, styleRef)
+// useDraggable(darkModeSwitcherRef, styleRef)
 
 onMounted(() => {
   const modeInStorage = localStorage.getItem('darkMode')
-  if (darkModeSwitcher.value) {
-    dragAndDrop(darkModeSwitcher.value)
-  }
+  // addDragAndDrop(darkModeSwitcherRef, styleRef)
+  if (!darkModeSwitcherRef.value) return
+  interact(darkModeSwitcherRef.value).draggable({
+      inertia: true,
+      autoScroll: true,
+      listeners: {
+        move(event) {
+          styleRef.value.top += event.dy
+          styleRef.value.left += event.dx
+        }
+      }
+    })
 
-  const modeInBrowser = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const modeInBrowser =
+    window.matchMedia &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches
 
   if (modeInStorage === 'false') return
   if (modeInStorage === 'true') {
@@ -39,20 +55,30 @@ onMounted(() => {
   }
 })
 
+const dragAndDropStyle = computed(() => {
+  return {
+    top: `${styleRef.value.top}px`,
+    left: `${styleRef.value.left}px`,
+  }
+})
+
 const switchMode = () => {
   if (isDragging.value) return
   isDarkMode.value = !isDarkMode.value
   document.documentElement.classList.toggle('dark-mode')
   modeRef.value?.classList.toggle('scaling')
   amountOfSwitching.value++
+  console.log('amountOfSwitching.value: ', amountOfSwitching.value);
 
-  if (amountOfSwitching.value % 7 === 0) {
+  if (amountOfSwitching.value % 3 === 0 || amountOfSwitching.value % 4 === 0) {
     // alert('Seems, that you like switching')
+    console.log('1111111111 ');
     document.documentElement.style.setProperty('--image-filter-invert', '0')
   }
 
-  if (amountOfSwitching.value % 25 === 25) {
-    // alert('filter switch')
+  if (amountOfSwitching.value % 7 === 0) {
+    // alert('filter switch rotate-all')
+    console.log('filter switch rotate-all: ');
     document.body.classList.toggle('rotate-all')
     setTimeout(() => {
       document.body.classList.toggle('rotate-all')
@@ -79,11 +105,10 @@ const switchMode = () => {
 
   localStorage.setItem('darkMode', `${isDarkMode.value ? 'true' : 'false'}`)
 
-  setTimeout(function() {
+  setTimeout(function () {
     modeRef.value?.classList.toggle('scaling')
   }, 520)
 }
-
 </script>
 
 <style scoped lang="stylus">
@@ -153,7 +178,6 @@ const switchMode = () => {
 
 .scaling::after
   animation scale-inner 0.5s ease forwards
-
 </style>
 
 <!-- This component is based on codepen by Andreas Storm

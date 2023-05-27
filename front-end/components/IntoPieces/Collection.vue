@@ -67,7 +67,7 @@
         </a>
       </div>
       <p class="nft-collection__info">
-        When we meet,<br/> this NFT will be your ticket to a reward.
+        When we meet,<br/> this NFT will allow you to claim a reward.
       </p>
     </div>
   </div>

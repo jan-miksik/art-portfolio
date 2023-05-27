@@ -66,7 +66,7 @@ export default class Piece {
     this.techniqueDescription = data.techniqueDescription || ''
     this.image = new ImageFile({ id: data.id, url: data.image.url, lastUpdated: data.image.lastUpdated })
     this.sizeInCm = data.sizeInCm || { x: 0, y: 0 }
-    this.sizeOnWeb = data.sizeOnWeb || { width: 500 }
+    this.sizeOnWeb = data.sizeOnWeb || { width: 0 }
     this.position = data.position || { x: 0, y: 0, deg: 0 }
     this.price = data.price || 0
     this.topic = data.topic || ''

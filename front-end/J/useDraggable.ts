@@ -1,39 +1,40 @@
-import interact from 'interactjs'
+import interact from "interactjs";
+import useMouseActionDetector from "~/J/useMouseActionDetector";
 
-function dragMoveListener(event: Interact.InteractEvent) {
-  var target = event.target as HTMLElement,
-    x = (parseFloat(target.getAttribute('data-x')!) || 0) + event.dx,
-    y = (parseFloat(target.getAttribute('data-y')!) || 0) + event.dy
+export default function useDraggable(elementRef: Ref, styleRef: Ref) {
+  const { mouseDownHandler, mouseMoveHandler, mouseUpHandler } = useMouseActionDetector()
 
-  target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+  const addDragAndDrop = (elementRef: Ref<HTMLElement | undefined>, styleRef: Ref) => {
 
-  target.setAttribute('data-x', x.toString())
-  target.setAttribute('data-y', y.toString())
-}
+    if (!elementRef.value) return
 
-export default function useDraggable(elements: HTMLElement[]) {
-  elements.forEach((el) => {
-    interact(el).draggable({
+    interact(elementRef.value).draggable({
       inertia: true,
-      modifiers: [
-        interact.modifiers.restrictRect({
-          restriction: 'parent',
-          endOnly: true
-        })
-      ],
       autoScroll: true,
-      onmove: dragMoveListener,
-      onend: (event) => {
-        var target = event.target as HTMLElement,
-          x = parseFloat(target.getAttribute('data-x')!) || 0,
-          y = parseFloat(target.getAttribute('data-y')!) || 0
-
-        target.style.top = y + 'px'
-        target.style.left = x + 'px'
-        target.style.transform = ''
+      listeners: {
+        move(event) {
+          styleRef.value.top += event.dy
+          styleRef.value.left += event.dx
+        }
       }
     })
-  })
+
+
+    elementRef.value.addEventListener('mousedown', mouseDownHandler)
+    elementRef.value.addEventListener('mousemove', mouseMoveHandler)
+    elementRef.value.addEventListener('mouseup', mouseUpHandler)
+  }
+
+  onMounted(() => addDragAndDrop(elementRef, styleRef))
+
+  const dragAndDropStyle = (styleRef: Ref) => {
+    return {
+      top: `${styleRef.value.top}px`,
+      left: `${styleRef.value.left}px`,
+    }
+  }
+
+  return {
+    dragAndDropStyle
+  }
 }
-
-

@@ -99,7 +99,7 @@ const props = defineProps<{
   left: 0;
   right: 0;
   margin: auto;
-  z-index: -1;
+  /* z-index: -1; */
   display: flex;
   gap: 5rem;
   align-items: center;

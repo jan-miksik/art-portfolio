@@ -3,6 +3,9 @@
         class="piece"
         ref="pieceRef"
         :style="handlePieceStyle(piece)"
+        @mousedown="mouseDownHandler"
+        @mousemove="mouseMoveHandler"
+        @mouseup="mouseUpHandler"
       >
         <Image
           v-if="piece"
@@ -47,11 +50,13 @@
 <script setup lang="ts">
 import Piece from '~/models/Piece'
 import interact from 'interactjs'
+import useMouseActionDetector from '~/J/useMouseActionDetector' 
+import { Topics } from '~/components/piecesData'
 
-// import { Topics } from '~/components/pieceData'
+const { mouseDownHandler, mouseMoveHandler, mouseUpHandler, isDragging } = useMouseActionDetector()
+
 const pieceRef = ref()
 const selectedPiece = ref<Piece>()
-// const mapOfImages = ref()
 const props = defineProps<{
   piece: Piece
 }>()
@@ -59,7 +64,7 @@ const props = defineProps<{
 
 onMounted(() => {
   interact(pieceRef.value).draggable({
-      // inertia: true,
+      inertia: true,
       autoScroll: true,
       listeners: {
         move(event) {
@@ -71,7 +76,53 @@ onMounted(() => {
 })
 
 
+const getRandomNumberInRange = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+const defaultRandomization = (piece: Piece) => {
+  // const maxRandomPositionX = window.innerWidth - (piece.sizeOnWeb?.width || 300)
+  const maxRandomWidth = (window.innerWidth < 800 ? window.innerWidth : 300) - 100
+  // const maxRandomPositionY = window.innerHeight
+
+  if (!piece.sizeOnWeb?.width) {
+    piece.sizeOnWeb.width = getRandomNumberInRange(200, maxRandomWidth)
+  }
+
+  if (!piece.position?.x) {
+    piece.position.x = getRandomNumberInRange(0, 1920)
+  }
+
+  if (!piece.position?.y) {
+    piece.position.y = getRandomNumberInRange(100, 2200)
+  }
+}
+
+const randomizationNodeAvatars = (piece: Piece) => {
+  const maxRandomPositionX = window.innerWidth - (piece.sizeOnWeb?.width || 250)
+  const maxRandomPositionY = window.innerHeight
+
+  if (!piece.sizeOnWeb?.width) {
+    piece.sizeOnWeb.width = getRandomNumberInRange(70, 250)
+  }
+
+  if (!piece.position?.x) {
+    piece.position.x = getRandomNumberInRange(0, 1920)
+  }
+
+  if (!piece.position?.y) {
+    piece.position.y = getRandomNumberInRange(100, 2200)
+  }
+}
+
 const handlePieceStyle = (piece: Piece) => {
+  if (!piece) return
+
+  if (piece.topic === Topics.NODE_AVATARS) {
+    randomizationNodeAvatars(piece)
+  } else {
+    defaultRandomization(piece)
+  }
 
   return {
     width: `${piece.sizeOnWeb?.width}px`,
@@ -87,7 +138,9 @@ const handleOnBackdropClick = () => {
 }
 
 const selectImage = (piece: Piece) => {
-  // selectedPiece.value = piece
+  if (!isDragging.value) {
+    selectedPiece.value = piece
+  }
 }
 </script>
 
@@ -112,31 +165,31 @@ const selectImage = (piece: Piece) => {
   z-index 10
   filter: drop-shadow(0px 0px 1px black);
 
+.dark-mode .piece__image:hover
+  filter: drop-shadow(0px 0px 1px black) invert(1);
+
 .piece__selected-piece-image
-  max-height 85vh
+  max-height: 87vh;
   max-width: 95%;
+  margin-top: 3rem;
 
 .piece__selected-piece-info
   background-color #eee
   color #919191
   text-align left
-  border-radius: 50px 0 0 0;
+  border-radius: 15px 15px 20px 20px;
   z-index 10
-  // transition all 0.2s
   max-width 90%
   width max-content
   position relative
-  bottom 0px
-  padding 1rem 0.7rem
-  margin-top: 1rem
+  padding: 0.7rem 1rem
   box-shadow 0 0 5px 0 #0000002e
   text-align center
   font-size 1rem
-
-.piece__selected-piece-info
-  align-self: flex-end;
+  align-self: center;
   position: absolute;
-  bottom: 0;
+  top: 0.3rem;
+
 
 .dark-mode .piece__selected-piece-info
   background-color rgb(17 17 17)
@@ -153,9 +206,7 @@ const selectImage = (piece: Piece) => {
   height 100vh
   z-index 1000
   background-color #00000050
-  // backdrop-filter blur(1px) grayscale(1)
   backdrop-filter: sepia(1) blur(2px);
-  // transition all 0.5s
 
 .dark-mode .piece__selected-piece-backdrop
   background-color unset

@@ -139,7 +139,6 @@ export default function useWeb3() {
         )
       ) {
         await switchToSupportedChain()
-        console.log('switchToSupportedChain: 2')
 
         if (
           connectedChain.value?.chainIdDec !== mainSupportedChain.chainIdDec

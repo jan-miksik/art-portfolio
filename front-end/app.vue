@@ -1,6 +1,6 @@
 
 <template>
-  <div>
+  <div class="app">
     <NuxtPage />
   </div>
 </template>
@@ -66,21 +66,30 @@ body
   overflow-x hidden
   background-color ghostwhite
 
-// Scrollbar
+
+/////////////////////////////////////////////
+/////////////// Scrollbar ///////////////////
 body
+.app
   --scrollbar-foreground rgb(248 248 255)
   --scrollbar-background #000
   // Foreground, Background
   scrollbar-color var(--scrollbar-foreground) var(--scrollbar-background)
 
+.app::-webkit-scrollbar
+  width 15px
+  height 15px
+
 body::-webkit-scrollbar
-  width 5px
-  height 5px
+  width 0
+  height 0
 
 body::-webkit-scrollbar-thumb // Foreground
+.app::-webkit-scrollbar-thumb
   background var(--scrollbar-foreground)
 
 body::-webkit-scrollbar-track // Background
+.app::-webkit-scrollbar-track
   background var(--scrollbar-background)
 
 
@@ -90,6 +99,9 @@ body::-webkit-scrollbar-track // Background
 
 .dark-mode img
   filter invert(var(--image-filter-invert))
+
+  // &:hover
+  //   filter invert(0)
 
 .rotate-all
   transform rotate(1080deg)
@@ -108,5 +120,9 @@ input[type="number"]
 
 // .dark-mode .w3m-active
 //   filter invert(1)
+.app
+  position: relative;
+  overflow: auto;
+  height: 100vh;
 
 </style>
