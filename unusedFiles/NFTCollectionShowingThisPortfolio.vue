@@ -21,7 +21,7 @@
     </div>
 
     <Transition name="fade">
-      <Loader v-if="mintInProgress" size="large" class="nft-collection-stp__minting-in-progress" />
+      <OLoader v-if="mintInProgress" size="large" class="nft-collection-stp__minting-in-progress" />
     </Transition>
     <span class="nft-collection-stp__limit-exceeded" v-if="mintLimitExceeded">
       max 7 pieces per address

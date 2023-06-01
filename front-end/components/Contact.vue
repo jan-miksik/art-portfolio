@@ -1,12 +1,16 @@
 <template>
   <div
   ref="contactRef"
+  :style="handleStyle"
   class="homepage__contact"
   draggable="true"
+  @mousedown="mouseDownHandler"
+  @mousemove="mouseMoveHandler"
+  @mouseup="mouseUpHandler"
   >
-    <a class="homepage__soc-link" href="mailto: to@janmiksik.ooo">
+    <a class="homepage__soc-link" :href="linkToEmail">
   <!-- @click="showContactModal" -->
-    <Image
+    <OImage
       :image-file="emailIcon"
       class="homepage__contact-img" 
       width="27"
@@ -32,7 +36,7 @@
         </p> -->
         <div class="homepage__soc-links">
           <a class="homepage__soc-link" href="mailto: to@janmiksik.ooo">
-            <Image
+            <OImage
               :image-file="emailIcon"
               class="homepage__soc-link-img" 
               width="35"
@@ -45,7 +49,7 @@
             href="https://www.instagram.com/miksik.jan/"
             target="_blank"
             >
-            <Image
+            <OImage
               :image-file="instagramIcon"
               class="homepage__soc-link-img" 
               width="27"
@@ -59,7 +63,7 @@
             href="https://www.facebook.com/jan.miksik.1/"
             target="_blank"
             >
-            <Image
+            <OImage
               :image-file="facebookIcon"
               class="homepage__soc-link-img" 
               width="26"
@@ -72,7 +76,7 @@
             href="https://twitter.com/MiksikJan"
             target="_blank"
             >
-            <Image
+            <OImage
               :image-file="twitterIcon"
               class="homepage__soc-link-img" 
               width="30"
@@ -87,14 +91,38 @@
 </template>
 
 <script setup lang="ts">
-import useDragAndDrop from '~/J/useDragAndDrop'
+import interact from 'interactjs'
+import useMouseActionDetector from '~/J/useMouseActionDetector'
 import ImageFile from '~/models/ImageFile'
+const { mouseDownHandler, mouseMoveHandler, mouseUpHandler, isDragging } = useMouseActionDetector()
 
+const style = ref({left: 0, top: window.innerHeight - 70})
 const contactRef = ref<HTMLElement>()
-const { dragAndDrop, isDragging } = useDragAndDrop()
+
 onMounted(() => {
-  if (contactRef.value) {
-    dragAndDrop(contactRef.value)
+  if (!contactRef.value) return
+
+  interact(contactRef.value).draggable({
+      inertia: true,
+      autoScroll: true,
+      listeners: {
+        move(event) {
+          style.value.top += event.dy
+          style.value.left += event.dx
+        }
+      }
+    })
+})
+
+const linkToEmail = computed(() => {
+  if (isDragging.value) return
+  return 'mailto: to@janmiksik.ooo'
+})
+
+const handleStyle = computed(() => {
+  return {
+    top: `${style.value.top}px`,
+    left: `${style.value.left}px`,
   }
 })
 
@@ -142,7 +170,6 @@ const isContactModalVisible = ref(false)
 const contactText = ref()
 
 const showContactModal = () => {
-  if (isDragging.value) return
   isContactModalVisible.value = true
 }
 

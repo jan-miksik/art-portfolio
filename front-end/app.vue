@@ -1,6 +1,12 @@
 
 <template>
-  <div>
+  <div      
+    ref="scrollable"
+    :class="['app', { 'dragging': isDragging }]"
+    @mousedown="handleOnMouseDown"
+    @mousemove="mouseMoveHandler"
+    @mouseup="mouseUpHandler"
+    @mouseleave="mouseUpHandler">
     <NuxtPage />
   </div>
 </template>
@@ -11,6 +17,41 @@ import usePieces from '~/J/usePieces'
 
 const { fetchContentfulData } = useContentful()
 const { mergeContentfulDataWithLocalData } = usePieces()
+
+const scrollable = ref<HTMLElement | null>(null)
+
+let isDragging = false
+let lastX = 0
+let lastY = 0
+
+const handleOnMouseDown = (event: MouseEvent) => {
+  if (event.target === scrollable.value) {
+    isDragging = true
+    lastX = event.clientX
+    lastY = event.clientY
+    if (scrollable.value) {
+      scrollable.value.classList.add('dragging')
+    }
+  }
+}
+
+const mouseMoveHandler = (event: MouseEvent) => {
+  if (isDragging && scrollable.value) {
+    const deltaX = lastX - event.clientX
+    const deltaY = lastY - event.clientY
+    lastX = event.clientX
+    lastY = event.clientY
+    scrollable.value.scrollLeft += deltaX
+    scrollable.value.scrollTop += deltaY
+  }
+}
+
+const mouseUpHandler = () => {
+  isDragging = false
+  if (scrollable.value) {
+    scrollable.value.classList.remove('dragging')
+  }
+}
 
 onMounted(async () => {
   await fetchContentfulData()
@@ -65,22 +106,32 @@ body
   margin 0
   overflow-x hidden
   background-color ghostwhite
+  user-select: none;
 
-// Scrollbar
+
+/////////////////////////////////////////////
+/////////////// Scrollbar ///////////////////
 body
+.app
   --scrollbar-foreground rgb(248 248 255)
   --scrollbar-background #000
   // Foreground, Background
   scrollbar-color var(--scrollbar-foreground) var(--scrollbar-background)
 
+.app::-webkit-scrollbar
+  width 15px
+  height 15px
+
 body::-webkit-scrollbar
-  width 5px
-  height 5px
+  width 0
+  height 0
 
 body::-webkit-scrollbar-thumb // Foreground
+.app::-webkit-scrollbar-thumb
   background var(--scrollbar-foreground)
 
 body::-webkit-scrollbar-track // Background
+.app::-webkit-scrollbar-track
   background var(--scrollbar-background)
 
 
@@ -90,6 +141,9 @@ body::-webkit-scrollbar-track // Background
 
 .dark-mode img
   filter invert(var(--image-filter-invert))
+
+  // &:hover
+  //   filter invert(0)
 
 .rotate-all
   transform rotate(1080deg)
@@ -108,5 +162,12 @@ input[type="number"]
 
 // .dark-mode .w3m-active
 //   filter invert(1)
+.app
+  position: relative;
+  overflow: auto;
+  height: 100vh;
+
+.dragging
+  cursor: grabbing;
 
 </style>

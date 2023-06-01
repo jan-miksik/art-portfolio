@@ -549,7 +549,7 @@ const piecesData: {[key: string]: IPiece[]} = {
         y: 50
       },
       sizeOnWeb: {
-        width: 700
+        width: 200
       },
       position: {
         x: 250,
@@ -574,7 +574,7 @@ const piecesData: {[key: string]: IPiece[]} = {
         y: 50
       },
       sizeOnWeb: {
-        width: 390
+        width: 100
       },
       position: {
         x: 300,
@@ -599,7 +599,7 @@ const piecesData: {[key: string]: IPiece[]} = {
         y: 50
       },
       sizeOnWeb: {
-        width: 650
+        width: 250
       },
       position: {
         x: 1100,
@@ -624,7 +624,7 @@ const piecesData: {[key: string]: IPiece[]} = {
         y: 50
       },
       sizeOnWeb: {
-        width: 420
+        width: 120
       },
       position: {
         x: 1250,
@@ -649,7 +649,7 @@ const piecesData: {[key: string]: IPiece[]} = {
         y: 100
       },
       sizeOnWeb: {
-        width: 670
+        width: 230
       },
       position: {
         x: 200,
@@ -674,7 +674,7 @@ const piecesData: {[key: string]: IPiece[]} = {
         y: 100
       },
       sizeOnWeb: {
-        width: 350
+        width: 90
       },
       position: {
         x: 820,

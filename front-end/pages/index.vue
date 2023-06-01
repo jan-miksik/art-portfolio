@@ -1,5 +1,5 @@
 <template>
-    <DarkModeSwitcher />
+    <ODarkModeSwitcher />
     <div class="homepage__open-topic-icons">
       <SelectTopicIcon :icon="sansTopicIcon" label="Free Topic" :topic="Topics.SANS_TOPIC" class="homepage__sans-topic-link" />
 
@@ -34,7 +34,7 @@
       :type="Topics.PUZZLE"
       :selected-topic="selectedTopic"
     />
-    <NftCollectionPieces
+    <IntoPiecesMain
       :type="Topics.NFT_COLLECTION"
       :selected-topic="selectedTopic"
     />
@@ -183,7 +183,7 @@ const collectIcon = ref(
   left calc(100vw - 55px)
 
   @media (min-width 700px)
-    left calc(100vw - 70px)
+    left calc(100vw - 80px)
 
 .open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon)
   .open-topic-icon__topic-thumbnail-img
@@ -196,9 +196,6 @@ const collectIcon = ref(
   left 65vw
   top 52vh
   width 60px
-  // font-family Neonderthaw, sans-serif
-  // font-size 3rem
-  // font-weight 300
 
   @media (min-width 700px)
     left 75vw
@@ -208,7 +205,7 @@ const collectIcon = ref(
   left calc(100vw - 60px)
 
   @media (min-width 700px)
-    left calc(100vw - 70px)
+    left calc(100vw - 85px)
   // filter opacity(0.3)
 
 .open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon)

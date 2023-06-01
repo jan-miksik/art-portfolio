@@ -11,27 +11,20 @@
       ]"
     >
       <div
-        v-for="(piece, index) in props.pieces"
-        :key="piece?.id || index"
-        :class="[
-          'pieces__piece',
-          { 'pieces__piece-node-avatar': Topics.NODE_AVATARS === props.type },
-          { 'pieces__active-image-container': piece.id === activeImage }
-        ]"
+        class="piece"
+        ref="pieceRef"
+        :style="handlePieceStyle(piece)"
+        @mousedown="handleOnMouseDown"
+        @mousemove="mouseMoveHandler"
+        @mouseup="mouseUpHandler"
       >
-        <Image
+        <OImage
           v-if="piece"
           :id="piece.id"
           :image-file="piece.image"
-          :class="[
-            'pieces__image',
-            { 'pieces__image-node-avatar': Topics.NODE_AVATARS === props.type },
-            { 'pieces__is-active-image': piece.id === activeImage }
-          ]"
-          width="500"
-          height="400"
-          :style="handleImagePosition(piece)"
-          @click="selectImage(piece.id)"
+          class="piece__image"
+          :width="piece.sizeOnWeb.width"
+          @click="selectImage(piece)"
         />
 
         <div
@@ -47,6 +40,25 @@
           {{ piece.sizeInCm.y }}cm
         </div>
       </div>
+      <Transition name="images">
+        <div
+          v-if="selectedPiece"
+          :class="[{ 'piece__selected-piece-backdrop': selectedPiece }]"
+          @click="handleOnBackdropClick"
+          @touchstart="handleOnBackdropClick"
+        >
+          <OImage
+            :image-file="selectedPiece.image"
+            class="piece__selected-piece-image"
+          />
+          <div class="piece__selected-piece-info">
+            <strong>{{ selectedPiece.name }} </strong> <br />
+            {{ selectedPiece.created.getFullYear() }},
+            {{ selectedPiece.techniqueDescription }},
+            {{ selectedPiece.sizeInCm.x }}cm x {{ selectedPiece.sizeInCm.y }}cm
+          </div>
+        </div>
+      </div>
       <div
         :class="[{ 'pieces__is-active-image-backdrop': activeImage }]"
         @click="handleOnBackdropClick"
@@ -59,9 +71,17 @@
 
 <script setup lang="ts">
 import Piece from '~/models/Piece'
+import interact from 'interactjs'
+import useMouseActionDetector from '~/J/useMouseActionDetector' 
 import { Topics } from '~/components/piecesData'
+import usePieces from '~/J/usePieces'
 
-const activeImage = ref()
+const { mouseDownHandler, mouseMoveHandler, mouseUpHandler, isDragging } = useMouseActionDetector()
+const { zIndexOfLastSelectedPiece } = usePieces()
+const localZIndex = ref(1)
+const pieceRef = ref()
+const selectedPiece = ref<Piece>()
+
 const props = defineProps<{
   pieces?: Piece[]
   type: Topics
@@ -73,68 +93,113 @@ const getScale = (coordinates: any) => {
   const heightRatio = window.innerHeight / (coordinates.height + 50)
   const scale = widthRatio > heightRatio ? heightRatio : widthRatio
 
-  if (scale > 2.2) return 2.2
-  return scale
+onMounted(() => {
+  interact(pieceRef.value).draggable({
+      inertia: true,
+      autoScroll: true,
+      listeners: {
+        move(event) {
+          props.piece.position.x += event.dx
+          props.piece.position.y += event.dy
+        }
+      }
+    })
+})
+
+
+const getRandomNumberInRange = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const handleImagePosition = (piece: Piece) => {
-  if (piece.id !== activeImage.value || window.innerWidth <= 1000) {
-    return piece.randomizedPosition
+
+const defaultRandomization = (piece: Piece) => {
+  const maxRandomImageWidth = (window.innerWidth < 800 ? 200 : 300)
+  if (!piece.sizeOnWeb?.width) {
+    piece.sizeOnWeb.width = getRandomNumberInRange(150, maxRandomImageWidth)
   }
-  const selectedImage = document.getElementById(piece.id)
-  const coordinates = selectedImage?.getBoundingClientRect()
-  if (!coordinates || !selectedImage) return
-  const translateY = coordinates.height < 320 ? 110 : 100
+  if (!piece.sizeOnWeb?.height) {
+    piece.sizeOnWeb.height = getRandomNumberInRange(150, maxRandomImageWidth + 100)
+  }
+  if (!piece.position?.x) {
+    piece.position.x = getRandomNumberInRange(0, 1920)
+  }
+  if (!piece.position?.y) {
+    piece.position.y = getRandomNumberInRange(100, 2200)
+  }
+}
+
+
+const randomizationPuzzle = (piece: Piece) => {
+  const maxRandomImageWidth = (window.innerWidth < 800 ? 200 : 350)
+    piece.sizeOnWeb.width = getRandomNumberInRange(150, maxRandomImageWidth)
+    piece.sizeOnWeb.height = getRandomNumberInRange(150, maxRandomImageWidth + 100)
+    piece.position.x = getRandomNumberInRange(0, window.innerWidth + 200)
+    piece.position.y = getRandomNumberInRange(100, 1200)
+}
+
+
+const randomizationNodeAvatars = (piece: Piece) => {
+  const maxRandomImageWidth = (window.innerWidth < 800 ? 70 : 100)
+
+  if (!piece.sizeOnWeb?.width) {
+    piece.sizeOnWeb.width = getRandomNumberInRange(35, maxRandomImageWidth)
+  }
+
+  if (!piece.position?.x) {
+    piece.position.x = getRandomNumberInRange(0, 2000)
+  }
+
+  if (!piece.position?.y) {
+    piece.position.y = getRandomNumberInRange(100, 2700)
+  }
+}
+
+
+const handleOnMouseDown = () => {
+  mouseDownHandler()
+  localZIndex.value = zIndexOfLastSelectedPiece.value
+  zIndexOfLastSelectedPiece.value++
+}
+
+
+const handlePieceStyle = (piece: Piece) => {
+  if (!piece) return
+
+  // TODO add randomization during move
 
   return {
-    transform: `rotate(0deg) scale(${getScale(
-      coordinates
-    )}) translateY(${translateY}px) translateX(${
-      (window.innerWidth / 2 - (coordinates.width / 2 + coordinates.left)) / 2
-    }px) !important`
+    width: `${piece.sizeOnWeb?.width}px`,
+    maxHeight: `${piece.sizeOnWeb?.height}px`,
+    left: `${piece.position?.x}px`,
+    top: `${piece.position?.y}px`,
+    deg: `${piece.position?.deg}deg`,
+    zIndex: `${localZIndex.value}`
   }
 }
+
 
 const handleOnBackdropClick = () => {
   activeImage.value = undefined
 }
 
-const handleImageClass = (piece: Piece) => {
-  const selectedImage = document.getElementById(piece.id)
-  const coordinates = selectedImage?.getBoundingClientRect()
-  if (!coordinates || !selectedImage) return
-  const heightRatio = coordinates.height / coordinates.width
 
-  const isHigherThanWider = heightRatio > 1
-
-  return isHigherThanWider && coordinates.height > 350
-    ? 'pieces__piece-description-selected-higher-img'
-    : 'pieces__piece-description-selected'
-}
-
-const selectImage = (id: string) => {
-  if (activeImage.value === id) {
-    activeImage.value = undefined
-    return
+onMounted(() => {
+  switch (props.piece.topic) {
+    case Topics.PUZZLE:
+      randomizationPuzzle(props.piece)
+      break
+    case Topics.NODE_AVATARS:
+      randomizationNodeAvatars(props.piece)
+      break
+    default:
+      defaultRandomization(props.piece)
   }
-  const selectedImage = document.getElementById(id)
-  const coordinates = selectedImage?.getBoundingClientRect()
-  if (!coordinates || !selectedImage) return
+})
 
-  const heightRatio = coordinates.height / coordinates.width
-
-  const isHigherThanWider = heightRatio > 1.15
-
-  if (window.innerHeight > window.innerWidth) {
-    const targetPosition = window.scrollY + (coordinates?.y || 0) - 185
-    window.scrollTo(0, targetPosition)
-  } else {
-    const targetPosition =
-      window.scrollY + (coordinates?.y || 0) + (isHigherThanWider ? 85 : 0)
-
-    window.scrollTo(0, targetPosition)
+const selectImage = (piece: Piece) => {
+  if (!isDragging.value) {
+    selectedPiece.value = piece
   }
-  activeImage.value = id
 }
 </script>
 
@@ -192,6 +257,13 @@ const selectImage = (id: string) => {
 .pieces__piece-description-unselected
   display none
 
+.dark-mode .piece__image:hover
+  filter: drop-shadow(0px 0px 1px black) invert(1);
+
+.piece__selected-piece-image
+  max-height: 87vh;
+  max-width: 95%;
+  margin-top: 3rem;
 
 .pieces__piece-description-selected
 .pieces__piece-description-selected-higher-img
@@ -201,19 +273,18 @@ const selectImage = (id: string) => {
   padding 1rem 0.7rem
   font-size 0.7rem
   text-align left
-  color #919191
-  border-radius 2px
+  border-radius: 15px 15px 20px 20px;
   z-index 10
+  max-width 90%
   width max-content
-  max-width 300px
-  position absolute
-  bottom -90px
-  left 50%
-  transform translateX(-50%)
+  position relative
+  padding: 0.7rem 1rem
   box-shadow 0 0 5px 0 #0000002e
-
-  @media (min-width 700px)
-    max-width 500px
+  text-align center
+  font-size 1rem
+  align-self: center;
+  position: absolute;
+  top: 0.3rem;
 
 
 .dark-mode .pieces__piece-description-selected
@@ -275,9 +346,7 @@ const selectImage = (id: string) => {
   height 140vh
   z-index 1
   background-color #00000050
-  backdrop-filter blur(1px) grayscale(1)
-  transition all 0.5s
-
+  backdrop-filter: sepia(1) blur(2px);
 
 .dark-mode .pieces__is-active-image-backdrop
   background-color unset
