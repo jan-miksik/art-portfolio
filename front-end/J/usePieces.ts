@@ -9,19 +9,20 @@ const piecesPuzzle = ref<Piece[] | undefined>()
 const mapOfImagesInSelectedTopic = ref()
 const zIndexOfLastSelectedPiece = ref(10)
 
+piecesNodeAvatars.value = piecesData.NODE_AVATARS.map(
+  (pieceData: any) => new Piece(pieceData)
+)
+piecesSansTopic.value = piecesData.SANS_TOPIC.map(
+  (pieceData: any) => new Piece(pieceData)
+)
+piecesGeometry.value = piecesData.GEOMETRY.map(
+  (pieceData: any) => new Piece(pieceData)
+)
+piecesPuzzle.value = piecesData.PUZZLE.map(
+  (pieceData: any) => new Piece(pieceData)
+)
+
 export default function usePieces() {
-  piecesNodeAvatars.value = piecesData.NODE_AVATARS.map(
-    (pieceData: any) => new Piece(pieceData)
-  )
-  piecesSansTopic.value = piecesData.SANS_TOPIC.map(
-    (pieceData: any) => new Piece(pieceData)
-  )
-  piecesGeometry.value = piecesData.GEOMETRY.map(
-    (pieceData: any) => new Piece(pieceData)
-  )
-  piecesPuzzle.value = piecesData.PUZZLE.map(
-    (pieceData: any) => new Piece(pieceData)
-  )
 
   const mergeContentfulDataWithLocalData = async () => {
     const { contentfulData } = useContentful()
