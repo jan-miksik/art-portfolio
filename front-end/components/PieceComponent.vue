@@ -7,13 +7,13 @@
         @mousemove="mouseMoveHandler"
         @mouseup="mouseUpHandler"
       >
+      <!-- :height="piece.sizeOnWeb.height" -->
         <OImage
           v-if="piece"
           :id="piece.id"
           :image-file="piece.image"
           class="piece__image"
           :width="piece.sizeOnWeb.width"
-          :height="piece.sizeOnWeb.height"
           @click="selectImage(piece)"
         />
 
@@ -89,6 +89,9 @@ const defaultRandomization = (piece: Piece) => {
   if (!piece.sizeOnWeb?.width) {
     piece.sizeOnWeb.width = getRandomNumberInRange(150, maxRandomImageWidth)
   }
+  if (!piece.sizeOnWeb?.height) {
+    piece.sizeOnWeb.height = getRandomNumberInRange(150, maxRandomImageWidth + 100)
+  }
   if (!piece.position?.x) {
     piece.position.x = getRandomNumberInRange(0, 1920)
   }
@@ -98,21 +101,28 @@ const defaultRandomization = (piece: Piece) => {
 }
 
 
+const randomizationPuzzle = (piece: Piece) => {
+  const maxRandomImageWidth = (window.innerWidth < 800 ? 200 : 350)
+    piece.sizeOnWeb.width = getRandomNumberInRange(150, maxRandomImageWidth)
+    piece.sizeOnWeb.height = getRandomNumberInRange(150, maxRandomImageWidth + 100)
+    piece.position.x = getRandomNumberInRange(0, window.innerWidth + 200)
+    piece.position.y = getRandomNumberInRange(100, 1200)
+}
+
+
 const randomizationNodeAvatars = (piece: Piece) => {
-  // const maxRandomPositionX = window.innerWidth - (piece.sizeOnWeb?.width || 250)
-  // const maxRandomPositionY = window.innerHeight
-  const maxRandomImageWidth = (window.innerWidth < 800 ? 150 : 200)
+  const maxRandomImageWidth = (window.innerWidth < 800 ? 70 : 100)
 
   if (!piece.sizeOnWeb?.width) {
-    piece.sizeOnWeb.width = getRandomNumberInRange(60, maxRandomImageWidth)
+    piece.sizeOnWeb.width = getRandomNumberInRange(35, maxRandomImageWidth)
   }
 
   if (!piece.position?.x) {
-    piece.position.x = getRandomNumberInRange(0, 3000)
+    piece.position.x = getRandomNumberInRange(0, 2000)
   }
 
   if (!piece.position?.y) {
-    piece.position.y = getRandomNumberInRange(100, 3200)
+    piece.position.y = getRandomNumberInRange(100, 2700)
   }
 }
 
@@ -126,14 +136,12 @@ const handleOnMouseDown = () => {
 
 const handlePieceStyle = (piece: Piece) => {
   if (!piece) return
-  if (piece.topic === Topics.NODE_AVATARS) {
-    randomizationNodeAvatars(piece)
-  } else {
-    defaultRandomization(piece)
-  }
+
+  // TODO add randomization during move
+
   return {
     width: `${piece.sizeOnWeb?.width}px`,
-    height: `${piece.sizeOnWeb?.height}px`,
+    maxHeight: `${piece.sizeOnWeb?.height}px`,
     left: `${piece.position?.x}px`,
     top: `${piece.position?.y}px`,
     deg: `${piece.position?.deg}deg`,
@@ -146,6 +154,19 @@ const handleOnBackdropClick = () => {
   selectedPiece.value = undefined
 }
 
+
+onMounted(() => {
+  switch (props.piece.topic) {
+    case Topics.PUZZLE:
+      randomizationPuzzle(props.piece)
+      break
+    case Topics.NODE_AVATARS:
+      randomizationNodeAvatars(props.piece)
+      break
+    default:
+      defaultRandomization(props.piece)
+  }
+})
 
 const selectImage = (piece: Piece) => {
   if (!isDragging.value) {

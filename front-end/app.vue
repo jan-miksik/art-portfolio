@@ -1,6 +1,12 @@
 
 <template>
-  <div class="app">
+  <div      
+    ref="scrollable"
+    :class="['app', { 'dragging': isDragging }]"
+    @mousedown="handleOnMouseDown"
+    @mousemove="mouseMoveHandler"
+    @mouseup="mouseUpHandler"
+    @mouseleave="mouseUpHandler">
     <NuxtPage />
   </div>
 </template>
@@ -11,6 +17,41 @@ import usePieces from '~/J/usePieces'
 
 const { fetchContentfulData } = useContentful()
 const { mergeContentfulDataWithLocalData } = usePieces()
+
+const scrollable = ref<HTMLElement | null>(null)
+
+let isDragging = false
+let lastX = 0
+let lastY = 0
+
+const handleOnMouseDown = (event: MouseEvent) => {
+  if (event.target === scrollable.value) {
+    isDragging = true
+    lastX = event.clientX
+    lastY = event.clientY
+    if (scrollable.value) {
+      scrollable.value.classList.add('dragging')
+    }
+  }
+}
+
+const mouseMoveHandler = (event: MouseEvent) => {
+  if (isDragging && scrollable.value) {
+    const deltaX = lastX - event.clientX
+    const deltaY = lastY - event.clientY
+    lastX = event.clientX
+    lastY = event.clientY
+    scrollable.value.scrollLeft += deltaX
+    scrollable.value.scrollTop += deltaY
+  }
+}
+
+const mouseUpHandler = () => {
+  isDragging = false
+  if (scrollable.value) {
+    scrollable.value.classList.remove('dragging')
+  }
+}
 
 onMounted(async () => {
   await fetchContentfulData()
@@ -65,6 +106,7 @@ body
   margin 0
   overflow-x hidden
   background-color ghostwhite
+  user-select: none;
 
 
 /////////////////////////////////////////////
@@ -124,5 +166,8 @@ input[type="number"]
   position: relative;
   overflow: auto;
   height: 100vh;
+
+.dragging
+  cursor: grabbing;
 
 </style>
