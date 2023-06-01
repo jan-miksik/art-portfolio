@@ -61,6 +61,7 @@ onMounted(async () => {
 </script>
 
 <style lang="stylus">
+// stylelint-disable-next-line selector-anb-no-unmatchable
 :root
   --image-filter-invert 1
 
@@ -106,11 +107,11 @@ body
   margin 0
   overflow-x hidden
   background-color ghostwhite
-  user-select: none;
+  user-select none
 
 
-/////////////////////////////////////////////
-/////////////// Scrollbar ///////////////////
+// ///////////////////////////////////////////
+// ///////////// Scrollbar ///////////////////
 body
 .app
   --scrollbar-foreground rgb(248 248 255)
@@ -163,11 +164,11 @@ input[type="number"]
 // .dark-mode .w3m-active
 //   filter invert(1)
 .app
-  position: relative;
-  overflow: auto;
-  height: 100vh;
+  position relative
+  overflow auto
+  height 100vh
 
 .dragging
-  cursor: grabbing;
+  cursor grabbing
 
 </style>
