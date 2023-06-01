@@ -7,7 +7,7 @@
         @mousemove="mouseMoveHandler"
         @mouseup="mouseUpHandler"
       >
-        <Image
+        <OImage
           v-if="piece"
           :id="piece.id"
           :image-file="piece.image"
@@ -33,7 +33,7 @@
           @click="handleOnBackdropClick"
           @touchstart="handleOnBackdropClick"
         >
-          <Image
+          <OImage
             :image-file="selectedPiece.image"
             class="piece__selected-piece-image"
           />
@@ -82,11 +82,11 @@ const getRandomNumberInRange = (min: number, max: number) => {
 
 const defaultRandomization = (piece: Piece) => {
   // const maxRandomPositionX = window.innerWidth - (piece.sizeOnWeb?.width || 300)
-  const maxRandomWidth = (window.innerWidth < 800 ? window.innerWidth : 300) - 100
+  const maxRandomImageWidth = (window.innerWidth < 800 ? 200 : 300)
   // const maxRandomPositionY = window.innerHeight
 
   if (!piece.sizeOnWeb?.width) {
-    piece.sizeOnWeb.width = getRandomNumberInRange(200, maxRandomWidth)
+    piece.sizeOnWeb.width = getRandomNumberInRange(150, maxRandomImageWidth)
   }
 
   if (!piece.position?.x) {
@@ -99,19 +99,20 @@ const defaultRandomization = (piece: Piece) => {
 }
 
 const randomizationNodeAvatars = (piece: Piece) => {
-  const maxRandomPositionX = window.innerWidth - (piece.sizeOnWeb?.width || 250)
-  const maxRandomPositionY = window.innerHeight
+  // const maxRandomPositionX = window.innerWidth - (piece.sizeOnWeb?.width || 250)
+  // const maxRandomPositionY = window.innerHeight
+  const maxRandomImageWidth = (window.innerWidth < 800 ? 150 : 200)
 
   if (!piece.sizeOnWeb?.width) {
-    piece.sizeOnWeb.width = getRandomNumberInRange(70, 250)
+    piece.sizeOnWeb.width = getRandomNumberInRange(60, maxRandomImageWidth)
   }
 
   if (!piece.position?.x) {
-    piece.position.x = getRandomNumberInRange(0, 1920)
+    piece.position.x = getRandomNumberInRange(0, 3000)
   }
 
   if (!piece.position?.y) {
-    piece.position.y = getRandomNumberInRange(100, 2200)
+    piece.position.y = getRandomNumberInRange(100, 3200)
   }
 }
 

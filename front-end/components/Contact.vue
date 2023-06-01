@@ -10,7 +10,7 @@
   >
     <a class="homepage__soc-link" :href="linkToEmail">
   <!-- @click="showContactModal" -->
-    <Image
+    <OImage
       :image-file="emailIcon"
       class="homepage__contact-img" 
       width="27"
@@ -36,7 +36,7 @@
         </p> -->
         <div class="homepage__soc-links">
           <a class="homepage__soc-link" href="mailto: to@janmiksik.ooo">
-            <Image
+            <OImage
               :image-file="emailIcon"
               class="homepage__soc-link-img" 
               width="35"
@@ -49,7 +49,7 @@
             href="https://www.instagram.com/miksik.jan/"
             target="_blank"
             >
-            <Image
+            <OImage
               :image-file="instagramIcon"
               class="homepage__soc-link-img" 
               width="27"
@@ -63,7 +63,7 @@
             href="https://www.facebook.com/jan.miksik.1/"
             target="_blank"
             >
-            <Image
+            <OImage
               :image-file="facebookIcon"
               class="homepage__soc-link-img" 
               width="26"
@@ -76,7 +76,7 @@
             href="https://twitter.com/MiksikJan"
             target="_blank"
             >
-            <Image
+            <OImage
               :image-file="twitterIcon"
               class="homepage__soc-link-img" 
               width="30"

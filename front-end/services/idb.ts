@@ -11,7 +11,7 @@ export default class MySubClassedDexie extends Dexie {
 // export default class MySubClassedDexie {
   // 'Images' is added by dexie when declaring the stores()
   // We just tell the typing system this is the case
-  images!: Table<Image>
+  images!: Table<OImage>
 
   constructor() {
     super('myDatabase')

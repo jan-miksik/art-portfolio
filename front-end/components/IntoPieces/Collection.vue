@@ -23,7 +23,7 @@
     </div>
 
     <Transition name="fade">
-      <Loader v-if="mintInProgress" size="large" class="nft-collection__minting-in-progress" />
+      <OLoader v-if="mintInProgress" size="large" class="nft-collection__minting-in-progress" />
     </Transition>
 
     <span class="nft-collection__limit-exceeded" v-if="mintLimitExceeded">
