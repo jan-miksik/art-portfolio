@@ -127,7 +127,7 @@ const chains: Record<string, IChain> = {
       decimals: 18,
     },
   },
-  optimismGoerli: { 
+  optimismGoerli: {
     chainIdHex: '0x1a4',
     chainIdDec: 420,
     keyName: 'optimismGoerli',
@@ -144,7 +144,7 @@ const chains: Record<string, IChain> = {
       decimals: 18,
     },
   },
-  optimism: { 
+  optimism: {
     chainIdHex: '0xa',
     chainIdDec: 10,
     keyName: 'optimism',
@@ -155,7 +155,7 @@ const chains: Record<string, IChain> = {
     nftIntoPiecesContract: '0xe75b8ffd5df1311d68FfFC93e3bB95F489C7df1A',
     linkToEtherscanIntoPiecesContract: 'https://optimistic.etherscan.io/address/0xe75b8ffd5df1311d68fffc93e3bb95f489c7df1a',
     // nftShowingPortfolioContract: '0x47488CA96d736E63365d75C471050b5074CBD076',
-    nftIntoPiecesCollectionName: 'into-pieces',
+    nftIntoPiecesCollectionName: 'into-pieces-1',
     rpcUrls: ['https://mainnet.optimism.io', 'https://optimism.blockpi.network/v1/rpc/public', 'https://1rpc.io/op'],
     isChainSupported: true,
     nativeCurrency: {
