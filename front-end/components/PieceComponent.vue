@@ -3,7 +3,7 @@
         class="piece"
         ref="pieceRef"
         :style="handlePieceStyle(piece)"
-        @mousedown="mouseDownHandler"
+        @mousedown="handleOnMouseDown"
         @mousemove="mouseMoveHandler"
         @mouseup="mouseUpHandler"
       >
@@ -52,11 +52,14 @@ import Piece from '~/models/Piece'
 import interact from 'interactjs'
 import useMouseActionDetector from '~/J/useMouseActionDetector' 
 import { Topics } from '~/components/piecesData'
+import usePieces from '~/J/usePieces'
 
 const { mouseDownHandler, mouseMoveHandler, mouseUpHandler, isDragging } = useMouseActionDetector()
-
+const { zIndexOfLastSelectedPiece } = usePieces()
+const localZIndex = ref(1)
 const pieceRef = ref()
 const selectedPiece = ref<Piece>()
+
 const props = defineProps<{
   piece: Piece
 }>()
@@ -80,23 +83,20 @@ const getRandomNumberInRange = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const defaultRandomization = (piece: Piece) => {
-  // const maxRandomPositionX = window.innerWidth - (piece.sizeOnWeb?.width || 300)
-  const maxRandomImageWidth = (window.innerWidth < 800 ? 200 : 300)
-  // const maxRandomPositionY = window.innerHeight
 
+const defaultRandomization = (piece: Piece) => {
+  const maxRandomImageWidth = (window.innerWidth < 800 ? 200 : 300)
   if (!piece.sizeOnWeb?.width) {
     piece.sizeOnWeb.width = getRandomNumberInRange(150, maxRandomImageWidth)
   }
-
   if (!piece.position?.x) {
     piece.position.x = getRandomNumberInRange(0, 1920)
   }
-
   if (!piece.position?.y) {
     piece.position.y = getRandomNumberInRange(100, 2200)
   }
 }
+
 
 const randomizationNodeAvatars = (piece: Piece) => {
   // const maxRandomPositionX = window.innerWidth - (piece.sizeOnWeb?.width || 250)
@@ -116,27 +116,36 @@ const randomizationNodeAvatars = (piece: Piece) => {
   }
 }
 
+
+const handleOnMouseDown = () => {
+  mouseDownHandler()
+  localZIndex.value = zIndexOfLastSelectedPiece.value
+  zIndexOfLastSelectedPiece.value++
+}
+
+
 const handlePieceStyle = (piece: Piece) => {
   if (!piece) return
-
   if (piece.topic === Topics.NODE_AVATARS) {
     randomizationNodeAvatars(piece)
   } else {
     defaultRandomization(piece)
   }
-
   return {
     width: `${piece.sizeOnWeb?.width}px`,
     height: `${piece.sizeOnWeb?.height}px`,
     left: `${piece.position?.x}px`,
     top: `${piece.position?.y}px`,
-    deg: `${piece.position?.deg}deg`
+    deg: `${piece.position?.deg}deg`,
+    zIndex: `${localZIndex.value}`
   }
 }
+
 
 const handleOnBackdropClick = () => {
   selectedPiece.value = undefined
 }
+
 
 const selectImage = (piece: Piece) => {
   if (!isDragging.value) {

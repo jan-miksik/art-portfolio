@@ -27,7 +27,7 @@
     <div>
       <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
         <div class="nft-collection__input-and-currency">
-          <Input required type="number" step="any" v-model="requestedPrice" label="custom valuation"/>
+          <OInput required type="number" step="any" v-model="requestedPrice" label="custom valuation"/>
           <span title="Optimism - second layer of Ethereum">
             <span>{{mainSupportedChain?.nativeCurrency.symbol}}</span>
             <img class="nft-collection__optimism-logo" src="/optimism-ethereum-logo.svg" width="12" height="12" alt="optimism logo"/>
