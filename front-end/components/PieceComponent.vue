@@ -84,21 +84,21 @@ const getRandomNumberInRange = (min: number, max: number) => {
 
 const defaultRandomization = (piece: Piece) => {
   const maxRandomImageWidth = window.innerWidth < 800 ? 200 : 300
-  if (!piece.sizeOnWeb?.width) {
+  // if (!piece.sizeOnWeb?.width) {
     piece.sizeOnWeb.width = getRandomNumberInRange(150, maxRandomImageWidth)
-  }
-  if (!piece.sizeOnWeb?.height) {
+  // }
+  // if (!piece.sizeOnWeb?.height) {
     piece.sizeOnWeb.height = getRandomNumberInRange(
       150,
       maxRandomImageWidth + 100
     )
-  }
-  if (!piece.position?.x) {
+  // }
+  // if (!piece.position?.x) {
     piece.position.x = getRandomNumberInRange(0, 1920)
-  }
-  if (!piece.position?.y) {
+  // }
+  // if (!piece.position?.y) {
     piece.position.y = getRandomNumberInRange(100, 2200)
-  }
+  // }
 }
 
 const randomizationPuzzle = (piece: Piece) => {
@@ -115,17 +115,17 @@ const randomizationPuzzle = (piece: Piece) => {
 const randomizationNodeAvatars = (piece: Piece) => {
   const maxRandomImageWidth = window.innerWidth < 800 ? 70 : 100
 
-  if (!piece.sizeOnWeb?.width) {
+  // if (!piece.sizeOnWeb?.width) {
     piece.sizeOnWeb.width = getRandomNumberInRange(35, maxRandomImageWidth)
-  }
+  // }
 
-  if (!piece.position?.x) {
+  // if (!piece.position?.x) {
     piece.position.x = getRandomNumberInRange(0, 2000)
-  }
+  // }
 
-  if (!piece.position?.y) {
+  // if (!piece.position?.y) {
     piece.position.y = getRandomNumberInRange(100, 2700)
-  }
+  // }
 }
 
 const handleOnMouseDown = () => {
@@ -176,10 +176,10 @@ const selectImage = (piece: Piece) => {
 <style lang="stylus" scoped>
 
 .piece
-// transition all 0.25s
+  // transition all 0.25s
   position absolute
-  touch-action: none;
-  user-select: none;
+  touch-action none
+  user-select none
 
 .piece__image
   position relative
@@ -192,32 +192,30 @@ const selectImage = (piece: Piece) => {
 .piece__image:hover
   cursor cell
   z-index 10
-  filter: drop-shadow(0px 0px 1px black);
+  filter drop-shadow(0 0 1px black)
 
 .dark-mode .piece__image:hover
-  filter: drop-shadow(0px 0px 1px black) invert(1);
+  filter drop-shadow(0 0 1px black) invert(1)
 
 .piece__selected-piece-image
-  max-height: 87vh;
-  max-width: 95%;
-  margin-top: 3rem;
+  max-height 87vh
+  max-width 95%
+  margin-top 3rem
 
 .piece__selected-piece-info
   background-color #eee
   color #919191
-  text-align left
-  border-radius: 15px 15px 20px 20px;
+  border-radius 15px 15px 20px 20px
   z-index 10
   max-width 90%
   width max-content
-  position relative
-  padding: 0.7rem 1rem
+  padding 0.7rem 1rem
   box-shadow 0 0 5px 0 #0000002e
   text-align center
   font-size 1rem
-  align-self: center;
-  position: absolute;
-  top: 0.3rem;
+  align-self center
+  position absolute
+  top 0.3rem
 
 
 .dark-mode .piece__selected-piece-info
@@ -235,7 +233,7 @@ const selectImage = (piece: Piece) => {
   height 100vh
   z-index 1000
   background-color #00000050
-  backdrop-filter: sepia(1) blur(2px);
+  backdrop-filter sepia(1) blur(2px)
 
 .dark-mode .piece__selected-piece-backdrop
   background-color unset
@@ -244,7 +242,7 @@ const selectImage = (piece: Piece) => {
 // / Animation /
 .images-enter-active
 .images-leave-active
-transition all 0.5s
+  transition all 0.5s
 
 .images-enter-from
 .images-leave-to
