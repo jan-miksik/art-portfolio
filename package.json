@@ -38,6 +38,7 @@
     "@nuxt/kit": "^3.4.2",
     "@web3modal/ethereum": "^2.3.7",
     "@web3modal/html": "^2.3.7",
+    "contentful-management": "^10.38.2",
     "dexie": "^3.2.2",
     "ethers": "^5.6.9",
     "http-proxy-middleware": "^2.0.6",

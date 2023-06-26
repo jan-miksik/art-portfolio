@@ -2,25 +2,27 @@ import piecesData, { Topics } from '~/components/piecesData'
 import Piece from '~/models/Piece'
 import useContentful from '~/api/useContentful'
 
-const piecesNodeAvatars = ref<Piece[] | undefined>()
-const piecesSansTopic = ref<Piece[] | undefined>()
-const piecesGeometry = ref<Piece[] | undefined>()
-const piecesPuzzle = ref<Piece[] | undefined>()
-const mapOfImagesInSelectedTopic = ref()
+// const piecesNodeAvatars = ref<Piece[] | undefined>()
+// const piecesSansTopic = ref<Piece[] | undefined>()
+// const piecesGeometry = ref<Piece[] | undefined>()
+// const piecesPuzzle = ref<Piece[] | undefined>()
+
+const pieces = ref<Piece[] | undefined>([])
+// const mapOfImagesInSelectedTopic = ref()
 const zIndexOfLastSelectedPiece = ref(10)
 
-piecesNodeAvatars.value = piecesData.NODE_AVATARS.map(
-  (pieceData: any) => new Piece(pieceData)
-)
-piecesSansTopic.value = piecesData.SANS_TOPIC.map(
-  (pieceData: any) => new Piece(pieceData)
-)
-piecesGeometry.value = piecesData.GEOMETRY.map(
-  (pieceData: any) => new Piece(pieceData)
-)
-piecesPuzzle.value = piecesData.PUZZLE.map(
-  (pieceData: any) => new Piece(pieceData)
-)
+// piecesNodeAvatars.value = piecesData.NODE_AVATARS.map(
+//   (pieceData: any) => new Piece(pieceData)
+// )
+// piecesSansTopic.value = piecesData.SANS_TOPIC.map(
+//   (pieceData: any) => new Piece(pieceData)
+// )
+// piecesGeometry.value = piecesData.GEOMETRY.map(
+//   (pieceData: any) => new Piece(pieceData)
+// )
+// piecesPuzzle.value = piecesData.PUZZLE.map(
+//   (pieceData: any) => new Piece(pieceData)
+// )
 
 export default function usePieces() {
 
@@ -36,7 +38,15 @@ export default function usePieces() {
         created,
         sizeInCmXHorizontal,
         sizeInCmYVertical,
-        image
+        widthOnWeb,
+        widthOnWebMob,
+        image,
+        positionX,
+        positionY,
+        positionDeg,
+        positionXMob,
+        positionYMob,
+        positionDegMob,
       } = pieceData
 
       const newPiece = new Piece({
@@ -54,29 +64,46 @@ export default function usePieces() {
         sizeInCm: {
           x: sizeInCmXHorizontal,
           y: sizeInCmYVertical
-        }
+        },
+        sizeOnWeb: {
+          width: widthOnWeb,
+          widthMob: widthOnWebMob
+        },
+        position: {
+          x: positionX,
+          y: positionY,
+          deg: positionDeg,
+          xMob: positionXMob,
+          yMob: positionYMob,
+          degMob: positionDegMob
+        },
+        isUpdated: true,
+        isPublished: true,
+        isUploadedToCf: true
       })
-      switch (newPiece.topic) {
-        case Topics.NODE_AVATARS:
-          piecesNodeAvatars.value?.push(newPiece)
-          break
-        case Topics.SANS_TOPIC:
-          piecesSansTopic.value?.push(newPiece)
-          break
-        case Topics.GEOMETRY:
-          piecesGeometry.value?.push(newPiece)
-          break
-      }
+      pieces.value?.push(newPiece)
+      // switch (newPiece.topic) {
+      //   case Topics.NODE_AVATARS:
+      //     piecesNodeAvatars.value?.push(newPiece)
+      //     break
+      //   case Topics.SANS_TOPIC:
+      //     piecesSansTopic.value?.push(newPiece)
+      //     break
+      //   case Topics.GEOMETRY:
+      //     piecesGeometry.value?.push(newPiece)
+      //     break
+      // }
     })
   }
 
   return {
-    piecesNodeAvatars,
-    piecesSansTopic,
-    piecesPuzzle,
+    // piecesNodeAvatars,
+    // piecesSansTopic,
+    // piecesPuzzle,
     mergeContentfulDataWithLocalData,
-    piecesGeometry,
-    mapOfImagesInSelectedTopic,
+    pieces,
+    // piecesGeometry,
+    // mapOfImagesInSelectedTopic,
     zIndexOfLastSelectedPiece
   }
 }

@@ -158,7 +158,7 @@ const switchMode = () => {
   color white
   line-height 18px
 
-  @media (min-width: 600px)
+  @media (min-width 600px)
     top 90vh
 
 

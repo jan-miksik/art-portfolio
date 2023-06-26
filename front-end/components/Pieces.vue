@@ -1,43 +1,46 @@
 <template>
   <Transition name="images">
-    <div
-      v-if="props.pieces && props.type === props.selectedTopic"
-      :class="[
-        'pieces',
-        `pieces--${props.selectedTopic}`,
-        props.pieces && props.type === props.selectedTopic
-          ? 'pieces__is-section-visible'
-          : 'pieces__is-section-hidden'
-      ]"
+    <!-- v-if="props.pieces && props.type === props.selectedTopic" -->
+    <div class='pieces'
     >
-      <PieceComponent v-for="(piece, index) in props.pieces"
+    <!-- [
+      'pieces',
+      `pieces--${props.selectedTopic}`,
+      props.pieces && props.type === props.selectedTopic
+        ? 'pieces__is-section-visible'
+        : 'pieces__is-section-hidden'
+    ]" -->
+      <PieceComponent v-for="(piece, index) in pieces"
         :key="piece?.id || index" 
         :piece="piece"
       />
 
-      <BallThreeJs v-if="Topics.GEOMETRY === props.type" />
+      <!-- <BallThreeJs v-if="Topics.GEOMETRY === props.type" /> -->
     </div>
   </Transition>
 </template>
 
 <script setup lang="ts">
-import Piece from '~/models/Piece'
-import { Topics } from '~/components/piecesData'
+// import Piece from '~/models/Piece'
+import usePieces from '~/J/usePieces'
 
-interface Item {
-  id: number
-  name: string
-  position: {
-    x: number
-    y: number
-  }
-}
+const { pieces } = usePieces()
+// import { Topics } from '~/components/piecesData'
 
-const props = defineProps<{
-  pieces?: Piece[]
-  type: Topics
-  selectedTopic?: Topics
-}>()
+// interface Item {
+//   id: number
+//   name: string
+//   position: {
+//     x: number
+//     y: number
+//   }
+// }
+
+// const props = defineProps<{
+//   pieces?: Piece[]
+//   // type: Topics
+//   // selectedTopic?: Topics
+// }>()
 
 </script>
 

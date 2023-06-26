@@ -24,6 +24,14 @@ export default function useContentful() {
           created
           sizeInCmXHorizontal
           sizeInCmYVertical
+          widthOnWeb
+          positionX
+          positionY
+          positionDeg
+          widthOnWebMob
+          positionXMob
+          positionYMob
+          positionDegMob
         }
       }
     }`
