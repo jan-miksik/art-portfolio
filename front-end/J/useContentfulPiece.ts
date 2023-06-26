@@ -5,7 +5,7 @@ import useAdminPage from './useAdminPage'
 
 const contentfulSpaceId = import.meta.env.VITE_CONTENTFUL_SPACE_ID as string
 const contentfulCmt = import.meta.env
-  .VITE_CONTENTFUL_CONTENT_MANAGEMENT_ACCESS_TOKEN as string
+  .VITE_CONTENTFUL_CONTENT_MANAGEMENT_ACCESS_TOKEN as string || ''
 
 const contentfulClient = createClient({
   accessToken: contentfulCmt
