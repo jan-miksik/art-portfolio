@@ -14,6 +14,7 @@ export default function useContentful() {
           image {
             sys {
               publishedAt
+              id
             }
             fileName
             url
@@ -54,7 +55,6 @@ export default function useContentful() {
     try {
       const response = await fetch(fetchUrl, fetchOptions)
       const JSONResponse = await response.json()
-
       contentfulData.value = JSONResponse.data.pieceCollection.items
     } catch (error) {
       throw new Error('Could not receive the data from Contentful!')

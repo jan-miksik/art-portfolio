@@ -80,6 +80,7 @@ export default class Piece {
   public isUploadedToCf
 
   constructor(data: IPiece) {
+    // console.log('data: ', data);
     this.id = data.id || ''
     this.sys = {
       id: data?.sys?.id || uuidv4(),
@@ -89,7 +90,11 @@ export default class Piece {
     this.description = data.description || ''
     this.technique = data.technique || ''
     this.techniqueDescription = data.techniqueDescription || ''
-    this.image = new ImageFile({ id: data.id, url: data.image.url, lastUpdated: data.image.lastUpdated })
+    this.image = new ImageFile({
+      id: data.image.id,
+      url: data.image.url,
+      lastUpdated: data.image.lastUpdated
+    })
     this.sizeInCm = data.sizeInCm || { x: 0, y: 0 }
     this.sizeOnWeb = data.sizeOnWeb || { width: 0 }
     this.position = data.position || { x: 0, y: 0, deg: 0, xMob: 0, yMob: 0, degMob: 0 }

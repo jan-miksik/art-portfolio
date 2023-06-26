@@ -191,7 +191,7 @@ export default function useContentfulPiece() {
             }
           },
           topic: {
-            'en-US': 'anything'
+            'en-US': piece.topic || 'anything'
           },
           technique: {
             'en-US': piece.technique || ''
@@ -212,10 +212,10 @@ export default function useContentfulPiece() {
             'en-US': Math.floor(piece.sizeOnWeb.width || 0)
           },
           positionX: {
-            'en-US': Math.floor(piece.position.x)
+            'en-US': Math.floor(piece.position.x || 0)
           },
           positionY: {
-            'en-US': Math.floor(piece.position.y)
+            'en-US': Math.floor(piece.position.y || 0)
           },
           positionDeg: {
             'en-US': Math.floor(piece.position.deg || 0)
@@ -224,10 +224,10 @@ export default function useContentfulPiece() {
             'en-US': Math.floor(piece.sizeOnWeb.widthMob || 0)
           },
           positionXMob: {
-            'en-US': Math.floor(piece.position.xMob)
+            'en-US': Math.floor(piece.position.xMob || 0)
           },
           positionYMob: {
-            'en-US': Math.floor(piece.position.yMob)
+            'en-US': Math.floor(piece.position.yMob || 0)
           },
           positionDegMob: {
             'en-US': Math.floor(piece.position.degMob || 0)
@@ -272,7 +272,7 @@ export default function useContentfulPiece() {
           }
         },
         topic: {
-          'en-US': 'anything'
+          'en-US': piece.topic || 'anything'
         },
         technique: {
           'en-US': piece.technique || ''
@@ -293,10 +293,10 @@ export default function useContentfulPiece() {
           'en-US': Math.floor(piece.sizeOnWeb.width || 0)
         },
         positionX: {
-          'en-US': Math.floor(piece.position.x)
+          'en-US': Math.floor(piece.position.x || 0)
         },
         positionY: {
-          'en-US': Math.floor(piece.position.y)
+          'en-US': Math.floor(piece.position.y || 0)
         },
         positionDeg: {
           'en-US': Math.floor(piece.position.deg || 0)
@@ -305,10 +305,10 @@ export default function useContentfulPiece() {
           'en-US': Math.floor(piece.sizeOnWeb.widthMob || 0)
         },
         positionXMob: {
-          'en-US': Math.floor(piece.position.xMob)
+          'en-US': Math.floor(piece.position.xMob || 0)
         },
         positionYMob: {
-          'en-US': Math.floor(piece.position.yMob)
+          'en-US': Math.floor(piece.position.yMob || 0)
         },
         positionDegMob: {
           'en-US': Math.floor(piece.position.degMob || 0)
@@ -317,8 +317,6 @@ export default function useContentfulPiece() {
   
       // Save the updated entry
       const updatedEntry = await entry.update()
-      console.log('updatedEntry and piece:', updatedEntry, piece);
-      console.log(`Entry ${updatedEntry.sys.id} updated.`)
       piece.sys.version = updatedEntry.sys.version
     } catch (error) {
       console.error('Error updatePiece:', error)

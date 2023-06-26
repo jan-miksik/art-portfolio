@@ -53,12 +53,13 @@
           >
             Smazat
           </button>
-          <!-- <div class="piece__selected-piece-info">
+          <div class="piece__selected-piece-info" @click.stop
+            @touchstart.stop>
             <strong>{{ selectedPiece.name }} </strong> <br />
             {{ selectedPiece.created.getFullYear() }},
             {{ selectedPiece.techniqueDescription }},
             {{ selectedPiece.sizeInCm.x }}cm x {{ selectedPiece.sizeInCm.y }}cm
-          </div> -->
+          </div>
         </div>
       </Transition>
 </template>
@@ -93,16 +94,17 @@ onMounted(() => {
       listeners: {
         move(event) {
           piece.value.isPublished = false
+          console.log('piece.value: ', piece.value);
           if (isSetupForMobile.value) {
-            const xRaw = piece.value.position.xMob + event.dx
-            const yRaw = piece.value.position.yMob + event.dy
+            const xRaw = (piece.value.position.xMob || piece.value.position.x) + event.dx
+            const yRaw = (piece.value.position.yMob || piece.value.position.y) + event.dy
             const x = xRaw > 0 ? xRaw : 0
             const y = yRaw > 0 ? yRaw : 0
             piece.value.position.xMob = x
             piece.value.position.yMob = y
           } else {
-            const xRaw = piece.value.position.x + event.dx
-            const yRaw = piece.value.position.y + event.dy
+            const xRaw = (piece.value.position.x || piece.value.position.xMob) + event.dx
+            const yRaw = (piece.value.position.y || piece.value.position.yMob) + event.dy
             const x = xRaw > 0 ? xRaw : 0
             const y = yRaw > 0 ? yRaw : 0
             piece.value.position.x = x
@@ -117,8 +119,6 @@ onMounted(() => {
 
       listeners: {
         move(event) {
-          console.log('piece.value: ', event, piece.value);
-          // console.log('event: ', event);
           const target = event.target
           let x = parseFloat(target.getAttribute('data-x')) || 0
           let y = parseFloat(target.getAttribute('data-y')) || 0
@@ -316,12 +316,14 @@ const selectImage = (piece: Piece) => {
   max-height 87vh
   max-width 95%
   margin-top 3rem
+  cursor default
+  z-index 10000
 
 .piece__selected-piece-info
   background-color #eee
   color #919191
   border-radius 15px 15px 20px 20px
-  z-index 10
+  z-index 1000
   max-width 90%
   width max-content
   padding 0.7rem 1rem
@@ -331,6 +333,8 @@ const selectImage = (piece: Piece) => {
   align-self center
   position absolute
   top 0.3rem
+  cursor auto
+  user-select text
 
 
 .dark-mode .piece__selected-piece-info
@@ -349,9 +353,23 @@ const selectImage = (piece: Piece) => {
   z-index 1000
   background-color #00000050
   backdrop-filter sepia(1) blur(2px)
+  cursor url("/close.svg"), auto
 
 .dark-mode .piece__selected-piece-backdrop
   background-color unset
+
+.piece__publish-button
+  position absolute
+  bottom 0%
+  left 50%
+  transform translate(-50%, -50%)
+  background #f1f9ffd6
+  padding 0.5rem
+  border-radius 5px
+  z-index 10
+  cursor pointer
+  border 1px solid black
+  visibility hidden
 
 .piece__remove-button
   position absolute

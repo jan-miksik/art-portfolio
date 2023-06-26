@@ -28,9 +28,9 @@ export default function usePieces() {
 
   const mergeContentfulDataWithLocalData = async () => {
     const { contentfulData } = useContentful()
-    console.log('contentfulData: ', contentfulData);
     contentfulData.value.forEach((pieceData: any) => {
       const {
+        sys,
         name,
         topic,
         technique,
@@ -50,14 +50,18 @@ export default function usePieces() {
       } = pieceData
 
       const newPiece = new Piece({
-        id: pieceData.sys.id,
+        id: sys.id,
+        sys: {
+          id: pieceData.sys.id,
+          version: pieceData.sys.version
+        },
         name,
         topic,
         technique,
         techniqueDescription,
         created: new Date(created),
         image: {
-          id: pieceData.sys.id,
+          id: image.sys.id,
           url: image.url,
           lastUpdated: new Date(image.sys.publishedAt).getTime()
         },

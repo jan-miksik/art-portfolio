@@ -145,7 +145,6 @@ const mintAction = async () => {
 
 const contractActions = async (action: string) => {
   const canContinue = await checkForAnyContractAction()
-  console.log('canContinue: ', canContinue);
   if (!canContinue) return
   try {
     if (action == 'mint') {

@@ -68,11 +68,9 @@ const switchMode = () => {
   document.documentElement.classList.toggle('dark-mode')
   modeRef.value?.classList.toggle('scaling')
   amountOfSwitching.value++
-  console.log('amountOfSwitching.value: ', amountOfSwitching.value);
 
   if (amountOfSwitching.value % 3 === 0 || amountOfSwitching.value % 4 === 0) {
     // alert('Seems, that you like switching')
-    console.log('1111111111 ');
     document.documentElement.style.setProperty('--image-filter-invert', '0')
   }
 
