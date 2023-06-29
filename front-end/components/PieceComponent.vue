@@ -35,9 +35,12 @@
     >
       <OImage
         :image-file="selectedPiece.image"
+        @click.stop
+        @touchstart.stop
         class="piece__selected-piece-image"
       />
-      <div class="piece__selected-piece-info">
+      <div class="piece__selected-piece-info" @click.stop
+        @touchstart.stop>
         <strong>{{ selectedPiece.name }} </strong> <br />
         {{ selectedPiece.created.getFullYear() }},
         {{ selectedPiece.techniqueDescription }},
@@ -187,15 +190,17 @@ const selectImage = (piece: Piece) => {
   max-height 85vh
   max-width 100%
   object-fit contain
+  min-width 10px
+  min-height 10px
   // transition all 0.3s
 
 .piece__image:hover
   cursor cell
   z-index 10
-  filter drop-shadow(0 0 1px black)
+  // filter drop-shadow(0 0 1px black)
 
-.dark-mode .piece__image:hover
-  filter drop-shadow(0 0 1px black) invert(1)
+// .dark-mode .piece__image:hover
+//   filter drop-shadow(0 0 1px black) invert(1)
 
 .piece__selected-piece-image
   max-height 87vh
@@ -216,6 +221,7 @@ const selectImage = (piece: Piece) => {
   align-self center
   position absolute
   top 0.3rem
+  user-select text
 
 
 .dark-mode .piece__selected-piece-info
