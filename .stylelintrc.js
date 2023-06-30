@@ -4,7 +4,7 @@ module.exports = {
     {
         "files": ["*.vue", "**/*.vue"],
         "rules": {
-            "unit-allowed-list": ["em", "rem", "s", "px", "%", "deg", "vh", "vw"],
+            "unit-allowed-list": ["em", "rem", "s", "px", "%", "deg", "vh", "vw", "svh"],
             "selector-class-pattern": "^[a-zA-Z][\\w-]*$",
             "no-eol-whitespace": [ true, { "severity": "warning" }],
             "max-empty-lines": [2, { "severity": "warning" }],

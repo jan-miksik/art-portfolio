@@ -1,3 +1,4 @@
+import { declare } from './.nuxt/types/imports';
 declare global {
   interface Window {
     ethereum?: any;
@@ -11,3 +12,5 @@ interface Window {
   ethers: any;
   contractStpReadOnly: any;
 }
+
+declare module 'vue-zoomer'

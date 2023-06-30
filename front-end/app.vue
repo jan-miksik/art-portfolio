@@ -106,7 +106,7 @@ body
   color #0e0e0e
   margin 0
   overflow-x hidden
-  background-color ghostwhite
+  background-color #dbdae1
   user-select none
 
 
@@ -120,8 +120,8 @@ body
   scrollbar-color var(--scrollbar-foreground) var(--scrollbar-background)
 
 .app::-webkit-scrollbar
-  width 15px
-  height 15px
+  width 0
+  height 0
 
 body::-webkit-scrollbar
   width 0
@@ -135,6 +135,8 @@ body::-webkit-scrollbar-track // Background
 .app::-webkit-scrollbar-track
   background var(--scrollbar-background)
 
+.dark-mode body
+  background-color #f1f1f1
 
 .dark-mode:not(.w3m-active)
   filter invert(0.97)

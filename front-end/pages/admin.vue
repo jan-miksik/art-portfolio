@@ -24,7 +24,7 @@
     <button @click="handleOpenSettings">Nastavení</button>
   </div> -->
 
-  <button
+  <!-- <button
     class="admin__settings-mobile-btn"
     :class="[
       'admin__settings-mobile-btn',
@@ -43,7 +43,7 @@
     @click="handleChangeDeviceTypeSetup('desktop')"
   >
     Desktop
-  </button>
+  </button> -->
 
   <!-- <OColorPicker
     v-if="isSettingColors"
@@ -93,14 +93,43 @@
     </div>
   </div> -->
 
-  <Pieces />
+  <PinchScrollZoom
+    v-if="windowObject?.innerWidth && edgePositions.x"
+    ref="mapperRef"
+    :width="windowObject.innerWidth"
+    :height="windowObject.innerHeight"
+    within
+    class="pinch-scroll-zoom"
+    :min-scale="0.01"
+    :max-scale="100"
+    @scaling="e => onMapperEvent('scaling', e)"
+    @startDrag="e => onMapperEvent('startDrag', e)"
+    @stopDrag="e => onMapperEvent('stopDrag', e)"
+    @dragging="e => onMapperEvent('dragging', e)"
+    :draggable="isMapperDraggable"
+    :wheelVelocity="0.001"
+    :throttleDelay="20"
+    :content-width="edgePositions.x"
+    :content-height="edgePositions.y">
+      <Pieces />
+    </PinchScrollZoom>
 </template>
 
 <script setup lang="ts">
 import usePieces from '~/J/usePieces'
 import useAdminPage from '~/J/useAdminPage'
-import useContentfulPiece from '../J/useContentfulPiece'
+import useContentfulPiece from '~/J/useContentfulPiece'
+import PinchScrollZoom, { PinchScrollZoomExposed } from '@coddicat/vue-pinch-scroll-zoom';
+import useMapper from '~/J/useMapper';
+import isMobile from '~/J/isMobile';
+
+const isProbablyMobile = isMobile()
 // import useContentful from '~/api/useContentful'
+const { pieces } = usePieces()
+const { edgePositions } = usePieces()
+
+const { onMapperEvent, isMapperDraggable } = useMapper()
+const windowObject = computed(() => window)
 
 const isAuthenticated = ref(
   import.meta.env.VITE_IS_ADMIN_AUTHENTICATION !== 'true'
@@ -109,8 +138,10 @@ const password = ref('')
 const errorMessage = ref('')
 const isSettingsOpen = ref(false)
 const publishingInProgress = ref(false)
+const mapperRef = ref<PinchScrollZoomExposed>();
+const isMapperSet = ref(false)
 
-const { pieces } = usePieces()
+
 // const { selectedTopic } = useSelectedTopic()
 // const { appSettings, appSettingsOriginString } = useContentful()
 const {
@@ -120,8 +151,31 @@ const {
   // updateSettings,
   isSetupForMobile
 } = useAdminPage()
-onMounted(() => {
+onMounted(async () => {
   isOnAdminPage.value = true
+})
+
+watch(mapperRef, (newVal) => {
+  console.log('newVal: ', newVal);
+  if (!newVal || isMapperSet.value) return
+  isMapperSet.value = true
+  if (isSetupForMobile.value) {
+    mapperRef.value?.setData({
+      scale: 0.25,
+      originX: 4412,
+      originY: 6505,
+      translateX: -4200,
+      translateY: -6000,
+    });
+  } else {
+    mapperRef.value?.setData({
+      scale: 0.7,
+      originX: 4725,
+      originY: 6388,
+      translateX: -3970,
+      translateY: -6017,
+    });
+  }
 })
 
 // const handleOnBgColorChange = (color: string) => {
@@ -162,7 +216,7 @@ const handleChangeDeviceTypeSetup = (deviceType: 'mobile' | 'desktop') => {
 
 const handlePublishChanges = async () => {
   publishingInProgress.value = true
-  const DELAY = 500
+  const DELAY = 200
   const piecesToPublish = pieces.value?.filter(
     (piece) => piece.isPublished === false
   )

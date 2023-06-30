@@ -10,6 +10,12 @@ import useContentful from '~/api/useContentful'
 const pieces = ref<Piece[] | undefined>([])
 // const mapOfImagesInSelectedTopic = ref()
 const zIndexOfLastSelectedPiece = ref(10)
+const edgePositions = ref({
+  x: 0,
+  y: 0,
+  xMob: 0,
+  yMob: 0
+})
 
 // piecesNodeAvatars.value = piecesData.NODE_AVATARS.map(
 //   (pieceData: any) => new Piece(pieceData)
@@ -48,6 +54,11 @@ export default function usePieces() {
         positionYMob,
         positionDegMob,
       } = pieceData
+
+      edgePositions.value.x = Math.max(edgePositions.value.x, positionX + widthOnWeb + 1000);
+      edgePositions.value.y = Math.max(edgePositions.value.y, positionY + 2000);
+      edgePositions.value.xMob = Math.max(edgePositions.value.xMob, positionXMob + widthOnWebMob + 500);
+      edgePositions.value.yMob = Math.max(edgePositions.value.yMob, positionYMob + 500);
 
       const newPiece = new Piece({
         id: sys.id,
@@ -106,6 +117,7 @@ export default function usePieces() {
     // piecesPuzzle,
     mergeContentfulDataWithLocalData,
     pieces,
+    edgePositions,
     // piecesGeometry,
     // mapOfImagesInSelectedTopic,
     zIndexOfLastSelectedPiece

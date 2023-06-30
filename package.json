@@ -7,6 +7,7 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
+    "@types/swiper": "^6.0.0",
     "@types/three": "^0.144.0",
     "@types/uuid": "^9.0.1",
     "@vueuse/core": "^10.1.2",
@@ -35,6 +36,7 @@
     "vue-tsc": "^0.34.7"
   },
   "dependencies": {
+    "@coddicat/vue-pinch-scroll-zoom": "^4.2.3",
     "@nuxt/kit": "^3.4.2",
     "@web3modal/ethereum": "^2.3.7",
     "@web3modal/html": "^2.3.7",
@@ -43,8 +45,11 @@
     "ethers": "^5.6.9",
     "http-proxy-middleware": "^2.0.6",
     "interactjs": "^1.10.17",
+    "nuxt-swiper": "^1.1.1",
+    "swiper": "^9.4.1",
     "three": "^0.145.0",
     "uuid": "^9.0.0",
+    "vue-awesome-swiper": "^5.0.1",
     "wagmi": "0.12.13"
   }
 }

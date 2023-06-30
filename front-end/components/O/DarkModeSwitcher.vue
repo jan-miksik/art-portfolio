@@ -124,6 +124,12 @@ const switchMode = () => {
   display flex
   align-items center
   justify-content center
+  z-index 10
+  opacity 0.7
+  transition opacity 0.2s ease-out
+
+  &:hover
+    opacity 0.9
 
   &::before
     content ""
@@ -161,7 +167,7 @@ const switchMode = () => {
 
 
 .dark-mode .mode
-  background rgb(255 255 255 / 0%)
+  // background rgb(255 255 255 / 0%)
 
 
 .dark-mode .mode::before

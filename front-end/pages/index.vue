@@ -12,38 +12,95 @@
       <SelectTopicIcon :icon="collectIcon" label="Into Pieces" :topic="Topics.NFT_COLLECTION" class="homepage__nft-collection-link"/> -->
     <!-- </div> -->
 
-    <Contact />
+    <Contact />  
 
-    <Pieces />
-    <!-- <Pieces
-      :pieces="piecesGeometry"
-      :type="Topics.GEOMETRY"
-      :selected-topic="selectedTopic"
-    />
-    <Pieces
-      :pieces="piecesNodeAvatars"
-      :type="Topics.NODE_AVATARS"
-      :selected-topic="selectedTopic"
-    />
-    <Pieces
-      :pieces="piecesPuzzle"
-      :type="Topics.PUZZLE"
-      :selected-topic="selectedTopic"
-    />
-    <IntoPiecesMain
-      :type="Topics.NFT_COLLECTION"
-      :selected-topic="selectedTopic"
-    /> -->
+    <PinchScrollZoom
+      v-if="windowObject?.innerWidth && edgePositions.x"
+      ref="mapperRef"
+      :width="windowObject.innerWidth"
+      :height="windowObject.innerHeight"
+      within
+      class="pinch-scroll-zoom"
+      :min-scale="0.01"
+      :max-scale="100"
+      @scaling="e => onMapperEvent('scaling', e)"
+      @startDrag="e => onMapperEvent('startDrag', e)"
+      @stopDrag="e => onMapperEvent('stopDrag', e)"
+      @dragging="e => onMapperEvent('dragging', e)"
+      :draggable="isMapperDraggable"
+      :wheelVelocity="0.001"
+      :throttleDelay="20"
+      :content-width="edgePositions.x"
+      :content-height="edgePositions.y">
+      <Pieces />
+    </PinchScrollZoom>
+
 </template>
 
 <script setup lang="ts">
-// import { Topics } from '~/components/piecesData';
-// import usePieces from '~/J/usePieces'
-// import useSelectedTopic from '~/J/useSelectedTopic'
-// import ImageFile from '~/models/ImageFile'
+import '@coddicat/vue-pinch-scroll-zoom/style.css';
 
-// const { piecesNodeAvatars, piecesSansTopic, piecesGeometry, piecesPuzzle } = usePieces()
-// const { selectedTopic } = useSelectedTopic()
+import PinchScrollZoom, {
+  type PinchScrollZoomEmitData,
+  type PinchScrollZoomExposed
+} from '@coddicat/vue-pinch-scroll-zoom';
+import usePieces from '~/J/usePieces'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import useMapper from '~/J/useMapper';
+import useAdminPage from '~/J/useAdminPage';
+
+const { edgePositions } = usePieces()
+const { onMapperEvent, isMapperDraggable } = useMapper()
+
+const mapperRef = ref<PinchScrollZoomExposed>();
+const isMapperSet = ref(false)
+
+
+const windowObject = computed(() => window)
+
+const {
+  isSetupForMobile
+} = useAdminPage()
+// const windowWidth = ref()
+// const windowHeight = ref()
+  
+// onMounted(() => {
+//   windowWidth.value = window.innerWidth
+//   windowHeight.value = window.innerHeight
+// })
+
+// function onMapperEvent(name: string, event: PinchScrollZoomEmitData): void {
+//   if (name === 'dragging' && isOverPieceOrSetup.value) {
+//     isMapperDraggable.value = false;
+//   } else {
+//     isMapperDraggable.value = true;
+//   }
+//   mapperEventData.value = event
+// }
+
+watch(mapperRef, (newVal) => {
+  console.log('newVal: ', newVal);
+  if (!newVal || isMapperSet.value) return
+  isMapperSet.value = true
+  if (isSetupForMobile.value) {
+    mapperRef.value?.setData({
+      scale: 0.25,
+      originX: 4412,
+      originY: 6505,
+      translateX: -4200,
+      translateY: -6000,
+    });
+  } else {
+    mapperRef.value?.setData({
+      scale: 0.7,
+      originX: 4725,
+      originY: 6388,
+      translateX: -3970,
+      translateY: -6017,
+    });
+  }
+})
 
 useHead({
   title: 'Jan Mikšík',
@@ -97,123 +154,15 @@ useHead({
 </script>
 
 <style lang="stylus">
-// // /
-// // Free Topic
-// // /
-// .homepage__sans-topic-link
-//   left 37vw
-//   top 28vh
-//   width 140px
 
-//   @media (min-width 700px)
-//     left 45vw
-//     width 230px
+.pinch-scroll-zoom
+  cursor move
 
-// .open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
-//   left calc(100vw - 140px)
+.swiper-wrapper
+  min-width 100vh
+  width 100vh
 
-//   @media (min-width 700px)
-//     left calc(100vw - 230px)
-//   // filter opacity(0.3)
-
-// .open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
-//   .open-topic-icon__topic-thumbnail-img
-//     transform scale(0.65, 0.65)
-//     translate 25px 25px
-
-// .open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon)
-//   .open-topic-icon__topic-thumbnail-img
-//     filter drop-shadow(0 0 2px gray)
-
-
-// // /
-// // Geometry
-// // /
-// .homepage__geometry-link
-//   top 55vh
-//   left 15vw
-//   width 45px
-
-//   @media (min-width 700px)
-//     width 50px
-
-// .open-topic-icon:is(.homepage__geometry-link):is(.open-topic-icon__is-unselected-topic)
-//   left -3px
-//   // filter opacity(0.3)
-
-// .open-topic-icon:is(.homepage__geometry-link):is(.open-topic-icon)
-//   .open-topic-icon__topic-thumbnail-img
-//     filter drop-shadow(0 0 2px #4488ff9e)
-
-// // /
-// // Node Avatars
-// // /
-// .homepage__node-avatars-link
-//   top 12vh
-//   left 10vw
-//   width 80px
-
-//   @media (min-width 700px)
-//     width 135px
-
-// .open-topic-icon:is(.homepage__node-avatars-link):is(.open-topic-icon__is-unselected-topic)
-//   left -8px
-//   // filter opacity(0.3)
-
-// .open-topic-icon:is(.homepage__node-avatars-link):is(.open-topic-icon)
-//   .open-topic-icon__topic-thumbnail-img
-//     filter drop-shadow(0 0 1px #b2d5ff)
-
-// // /
-// // Puzzle
-// // /
-// .homepage__puzzle-link
-//   top 77vh
-//   left 52vw
-//   width 55px
-
-//   @media (min-width 700px)
-//     width 70px
-
-// .open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon__is-unselected-topic)
-//   left calc(100vw - 55px)
-
-//   @media (min-width 700px)
-//     left calc(100vw - 80px)
-
-// .open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon)
-//   .open-topic-icon__topic-thumbnail-img
-//     filter drop-shadow(0 1px 1px gray)
-
-// // /
-// // Into Pieces - NFT Collection Into Pieces
-// // /
-// .homepage__nft-collection-link
-//   left 65vw
-//   top 52vh
-//   width 60px
-
-//   @media (min-width 700px)
-//     left 75vw
-//     width 70px
-
-// .open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon__is-unselected-topic)
-//   left calc(100vw - 60px)
-
-//   @media (min-width 700px)
-//     left calc(100vw - 85px)
-//   // filter opacity(0.3)
-
-// .open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon)
-//   .open-topic-icon__topic-thumbnail-img
-//     filter drop-shadow(0 1px 1px gray)
-
-// .open-topic-icon__is-unselected-topic
-//   filter opacity(0.3)
-
-//   &:hover
-//     filter opacity(0.85)
-
-// .dark-mode .open-topic-icon__is-unselected-topic
-//   filter opacity(0.3) invert(1) !important
+.slide
+  background floralwhite
+  height 90vh
 </style>

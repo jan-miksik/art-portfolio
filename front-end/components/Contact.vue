@@ -96,7 +96,7 @@ import useMouseActionDetector from '~/J/useMouseActionDetector'
 import ImageFile from '~/models/ImageFile'
 const { mouseDownHandler, mouseMoveHandler, mouseUpHandler, isDragging } = useMouseActionDetector()
 
-const style = ref({left: 0, top: window.innerHeight - 70})
+const style = ref({left: window.innerWidth - 80, top: 5})
 const contactRef = ref<HTMLElement>()
 
 onMounted(() => {
@@ -202,14 +202,15 @@ const randomizePosition = () => {
 
 .homepage__contact
   position absolute
-  bottom 2rem
-  left 1rem
+  // top 2rem
+  // right 1rem
   padding 0.2rem
   cursor cell
-  opacity 0.75
+  opacity 0.65
   width 50px
   height 50px
   transition opacity 0.3s
+  z-index 10
   // display flex
   // flex-direction column
   // align-items center
@@ -219,8 +220,8 @@ const randomizePosition = () => {
     opacity 1 !important
 
 .homepage__contact-img
-  width 37px
-  height 37px
+  width 30px
+  height 30px
   filter drop-shadow(0 2px 2px white)
 
 .homepage__contact-text
@@ -242,10 +243,7 @@ const randomizePosition = () => {
 
 .homepage__contact-modal-backdrop
   position fixed
-  left 0
-  top 0
-  bottom 0
-  right 0
+  inset 0
   height 140vh
   z-index 1
   background-color rgb(0 0 0 / 50%)
@@ -286,7 +284,7 @@ const randomizePosition = () => {
 
   &:hover
     transition all 0.3s !important
-    box-shadow inset 0 -20px 0 0 rgb(41 187 97 / 41%)
+    // box-shadow inset 0 -20px 0 0 rgb(41 187 97 / 41%)
 
 .homepage__soc-link-img
   padding 0.5rem

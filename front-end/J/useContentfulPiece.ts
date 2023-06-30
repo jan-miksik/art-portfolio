@@ -119,7 +119,7 @@ export default function useContentfulPiece() {
       if (!assetProcessed) {
         // Wait for a bit before checking again
         try {
-          await new Promise((resolve) => setTimeout(resolve, 1000))
+          await new Promise((resolve) => setTimeout(resolve, 200))
           console.log('4. Image processed')
         } catch (error) {
           console.error('Error processTheImage', error)
