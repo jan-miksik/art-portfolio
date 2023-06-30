@@ -32,6 +32,7 @@
         @click="handleOnBackdropClick"
         @touchstart="handleOnBackdropClick"
       >
+        <!-- :lazy="true" -->
         <swiper
           class="swiper"
           ref="swiperRef"
@@ -43,7 +44,13 @@
           <swiper-slide class="slide" v-for="(piece, index) in pieces">
             <OImage
               :image-file="piece.image"
-              :class="['piece__selected-piece-image', {'piece__selected-piece-image--node-avatar': piece.topic ===  Topics.NODE_AVATARS}]"
+              :class="[
+                'piece__selected-piece-image',
+                {
+                  'piece__selected-piece-image--node-avatar':
+                    piece.topic === Topics.NODE_AVATARS
+                }
+              ]"
               @click.stop
               @touchstart.stop
             />
@@ -60,15 +67,51 @@
           Smazat
         </button>
         <div class="piece__selected-piece-info" @click.stop @touchstart.stop>
-          <strong>{{ selectedPiece.name }} </strong> <br />
-          {{ selectedPiece.created.getFullYear() }},
-          {{ selectedPiece.techniqueDescription }},
-          {{ selectedPiece.sizeInCm.x }}cm x {{ selectedPiece.sizeInCm.y }}cm
+          <strong
+            :contenteditable="isOnAdminPage"
+            @blur="(e) => handleOnBlurEditPieceInfo(e, 'name')"
+            @click.stop
+            @touchstart.stop
+          >
+            {{ selectedPiece.name }}
+          </strong>
+          <br />
+          <span v-if="!isOnAdminPage">
+            {{ selectedPiece.created.getFullYear() }}
+          </span>,
+
+          <input v-if="isOnAdminPage" type="date" :value="selectedPiece.created" />
+          <span
+            :contenteditable="isOnAdminPage"
+            @blur="(e) => handleOnBlurEditPieceInfo(e, 'techniqueDescription')"
+            @click.stop
+            @touchstart.stop
+          >
+            {{ selectedPiece.techniqueDescription }}
+          </span>,
+          <span
+            :contenteditable="isOnAdminPage"
+            @blur="(e) => handleOnBlurEditPieceInfo(e, 'sizeInCm', 'x')"
+            @click.stop
+            @touchstart.stop
+          >
+            {{ selectedPiece.sizeInCm.x }}
+          </span>cm x
+          <span
+            :contenteditable="isOnAdminPage"
+            @blur="(e) => handleOnBlurEditPieceInfo(e, 'sizeInCm', 'y')"
+            @click.stop
+            @touchstart.stop
+          >
+            {{ selectedPiece.sizeInCm.y }}
+          </span>cm
         </div>
       </div>
     </Transition>
   </Teleport>
 </template>
+
+:contenteditable="isOnAdminPage" @blur="handleOnBlurEditPieceInfo"
 
 <script setup lang="ts">
 import Piece from '~/models/Piece'
@@ -83,10 +126,18 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import { Swiper as SwiperTypes, Keyboard } from 'swiper'
 import { Topics } from '~/components/piecesData'
-import useMapper from '~/J/useMapper';
+import useMapper from '~/J/useMapper'
+// import 'swiper/css/lazy'
 
-const { mouseDownHandler, mouseMoveHandler, mouseUpHandler, mouseLeaveHandler, isDragging, touchmoveHandler, touchendHandler } =
-  useMouseActionDetector()
+const {
+  mouseDownHandler,
+  mouseMoveHandler,
+  mouseUpHandler,
+  mouseLeaveHandler,
+  isDragging,
+  touchmoveHandler,
+  touchendHandler
+} = useMouseActionDetector()
 const { zIndexOfLastSelectedPiece, pieces, edgePositions } = usePieces()
 const { isOnAdminPage, isSetupForMobile } = useAdminPage()
 const { mapperEventData } = useMapper()
@@ -96,15 +147,49 @@ const localZIndex = ref(1)
 const pieceRef = ref()
 const selectedPiece = ref<Piece>()
 const initialSlide = ref(0)
+const activeIndex = ref(0)
 
 const props = defineProps<{
   piece: Piece
 }>()
 
+const handleOnBlurEditPieceInfo = (
+  event: Event, 
+  primaryField: 'name' | 'techniqueDescription' | 'sizeInCm',
+  secondField?: 'x' | 'y'
+  ) => {
+  console.log('handleOnBlurEditPieceInfo: ');
+  if(!selectedPiece.value || !pieces.value) return
+  const target = event.target as HTMLDivElement
+  // const piece = pieces.value[activeIndex.value]
+
+  pieces.value[activeIndex.value].isPublished = false
+  console.log('pieces.value[activeIndex.value]: ', pieces.value[activeIndex.value]);
+
+  if(
+    primaryField === 'name' || 
+    primaryField === 'techniqueDescription') {
+    pieces.value[activeIndex.value][primaryField] = target.innerText
+    selectedPiece.value[primaryField] = target.innerText
+    return
+  }
+
+  if (
+    secondField === 'x' ||
+    secondField === 'y'
+  ) {
+    pieces.value[activeIndex.value][primaryField][secondField] = Number(target.innerText)
+    selectedPiece.value[primaryField][secondField] = Number(target.innerText)
+  }
+  
+  console.log('pieces.value[activeIndex.value]: ', pieces.value[activeIndex.value]);
+}
+
 const { piece } = toRefs(props)
 
 const onSlideChange = (swiper: SwiperTypes) => {
   if (!pieces.value) return
+  activeIndex.value = swiper.activeIndex
   selectedPiece.value = pieces.value[swiper.activeIndex]
 }
 
@@ -115,7 +200,7 @@ onMounted(() => {
       autoScroll: true,
       listeners: {
         move(event) {
-          if(!isOnAdminPage.value) return
+          if (!isOnAdminPage.value) return
           const scale = mapperEventData.value.scale
           piece.value.isPublished = false
           // if (isSetupForMobile.value) {
@@ -128,16 +213,21 @@ onMounted(() => {
           //   piece.value.position.xMob = x
           //   piece.value.position.yMob = y
           // } else {
-            const xRaw =
-              (piece.value.position.x || piece.value.position.xMob) + (event.dx / scale)
-            const yRaw =
-              (piece.value.position.y || piece.value.position.yMob) + (event.dy / scale)
-            const x = xRaw > -2000 ? xRaw : -2000
-            const y = yRaw > -2000 ? yRaw : -2000
-            piece.value.position.x = x
-            piece.value.position.y = y
-            edgePositions.value.x = Math.max(edgePositions.value.x, x + (piece.value?.sizeOnWeb?.width || 0) + 2000);
-            edgePositions.value.y = Math.max(edgePositions.value.y, y + 2000);
+          const xRaw =
+            (piece.value.position.x || piece.value.position.xMob) +
+            event.dx / scale
+          const yRaw =
+            (piece.value.position.y || piece.value.position.yMob) +
+            event.dy / scale
+          const x = xRaw > -2000 ? xRaw : -2000
+          const y = yRaw > -2000 ? yRaw : -2000
+          piece.value.position.x = x
+          piece.value.position.y = y
+          edgePositions.value.x = Math.max(
+            edgePositions.value.x,
+            x + (piece.value?.sizeOnWeb?.width || 0) + 2000
+          )
+          edgePositions.value.y = Math.max(edgePositions.value.y, y + 2000)
           // }
         }
       }
@@ -161,7 +251,7 @@ onMounted(() => {
           // if (isSetupForMobile.value) {
           //   piece.value.sizeOnWeb.widthMob = (event.rect.width / scale)
           // } else {
-            piece.value.sizeOnWeb.width = (event.rect.width / scale)
+          piece.value.sizeOnWeb.width = event.rect.width / scale
           // }
 
           piece.value.isPublished = false
@@ -293,8 +383,8 @@ const selectImage = (piece: Piece) => {
   // max-height 85vh
   max-width 100%
   object-fit contain
-  min-width 10px
-  min-height 10px
+  min-width 50px
+  min-height 50px
 
   &--not-published
     // border 1px #12b5225e solid

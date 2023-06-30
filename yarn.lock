@@ -8684,11 +8684,6 @@ vue-tsc@^0.34.7:
   dependencies:
     "@volar/vue-typescript" "0.34.17"
 
-vue-zoomer@^0.4.0-beta.2:
-  version "0.4.0-beta.2"
-  resolved "https://registry.yarnpkg.com/vue-zoomer/-/vue-zoomer-0.4.0-beta.2.tgz#6adbc0c05b0f36a9b8d366cd8036f5f52e9c9ccb"
-  integrity sha512-qS/EoO86oDDHbaSMT4gg24YYcDElROFvRjUSFcYg9P7IHpScUT+qRnywZMChjB+0mS+GXQJWXqQa8uztmwF+pw==
-
 vue@^3.2.47, vue@^3.3.4:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.3.4.tgz#8ed945d3873667df1d0fcf3b2463ada028f88bd6"
