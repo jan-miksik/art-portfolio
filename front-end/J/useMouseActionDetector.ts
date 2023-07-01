@@ -12,6 +12,7 @@ export default function useMouseActionDetector() {
 
   const mouseMoveHandler = () => {
     isDragging.value = true
+    if (!isOnAdminPage.value) return
     isOverPieceOrSetup.value = true
     
   }

@@ -42,18 +42,29 @@
           :initialSlide="initialSlide"
         >
           <swiper-slide class="slide" v-for="(piece, index) in pieces">
-            <OImage
-              :image-file="piece.image"
-              :class="[
-                'piece__selected-piece-image',
-                {
-                  'piece__selected-piece-image--node-avatar':
-                    piece.topic === Topics.NODE_AVATARS
-                }
-              ]"
-              @click.stop
-              @touchstart.stop
-            />
+            <div class="piece__selected-piece-image-wrapper" @click.stop @touchstart.stop>
+              <PinchScrollZoom
+                v-if="windowObject?.innerWidth"
+                :width="windowObject.innerWidth * 0.9"
+                :height="windowObject.innerHeight * 0.9"
+                within
+                class="piece__pinch-scroll-zoom"
+                :min-scale="0.01"
+                :max-scale="100">
+                <OImage
+                  :image-file="piece.image"
+                  :class="[
+                    'piece__selected-piece-image',
+                    {
+                      'piece__selected-piece-image--node-avatar':
+                        piece.topic === Topics.NODE_AVATARS
+                    }
+                  ]"
+                  @click.stop
+                  @touchstart.stop
+                />
+              </PinchScrollZoom>
+            </div>
           </swiper-slide>
         </swiper>
 
@@ -127,6 +138,7 @@ import 'swiper/css/navigation'
 import { Swiper as SwiperTypes, Keyboard } from 'swiper'
 import { Topics } from '~/components/piecesData'
 import useMapper from '~/J/useMapper'
+import PinchScrollZoom from '@coddicat/vue-pinch-scroll-zoom'
 // import 'swiper/css/lazy'
 
 const {
@@ -148,6 +160,9 @@ const pieceRef = ref()
 const selectedPiece = ref<Piece>()
 const initialSlide = ref(0)
 const activeIndex = ref(0)
+
+
+const windowObject = computed(() => window)
 
 const props = defineProps<{
   piece: Piece
@@ -399,18 +414,25 @@ const selectImage = (piece: Piece) => {
 
 .piece__selected-piece-image
   max-height 87vh
-  max-width 95%
-  margin-top 1rem
+  max-width 100%
   cursor default
   z-index 10000
+  width 100%
+  object-fit contain
 
   &--node-avatar
     max-height 300px
 
+.piece__selected-piece-image-wrapper
+  width 100%
+  height 85vh
+  padding 0 7%
+  cursor default
+
 .piece__selected-piece-info
   // background-color #eee
   // color #919191
-  border-radius 15px 15px 20px 20px
+  // border-radius 15px 15px 20px 20px
   max-width 90%
   width max-content
   padding 0.7rem 1rem
@@ -422,7 +444,9 @@ const selectImage = (piece: Piece) => {
   bottom 5rem
   cursor auto
   user-select text
+  // padding 0 0.5rem
   z-index 10001
+  text-shadow 0 0 1px #d2d3e0f2, 0 0 2px #d2d3e0f2
 
   @media (min-width 600px)
     align-self flex-end
@@ -508,7 +532,17 @@ const selectImage = (piece: Piece) => {
   align-items center
   justify-content center
 
-// .swiper-wrapper-1
-//   position: relative;
-//   overflow: auto;
+.piece__pinch-scroll-zoom
+  display flex
+  justify-content center
+  align-items center
+
+
+</style>
+
+<style lang="stylus">
+.piece__pinch-scroll-zoom .pinch-scroll-zoom__content
+  display flex
+  align-items center
+  justify-content center
 </style>
