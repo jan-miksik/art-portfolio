@@ -5,15 +5,16 @@ const mapperEventData = ref()
 const isMapperDraggable = ref(true);
 
 export default function useMapper() {
-  const { isOverPieceOrSetup } = useMouseActionDetector()
-
+  
   function onMapperEvent(name: string, event: PinchScrollZoomEmitData): void {
+    const { isOverPieceOrSetup } = useMouseActionDetector()
     if (name === 'dragging' && isOverPieceOrSetup.value) {
       isMapperDraggable.value = false;
     } else {
       isMapperDraggable.value = true;
     }
     mapperEventData.value = event
+    // console.log('event: ', event);
   }
   return {
     onMapperEvent,

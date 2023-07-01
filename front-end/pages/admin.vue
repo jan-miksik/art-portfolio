@@ -20,143 +20,70 @@
     </button>
   </div>
 
-  <!-- <div class="admin__settings">
-    <button @click="handleOpenSettings">Nastavení</button>
-  </div> -->
-
-  <!-- <button
-    class="admin__settings-mobile-btn"
-    :class="[
-      'admin__settings-mobile-btn',
-      { 'admin__settings-mobile-btn--disabled': !isSetupForMobile }
-    ]"
-    @click="handleChangeDeviceTypeSetup('mobile')"
-  >
-    Mobil
-  </button>
-
-  <button
-    :class="[
-      'admin__settings-desktop-btn',
-      { 'admin__settings-desktop-btn--disabled': isSetupForMobile }
-    ]"
-    @click="handleChangeDeviceTypeSetup('desktop')"
-  >
-    Desktop
-  </button> -->
-
-  <!-- <OColorPicker
-    v-if="isSettingColors"
-    :selectedColor="appSettings?.backgroundColor"
-    @colorChange="handleOnBgColorChange"
-    class="admin__color-picker"
-  /> -->
-
-  <!-- <div
-    v-if="isSettingsOpen"
-    class="admin__settings-modal-backdrop"
-    @click="handleOnBackdropClick"
-    @touchstart="handleOnBackdropClick"
-  >
-    <div
-      class="admin__settings-modal-content"
-      @click.stop
-      @touchstart.stop
-      v-if="appSettings"
-    >
-      <h3>přesouvaní děl</h3>
-      <label>
-        mobil
-        <input type="checkbox" v-model="appSettings.editableOnMobil" />
-      </label>
-      <label>
-        desktop
-        <input type="checkbox" v-model="appSettings.editableOnDesktop" />
-      </label>
-      <br />
-
-      <h3>ostatní</h3>
-      <label>
-        úprava barev
-        <input type="checkbox" v-model="isSettingColors" />
-      </label>
-
-      <h3>detail díla</h3>
-      <label>
-        barva pozadí
-        <input type="color" v-model="appSettings.backgroundColorPieceDetail" />
-      </label>
-      <label>
-        barva textu
-        <input type="color" v-model="appSettings.pieceDetailTextColor" />
-      </label>
-    </div>
-  </div> -->
-
-  <PinchScrollZoom
-    v-if="windowObject?.innerWidth && edgePositions.x"
-    ref="mapperRef"
-    :width="windowObject.innerWidth"
-    :height="windowObject.innerHeight"
-    within
-    class="pinch-scroll-zoom"
-    :min-scale="0.01"
-    :max-scale="100"
-    @scaling="e => onMapperEvent('scaling', e)"
-    @startDrag="e => onMapperEvent('startDrag', e)"
-    @stopDrag="e => onMapperEvent('stopDrag', e)"
-    @dragging="e => onMapperEvent('dragging', e)"
-    :draggable="isMapperDraggable"
-    :wheelVelocity="0.001"
-    :throttleDelay="20"
-    :content-width="edgePositions.x"
-    :content-height="edgePositions.y">
+  <!-- <div class="admin__pinch-scroll-zoom-container" ref="mapperContainerRef"> -->
+    <!-- :style="mapperContainerStyle" -->
+    <PinchScrollZoom
+      v-if="windowObject?.innerWidth && edgePositions.x"
+      ref="mapperRef"
+      :width="windowObject.innerWidth"
+      :height="windowObject.innerHeight"
+      class="pinch-scroll-zoom"
+      :min-scale="0.01"
+      :max-scale="100"
+      @scaling="(e) => onMapperEvent('scaling', e)"
+      @startDrag="(e) => onMapperEvent('startDrag', e)"
+      @stopDrag="(e) => onMapperEvent('stopDrag', e)"
+      @dragging="(e) => onMapperEvent('dragging', e)"
+      :wheelVelocity="0.001"
+      :throttleDelay="20"
+      :content-width="edgePositions.x"
+      :content-height="edgePositions.y"
+      :draggable="!isOverPieceOrSetup"
+      >
       <Pieces />
     </PinchScrollZoom>
+  <!-- </div> -->
 </template>
 
 <script setup lang="ts">
 import usePieces from '~/J/usePieces'
 import useAdminPage from '~/J/useAdminPage'
 import useContentfulPiece from '~/J/useContentfulPiece'
-import PinchScrollZoom, { PinchScrollZoomExposed } from '@coddicat/vue-pinch-scroll-zoom';
-import useMapper from '~/J/useMapper';
-import isMobile from '~/J/isMobile';
+import PinchScrollZoom from '@coddicat/vue-pinch-scroll-zoom'
+import useMapper from '~/J/useMapper'
+// import interact from 'interactjs'
+// import '@coddicat/vue-pinch-scroll-zoom/style.css'
+import '@coddicat/vue-pinch-scroll-zoom/style.css'
+import useMouseActionDetector from '~/J/useMouseActionDetector'
 
-const isProbablyMobile = isMobile()
-// import useContentful from '~/api/useContentful'
 const { pieces } = usePieces()
 const { edgePositions } = usePieces()
-
 const { onMapperEvent, isMapperDraggable } = useMapper()
-const windowObject = computed(() => window)
-
+const { isOverPieceOrSetup } = useMouseActionDetector()
 const isAuthenticated = ref(
   import.meta.env.VITE_IS_ADMIN_AUTHENTICATION !== 'true'
 )
+
 const password = ref('')
 const errorMessage = ref('')
 const isSettingsOpen = ref(false)
 const publishingInProgress = ref(false)
-const mapperRef = ref<PinchScrollZoomExposed>();
+
 const isMapperSet = ref(false)
+const mapperRef = ref()
+// const mapperContainerPosition = ref({ x: 0, y: 0 })
+// const mapperContainerRef = ref()
 
+const windowObject = computed(() => window)
 
-// const { selectedTopic } = useSelectedTopic()
-// const { appSettings, appSettingsOriginString } = useContentful()
-const {
-  isOnAdminPage,
-  // isSettingColors,
-  // isSettingChanged,
-  // updateSettings,
-  isSetupForMobile
-} = useAdminPage()
+const { isOnAdminPage, isSetupForMobile } = useAdminPage()
+
 onMounted(async () => {
   isOnAdminPage.value = true
 })
 
 watch(mapperRef, (newVal) => {
-  console.log('newVal: ', newVal);
+  console.log('newVal: ', newVal)
   if (!newVal || isMapperSet.value) return
   isMapperSet.value = true
   if (isSetupForMobile.value) {
@@ -165,28 +92,39 @@ watch(mapperRef, (newVal) => {
       originX: 4412,
       originY: 6505,
       translateX: -4200,
-      translateY: -6000,
-    });
+      translateY: -6000
+    })
   } else {
     mapperRef.value?.setData({
-      scale: 0.7,
+      scale: 0.3,
       originX: 4725,
       originY: 6388,
       translateX: -3970,
-      translateY: -6017,
-    });
+      translateY: -6017
+    })
   }
+
+  // if (!mapperContainerRef.value) return
+
+  // interact(mapperContainerRef.value).draggable({
+  //   inertia: true,
+  //   autoScroll: true,
+  //   listeners: {
+  //     move(event) {
+  //       const xRaw = mapperContainerPosition.value.x + event.dx
+  //       const yRaw = mapperContainerPosition.value.y + event.dy
+  //       const x = xRaw > -20000 ? xRaw : -20000
+  //       const y = yRaw > -20000 ? yRaw : -20000
+  //       mapperContainerPosition.value.x = x
+  //       mapperContainerPosition.value.y = y
+  //     }
+  //   }
+  // })
 })
 
-// const handleOnBgColorChange = (color: string) => {
-//   // isSettingChanged.value = true
-//   appSettings.value.backgroundColor = color
-// }
-
 const isSomethingToPublish = computed(
-  () =>
-    usePieces().pieces.value?.some((piece) => piece.isPublished === false) 
-    // || isSettingChanged.value
+  () => usePieces().pieces.value?.some((piece) => piece.isPublished === false)
+  // || isSettingChanged.value
 )
 
 const publishButtonText = computed(() =>
@@ -202,13 +140,25 @@ const submitPassword = () => {
   }
 }
 
-const handleChangeDeviceTypeSetup = (deviceType: 'mobile' | 'desktop') => {
-  if (deviceType === 'mobile') {
-    isSetupForMobile.value = true
-  } else {
-    isSetupForMobile.value = false
-  }
-}
+// const mapperContainerStyle = computed(() => {
+//   return {
+//     left: `${mapperContainerPosition.value.x}px`,
+//     top: `${mapperContainerPosition.value.y}px`
+//   }
+// })
+
+onMounted(() => {
+  console.log('mapperRef.value: ', mapperRef.value)
+  if (!mapperRef.value) return
+})
+
+// const handleChangeDeviceTypeSetup = (deviceType: 'mobile' | 'desktop') => {
+//   if (deviceType === 'mobile') {
+//     isSetupForMobile.value = true
+//   } else {
+//     isSetupForMobile.value = false
+//   }
+// }
 
 // const handleOnBackdropClick = () => {
 //   isSettingsOpen.value = false
@@ -244,15 +194,6 @@ const handleOpenSettings = () => {
 const handleOnPasswordInput = () => {
   errorMessage.value = ''
 }
-
-// useHead({
-//   title: 'Daniela de Luna',
-//   meta: [
-//     {
-//       content: 'admin page'
-//     }
-//   ]
-// })
 </script>
 
 <style lang="stylus">
@@ -359,4 +300,18 @@ button
 
   &--disabled
     opacity 0.3
+
+// .admin__pinch-scroll-zoom-container
+//   position fixed
+//   top 0
+//   left 0
+//   background #dbdae1
+//   width 100%
+//   height 100%
+//   display flex
+//   align-items center
+//   justify-content center
+
+.pinch-scroll-zoom
+  cursor move
 </style>

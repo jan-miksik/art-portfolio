@@ -41,16 +41,36 @@
           @slideChange="onSlideChange"
           :initialSlide="initialSlide"
         >
+        <img src="/close.svg" width="30" height="30" class="piece__selected-piece-back"/>
           <swiper-slide class="slide" v-for="(piece, index) in pieces">
-            <div class="piece__selected-piece-image-wrapper" @click.stop @touchstart.stop>
-              <PinchScrollZoom
-                v-if="windowObject?.innerWidth"
-                :width="windowObject.innerWidth * 0.9"
-                :height="windowObject.innerHeight * 0.9"
-                within
-                class="piece__pinch-scroll-zoom"
-                :min-scale="0.01"
-                :max-scale="100">
+            <!-- :width="windowObject.innerWidth" -->
+            
+            <!-- <div class="piece__selected-piece-image-wrapper" /> -->
+            
+            <div
+              class="piece__selected-piece-image-wrapper"
+              @click.stop
+              @touchstart.stop
+            >
+              <div
+                class="piece__selected-piece-image-close-zone"
+                @click="handleOnBackdropClick"
+                @touchstart="handleOnBackdropClick"
+              />
+              <div
+                class="piece__selected-piece-image-inner-wrapper"
+                @click.stop
+                @touchstart.stop
+              >
+              <!-- <PinchScrollZoom
+                  v-if="windowObject?.innerWidth"
+                  :height="windowObject.innerHeight * 0.7"
+                  :width="windowObject?.innerWidth"
+                  within
+                  class="piece__pinch-scroll-zoom"
+                  :min-scale="0.01"
+                  :max-scale="100"
+                > -->
                 <OImage
                   :image-file="piece.image"
                   :class="[
@@ -63,9 +83,73 @@
                   @click.stop
                   @touchstart.stop
                 />
-              </PinchScrollZoom>
+                <!-- </PinchScrollZoom> -->
+              </div>
+
+              <!-- <div
+                  class="piece__selected-piece-image-prevent-close"
+                  @click.stop
+                  @touchstart.stop
+                /> -->
             </div>
+            <div class="piece__selected-piece-image-info-spacer" @click.stop
+              @touchstart.stop />
+            
           </swiper-slide>
+          <div class="piece__selected-piece-info-wrapper">
+            <div
+              class="piece__selected-piece-info"
+              @click.stop
+              @touchstart.stop
+            >
+              <strong
+                :contenteditable="isOnAdminPage"
+                @blur="(e) => handleOnBlurEditPieceInfo(e, 'name')"
+                @click.stop
+                @touchstart.stop
+              >
+                {{ selectedPiece.name }}
+              </strong>
+              <br />
+              <span v-if="!isOnAdminPage">
+                {{ selectedPiece.created.getFullYear() }} </span
+              >
+
+              <!-- autoApplyMonth -->
+              <VueDatePicker
+                v-if="isOnAdminPage"
+                v-model="selectedPiece.created"
+                autoApply
+                @update:modelValue="handleOnSelectDate"
+              />,
+              <span
+                :contenteditable="isOnAdminPage"
+                @blur="
+                  (e) => handleOnBlurEditPieceInfo(e, 'techniqueDescription')
+                "
+                @click.stop
+                @touchstart.stop
+              >
+                {{ selectedPiece.techniqueDescription }} </span
+              >,
+              <span
+                :contenteditable="isOnAdminPage"
+                @blur="(e) => handleOnBlurEditPieceInfo(e, 'sizeInCm', 'x')"
+                @click.stop
+                @touchstart.stop
+              >
+                {{ selectedPiece.sizeInCm.x }} </span
+              >cm x
+              <span
+                :contenteditable="isOnAdminPage"
+                @blur="(e) => handleOnBlurEditPieceInfo(e, 'sizeInCm', 'y')"
+                @click.stop
+                @touchstart.stop
+              >
+                {{ selectedPiece.sizeInCm.y }} </span
+              >cm
+            </div>
+          </div>
         </swiper>
 
         <button
@@ -77,46 +161,6 @@
         >
           Smazat
         </button>
-        <div class="piece__selected-piece-info" @click.stop @touchstart.stop>
-          <strong
-            :contenteditable="isOnAdminPage"
-            @blur="(e) => handleOnBlurEditPieceInfo(e, 'name')"
-            @click.stop
-            @touchstart.stop
-          >
-            {{ selectedPiece.name }}
-          </strong>
-          <br />
-          <span v-if="!isOnAdminPage">
-            {{ selectedPiece.created.getFullYear() }}
-          </span>,
-
-          <input v-if="isOnAdminPage" type="date" :value="selectedPiece.created" />
-          <span
-            :contenteditable="isOnAdminPage"
-            @blur="(e) => handleOnBlurEditPieceInfo(e, 'techniqueDescription')"
-            @click.stop
-            @touchstart.stop
-          >
-            {{ selectedPiece.techniqueDescription }}
-          </span>,
-          <span
-            :contenteditable="isOnAdminPage"
-            @blur="(e) => handleOnBlurEditPieceInfo(e, 'sizeInCm', 'x')"
-            @click.stop
-            @touchstart.stop
-          >
-            {{ selectedPiece.sizeInCm.x }}
-          </span>cm x
-          <span
-            :contenteditable="isOnAdminPage"
-            @blur="(e) => handleOnBlurEditPieceInfo(e, 'sizeInCm', 'y')"
-            @click.stop
-            @touchstart.stop
-          >
-            {{ selectedPiece.sizeInCm.y }}
-          </span>cm
-        </div>
       </div>
     </Transition>
   </Teleport>
@@ -138,8 +182,9 @@ import 'swiper/css/navigation'
 import { Swiper as SwiperTypes, Keyboard } from 'swiper'
 import { Topics } from '~/components/piecesData'
 import useMapper from '~/J/useMapper'
-import PinchScrollZoom from '@coddicat/vue-pinch-scroll-zoom'
-// import 'swiper/css/lazy'
+
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 
 const {
   mouseDownHandler,
@@ -161,43 +206,50 @@ const selectedPiece = ref<Piece>()
 const initialSlide = ref(0)
 const activeIndex = ref(0)
 
-
 const windowObject = computed(() => window)
 
 const props = defineProps<{
   piece: Piece
 }>()
 
+const dateSelected = (payload : Date) => {
+  console.log(payload);
+}
+
+
 const handleOnBlurEditPieceInfo = (
-  event: Event, 
+  event: Event,
   primaryField: 'name' | 'techniqueDescription' | 'sizeInCm',
   secondField?: 'x' | 'y'
-  ) => {
-  console.log('handleOnBlurEditPieceInfo: ');
-  if(!selectedPiece.value || !pieces.value) return
+) => {
+  console.log('handleOnBlurEditPieceInfo: ')
+  if (!selectedPiece.value || !pieces.value) return
   const target = event.target as HTMLDivElement
   // const piece = pieces.value[activeIndex.value]
 
   pieces.value[activeIndex.value].isPublished = false
-  console.log('pieces.value[activeIndex.value]: ', pieces.value[activeIndex.value]);
+  console.log(
+    'pieces.value[activeIndex.value]: ',
+    pieces.value[activeIndex.value]
+  )
 
-  if(
-    primaryField === 'name' || 
-    primaryField === 'techniqueDescription') {
+  if (primaryField === 'name' || primaryField === 'techniqueDescription') {
     pieces.value[activeIndex.value][primaryField] = target.innerText
     selectedPiece.value[primaryField] = target.innerText
     return
   }
 
-  if (
-    secondField === 'x' ||
-    secondField === 'y'
-  ) {
-    pieces.value[activeIndex.value][primaryField][secondField] = Number(target.innerText)
+  if (secondField === 'x' || secondField === 'y') {
+    pieces.value[activeIndex.value][primaryField][secondField] = Number(
+      target.innerText
+    )
     selectedPiece.value[primaryField][secondField] = Number(target.innerText)
   }
-  
-  console.log('pieces.value[activeIndex.value]: ', pieces.value[activeIndex.value]);
+
+  console.log(
+    'pieces.value[activeIndex.value]: ',
+    pieces.value[activeIndex.value]
+  )
 }
 
 const { piece } = toRefs(props)
@@ -206,6 +258,13 @@ const onSlideChange = (swiper: SwiperTypes) => {
   if (!pieces.value) return
   activeIndex.value = swiper.activeIndex
   selectedPiece.value = pieces.value[swiper.activeIndex]
+}
+
+const handleOnSelectDate = (date: Date) => {
+  console.log('handleOnSelectDate: ', date)
+  if (!pieces.value) return
+  pieces.value[activeIndex.value].isPublished = false
+  pieces.value[activeIndex.value].created = date
 }
 
 onMounted(() => {
@@ -413,21 +472,47 @@ const selectImage = (piece: Piece) => {
   // filter drop-shadow(0 0 1px black) invert(1)
 
 .piece__selected-piece-image
-  max-height 87vh
-  max-width 100%
   cursor default
   z-index 10000
-  width 100%
   object-fit contain
+  // max-height 80%
+  max-width 90%
 
   &--node-avatar
     max-height 300px
 
 .piece__selected-piece-image-wrapper
+  display flex
+  flex-direction column
+  justify-content center
+  align-items center
+  height 100%
   width 100%
-  height 85vh
-  padding 0 7%
   cursor default
+
+
+.piece__selected-piece-image-inner-wrapper
+  width 100%
+  display flex
+  justify-content center
+  max-height 75%
+  cursor default
+  z-index 10000
+
+.piece__selected-piece-image-info-spacer
+  height 4.75rem
+  width 100%
+  cursor default
+
+.piece__selected-piece-info-wrapper
+  display flex
+  justify-content center
+  position absolute
+  width 100%
+  // z-index: 100000;
+  bottom 0
+  cursor default
+
 
 .piece__selected-piece-info
   // background-color #eee
@@ -435,15 +520,17 @@ const selectImage = (piece: Piece) => {
   // border-radius 15px 15px 20px 20px
   max-width 90%
   width max-content
-  padding 0.7rem 1rem
+  // padding 0.7rem 1rem
   // box-shadow 0 0 5px 0 #0000002e
   text-align center
   font-size 1rem
   align-self center
-  position absolute
-  bottom 5rem
+  // position absolute
+  // bottom 5rem
   cursor auto
   user-select text
+  font-family GowunDodum, Helvetica, Arial, sans-serif
+  font-weight normal
   // padding 0 0.5rem
   z-index 10001
   text-shadow 0 0 1px #d2d3e0f2, 0 0 2px #d2d3e0f2
@@ -527,22 +614,49 @@ const selectImage = (piece: Piece) => {
 
 .slide
   background transparent
-  height calc(100vh - 70px)
+  height 100%
   display flex
   align-items center
-  justify-content center
+  justify-content space-between
+  flex-direction column
 
 .piece__pinch-scroll-zoom
-  display flex
-  justify-content center
-  align-items center
+  z-index 10000
+  // display flex
+  // justify-content center
+  // align-items center
 
+.piece__selected-piece-image-prevent-close
+  // position absolute
+  bottom 0
+  left 0
+  width 100vw
+  height 5vh
+  z-index 10000
+  cursor default
+
+.piece__selected-piece-image-close-zone
+  position absolute
+  top 0
+  right 0
+  width 100vw
+  height 50vh
+  z-index 10000
+  cursor url("/close.svg"), auto
+
+.piece__selected-piece-back
+  position absolute
+  top 1rem
+  right 1rem
+  z-index 10000
+  opacity 0.2
 
 </style>
 
 <style lang="stylus">
 .piece__pinch-scroll-zoom .pinch-scroll-zoom__content
   display flex
-  align-items center
   justify-content center
+  align-items center
+  flex-direction column
 </style>
