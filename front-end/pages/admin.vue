@@ -83,7 +83,6 @@ onMounted(async () => {
 })
 
 watch(mapperRef, (newVal) => {
-  console.log('newVal: ', newVal)
   if (!newVal || isMapperSet.value) return
   isMapperSet.value = true
   if (isSetupForMobile.value) {
@@ -148,7 +147,6 @@ const submitPassword = () => {
 // })
 
 onMounted(() => {
-  console.log('mapperRef.value: ', mapperRef.value)
   if (!mapperRef.value) return
 })
 

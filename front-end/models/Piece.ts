@@ -80,7 +80,6 @@ export default class Piece {
   public isUploadedToCf
 
   constructor(data: IPiece) {
-    // console.log('data: ', data);
     this.id = data.id || ''
     this.sys = {
       id: data?.sys?.id || uuidv4(),

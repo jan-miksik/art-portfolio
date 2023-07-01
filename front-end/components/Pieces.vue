@@ -7,7 +7,8 @@
         :piece="piece"
       />
 
-      <!-- <BallThreeJs v-if="Topics.GEOMETRY === props.type" /> -->
+      <BallThreeJs />
+      <IntoPiecesCollectionContainer />
     </div>
   </Transition>
 </template>

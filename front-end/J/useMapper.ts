@@ -14,7 +14,6 @@ export default function useMapper() {
       isMapperDraggable.value = true;
     }
     mapperEventData.value = event
-    // console.log('event: ', event);
   }
   return {
     onMapperEvent,

@@ -32,8 +32,8 @@
       :throttleDelay="20"
       :content-width="edgePositions.x"
       :content-height="edgePositions.y"
+      :draggable="!isOverPieceOrSetupInPublicPage"
       >
-      <!-- :draggable="!isOverPieceOrSetup" -->
       <Pieces />
     </PinchScrollZoom>
   <!-- </div> -->
@@ -46,11 +46,12 @@ import usePieces from '~/J/usePieces'
 import useMapper from '~/J/useMapper'
 import useAdminPage from '~/J/useAdminPage'
 import interact from 'interactjs'
+import useMouseActionDetector from '~/J/useMouseActionDetector'
 
 const { edgePositions } = usePieces()
 const { onMapperEvent } = useMapper()
 
-
+const { isOverPieceOrSetupInPublicPage } = useMouseActionDetector()
 const isMapperSet = ref(false)
 const mapperRef = ref()
 // const mapperContainerPosition = ref({ x: 0, y: 0 })
@@ -61,7 +62,6 @@ const windowObject = computed(() => window)
 const { isSetupForMobile } = useAdminPage()
 
 watch(mapperRef, (newVal) => {
-  console.log('newVal: index', newVal)
   if (!newVal || isMapperSet.value) return
   isMapperSet.value = true
   if (isSetupForMobile.value) {
@@ -74,11 +74,11 @@ watch(mapperRef, (newVal) => {
     })
   } else {
     mapperRef.value?.setData({
-      scale: 0.3,
+      scale: 0.5,
       originX: 4725,
       originY: 6388,
-      translateX: -3970,
-      translateY: -6017
+      translateX: -3770,
+      translateY: -5717
     })
   }
 

@@ -32,7 +32,6 @@
         @click="handleOnBackdropClick"
         @touchstart="handleOnBackdropClick"
       >
-        <!-- :lazy="true" -->
         <swiper
           class="swiper"
           ref="swiperRef"
@@ -166,8 +165,6 @@
   </Teleport>
 </template>
 
-:contenteditable="isOnAdminPage" @blur="handleOnBlurEditPieceInfo"
-
 <script setup lang="ts">
 import Piece from '~/models/Piece'
 import interact from 'interactjs'
@@ -212,9 +209,9 @@ const props = defineProps<{
   piece: Piece
 }>()
 
-const dateSelected = (payload : Date) => {
-  console.log(payload);
-}
+// const dateSelected = (payload : Date) => {
+//   console.log(payload);
+// }
 
 
 const handleOnBlurEditPieceInfo = (
@@ -222,16 +219,9 @@ const handleOnBlurEditPieceInfo = (
   primaryField: 'name' | 'techniqueDescription' | 'sizeInCm',
   secondField?: 'x' | 'y'
 ) => {
-  console.log('handleOnBlurEditPieceInfo: ')
   if (!selectedPiece.value || !pieces.value) return
   const target = event.target as HTMLDivElement
-  // const piece = pieces.value[activeIndex.value]
-
   pieces.value[activeIndex.value].isPublished = false
-  console.log(
-    'pieces.value[activeIndex.value]: ',
-    pieces.value[activeIndex.value]
-  )
 
   if (primaryField === 'name' || primaryField === 'techniqueDescription') {
     pieces.value[activeIndex.value][primaryField] = target.innerText
@@ -245,11 +235,6 @@ const handleOnBlurEditPieceInfo = (
     )
     selectedPiece.value[primaryField][secondField] = Number(target.innerText)
   }
-
-  console.log(
-    'pieces.value[activeIndex.value]: ',
-    pieces.value[activeIndex.value]
-  )
 }
 
 const { piece } = toRefs(props)
@@ -261,7 +246,6 @@ const onSlideChange = (swiper: SwiperTypes) => {
 }
 
 const handleOnSelectDate = (date: Date) => {
-  console.log('handleOnSelectDate: ', date)
   if (!pieces.value) return
   pieces.value[activeIndex.value].isPublished = false
   pieces.value[activeIndex.value].created = date
@@ -277,21 +261,11 @@ onMounted(() => {
           if (!isOnAdminPage.value) return
           const scale = mapperEventData.value.scale
           piece.value.isPublished = false
-          // if (isSetupForMobile.value) {
-          //   const xRaw =
-          //     (piece.value.position.xMob || piece.value.position.x) + (event.dx / scale)
-          //   const yRaw =
-          //     (piece.value.position.yMob || piece.value.position.y) + (event.dy / scale)
-          //   const x = xRaw > -2000 ? xRaw : -2000
-          //   const y = yRaw > -2000 ? yRaw : -2000
-          //   piece.value.position.xMob = x
-          //   piece.value.position.yMob = y
-          // } else {
           const xRaw =
-            (piece.value.position.x || piece.value.position.xMob) +
+            (piece.value.position.x) +
             event.dx / scale
           const yRaw =
-            (piece.value.position.y || piece.value.position.yMob) +
+            (piece.value.position.y) +
             event.dy / scale
           const x = xRaw > -2000 ? xRaw : -2000
           const y = yRaw > -2000 ? yRaw : -2000
@@ -407,25 +381,14 @@ const handleRemovePiece = async () => {
 const handlePieceStyle = (piece: Piece) => {
   if (!piece) return
 
-  // TODO add randomization during move for selected piece
-
-  // if (isSetupForMobile.value) {
-  //   return {
-  //     width: `${piece.sizeOnWeb?.widthMob || piece.sizeOnWeb?.width}px`,
-  //     // maxHeight: `${piece.sizeOnWeb?.height}px`,
-  //     left: `${piece.position?.xMob || piece.position?.x}px`,
-  //     top: `${piece.position?.yMob || piece.position?.y}px`,
-  //     deg: `${piece.position?.deg}deg`,
-  //     zIndex: `${localZIndex.value}`
-  //   }
-  // }
+  // TODO nice to have: add randomization during move for selected piece
 
   return {
-    width: `${piece.sizeOnWeb?.width || piece.sizeOnWeb?.widthMob}px`,
-    // maxHeight: `${piece.sizeOnWeb?.height}px`,
-    left: `${piece.position?.x || piece.position?.xMob}px`,
-    top: `${piece.position?.y || piece.position?.yMob}px`,
-    deg: `${piece.position?.degMob}deg`,
+    width: `${piece.sizeInCm?.x * 5}px`,
+    maxHeight: `${piece.sizeInCm?.y * 5}px`,
+    left: `${piece.position?.x}px`,
+    top: `${piece.position?.y}px`,
+    deg: `${piece.position?.deg}deg`,
     zIndex: `${localZIndex.value}`
   }
 }

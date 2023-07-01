@@ -234,10 +234,11 @@ const loadContractData = async () => {
     mainSupportedChain.nftIntoPiecesContract || '',
     contractAbi.abi,
     useWeb3().jsonRpcProvider
-    )
+    ) 
 
-  window.contractReadOnly = contractReadOnly
-  window.jsonRpcProvider = useWeb3().jsonRpcProvider
+
+  // window.contractReadOnly = contractReadOnly
+  // window.jsonRpcProvider = useWeb3().jsonRpcProvider
 
   maxSupply.value = await contractReadOnly.MAX_SUPPLY()
   mintedNfts.value = +await contractReadOnly.mintedNFTs()

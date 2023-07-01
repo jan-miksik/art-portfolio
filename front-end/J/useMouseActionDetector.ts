@@ -3,6 +3,8 @@ import useAdminPage from './useAdminPage'
 
 const isDragging = ref(false)
 const isOverPieceOrSetup = ref(false)
+const isOverPieceOrSetupInPublicPage = ref(false)
+
 export default function useMouseActionDetector() {
   const { isOnAdminPage, isSetupForMobile } = useAdminPage()
 
@@ -14,7 +16,6 @@ export default function useMouseActionDetector() {
     isDragging.value = true
     if (!isOnAdminPage.value) return
     isOverPieceOrSetup.value = true
-    
   }
 
   const mouseUpHandler = () => {
@@ -38,6 +39,23 @@ export default function useMouseActionDetector() {
     isOverPieceOrSetup.value = false
   }
 
+  // Public page
+  const mouseMoveHandlerPublicPage = () => {
+    isOverPieceOrSetupInPublicPage.value = true
+  }
+  const mouseLeaveHandlerPublicPage = () => {
+    isOverPieceOrSetupInPublicPage.value = false
+  }
+
+  const touchmoveHandlerPublicPage = () => {
+    isOverPieceOrSetupInPublicPage.value = true
+  }
+
+  const touchendHandlerPublicPage = () => {
+    isOverPieceOrSetupInPublicPage.value = false
+  }
+
+
   return {
     mouseDownHandler,
     mouseMoveHandler,
@@ -45,6 +63,11 @@ export default function useMouseActionDetector() {
     mouseLeaveHandler,
     touchmoveHandler,
     touchendHandler,
+    mouseMoveHandlerPublicPage,
+    mouseLeaveHandlerPublicPage,
+    touchmoveHandlerPublicPage,
+    touchendHandlerPublicPage,
+    isOverPieceOrSetupInPublicPage,
     isDragging,
     isOverPieceOrSetup,
   }

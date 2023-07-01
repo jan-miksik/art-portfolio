@@ -75,8 +75,6 @@ const switchMode = () => {
   }
 
   if (amountOfSwitching.value % 5 === 0) {
-    // alert('filter switch rotate-all')
-    console.log('filter switch rotate-all: ');
     document.body.classList.toggle('rotate-all')
     setTimeout(() => {
       document.body.classList.toggle('rotate-all')

@@ -22,6 +22,5 @@ export default function isMobile() {
 
   // const isProbablyMobile = ref(window.innerWidth < 768)
   
-  console.log('isProbablyMobile: ', isProbablyMobile);
   return isProbablyMobile
 }
