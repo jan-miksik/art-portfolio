@@ -21,7 +21,14 @@
   </div>
 
   <!-- <div class="admin__pinch-scroll-zoom-container" ref="mapperContainerRef"> -->
-    <!-- :style="mapperContainerStyle" -->
+  <!-- :style="mapperContainerStyle" -->
+  <div
+    class="admin__dropzone"
+    ref="dropzoneRef"
+    @drop.prevent="drop"
+    @dragover.prevent
+    @dragleave.prevent
+  >
     <PinchScrollZoom
       v-if="windowObject?.innerWidth && edgePositions.x"
       ref="mapperRef"
@@ -30,18 +37,19 @@
       class="pinch-scroll-zoom"
       :min-scale="0.01"
       :max-scale="100"
-      @scaling="(e) => onMapperEvent('scaling', e)"
-      @startDrag="(e) => onMapperEvent('startDrag', e)"
-      @stopDrag="(e) => onMapperEvent('stopDrag', e)"
-      @dragging="(e) => onMapperEvent('dragging', e)"
+      @scaling="(e: PinchScrollZoomEmitData) => onMapperEvent('scaling', e)"
+      @startDrag="(e: PinchScrollZoomEmitData) => onMapperEvent('startDrag', e)"
+      @stopDrag="(e: PinchScrollZoomEmitData) => onMapperEvent('stopDrag', e)"
+      @dragging="(e: PinchScrollZoomEmitData) => onMapperEvent('dragging', e)"
       :wheelVelocity="0.001"
       :throttleDelay="20"
       :content-width="edgePositions.x"
       :content-height="edgePositions.y"
       :draggable="!isOverPieceOrSetup"
-      >
+    >
       <Pieces />
     </PinchScrollZoom>
+  </div>
   <!-- </div> -->
 </template>
 
@@ -49,34 +57,40 @@
 import usePieces from '~/J/usePieces'
 import useAdminPage from '~/J/useAdminPage'
 import useContentfulPiece from '~/J/useContentfulPiece'
-import PinchScrollZoom from '@coddicat/vue-pinch-scroll-zoom'
+import PinchScrollZoom, {
+  PinchScrollZoomEmitData
+} from '@coddicat/vue-pinch-scroll-zoom'
 import useMapper from '~/J/useMapper'
 // import interact from 'interactjs'
 // import '@coddicat/vue-pinch-scroll-zoom/style.css'
 import '@coddicat/vue-pinch-scroll-zoom/style.css'
 import useMouseActionDetector from '~/J/useMouseActionDetector'
+import Piece from '~/models/Piece'
+import { v4 as uuidv4 } from 'uuid'
+import { Topics } from '~/components/piecesData'
+import { Techniques } from '../components/piecesData'
 
 const { pieces } = usePieces()
 const { edgePositions } = usePieces()
-const { onMapperEvent, isMapperDraggable } = useMapper()
+const { onMapperEvent, isMapperDraggable, mapperEventData } = useMapper()
 const { isOverPieceOrSetup } = useMouseActionDetector()
+const { isOnAdminPage, isSetupForMobile } = useAdminPage()
+
 const isAuthenticated = ref(
   import.meta.env.VITE_IS_ADMIN_AUTHENTICATION !== 'true'
 )
-
+const dropzoneRef = ref<HTMLElement | null>(null)
+const cursorPosition = ref({ x: 0, y: 0 })
 const password = ref('')
 const errorMessage = ref('')
 const isSettingsOpen = ref(false)
 const publishingInProgress = ref(false)
-
 const isMapperSet = ref(false)
 const mapperRef = ref()
 // const mapperContainerPosition = ref({ x: 0, y: 0 })
 // const mapperContainerRef = ref()
 
 const windowObject = computed(() => window)
-
-const { isOnAdminPage, isSetupForMobile } = useAdminPage()
 
 onMounted(async () => {
   isOnAdminPage.value = true
@@ -148,7 +162,80 @@ const submitPassword = () => {
 
 onMounted(() => {
   if (!mapperRef.value) return
+  window.addEventListener('mousemove', updateCursorPosition)
 })
+
+onUnmounted(() => {
+  window.removeEventListener('mousemove', updateCursorPosition)
+})
+
+// admin
+const updateCursorPosition = (event: MouseEvent) => {
+  if (!dropzoneRef.value) return
+  // console.log(
+  //   'cursorPosition.value: ',
+  //   cursorPosition.value.x,
+  //   cursorPosition.value.y
+  // )
+  const scale = mapperEventData.value.scale
+
+  cursorPosition.value = {
+    x: (event.clientX + dropzoneRef.value.scrollLeft) / scale,
+    y: (event.clientY + dropzoneRef.value.scrollTop) / scale
+  }
+}
+
+const drop = (event: DragEvent) => {
+  console.log('event: ', event)
+  if (!useAdminPage().isOnAdminPage.value) return
+
+  const files = event?.dataTransfer?.files
+  if (!files) return
+  const imageFile = Array.from(files)[0]
+  if (files.length !== 1 && !imageFile) return
+
+  const id = uuidv4()
+  const newPiece = reactive(
+    new Piece({
+      id,
+      name: 'TBD',
+      topic: Topics.SANS_TOPIC,
+      image: {
+        id,
+        url: URL.createObjectURL(imageFile as File),
+        lastUpdated: new Date().getTime()
+      },
+      technique: Techniques.MIXED_MEDIA,
+      techniqueDescription: 'unspecified',
+      created: new Date(),
+      sizeInCm: {
+        x: 30,
+        y: 0
+      },
+      imageRaw: imageFile,
+      sizeOnWeb: {
+        width: 350,
+        widthMob: 250
+        // height?: number
+      },
+      position: {
+        x: Math.floor(cursorPosition.value.x),
+        y: Math.floor(cursorPosition.value.y),
+        deg: 0,
+        yMob: Math.floor(cursorPosition.value.y),
+        xMob: Math.floor(cursorPosition.value.x),
+        degMob: 0
+      },
+      isUpdated: false,
+      isPublished: false,
+      isUploadedToCf: false
+    })
+  )
+
+  console.log('newPiece: ', newPiece)
+  pieces.value?.push(newPiece)
+  useContentfulPiece().uploadPiece(newPiece)
+}
 
 // const handleChangeDeviceTypeSetup = (deviceType: 'mobile' | 'desktop') => {
 //   if (deviceType === 'mobile') {

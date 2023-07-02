@@ -1,8 +1,9 @@
 <template>
+  <!-- TODO resolve style typings -->
   <div
     class="piece"
     ref="pieceRef"
-    :style="handlePieceStyle(piece)"
+    :style="(handlePieceStyle(piece) as StyleValue)"
     @mousedown="handleOnMouseDown"
     @mousemove="mouseMoveHandler"
     @mouseleave="mouseLeaveHandler"
@@ -35,17 +36,23 @@
         <swiper
           class="swiper"
           ref="swiperRef"
-          :modules="[Navigation, Keyboard]"
+          :modules="[Navigation, Keyboard, Mousewheel]"
           :keyboard="{ enabled: true }"
           @slideChange="onSlideChange"
           :initialSlide="initialSlide"
         >
-        <img src="/close.svg" width="30" height="30" class="piece__selected-piece-back"/>
+          <!-- :mousewheel="true" -->
+          <img
+            src="/close.svg"
+            width="30"
+            height="30"
+            class="piece__selected-piece-back"
+          />
           <swiper-slide class="slide" v-for="(piece, index) in pieces">
             <!-- :width="windowObject.innerWidth" -->
-            
+
             <!-- <div class="piece__selected-piece-image-wrapper" /> -->
-            
+
             <div
               class="piece__selected-piece-image-wrapper"
               @click.stop
@@ -61,7 +68,7 @@
                 @click.stop
                 @touchstart.stop
               >
-              <!-- <PinchScrollZoom
+                <!-- <PinchScrollZoom
                   v-if="windowObject?.innerWidth"
                   :height="windowObject.innerHeight * 0.7"
                   :width="windowObject?.innerWidth"
@@ -91,9 +98,11 @@
                   @touchstart.stop
                 /> -->
             </div>
-            <div class="piece__selected-piece-image-info-spacer" @click.stop
-              @touchstart.stop />
-            
+            <div
+              class="piece__selected-piece-image-info-spacer"
+              @click.stop
+              @touchstart.stop
+            />
           </swiper-slide>
           <div class="piece__selected-piece-info-wrapper">
             <div
@@ -111,8 +120,8 @@
               </strong>
               <br />
               <span v-if="!isOnAdminPage">
-                {{ selectedPiece.created.getFullYear() }} </span
-              >
+                {{ selectedPiece.created.getFullYear() }}
+              </span>
 
               <!-- autoApplyMonth -->
               <VueDatePicker
@@ -121,6 +130,25 @@
                 autoApply
                 @update:modelValue="handleOnSelectDate"
               />,
+
+              <select
+                v-if="isOnAdminPage"
+                v-model="selectedPiece.topic"
+                @change="handleUpdatePieceTopic"
+              >
+                <option disabled value="">select...</option>
+                <option v-for="topic in Topics">{{ topic }}</option>
+              </select>
+
+              <select
+                v-if="isOnAdminPage"
+                v-model="selectedPiece.technique"
+                @change="handleUpdatePieceTechnique"
+              >
+                <option disabled value="">select...</option>
+                <option v-for="topic in Techniques">{{ topic }}</option>
+              </select>
+
               <span
                 :contenteditable="isOnAdminPage"
                 @blur="
@@ -129,7 +157,11 @@
                 @click.stop
                 @touchstart.stop
               >
-                {{ selectedPiece.techniqueDescription }} </span
+                {{
+                  selectedPiece.techniqueDescription === 'unspecified'
+                    ? ''
+                    : selectedPiece.techniqueDescription
+                }} </span
               >,
               <span
                 :contenteditable="isOnAdminPage"
@@ -176,12 +208,14 @@ import { Navigation } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/navigation'
-import { Swiper as SwiperTypes, Keyboard } from 'swiper'
-import { Topics } from '~/components/piecesData'
+import 'swiper/css/pagination'
+import { Swiper as SwiperTypes, Keyboard, Mousewheel } from 'swiper'
+import { Topics, Techniques } from '~/components/piecesData'
 import useMapper from '~/J/useMapper'
 
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
+import { StyleValue } from 'nuxt/dist/app/compat/capi'
 
 const {
   mouseDownHandler,
@@ -202,6 +236,10 @@ const pieceRef = ref()
 const selectedPiece = ref<Piece>()
 const initialSlide = ref(0)
 const activeIndex = ref(0)
+// const selectedTopic = ref<Topics | null>(selectedPiece.value?.topic || null)
+// const selectedTechnique = ref<Techniques | null>(
+//   selectedPiece.value?.technique || null
+// )
 
 const windowObject = computed(() => window)
 
@@ -213,6 +251,20 @@ const props = defineProps<{
 //   console.log(payload);
 // }
 
+const handleUpdatePieceTopic = () => {
+  if (!selectedPiece.value || !pieces.value) return
+  console.log('selectedTopic.value: ', selectedPiece.value.topic)
+  console.log('sss')
+  // selectedPiece.value.topic = selectedTopic.value
+  pieces.value[activeIndex.value].topic = selectedPiece.value.topic
+}
+
+const handleUpdatePieceTechnique = () => {
+  if (!selectedPiece.value || !pieces.value) return
+  console.log('selectedTechnique.value: ', selectedPiece.value.technique)
+  console.log('sss 2')
+  pieces.value[activeIndex.value].technique = selectedPiece.value.technique
+}
 
 const handleOnBlurEditPieceInfo = (
   event: Event,
@@ -261,12 +313,8 @@ onMounted(() => {
           if (!isOnAdminPage.value) return
           const scale = mapperEventData.value.scale
           piece.value.isPublished = false
-          const xRaw =
-            (piece.value.position.x) +
-            event.dx / scale
-          const yRaw =
-            (piece.value.position.y) +
-            event.dy / scale
+          const xRaw = piece.value.position.x + event.dx / scale
+          const yRaw = piece.value.position.y + event.dy / scale
           const x = xRaw > -2000 ? xRaw : -2000
           const y = yRaw > -2000 ? yRaw : -2000
           piece.value.position.x = x
@@ -379,13 +427,13 @@ const handleRemovePiece = async () => {
 }
 
 const handlePieceStyle = (piece: Piece) => {
-  if (!piece) return
+  if (!piece) return { width: '50px' }
 
   // TODO nice to have: add randomization during move for selected piece
 
   return {
     width: `${piece.sizeInCm?.x * 5}px`,
-    maxHeight: `${piece.sizeInCm?.y * 5}px`,
+    maxHeight: piece.sizeInCm?.y ? `${piece.sizeInCm?.y * 5}px` : 'unset',
     left: `${piece.position?.x}px`,
     top: `${piece.position?.y}px`,
     deg: `${piece.position?.deg}deg`,
@@ -613,7 +661,6 @@ const selectImage = (piece: Piece) => {
   right 1rem
   z-index 10000
   opacity 0.2
-
 </style>
 
 <style lang="stylus">

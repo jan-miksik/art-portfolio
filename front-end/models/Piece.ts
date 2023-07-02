@@ -1,4 +1,4 @@
-// import { Topics } from '~/components/piecesData';
+import { Techniques, Topics } from '~/components/piecesData';
 import ImageFile from '~/models/ImageFile'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -17,8 +17,8 @@ export type IPiece = {
     version?: number
   }
   name: string
-  topic: string
-  technique: string
+  topic: Topics
+  technique: Techniques
   techniqueDescription: string
   created: Date
   image: ImageFile

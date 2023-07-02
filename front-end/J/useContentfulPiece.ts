@@ -197,7 +197,7 @@ export default function useContentfulPiece() {
             'en-US': piece.technique || ''
           },
           techniqueDescription: {
-            'en-US': piece.techniqueDescription || ''
+            'en-US': piece.techniqueDescription || 'unspecified'
           },
           created: {
             'en-US': piece.created || new Date(100, 0).toISOString()
