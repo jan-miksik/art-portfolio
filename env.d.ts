@@ -12,5 +12,3 @@ interface Window {
   ethers: any;
   contractStpReadOnly: any;
 }
-
-declare module 'vue-zoomer'

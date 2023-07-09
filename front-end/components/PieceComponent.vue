@@ -42,7 +42,6 @@
           @slideChange="onSlideChange"
           :initialSlide="initialSlide"
         >
-          <!-- :mousewheel="true" -->
           <img
             src="/close.svg"
             width="30"
@@ -50,9 +49,7 @@
             class="piece__selected-piece-back"
           />
           <swiper-slide class="slide" v-for="(piece, index) in pieces">
-            <!-- :width="windowObject.innerWidth" -->
 
-            <!-- <div class="piece__selected-piece-image-wrapper" /> -->
 
             <div
               class="piece__selected-piece-image-wrapper"
@@ -93,11 +90,6 @@
                 <!-- </PinchScrollZoom> -->
               </div>
 
-              <!-- <div
-                  class="piece__selected-piece-image-prevent-close"
-                  @click.stop
-                  @touchstart.stop
-                /> -->
             </div>
             <div
               class="piece__selected-piece-image-info-spacer"
@@ -237,20 +229,10 @@ const pieceRef = ref()
 const selectedPiece = ref<Piece>()
 const initialSlide = ref(0)
 const activeIndex = ref(0)
-// const selectedTopic = ref<Topics | null>(selectedPiece.value?.topic || null)
-// const selectedTechnique = ref<Techniques | null>(
-//   selectedPiece.value?.technique || null
-// )
-
-const windowObject = computed(() => window)
 
 const props = defineProps<{
   piece: Piece
 }>()
-
-// const dateSelected = (payload : Date) => {
-//   console.log(payload);
-// }
 
 const handleUpdatePieceTopic = () => {
   if (!selectedPiece.value || !pieces.value) return

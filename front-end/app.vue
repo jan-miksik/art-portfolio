@@ -19,8 +19,6 @@ const { fetchContentfulData } = useContentful()
 const { mergeContentfulDataWithLocalData, pieces } = usePieces()
 
 const scrollable = ref<HTMLElement | null>(null)
-// const scrollableRef = ref<HTMLElement | null>(null)
-// const cursorPosition = ref({ x: 0, y: 0 })
 
 let isDragging = false
 let lastX = 0
@@ -58,76 +56,7 @@ const mouseUpHandler = () => {
 onMounted(async () => {
   await fetchContentfulData()
   mergeContentfulDataWithLocalData()
-
-  // window.addEventListener('mousemove', updateCursorPosition)
 })
-
-// onMounted(async () => {
-//   await fetchContentfulData()
-//   // mergeContentfulPiecesWithLocalData()
-// })
-
-// // admin
-// const updateCursorPosition = (event: MouseEvent) => {
-//   if (!scrollableRef.value) return
-//   cursorPosition.value = {
-//     x: event.clientX + scrollableRef.value.scrollLeft,
-//     y: event.clientY + scrollableRef.value.scrollTop
-//   }
-// }
-
-// onUnmounted(() => {
-//   window.removeEventListener('mousemove', updateCursorPosition)
-// })
-
-// const drop = (event: DragEvent) => {
-//   console.log('event: ', event)
-//   if (!useAdminPage().isOnAdminPage.value) return
-
-//   const files = event?.dataTransfer?.files
-//   console.log('files: ', files)
-//   if (!files) return
-//   const imageFile = Array.from(files)[0]
-//   if (files.length !== 1 && !imageFile) return
-
-//   const id = uuidv4()
-//   const newPiece = reactive(
-//     new Piece({
-//       id,
-//       name: 'TBD',
-//       topic: 'anything',
-//       image: {
-//         id,
-//         url: URL.createObjectURL(imageFile as File),
-//         lastUpdated: new Date().getTime()
-//       },
-//       technique: '',
-//       techniqueDescription: '',
-//       created: new Date(),
-//       sizeInCm: {
-//         x: 30,
-//         y: 0
-//       },
-//       imageRaw: imageFile,
-//       sizeOnWeb: {
-//         width: 350,
-//         widthMob: 250
-//         // height?: number
-//       },
-//       position: {
-//         x: Math.floor(cursorPosition.value.x),
-//         y: Math.floor(cursorPosition.value.y),
-//         deg: 0,
-//         yMob: Math.floor(cursorPosition.value.y),
-//         xMob: Math.floor(cursorPosition.value.x),
-//         degMob: 0
-//       }
-//     })
-//   )
-
-//   pieces.value?.push(newPiece)
-//   useContentfulPiece().uploadPiece(newPiece)
-// }
 </script>
 
 <style lang="stylus">
@@ -135,18 +64,17 @@ onMounted(async () => {
 :root
   --image-filter-invert 1
 
-
 html
   scroll-behavior smooth
   transition all 0.6s
   overflow-y scroll
   overflow-x hidden
 
-@font-face
-  font-family AlumniSans
-  font-weight 300
-  unicode-range U+000-5FF
-  src url("~/assets/fonts/Alumni_Sans_Collegiate_One/AlumniSansCollegiateOne-Regular.ttf")
+// @font-face
+//   font-family AlumniSans
+//   font-weight 300
+//   unicode-range U+000-5FF
+//   src url("~/assets/fonts/Alumni_Sans_Collegiate_One/AlumniSansCollegiateOne-Regular.ttf")
 
 @font-face
   font-family GowunDodum
