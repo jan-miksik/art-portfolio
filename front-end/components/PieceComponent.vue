@@ -24,6 +24,7 @@
       :width="piece.sizeOnWeb.width"
       @click="selectImage(piece)"
     />
+    <!-- x:{{ piece?.position.x }} y: {{ piece?.position.y }} -->
   </div>
   <Teleport to="body">
     <Transition name="images">
@@ -37,7 +38,7 @@
           class="swiper"
           ref="swiperRef"
           :modules="[Navigation, Keyboard, Mousewheel]"
-          :keyboard="{ enabled: true }"
+          :keyboard="{ enabled: !isOnAdminPage }"
           @slideChange="onSlideChange"
           :initialSlide="initialSlide"
         >
@@ -123,7 +124,6 @@
                 {{ selectedPiece.created.getFullYear() }}
               </span>
 
-              <!-- autoApplyMonth -->
               <VueDatePicker
                 v-if="isOnAdminPage"
                 v-model="selectedPiece.created"
@@ -142,14 +142,15 @@
 
               <select
                 v-if="isOnAdminPage"
-                v-model="selectedPiece.technique"
-                @change="handleUpdatePieceTechnique"
+                v-model="selectedPiece.techniqueDescription"
+                @change="handleUpdatePieceTechniqueDescription"
               >
                 <option disabled value="">select...</option>
-                <option v-for="topic in Techniques">{{ topic }}</option>
+                <option v-for="topic in TechniqueDescription">{{ topic }}</option>
               </select>
 
               <span
+                v-if="!isOnAdminPage"
                 :contenteditable="isOnAdminPage"
                 @blur="
                   (e) => handleOnBlurEditPieceInfo(e, 'techniqueDescription')
@@ -210,7 +211,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Swiper as SwiperTypes, Keyboard, Mousewheel } from 'swiper'
-import { Topics, Techniques } from '~/components/piecesData'
+import { Topics, TechniqueDescription } from '~/components/piecesData'
 import useMapper from '~/J/useMapper'
 
 import VueDatePicker from '@vuepic/vue-datepicker'
@@ -257,13 +258,14 @@ const handleUpdatePieceTopic = () => {
   console.log('sss')
   // selectedPiece.value.topic = selectedTopic.value
   pieces.value[activeIndex.value].topic = selectedPiece.value.topic
+  pieces.value[activeIndex.value].isPublished = false
 }
 
-const handleUpdatePieceTechnique = () => {
+const handleUpdatePieceTechniqueDescription = () => {
   if (!selectedPiece.value || !pieces.value) return
-  console.log('selectedTechnique.value: ', selectedPiece.value.technique)
-  console.log('sss 2')
-  pieces.value[activeIndex.value].technique = selectedPiece.value.technique
+  console.log('handleUpdatePieceTechniqueDescription: ', selectedPiece.value.techniqueDescription)
+  pieces.value[activeIndex.value].techniqueDescription = selectedPiece.value.techniqueDescription
+  pieces.value[activeIndex.value].isPublished = false
 }
 
 const handleOnBlurEditPieceInfo = (

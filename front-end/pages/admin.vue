@@ -11,6 +11,13 @@
       {{ errorMessage }}
     </p>
   </form>
+  
+  x: {{ Math.floor(cursorPosition.x) }} y: {{ Math.floor(cursorPosition.y) }} scale {{ cursorPosition.scale }}
+  <!-- <br/> -->
+  <!-- mapper x: {{ Math.floor(mapperEventData.x
+) }} y: {{ Math.floor(mapperEventData.y) }} scale {{ mapperEventData.scale }} -->
+
+
   <div class="admin__upload-data">
     <button
       :disabled="!isSomethingToPublish || publishingInProgress"
@@ -18,6 +25,12 @@
     >
       {{ publishButtonText }}
     </button>
+    <select
+      v-model="defaultTopic"
+    >
+      <option disabled value="">select...</option>
+      <option v-for="topic in Topics">{{ topic }}</option>
+    </select>
   </div>
 
   <!-- <div class="admin__pinch-scroll-zoom-container" ref="mapperContainerRef"> -->
@@ -80,13 +93,14 @@ const isAuthenticated = ref(
   import.meta.env.VITE_IS_ADMIN_AUTHENTICATION !== 'true'
 )
 const dropzoneRef = ref<HTMLElement | null>(null)
-const cursorPosition = ref({ x: 0, y: 0 })
+const cursorPosition = ref({ x: 0, y: 0, scale: 1 })
 const password = ref('')
 const errorMessage = ref('')
 const isSettingsOpen = ref(false)
 const publishingInProgress = ref(false)
 const isMapperSet = ref(false)
 const mapperRef = ref()
+const defaultTopic = ref(Topics.NODE_AVATARS)
 // const mapperContainerPosition = ref({ x: 0, y: 0 })
 // const mapperContainerRef = ref()
 
@@ -161,7 +175,8 @@ const submitPassword = () => {
 // })
 
 onMounted(() => {
-  if (!mapperRef.value) return
+  console.log('mapperRef.value: ', mapperRef.value);
+  // if (!mapperRef.value) return
   window.addEventListener('mousemove', updateCursorPosition)
 })
 
@@ -172,45 +187,74 @@ onUnmounted(() => {
 // admin
 const updateCursorPosition = (event: MouseEvent) => {
   if (!dropzoneRef.value) return
+  // console.log('dropzoneRef: ', dropzoneRef);
+
+  const scale = mapperEventData.value.scale
+  // console.log('mapperEventData: ', mapperEventData);
   // console.log(
   //   'cursorPosition.value: ',
   //   cursorPosition.value.x,
-  //   cursorPosition.value.y
+  //   cursorPosition.value.y,
   // )
-  const scale = mapperEventData.value.scale
 
+  // console.log('dropzoneRef.value.scrollLeft: ', dropzoneRef.value.scrollLeft);
+  // console.log('dropzoneRef.value.scrollTop: ', dropzoneRef.value.scrollTop);
   cursorPosition.value = {
-    x: (event.clientX + dropzoneRef.value.scrollLeft) / scale,
-    y: (event.clientY + dropzoneRef.value.scrollTop) / scale
+    x: (event.clientX) + -mapperEventData.value.x,
+    y: (event.clientY) + -mapperEventData.value.y,
+    scale,
   }
 }
 
 const drop = (event: DragEvent) => {
-  console.log('event: ', event)
+  // console.log(' Math.floor(cursorPosition.value.x): ',  Math.floor(cursorPosition.value.x));
+  // console.log(' Math.floor(cursorPosition.value.y): ',  Math.floor(cursorPosition.value.y));
+
   if (!useAdminPage().isOnAdminPage.value) return
 
   const files = event?.dataTransfer?.files
+  console.log('event: ', event);
   if (!files) return
   const imageFile = Array.from(files)[0]
   if (files.length !== 1 && !imageFile) return
+  console.log('imageFile: ', imageFile);
+
+  // Remove the file extension
+  const description = imageFile.name.replace(/\.[^/.]+$/, '');
+
+  const parts = description.split(',');
+
+  const name = parts[0];
+  const created = new Date(Number(parts[1]), 6);
+  const techniqueDescription = parts[2];
+  const size = parts[3].split('x');
+  
+  const sizeX = parseInt(size[0]);
+  const sizeY = parseInt(size[1].replace('cm', ''));
+  
+  console.log('created: ', created);
+  console.log('techniqueDescription: ', techniqueDescription);
+  console.log('sizeX: ', sizeX);
+  console.log('sizeY: ', sizeY);
+  console.log('name', name);
 
   const id = uuidv4()
   const newPiece = reactive(
     new Piece({
       id,
-      name: 'TBD',
-      topic: Topics.SANS_TOPIC,
+      name,
+      topic: defaultTopic.value,
       image: {
         id,
         url: URL.createObjectURL(imageFile as File),
         lastUpdated: new Date().getTime()
       },
       technique: Techniques.MIXED_MEDIA,
-      techniqueDescription: 'unspecified',
-      created: new Date(),
+      techniqueDescription,
+      created,
       sizeInCm: {
-        x: 30,
-        y: 0
+        x: +sizeX,
+        y: +sizeY
       },
       imageRaw: imageFile,
       sizeOnWeb: {
