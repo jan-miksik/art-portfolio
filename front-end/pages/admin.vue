@@ -25,6 +25,7 @@
     >
       {{ publishButtonText }}
     </button>
+    default topic for dropped piece
     <select
       v-model="defaultTopic"
     >

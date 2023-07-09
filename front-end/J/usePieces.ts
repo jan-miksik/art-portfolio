@@ -55,7 +55,7 @@ export default function usePieces() {
         positionDegMob,
       } = pieceData
 
-      edgePositions.value.x = Math.max(edgePositions.value.x, positionX + widthOnWeb + 2000);
+      edgePositions.value.x = Math.max(edgePositions.value.x, positionX + widthOnWeb + 3000);
       edgePositions.value.y = Math.max(edgePositions.value.y, positionY + 2000);
       edgePositions.value.xMob = Math.max(edgePositions.value.xMob, positionXMob + widthOnWebMob + 500);
       edgePositions.value.yMob = Math.max(edgePositions.value.yMob, positionYMob + 500);
