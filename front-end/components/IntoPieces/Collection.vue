@@ -143,7 +143,6 @@ const mintAction = async () => {
 
 const contractActions = async (action: string) => {
   const canContinue = await checkForAnyContractAction()
-  console.log('canContinue: ', canContinue);
   if (!canContinue) return
   try {
     if (action == 'mint') {
@@ -233,10 +232,11 @@ const loadContractData = async () => {
     mainSupportedChain.nftIntoPiecesContract || '',
     contractAbi.abi,
     useWeb3().jsonRpcProvider
-    )
+    ) 
 
-  window.contractReadOnly = contractReadOnly
-  window.jsonRpcProvider = useWeb3().jsonRpcProvider
+
+  // window.contractReadOnly = contractReadOnly
+  // window.jsonRpcProvider = useWeb3().jsonRpcProvider
 
   maxSupply.value = await contractReadOnly.MAX_SUPPLY()
   mintedNfts.value = +await contractReadOnly.mintedNFTs()
@@ -267,7 +267,7 @@ onMounted(async () => {
   width 37rem
   height 32rem
   background-size 190%
-  margin-top: 5rem;
+  margin-top 5rem
 
   @media screen and (min-width 370px)
     height 37rem
@@ -393,7 +393,6 @@ onMounted(async () => {
     margin-top 2rem
 
 
-
   &__collection-link
     filter grayscale(1) opacity(0.5)
     transition all 0.391s
@@ -432,8 +431,8 @@ onMounted(async () => {
     scale 0.9 1
 
   &__info
-    margin-top: 3rem;
-    max-width: 21rem;
+    margin-top 3rem
+    max-width 21rem
 
 .dark-mode .nft-collection__successfully-minted
 .dark-mode .nft-collection__limit-exceeded

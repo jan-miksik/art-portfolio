@@ -68,17 +68,13 @@ const switchMode = () => {
   document.documentElement.classList.toggle('dark-mode')
   modeRef.value?.classList.toggle('scaling')
   amountOfSwitching.value++
-  console.log('amountOfSwitching.value: ', amountOfSwitching.value);
 
   if (amountOfSwitching.value % 3 === 0 || amountOfSwitching.value % 4 === 0) {
     // alert('Seems, that you like switching')
-    console.log('1111111111 ');
     document.documentElement.style.setProperty('--image-filter-invert', '0')
   }
 
   if (amountOfSwitching.value % 5 === 0) {
-    // alert('filter switch rotate-all')
-    console.log('filter switch rotate-all: ');
     document.body.classList.toggle('rotate-all')
     setTimeout(() => {
       document.body.classList.toggle('rotate-all')
@@ -126,6 +122,12 @@ const switchMode = () => {
   display flex
   align-items center
   justify-content center
+  z-index 10
+  opacity 0.7
+  transition opacity 0.2s ease-out
+
+  &:hover
+    opacity 0.9
 
   &::before
     content ""
@@ -158,12 +160,12 @@ const switchMode = () => {
   color white
   line-height 18px
 
-  @media (min-width: 600px)
+  @media (min-width 600px)
     top 90vh
 
 
 .dark-mode .mode
-  background rgb(255 255 255 / 0%)
+  // background rgb(255 255 255 / 0%)
 
 
 .dark-mode .mode::before

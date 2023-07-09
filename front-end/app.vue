@@ -1,12 +1,12 @@
-
 <template>
-  <div      
+  <div
     ref="scrollable"
-    :class="['app', { 'dragging': isDragging }]"
+    :class="['app', { dragging: isDragging }]"
     @mousedown="handleOnMouseDown"
     @mousemove="mouseMoveHandler"
     @mouseup="mouseUpHandler"
-    @mouseleave="mouseUpHandler">
+    @mouseleave="mouseUpHandler"
+  >
     <NuxtPage />
   </div>
 </template>
@@ -16,9 +16,11 @@ import useContentful from '~/api/useContentful'
 import usePieces from '~/J/usePieces'
 
 const { fetchContentfulData } = useContentful()
-const { mergeContentfulDataWithLocalData } = usePieces()
+const { mergeContentfulDataWithLocalData, pieces } = usePieces()
 
 const scrollable = ref<HTMLElement | null>(null)
+// const scrollableRef = ref<HTMLElement | null>(null)
+// const cursorPosition = ref({ x: 0, y: 0 })
 
 let isDragging = false
 let lastX = 0
@@ -56,11 +58,80 @@ const mouseUpHandler = () => {
 onMounted(async () => {
   await fetchContentfulData()
   mergeContentfulDataWithLocalData()
+
+  // window.addEventListener('mousemove', updateCursorPosition)
 })
 
+// onMounted(async () => {
+//   await fetchContentfulData()
+//   // mergeContentfulPiecesWithLocalData()
+// })
+
+// // admin
+// const updateCursorPosition = (event: MouseEvent) => {
+//   if (!scrollableRef.value) return
+//   cursorPosition.value = {
+//     x: event.clientX + scrollableRef.value.scrollLeft,
+//     y: event.clientY + scrollableRef.value.scrollTop
+//   }
+// }
+
+// onUnmounted(() => {
+//   window.removeEventListener('mousemove', updateCursorPosition)
+// })
+
+// const drop = (event: DragEvent) => {
+//   console.log('event: ', event)
+//   if (!useAdminPage().isOnAdminPage.value) return
+
+//   const files = event?.dataTransfer?.files
+//   console.log('files: ', files)
+//   if (!files) return
+//   const imageFile = Array.from(files)[0]
+//   if (files.length !== 1 && !imageFile) return
+
+//   const id = uuidv4()
+//   const newPiece = reactive(
+//     new Piece({
+//       id,
+//       name: 'TBD',
+//       topic: 'anything',
+//       image: {
+//         id,
+//         url: URL.createObjectURL(imageFile as File),
+//         lastUpdated: new Date().getTime()
+//       },
+//       technique: '',
+//       techniqueDescription: '',
+//       created: new Date(),
+//       sizeInCm: {
+//         x: 30,
+//         y: 0
+//       },
+//       imageRaw: imageFile,
+//       sizeOnWeb: {
+//         width: 350,
+//         widthMob: 250
+//         // height?: number
+//       },
+//       position: {
+//         x: Math.floor(cursorPosition.value.x),
+//         y: Math.floor(cursorPosition.value.y),
+//         deg: 0,
+//         yMob: Math.floor(cursorPosition.value.y),
+//         xMob: Math.floor(cursorPosition.value.x),
+//         degMob: 0
+//       }
+//     })
+//   )
+
+//   pieces.value?.push(newPiece)
+//   useContentfulPiece().uploadPiece(newPiece)
+// }
 </script>
 
 <style lang="stylus">
+// stylelint-disable-next-line selector-anb-no-unmatchable
 :root
   --image-filter-invert 1
 
@@ -105,12 +176,12 @@ body
   color #0e0e0e
   margin 0
   overflow-x hidden
-  background-color ghostwhite
-  user-select: none;
+  background-color #f1f1f1
+  user-select none
 
 
-/////////////////////////////////////////////
-/////////////// Scrollbar ///////////////////
+// ///////////////////////////////////////////
+// ///////////// Scrollbar ///////////////////
 body
 .app
   --scrollbar-foreground rgb(248 248 255)
@@ -119,8 +190,8 @@ body
   scrollbar-color var(--scrollbar-foreground) var(--scrollbar-background)
 
 .app::-webkit-scrollbar
-  width 15px
-  height 15px
+  width 0
+  height 0
 
 body::-webkit-scrollbar
   width 0
@@ -134,6 +205,8 @@ body::-webkit-scrollbar-track // Background
 .app::-webkit-scrollbar-track
   background var(--scrollbar-background)
 
+.dark-mode body
+  background-color #f1f1f1
 
 .dark-mode:not(.w3m-active)
   filter invert(0.97)
@@ -163,11 +236,10 @@ input[type="number"]
 // .dark-mode .w3m-active
 //   filter invert(1)
 .app
-  position: relative;
-  overflow: auto;
-  height: 100vh;
+  position relative
+  overflow auto
+  height 100vh
 
 .dragging
-  cursor: grabbing;
-
+  cursor grabbing
 </style>

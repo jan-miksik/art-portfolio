@@ -14,6 +14,10 @@ export default defineNuxtConfig({
   },
   modules: [
     '@vueuse/nuxt',
+    'nuxt-swiper',
+  ],
+  plugins: [
+    { src: '@/plugins/vue-awesome-swiper', mode: 'client' }
   ],
   // plugins: ['~/plugins/uuid-polyfill.js'],
   // vite: {

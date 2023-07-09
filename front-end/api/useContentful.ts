@@ -14,6 +14,7 @@ export default function useContentful() {
           image {
             sys {
               publishedAt
+              id
             }
             fileName
             url
@@ -24,6 +25,14 @@ export default function useContentful() {
           created
           sizeInCmXHorizontal
           sizeInCmYVertical
+          widthOnWeb
+          positionX
+          positionY
+          positionDeg
+          widthOnWebMob
+          positionXMob
+          positionYMob
+          positionDegMob
         }
       }
     }`
@@ -46,7 +55,6 @@ export default function useContentful() {
     try {
       const response = await fetch(fetchUrl, fetchOptions)
       const JSONResponse = await response.json()
-
       contentfulData.value = JSONResponse.data.pieceCollection.items
       console.log('contentfulData.value: ', contentfulData.value);
     } catch (error) {

@@ -1,7 +1,7 @@
 <template>
-    <ODarkModeSwitcher />
-    <div class="homepage__open-topic-icons">
-      <SelectTopicIcon :icon="sansTopicIcon" label="Free Topic" :topic="Topics.SANS_TOPIC" class="homepage__sans-topic-link" />
+  <ODarkModeSwitcher />
+  <!-- <div class="homepage__open-topic-icons"> -->
+  <!-- <SelectTopicIcon :icon="sansTopicIcon" label="Free Topic" :topic="Topics.SANS_TOPIC" class="homepage__sans-topic-link" />
 
       <SelectTopicIcon :icon="geometryIcon" label="Geometry" :topic="Topics.GEOMETRY" class="homepage__geometry-link"/>
 
@@ -9,215 +9,166 @@
 
       <SelectTopicIcon :icon="puzzleIcon" label="Puzzle" :topic="Topics.PUZZLE" class="homepage__puzzle-link"/>
 
-      <SelectTopicIcon :icon="collectIcon" label="Into Pieces" :topic="Topics.NFT_COLLECTION" class="homepage__nft-collection-link"/>
-    </div>
+      <SelectTopicIcon :icon="collectIcon" label="Into Pieces" :topic="Topics.NFT_COLLECTION" class="homepage__nft-collection-link"/> -->
+  <!-- </div> -->
 
-    <Contact />
+  <Contact />
 
-    <Pieces
-      :pieces="piecesSansTopic"
-      :type="Topics.SANS_TOPIC"
-      :selected-topic="selectedTopic"
-    />
-    <Pieces
-      :pieces="piecesGeometry"
-      :type="Topics.GEOMETRY"
-      :selected-topic="selectedTopic"
-    />
-    <Pieces
-      :pieces="piecesNodeAvatars"
-      :type="Topics.NODE_AVATARS"
-      :selected-topic="selectedTopic"
-    />
-    <Pieces
-      :pieces="piecesPuzzle"
-      :type="Topics.PUZZLE"
-      :selected-topic="selectedTopic"
-    />
-    <IntoPiecesMain
-      :type="Topics.NFT_COLLECTION"
-      :selected-topic="selectedTopic"
-    />
+  <!-- <div class="index__pinch-scroll-zoom-container" ref="mapperContainerRef"> -->
+    <!-- :style="mapperContainerStyle" -->
+    <PinchScrollZoom
+      v-if="windowObject?.innerWidth && edgePositions.x"
+      ref="mapperRef"
+      :width="windowObject.innerWidth"
+      :height="windowObject.innerHeight"
+      class="pinch-scroll-zoom"
+      :min-scale="0.01"
+      :max-scale="100"
+      @scaling="(e) => onMapperEvent('scaling', e)"
+      @startDrag="(e) => onMapperEvent('startDrag', e)"
+      @stopDrag="(e) => onMapperEvent('stopDrag', e)"
+      @dragging="(e) => onMapperEvent('dragging', e)"
+      :wheelVelocity="0.001"
+      :throttleDelay="20"
+      :content-width="edgePositions.x"
+      :content-height="edgePositions.y"
+      :draggable="!isOverPieceOrSetupInPublicPage"
+      >
+      <Pieces />
+    </PinchScrollZoom>
+  <!-- </div> -->
 </template>
 
 <script setup lang="ts">
-import { Topics } from '~/components/piecesData';
+import '@coddicat/vue-pinch-scroll-zoom/style.css'
+import PinchScrollZoom from '@coddicat/vue-pinch-scroll-zoom'
 import usePieces from '~/J/usePieces'
-import useSelectedTopic from '~/J/useSelectedTopic'
-import ImageFile from '~/models/ImageFile'
+import useMapper from '~/J/useMapper'
+import useAdminPage from '~/J/useAdminPage'
+import interact from 'interactjs'
+import useMouseActionDetector from '~/J/useMouseActionDetector'
 
-const { piecesNodeAvatars, piecesSansTopic, piecesGeometry, piecesPuzzle } = usePieces()
-const { selectedTopic } = useSelectedTopic()
+const { edgePositions } = usePieces()
+const { onMapperEvent } = useMapper()
+
+const { isOverPieceOrSetupInPublicPage } = useMouseActionDetector()
+const isMapperSet = ref(false)
+const mapperRef = ref()
+// const mapperContainerPosition = ref({ x: 0, y: 0 })
+// const mapperContainerRef = ref()
+
+const windowObject = computed(() => window)
+
+const { isSetupForMobile } = useAdminPage()
+
+watch(mapperRef, (newVal) => {
+  if (!newVal || isMapperSet.value) return
+  isMapperSet.value = true
+  if (isSetupForMobile.value) {
+    mapperRef.value?.setData({
+      scale: 0.25,
+      originX: 4412,
+      originY: 6505,
+      translateX: -4200,
+      translateY: -6000
+    })
+  } else {
+    mapperRef.value?.setData({
+      scale: 0.5,
+      originX: 4725,
+      originY: 6388,
+      translateX: -3770,
+      translateY: -5717
+    })
+  }
+
+  // if (!mapperContainerRef.value) return
+
+  // interact(mapperContainerRef.value).draggable({
+  //   inertia: true,
+  //   autoScroll: true,
+  //   listeners: {
+  //     move(event) {
+  //       const xRaw = mapperContainerPosition.value.x + event.dx
+  //       const yRaw = mapperContainerPosition.value.y + event.dy
+  //       const x = xRaw > -20000 ? xRaw : -20000
+  //       const y = yRaw > -20000 ? yRaw : -20000
+  //       mapperContainerPosition.value.x = x
+  //       mapperContainerPosition.value.y = y
+  //     }
+  //   }
+  // })
+})
 
 useHead({
   title: 'Jan Mikšík',
-  meta: [{
-    content: 'Portfolio of Jan Mikšík. Drawings, paintings and other pieces'
-  }]
+  meta: [
+    {
+      content: 'Drawings, paintings, digital pieces and others'
+    }
+  ]
 })
 
+// const mapperContainerStyle = computed(() => {
+//   return {
+//     left: `${mapperContainerPosition.value.x}px`,
+//     top: `${mapperContainerPosition.value.y}px`
+//   }
+// })
 
+// const sansTopicIcon = ref(
+//   new ImageFile({
+//     url: 'topics-entry-icons/sans-topic-icon.webp',
+//     id: 'title-sans-topic-img',
+//     lastUpdated: new Date('1991').getTime()
+//   })
+// )
 
-const sansTopicIcon = ref(
-  new ImageFile({
-    url: 'topics-entry-icons/sans-topic-icon.webp',
-    id: 'title-sans-topic-img',
-    lastUpdated: new Date('1991').getTime()
-  })
-)
+// const geometryIcon = ref(
+//   new ImageFile({
+//     url: 'topics-entry-icons/geometry-icon.png',
+//     id: 'geometry-title-img',
+//     lastUpdated: new Date('1991').getTime()
+//   })
+// )
 
-const geometryIcon = ref(
-  new ImageFile({
-    url: 'topics-entry-icons/geometry-icon.png',
-    id: 'geometry-title-img',
-    lastUpdated: new Date('1991').getTime()
-  })
-)
+// const nodeAvatarsIcon = ref(
+//   new ImageFile({
+//     url: 'topics-entry-icons/node-avatars-icon.webp',
+//     id: 'node-avatars-title-img',
+//     lastUpdated: new Date('1997').getTime()
+//   })
+// )
 
-const nodeAvatarsIcon = ref(
-  new ImageFile({
-    url: 'topics-entry-icons/node-avatars-icon.webp',
-    id: 'node-avatars-title-img',
-    lastUpdated: new Date('1997').getTime()
-  })
-)
+// const puzzleIcon = ref(
+//   new ImageFile({
+//     url: 'topics-entry-icons/puzzle-icon.webp',
+//     id: 'puzzle-title-img',
+//     lastUpdated: new Date('1993').getTime()
+//   })
+// )
 
-const puzzleIcon = ref(
-  new ImageFile({
-    url: 'topics-entry-icons/puzzle-icon.webp',
-    id: 'puzzle-title-img',
-    lastUpdated: new Date('1993').getTime()
-  })
-)
-
-const collectIcon = ref(
-  new ImageFile({
-    url: 'topics-entry-icons/collect-icon.png',
-    id: 'collect',
-    lastUpdated: new Date('1993').getTime()
-  })
-)
-
+// const collectIcon = ref(
+//   new ImageFile({
+//     url: 'topics-entry-icons/collect-icon.png',
+//     id: 'collect',
+//     lastUpdated: new Date('1993').getTime()
+//   })
+// )
 </script>
-
 <style lang="stylus">
-// /
-// Free Topic
-// /
-.homepage__sans-topic-link
-  left 37vw
-  top 28vh
-  width 140px
+.index__pinch-scroll-zoom-container
+  position fixed
+  top 0
+  left 0
+  background #dbdae1
+  width 100%
+  height 100%
+  display flex
+  align-items center
+  justify-content center
 
-  @media (min-width 700px)
-    left 45vw
-    width 230px
-
-.open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
-  left calc(100vw - 140px)
-
-  @media (min-width 700px)
-    left calc(100vw - 230px)
-  // filter opacity(0.3)
-
-.open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon__is-unselected-topic)
-  .open-topic-icon__topic-thumbnail-img
-    transform scale(0.65, 0.65)
-    translate 25px 25px
-
-.open-topic-icon:is(.homepage__sans-topic-link):is(.open-topic-icon)
-  .open-topic-icon__topic-thumbnail-img
-    filter drop-shadow(0 0 2px gray)
-
-
-// /
-// Geometry
-// /
-.homepage__geometry-link
-  top 55vh
-  left 15vw
-  width 45px
-
-  @media (min-width 700px)
-    width 50px
-
-.open-topic-icon:is(.homepage__geometry-link):is(.open-topic-icon__is-unselected-topic)
-  left -3px
-  // filter opacity(0.3)
-
-.open-topic-icon:is(.homepage__geometry-link):is(.open-topic-icon)
-  .open-topic-icon__topic-thumbnail-img
-    filter drop-shadow(0 0 2px #4488ff9e)
-
-// /
-// Node Avatars
-// /
-.homepage__node-avatars-link
-  top 12vh
-  left 10vw
-  width 80px
-
-  @media (min-width 700px)
-    width 135px
-
-.open-topic-icon:is(.homepage__node-avatars-link):is(.open-topic-icon__is-unselected-topic)
-  left -8px
-  // filter opacity(0.3)
-
-.open-topic-icon:is(.homepage__node-avatars-link):is(.open-topic-icon)
-  .open-topic-icon__topic-thumbnail-img
-    filter drop-shadow(0 0 1px #b2d5ff)
-
-// /
-// Puzzle
-// /
-.homepage__puzzle-link
-  top 77vh
-  left 52vw
-  width 55px
-
-  @media (min-width 700px)
-    width 70px
-
-.open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon__is-unselected-topic)
-  left calc(100vw - 55px)
-
-  @media (min-width 700px)
-    left calc(100vw - 80px)
-
-.open-topic-icon:is(.homepage__puzzle-link):is(.open-topic-icon)
-  .open-topic-icon__topic-thumbnail-img
-    filter drop-shadow(0 1px 1px gray)
-
-// /
-// Into Pieces - NFT Collection Into Pieces
-// /
-.homepage__nft-collection-link
-  left 65vw
-  top 52vh
-  width 60px
-
-  @media (min-width 700px)
-    left 75vw
-    width 70px
-
-.open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon__is-unselected-topic)
-  left calc(100vw - 60px)
-
-  @media (min-width 700px)
-    left calc(100vw - 85px)
-  // filter opacity(0.3)
-
-.open-topic-icon:is(.homepage__nft-collection-link):is(.open-topic-icon)
-  .open-topic-icon__topic-thumbnail-img
-    filter drop-shadow(0 1px 1px gray)
-
-.open-topic-icon__is-unselected-topic
-  filter opacity(0.3)
-
-  &:hover
-    filter opacity(0.85)
-
-.dark-mode .open-topic-icon__is-unselected-topic
-  filter opacity(0.3) invert(1) !important
+.pinch-scroll-zoom
+  position absolute
+  cursor move
 </style>

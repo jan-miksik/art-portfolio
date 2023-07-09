@@ -1,30 +1,80 @@
 <template>
-  <Transition name="images">
-      <div
-        v-if="props.type === props.selectedTopic"
-        :class="[
-          'nft-collection-pieces__images',
-          { 'nft-collection-pieces__selected-image': activeImage },
-          props.type === props.selectedTopic
-            ? 'nft-collection-pieces__is-section-visible'
-            : 'nft-collection-pieces__is-section-hidden'
-        ]"
-      >
+  <!-- @mousemove="mouseMoveHandlerPublicPage"
+  @mouseleave="mouseLeaveHandlerPublicPage"
+  @touchmove="touchmoveHandlerPublicPage"
+  @touchend="touchendHandlerPublicPage" -->
+  <div
+    class="collection-container"
+    :style="IntoPiecesCollectionStyle"
+    ref="IntoPiecesCollectionRef"
+    >
       <IntoPiecesCollection />
-      </div>
-  </Transition>
+  </div>
 </template>
 
 <script setup lang="ts">
-import Piece from '~/models/Piece'
-import { Topics } from '~/components/piecesData'
+import interact from 'interactjs'
+import useAdminPage from '~/J/useAdminPage'
+import useMapper from '~/J/useMapper'
+// import useMouseActionDetector from '~/J/useMouseActionDetector'
+import usePieces from '~/J/usePieces'
 
-const activeImage = ref()
-const props = defineProps<{
-  pieces?: Piece[]
-  type: Topics
-  selectedTopic?: Topics
-}>()
+// const {
+//   mouseMoveHandlerPublicPage,
+//     mouseLeaveHandlerPublicPage,
+//     touchmoveHandlerPublicPage,
+//     touchendHandlerPublicPage,
+// } = useMouseActionDetector()
+
+const IntoPiecesCollectionRef = ref<HTMLCanvasElement>()
+const IntoPiecesCollectionPosition = ref({
+  x: 6300,
+  y: 5500
+})
+
+const IntoPiecesCollectionStyle = computed(() => {
+  return {
+    left: `${IntoPiecesCollectionPosition.value.x}px`,
+    top: `${IntoPiecesCollectionPosition.value.y}px`,
+  }
+})
+
+onMounted(() => {
+  const { isOnAdminPage } = useAdminPage()
+  const { mapperEventData } = useMapper()
+  const { edgePositions } = usePieces()
+
+  if (!IntoPiecesCollectionRef.value) return
+  interact(IntoPiecesCollectionRef.value).draggable({
+    inertia: true,
+    autoScroll: true,
+    listeners: {
+      move(event) {
+        if (!isOnAdminPage.value) return
+        const scale = mapperEventData.value.scale
+
+        const xRaw = IntoPiecesCollectionPosition.value.x + event.dx / scale
+        const yRaw = IntoPiecesCollectionPosition.value.y + event.dy / scale
+        const x = xRaw > -2000 ? xRaw : -2000
+        const y = yRaw > -2000 ? yRaw : -2000
+        IntoPiecesCollectionPosition.value.x = x
+        IntoPiecesCollectionPosition.value.y = y
+        edgePositions.value.x = Math.max(edgePositions.value.x, x + 2300)
+        edgePositions.value.y = Math.max(edgePositions.value.y, y + 2000)
+        // }
+      }
+    }
+  })
+})
+// import Piece from '~/models/Piece'
+// import { Topics } from '~/components/piecesData'
+
+// const activeImage = ref()
+// const props = defineProps<{
+//   pieces?: Piece[]
+//   type: Topics
+//   selectedTopic?: Topics
+// }>()
 
 // const getScale = (coordinates: any) => {
 //   const widthRatio = window.innerWidth / coordinates.width
@@ -92,14 +142,13 @@ const props = defineProps<{
 // }
 </script>
 
-<style scoped>
-.nft-collection-pieces__images {
+<style lang="stylus" scoped>
+/* .nft-collection-pieces__images {
   position: absolute;
   padding: 5rem 1.5rem;
   left: 0;
   right: 0;
   margin: auto;
-  /* z-index: -1; */
   display: flex;
   gap: 5rem;
   align-items: center;
@@ -217,10 +266,7 @@ const props = defineProps<{
 
 .nft-collection-pieces__is-active-image-backdrop {
   position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
+  inset: 0;
   height: 140vh;
   z-index: 1;
   background-color: rgb(0 0 0 / 50%);
@@ -230,10 +276,11 @@ const props = defineProps<{
 
 .dark-mode .nft-collection-pieces__is-active-image-backdrop {
   background-color: unset
-}
+} */
 
-/* / Animation / */
-.images-enter-active,
+// / Animation /
+
+/* .images-enter-active,
 .images-leave-active {
   transition: all 0.5s;
 }
@@ -244,5 +291,9 @@ const props = defineProps<{
 
 .images-leave-to {
   opacity: 0;
-}
+  */
+.collection-container
+  position absolute
+
+
 </style>
