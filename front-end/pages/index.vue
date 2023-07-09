@@ -13,9 +13,6 @@
   <!-- </div> -->
 
   <Contact />
-
-  <!-- <div class="index__pinch-scroll-zoom-container" ref="mapperContainerRef"> -->
-    <!-- :style="mapperContainerStyle" -->
     <PinchScrollZoom
       v-if="windowObject?.innerWidth && edgePositions.x"
       ref="mapperRef"
@@ -24,10 +21,10 @@
       class="pinch-scroll-zoom"
       :min-scale="0.01"
       :max-scale="100"
-      @scaling="(e) => onMapperEvent('scaling', e)"
-      @startDrag="(e) => onMapperEvent('startDrag', e)"
-      @stopDrag="(e) => onMapperEvent('stopDrag', e)"
-      @dragging="(e) => onMapperEvent('dragging', e)"
+      @scaling="(e: PinchScrollZoomEmitData) => onMapperEvent('scaling', e)"
+      @startDrag="(e: PinchScrollZoomEmitData) => onMapperEvent('startDrag', e)"
+      @stopDrag="(e: PinchScrollZoomEmitData) => onMapperEvent('stopDrag', e)"
+      @dragging="(e: PinchScrollZoomEmitData) => onMapperEvent('dragging', e)"
       :wheelVelocity="0.001"
       :throttleDelay="20"
       :content-width="edgePositions.x"
@@ -36,16 +33,14 @@
       >
       <Pieces />
     </PinchScrollZoom>
-  <!-- </div> -->
 </template>
 
 <script setup lang="ts">
 import '@coddicat/vue-pinch-scroll-zoom/style.css'
-import PinchScrollZoom from '@coddicat/vue-pinch-scroll-zoom'
+import PinchScrollZoom, { PinchScrollZoomEmitData } from '@coddicat/vue-pinch-scroll-zoom'
 import usePieces from '~/J/usePieces'
 import useMapper from '~/J/useMapper'
 import useAdminPage from '~/J/useAdminPage'
-import interact from 'interactjs'
 import useMouseActionDetector from '~/J/useMouseActionDetector'
 
 const { edgePositions } = usePieces()
@@ -54,8 +49,6 @@ const { onMapperEvent } = useMapper()
 const { isOverPieceOrSetupInPublicPage } = useMouseActionDetector()
 const isMapperSet = ref(false)
 const mapperRef = ref()
-// const mapperContainerPosition = ref({ x: 0, y: 0 })
-// const mapperContainerRef = ref()
 
 const windowObject = computed(() => window)
 
@@ -74,30 +67,13 @@ watch(mapperRef, (newVal) => {
     })
   } else {
     mapperRef.value?.setData({
-      scale: 0.5,
-      originX: 4725,
+      scale: 0.7,
+      originX: 4225,
       originY: 6388,
-      translateX: -3770,
-      translateY: -5717
+      translateX: -3070,
+      translateY: -5617
     })
   }
-
-  // if (!mapperContainerRef.value) return
-
-  // interact(mapperContainerRef.value).draggable({
-  //   inertia: true,
-  //   autoScroll: true,
-  //   listeners: {
-  //     move(event) {
-  //       const xRaw = mapperContainerPosition.value.x + event.dx
-  //       const yRaw = mapperContainerPosition.value.y + event.dy
-  //       const x = xRaw > -20000 ? xRaw : -20000
-  //       const y = yRaw > -20000 ? yRaw : -20000
-  //       mapperContainerPosition.value.x = x
-  //       mapperContainerPosition.value.y = y
-  //     }
-  //   }
-  // })
 })
 
 useHead({
