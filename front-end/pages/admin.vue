@@ -75,8 +75,6 @@ import PinchScrollZoom, {
   PinchScrollZoomEmitData
 } from '@coddicat/vue-pinch-scroll-zoom'
 import useMapper from '~/J/useMapper'
-// import interact from 'interactjs'
-// import '@coddicat/vue-pinch-scroll-zoom/style.css'
 import '@coddicat/vue-pinch-scroll-zoom/style.css'
 import useMouseActionDetector from '~/J/useMouseActionDetector'
 import Piece from '~/models/Piece'
@@ -152,7 +150,6 @@ watch(mapperRef, (newVal) => {
 
 const isSomethingToPublish = computed(
   () => usePieces().pieces.value?.some((piece) => piece.isPublished === false)
-  // || isSettingChanged.value
 )
 
 const publishButtonText = computed(() =>
@@ -168,16 +165,8 @@ const submitPassword = () => {
   }
 }
 
-// const mapperContainerStyle = computed(() => {
-//   return {
-//     left: `${mapperContainerPosition.value.x}px`,
-//     top: `${mapperContainerPosition.value.y}px`
-//   }
-// })
-
 onMounted(() => {
   console.log('mapperRef.value: ', mapperRef.value);
-  // if (!mapperRef.value) return
   window.addEventListener('mousemove', updateCursorPosition)
 })
 
@@ -188,18 +177,9 @@ onUnmounted(() => {
 // admin
 const updateCursorPosition = (event: MouseEvent) => {
   if (!dropzoneRef.value) return
-  // console.log('dropzoneRef: ', dropzoneRef);
 
   const scale = mapperEventData.value.scale
-  // console.log('mapperEventData: ', mapperEventData);
-  // console.log(
-  //   'cursorPosition.value: ',
-  //   cursorPosition.value.x,
-  //   cursorPosition.value.y,
-  // )
 
-  // console.log('dropzoneRef.value.scrollLeft: ', dropzoneRef.value.scrollLeft);
-  // console.log('dropzoneRef.value.scrollTop: ', dropzoneRef.value.scrollTop);
   cursorPosition.value = {
     x: (event.clientX) + -mapperEventData.value.x,
     y: (event.clientY) + -mapperEventData.value.y,
@@ -208,9 +188,6 @@ const updateCursorPosition = (event: MouseEvent) => {
 }
 
 const drop = (event: DragEvent) => {
-  // console.log(' Math.floor(cursorPosition.value.x): ',  Math.floor(cursorPosition.value.x));
-  // console.log(' Math.floor(cursorPosition.value.y): ',  Math.floor(cursorPosition.value.y));
-
   if (!useAdminPage().isOnAdminPage.value) return
 
   const files = event?.dataTransfer?.files
@@ -282,29 +259,12 @@ const drop = (event: DragEvent) => {
   useContentfulPiece().uploadPiece(newPiece)
 }
 
-// const handleChangeDeviceTypeSetup = (deviceType: 'mobile' | 'desktop') => {
-//   if (deviceType === 'mobile') {
-//     isSetupForMobile.value = true
-//   } else {
-//     isSetupForMobile.value = false
-//   }
-// }
-
-// const handleOnBackdropClick = () => {
-//   isSettingsOpen.value = false
-// }
-
 const handlePublishChanges = async () => {
   publishingInProgress.value = true
   const DELAY = 200
   const piecesToPublish = pieces.value?.filter(
     (piece) => piece.isPublished === false
   )
-
-  // if (isSettingChanged.value) {
-  //   await updateSettings()
-  //   appSettingsOriginString.value = JSON.stringify(appSettings.value)
-  // }
 
   if (!piecesToPublish) {
     publishingInProgress.value = false
@@ -413,16 +373,12 @@ button
 
 .admin__settings-mobile-btn
 .admin__settings-desktop-btn
-  // right: 0;
   top 0
   z-index 1000
   margin 0.2rem
   padding 0.2rem 0.5rem
   cursor pointer
   transition all 0.2s
-  // background #fff
-  // border 1px solid #000
-  // color #000
   border-radius 3px
   background #3cd054
   border none
@@ -430,17 +386,6 @@ button
 
   &--disabled
     opacity 0.3
-
-// .admin__pinch-scroll-zoom-container
-//   position fixed
-//   top 0
-//   left 0
-//   background #dbdae1
-//   width 100%
-//   height 100%
-//   display flex
-//   align-items center
-//   justify-content center
 
 .pinch-scroll-zoom
   cursor move
