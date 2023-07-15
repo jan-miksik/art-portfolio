@@ -1,7 +1,7 @@
 import ImageFile from '~/models/ImageFile'
 import Dexie, { Table } from 'dexie'
 
-export interface Image {
+export interface ImageIDB {
   id: string;
   lastUpdated: number;
   blob: Blob;
@@ -11,7 +11,7 @@ export default class MySubClassedDexie extends Dexie {
 // export default class MySubClassedDexie {
   // 'Images' is added by dexie when declaring the stores()
   // We just tell the typing system this is the case
-  images!: Table<OImage>
+  images!: Table<ImageIDB>
 
   constructor() {
     super('myDatabase')

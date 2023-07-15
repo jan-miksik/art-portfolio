@@ -20,7 +20,7 @@
       :height="windowObject.innerHeight"
       class="pinch-scroll-zoom"
       :min-scale="0.01"
-      :max-scale="100"
+      :max-scale="1000"
       @scaling="(e: PinchScrollZoomEmitData) => onMapperEvent('scaling', e)"
       @startDrag="(e: PinchScrollZoomEmitData) => onMapperEvent('startDrag', e)"
       @stopDrag="(e: PinchScrollZoomEmitData) => onMapperEvent('stopDrag', e)"

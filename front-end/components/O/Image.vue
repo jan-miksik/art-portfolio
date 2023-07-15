@@ -1,54 +1,231 @@
 <template>
-  <img
-    ref="imageRef"
-    loading="lazy"
-    :src="isVisible ? imageSrc : ''"
-  />
+  <div class="image">
+    <img
+      :class="[{ 'image__low': !externalCssClass }, externalCssClass]"
+      v-show="showLowImage"
+      ref="lowImageRef"
+      :loading="lowImageLoading"
+      :fetchpriority="lowImageFetchpriority"
+      :src="lowImageSrcComputed"
+      :style="externalCssClass"
+    />
+    <img
+      :class="[{ 'image__full': !externalCssClass }, externalCssClass]"
+      v-show="selectedResolutionType === RESOLUTION.FULL"
+      ref="fullImageRef"
+      :loading="fullImageLoading"
+      :fetchpriority="fullImageFetchpriority"
+      :src="fullImageSrcComputed"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { updateImage, addImage, getImage } from '~/services/idb'
-import ImageFile from '~/models/ImageFile' 
-// import VLazyImage from "v-lazy-image";
+import ImageFile from '~/models/ImageFile'
+import useMapper from '~/J/useMapper'
+import { IPiece } from '~/models/Piece'
+import { ImageIDB } from '../../services/idb';
 
-const imageRef = ref()
-const imageSrc = ref()
-const isVisible = ref(false)
+const { mapperEventData } = useMapper()
+
+enum RESOLUTION {
+  LOW = 'LOW',
+  FULL = 'FULL'
+}
+
 const props = defineProps<{
   imageFile: ImageFile
+  piece?: IPiece
+  isFullSize?: boolean
+  externalCssClass?: any
 }>()
+const { imageFile, piece, isFullSize, externalCssClass } = toRefs(props)
 
-const { imageFile } = toRefs(props)
+const isVisible = ref(false)
 
+const selectedResolutionType = computed(() => {
+  if (isFullSize?.value) return RESOLUTION.FULL
 
-const giveImageSourcePlease = async () => {
-
-  // if (!isVisible.value) return
-  
-  const imageFromIDB = await getImage(imageFile.value.id)
-
-  if (!imageFromIDB) {
-    await addImage(imageFile.value)
+  if (mapperEventData.value?.scale > 1) {
+    return RESOLUTION.FULL
+  } else {
+    return RESOLUTION.LOW
   }
+})
 
-  if (imageFromIDB) {
-    if (imageFromIDB.lastUpdated !== imageFile.value.lastUpdated) {
-      updateImage(imageFile.value)
-      imageSrc.value = imageFile.value.url
-      return
-    }
-    imageSrc.value = URL.createObjectURL(imageFromIDB.blob)
+
+
+// LOW IMAGE
+const lowImageRef = ref()
+const lowImageFileFromIDB = ref<ImageIDB>()
+const lowImageSrc = ref('')
+
+
+const showLowImage = computed(() => 
+  selectedResolutionType.value === RESOLUTION.LOW || 
+  !isFullImageLoaded.value
+)
+
+const lowImageLoading = computed(() => {
+  if (isVisible.value && selectedResolutionType.value === RESOLUTION.LOW)
+    return 'eager'
+  return 'lazy'
+})
+
+
+const lowImageFetchpriority = computed(() => {
+  if (isVisible.value && selectedResolutionType.value === RESOLUTION.LOW)
+    return 'high'
+  return 'low'
+})
+
+
+const lowImageSrcComputed = computed(() => {
+  if (!piece?.value) return imageFile.value.url
+  return lowImageSrc.value
+})
+
+
+const lowImageWidthByScale = computed(() => {
+  const primaryWidth = (piece?.value?.sizeInCm.x || 30) * 5
+  if (primaryWidth < 150) return 150
+  return primaryWidth
+})
+
+
+const lowImageFileByScale = computed(() => {
+  const imageFileCopy = JSON.parse(JSON.stringify(imageFile.value))
+  imageFileCopy.url = `${imageFile.value.url}?w=${lowImageWidthByScale.value}`
+  imageFileCopy.id = `${imageFile.value?.id}-scale-less-than-1`
+  return imageFileCopy
+})
+
+
+const giveLowImageSourcePlease = async () => {
+
+  if (lowImageSrc.value || lowImageFileFromIDB.value) return
+  lowImageFileFromIDB.value = await getImage(lowImageFileByScale.value.id)
+  
+  if (!lowImageFileFromIDB.value) {
+    addImage(lowImageFileByScale.value)
+    lowImageSrc.value = lowImageFileByScale.value.url
     return
   }
 
-  imageSrc.value = imageFile.value.url
+  if (lowImageFileFromIDB.value) {
+    if (lowImageFileFromIDB.value.lastUpdated !== lowImageFileByScale.value.lastUpdated) {
+      updateImage(lowImageFileByScale.value)
+      lowImageSrc.value = lowImageFileByScale.value.url
+      return
+    }
+  
+    lowImageSrc.value = URL.createObjectURL(lowImageFileFromIDB.value.blob)
+  }
 }
 
-const loaded = () => {
-  imageRef.value?.classList.remove('anim-bg')
+
+
+
+
+
+
+
+
+
+
+
+// FULL IMAGE
+
+const fullImageSrc = ref('')
+const fullImageFileInIDB = ref<ImageIDB>()
+const fullImageRef = ref()
+const isFullImageLoaded = ref(false)
+
+
+const fullImageLoading = computed(() => {
+  if (isVisible.value && selectedResolutionType.value === RESOLUTION.FULL)
+    return 'eager'
+  return 'lazy'
+})
+
+
+const fullImageFetchpriority = computed(() => {
+  if (isVisible.value && selectedResolutionType.value === RESOLUTION.FULL)
+    return 'high'
+  return 'low'
+})
+
+
+const fullImageSrcComputed = computed(() => {
+  if (!piece?.value) return imageFile.value.url
+  return fullImageSrc.value
+})
+
+
+const giveFullImageSourcePlease = async () => {
+
+  if (fullImageSrc.value || fullImageFileInIDB.value) return
+  fullImageFileInIDB.value = await getImage(imageFile.value.id)
+  
+  if (!fullImageFileInIDB.value) {
+    addImage(imageFile.value)
+    fullImageSrc.value = imageFile.value.url
+    return
+  }
+
+  if (fullImageFileInIDB.value) {
+    if (fullImageFileInIDB.value.lastUpdated !== imageFile.value.lastUpdated) {
+      updateImage(imageFile.value)
+      fullImageSrc.value = imageFile.value.url
+      return
+    }
+  
+    fullImageSrc.value = URL.createObjectURL(fullImageFileInIDB.value.blob)
+  }
 }
+
+
+
+const loadedLowImage = () => {
+  lowImageRef.value?.classList.remove('anim-bg')
+}
+
+const loadedFullImage = () => {
+  fullImageRef.value?.classList.remove('anim-bg')
+  isFullImageLoaded.value = true
+}
+
+watch(isVisible, (newVal) => {
+  if (newVal) {
+
+  }
+})
+
+watch([isVisible, () => mapperEventData.value?.scale], async (newVal) => {
+  
+  if (!isVisible) return
+
+  if (isFullSize.value) {
+    // giveLowImageSourcePlease() 
+    giveFullImageSourcePlease()
+    return
+  }
+
+  if (mapperEventData.value?.scale > 1) {
+    giveFullImageSourcePlease()
+  } else {
+    giveLowImageSourcePlease() 
+  }
+})
 
 onMounted(async () => {
+  lowImageRef.value?.classList.add('anim-bg')
+  lowImageRef.value.addEventListener('load', loadedLowImage)
+
+  fullImageRef.value?.classList.add('anim-bg')
+  fullImageRef.value.addEventListener('load', loadedFullImage)
+
   const observer = new IntersectionObserver((entries) => {
     // The callback will be called when the image enters or leaves the viewport
     if (entries[0].isIntersecting) {
@@ -62,54 +239,34 @@ onMounted(async () => {
   })
 
   // Start observing the image
-  observer.observe(imageRef.value)
-
-  await giveImageSourcePlease()
+  observer.observe(lowImageRef.value)
+  observer.observe(fullImageRef.value)
 })
 
-watch(isVisible, (newVal) => {
-  if (newVal) {
-    imageRef.value?.classList.add('anim-bg')
-    imageRef.value.addEventListener('load', loaded)
-  }
-})
 
 onUnmounted(() => {
-  imageRef.value?.removeEventListener('load', loaded)
+  lowImageRef.value?.removeEventListener('load', loadedLowImage)
+  fullImageRef.value?.removeEventListener('load', loadedFullImage)
 })
-
-
-
-// onUnmounted(() => {
-//   imageRef.value?.removeEventListener('load', loaded)
-// })
-
-// const giveImageSourcePlease = async () => {
-//   const imageFromIDB = await getImage(imageFile.value.id)
-
-//   if (!imageFromIDB) {
-//     await addImage(imageFile.value)
-//   }
-
-//   if (imageFromIDB) {
-//     if (imageFromIDB.lastUpdated !== imageFile.value.lastUpdated) {
-//       updateImage(imageFile.value)
-//       imageSrc.value = imageFile.value.url
-//       return
-//     }
-//     imageSrc.value = URL.createObjectURL(imageFromIDB.blob)
-//     return
-//   }
-
-//   imageSrc.value = imageFile.value.url
-// }
 
 </script>
 
 <style scoped lang="stylus">
+
+.image__low
+.image__full
+  border 1px solid transparent
+  position absolute
+  object-fit contain
+  width 100%
+
+
+.image__low
+  z-index 10000000000
+
 @keyframes background-color-palette
   0%
-    background #fb648fb1
+    background #f53b5a
 
   25%
     background #87ed69

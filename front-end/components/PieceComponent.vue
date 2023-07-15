@@ -15,6 +15,7 @@
       v-if="piece"
       :id="piece.id"
       :image-file="piece.image"
+      :piece="piece"
       :class="[
         'piece__image',
         {
@@ -77,6 +78,9 @@
                 > -->
                 <OImage
                   :image-file="piece.image"
+                  :is-full-size="true"
+                  :piece="piece"
+                  externalCssClass="piece__selected-piece-image"
                   :class="[
                     'piece__selected-piece-image',
                     {
@@ -556,6 +560,8 @@ const selectImage = (piece: Piece) => {
 .dark-mode .piece__selected-piece-backdrop
   // background-color unset
   background-color #efebebfc
+  cursor url("/close-white.svg"), auto
+
 
 .piece__publish-button
   position absolute
@@ -639,12 +645,18 @@ const selectImage = (piece: Piece) => {
   z-index 10000
   cursor url("/close.svg"), auto
 
+.dark-mode .piece__selected-piece-image-close-zone
+  cursor url("/close-white.svg"), auto
+
 .piece__selected-piece-back
   position absolute
   top 1rem
   right 1rem
   z-index 10000
   opacity 0.2
+
+.dark-mode .piece__selected-piece-back
+  filter brightness(0) saturate(100%) invert(0) sepia(98%) saturate(8%) hue-rotate(174deg) brightness(96%) contrast(102%)
 </style>
 
 <style lang="stylus">
@@ -653,4 +665,14 @@ const selectImage = (piece: Piece) => {
   justify-content center
   align-items center
   flex-direction column
+</style>
+
+<style lang="stylus">
+.piece__selected-piece-image
+  border 1px solid transparent
+  position relative
+  object-fit contain
+  max-width 100%
+  max-height 100%
+
 </style>

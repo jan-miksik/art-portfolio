@@ -8,7 +8,7 @@
   @mousemove="mouseMoveHandler"
   @mouseup="mouseUpHandler"
   >
-    <a class="homepage__soc-link" :href="linkToEmail">
+    <a class="homepage__soc-link homepage__soc-link-img" :href="linkToEmail">
   <!-- @click="showContactModal" -->
     <OImage
       :image-file="emailIcon"
@@ -130,7 +130,7 @@ const emailIcon = ref(
   new ImageFile({
     url: '/email.svg',
     id: 'email-icon',
-    lastUpdated: new Date('1991').getTime()
+    lastUpdated: new Date('1992').getTime()
   })
 )
 
@@ -222,7 +222,7 @@ const randomizePosition = () => {
 .homepage__contact-img
   width 30px
   height 30px
-  filter drop-shadow(0 2px 2px white)
+  filter drop-shadow(0 1px 1px white)
 
 .homepage__contact-text
   font-size 0.9rem
@@ -293,7 +293,7 @@ const randomizePosition = () => {
   border-radius 2px
 
 .dark-mode .homepage__soc-link-img
-  filter brightness(0) saturate(100%) invert(1) sepia(98%) saturate(8%) hue-rotate(174deg) brightness(96%) contrast(102%)
+  filter brightness(0) saturate(100%) invert(0) sepia(98%) saturate(8%) hue-rotate(174deg) brightness(96%) contrast(102%)
 
 .homepage__soc-link-img:hover
   z-index 100
