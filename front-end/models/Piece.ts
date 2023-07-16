@@ -22,10 +22,14 @@ export type IPiece = {
   techniqueDescription: string
   created: Date
   image: ImageFile
-  sizeInCm: {
+  sizeInCm?: {
     x: number
     y: number
     z?: number
+  }
+  sizeInPx?: {
+    x: number
+    y: number
   }
   imageRaw?: File
   sizeOnWeb?: {
@@ -65,6 +69,7 @@ export default class Piece {
   public created
   public image
   public sizeInCm
+  public sizeInPx
   public sizeOnWeb
   public position
 
@@ -95,6 +100,7 @@ export default class Piece {
       lastUpdated: data.image.lastUpdated
     })
     this.sizeInCm = data.sizeInCm || { x: 0, y: 0 }
+    this.sizeInPx = data.sizeInPx || { x: 0, y: 0 }
     this.sizeOnWeb = data.sizeOnWeb || { width: 0 }
     this.position = data.position || { x: 0, y: 0, deg: 0, xMob: 0, yMob: 0, degMob: 0 }
     this.price = data.price || 0
@@ -110,7 +116,7 @@ export default class Piece {
   
   // this.randomizedPosition = this.getRandomizedPosition()
   // getRandomizedPosition() {
-  //   if (this.topic === Topics.SANS_TOPIC) {
+  //   if (this.topic === Topics.FREE_TOPIC) {
   //     return {
   //       transform: `rotate(${generateRandomNumberPlusMinus(3)}deg) scale(${
   //         randomRange(7, 11) / 10

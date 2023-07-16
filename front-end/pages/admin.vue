@@ -12,7 +12,7 @@
     </p>
   </form>
   
-  x: {{ Math.floor(cursorPosition.x) }} y: {{ Math.floor(cursorPosition.y) }} scale {{ cursorPosition.scale }}
+  <!-- x: {{ Math.floor(cursorPosition.x) }} y: {{ Math.floor(cursorPosition.y) }} scale {{ cursorPosition.scale }} -->
   <!-- <br/> -->
   <!-- mapper x: {{ Math.floor(mapperEventData.x
 ) }} y: {{ Math.floor(mapperEventData.y) }} scale {{ mapperEventData.scale }} -->
@@ -34,8 +34,6 @@
     </select>
   </div>
 
-  <!-- <div class="admin__pinch-scroll-zoom-container" ref="mapperContainerRef"> -->
-  <!-- :style="mapperContainerStyle" -->
   <div
     class="admin__dropzone"
     ref="dropzoneRef"
@@ -64,7 +62,6 @@
       <Pieces />
     </PinchScrollZoom>
   </div>
-  <!-- </div> -->
 </template>
 
 <script setup lang="ts">
@@ -99,9 +96,7 @@ const isSettingsOpen = ref(false)
 const publishingInProgress = ref(false)
 const isMapperSet = ref(false)
 const mapperRef = ref()
-const defaultTopic = ref(Topics.NODE_AVATARS)
-// const mapperContainerPosition = ref({ x: 0, y: 0 })
-// const mapperContainerRef = ref()
+const defaultTopic = ref(Topics.FREE_TOPIC)
 
 const windowObject = computed(() => window)
 
@@ -129,23 +124,6 @@ watch(mapperRef, (newVal) => {
       translateY: -6017
     })
   }
-
-  // if (!mapperContainerRef.value) return
-
-  // interact(mapperContainerRef.value).draggable({
-  //   inertia: true,
-  //   autoScroll: true,
-  //   listeners: {
-  //     move(event) {
-  //       const xRaw = mapperContainerPosition.value.x + event.dx
-  //       const yRaw = mapperContainerPosition.value.y + event.dy
-  //       const x = xRaw > -20000 ? xRaw : -20000
-  //       const y = yRaw > -20000 ? yRaw : -20000
-  //       mapperContainerPosition.value.x = x
-  //       mapperContainerPosition.value.y = y
-  //     }
-  //   }
-  // })
 })
 
 const isSomethingToPublish = computed(
@@ -200,21 +178,39 @@ const drop = (event: DragEvent) => {
   // Remove the file extension
   const description = imageFile.name.replace(/\.[^/.]+$/, '');
 
-  const parts = description.split(',');
+  const parts = description.split(',').map(part => part.trim());
+  console.log('parts: ', parts);
 
   const name = parts[0];
   const created = new Date(Number(parts[1]), 6);
   const techniqueDescription = parts[2];
-  const size = parts[3].split('x');
-  
+  const sizeStr = parts[3];
+  console.log('size: ', sizeStr);
+  const index = sizeStr.indexOf('x');
+  const size: string[] = [];
+
+  if (index !== -1) {
+    const part1 = sizeStr.substring(0, index);
+    const part2 = sizeStr.substring(index + 1);
+    size.push(part1, part2)
+  } else {
+    console.error("'x' not found in string");
+  }
+
+  const isSizeInCm = size[1].includes('cm');
+  const isSizeInPx = size[1].includes('px');
+    
   const sizeX = parseInt(size[0]);
-  const sizeY = parseInt(size[1].replace('cm', ''));
-  
-  console.log('created: ', created);
-  console.log('techniqueDescription: ', techniqueDescription);
-  console.log('sizeX: ', sizeX);
-  console.log('sizeY: ', sizeY);
-  console.log('name', name);
+  const sizeY = () => {
+    if (isSizeInCm) {
+      return parseInt(size[1].replace('cm', ''))
+    }
+    if (isSizeInPx) {
+      return parseInt(size[1].replace('px', ''))
+    }
+    return 0
+  }
+
 
   const id = uuidv4()
   const newPiece = reactive(
@@ -231,8 +227,12 @@ const drop = (event: DragEvent) => {
       techniqueDescription,
       created,
       sizeInCm: {
-        x: +sizeX,
-        y: +sizeY
+        x: isSizeInCm ? +sizeX : 0,
+        y: isSizeInCm ? +sizeY() : 0
+      },
+      sizeInPx: {
+        x: isSizeInPx ? +sizeX : 0,
+        y: isSizeInPx ? +sizeY() : 0
       },
       imageRaw: imageFile,
       sizeOnWeb: {

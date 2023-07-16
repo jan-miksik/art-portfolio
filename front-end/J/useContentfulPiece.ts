@@ -208,6 +208,12 @@ export default function useContentfulPiece() {
           sizeInCmYVertical: {
             'en-US': Math.floor(piece.sizeInCm.y || 0)
           },
+          sizeInPxX: {
+            'en-US': Math.floor(piece.sizeInPx.x || 0)
+          },
+          sizeInPxY: {
+            'en-US': Math.floor(piece.sizeInPx.y || 0)
+          },
           widthOnWeb: {
             'en-US': Math.floor(piece.sizeOnWeb.width || 0)
           },
@@ -288,6 +294,12 @@ export default function useContentfulPiece() {
         },
         sizeInCmYVertical: {
           'en-US': Math.floor(piece.sizeInCm.y || 0)
+        },
+        sizeInPxX: {
+          'en-US': Math.floor(piece.sizeInPx.x || 0)
+        },
+        sizeInPxY: {
+          'en-US': Math.floor(piece.sizeInPx.y || 0)
         },
         widthOnWeb: {
           'en-US': Math.floor(piece.sizeOnWeb.width || 0)

@@ -147,12 +147,6 @@
 
               <span
                 v-if="!isOnAdminPage"
-                :contenteditable="isOnAdminPage"
-                @blur="
-                  (e) => handleOnBlurEditPieceInfo(e, 'techniqueDescription')
-                "
-                @click.stop
-                @touchstart.stop
               >
                 {{
                   selectedPiece.techniqueDescription === 'unspecified'
@@ -160,22 +154,51 @@
                     : selectedPiece.techniqueDescription
                 }} </span
               >,
-              <span
-                :contenteditable="isOnAdminPage"
-                @blur="(e) => handleOnBlurEditPieceInfo(e, 'sizeInCm', 'x')"
-                @click.stop
-                @touchstart.stop
+              <select
+                v-if="isOnAdminPage"
+                v-model="sizeType"
               >
-                {{ selectedPiece.sizeInCm.x }} </span
-              >cm x
-              <span
-                :contenteditable="isOnAdminPage"
-                @blur="(e) => handleOnBlurEditPieceInfo(e, 'sizeInCm', 'y')"
-                @click.stop
-                @touchstart.stop
-              >
-                {{ selectedPiece.sizeInCm.y }} </span
-              >cm
+                <option disabled value="">select cm or px</option>
+                <option v-for="sizeType in SizeType">{{ sizeType }}</option>
+              </select>
+
+              <span v-if="isSizeInCm">
+                <span
+                  :contenteditable="isOnAdminPage"
+                  @blur="(e) => handleOnBlurEditPieceInfo(e, 'sizeInCm', 'x')"
+                  @click.stop
+                  @touchstart.stop
+                >
+                  {{ selectedPiece.sizeInCm.x }} </span
+                >cm x
+                <span
+                  :contenteditable="isOnAdminPage"
+                  @blur="(e) => handleOnBlurEditPieceInfo(e, 'sizeInCm', 'y')"
+                  @click.stop
+                  @touchstart.stop
+                >
+                  {{ selectedPiece.sizeInCm.y}} </span
+                >cm is cm{{ isSizeInCm }} is PX {{ isSizeInPx }}
+              </span>
+
+              <span v-if="isSizeInPx">
+                <span
+                  :contenteditable="isOnAdminPage"
+                  @blur="(e) => handleOnBlurEditPieceInfo(e, 'sizeInPx', 'x')"
+                  @click.stop
+                  @touchstart.stop
+                >
+                  {{ selectedPiece.sizeInPx.x }} </span
+                >px x
+                <span
+                  :contenteditable="isOnAdminPage"
+                  @blur="(e) => handleOnBlurEditPieceInfo(e, 'sizeInPx', 'y')"
+                  @click.stop
+                  @touchstart.stop
+                >
+                  {{ selectedPiece.sizeInPx.y}} </span
+                >px
+              </span>
             </div>
           </div>
         </swiper>
@@ -224,8 +247,13 @@ const {
   touchendHandler
 } = useMouseActionDetector()
 const { zIndexOfLastSelectedPiece, pieces, edgePositions } = usePieces()
-const { isOnAdminPage, isSetupForMobile } = useAdminPage()
+const { isOnAdminPage } = useAdminPage()
 const { mapperEventData } = useMapper()
+
+enum SizeType {
+  CM = 'cm',
+  PX = 'px'
+}
 
 const swiperRef = ref<SwiperTypes | null>(null)
 const localZIndex = ref(1)
@@ -233,30 +261,32 @@ const pieceRef = ref()
 const selectedPiece = ref<Piece>()
 const initialSlide = ref(0)
 const activeIndex = ref(0)
+const sizeType = ref()
 
 const props = defineProps<{
   piece: Piece
 }>()
 
+const isSizeInCm = computed(() => (selectedPiece.value?.sizeInCm.x && selectedPiece.value?.sizeInCm.y) || sizeType.value === SizeType.CM)
+const isSizeInPx = computed(() => (selectedPiece.value?.sizeInPx.x && selectedPiece.value?.sizeInPx.y) || sizeType.value === SizeType.PX)
+
+
 const handleUpdatePieceTopic = () => {
   if (!selectedPiece.value || !pieces.value) return
-  console.log('selectedTopic.value: ', selectedPiece.value.topic)
-  console.log('sss')
-  // selectedPiece.value.topic = selectedTopic.value
+
   pieces.value[activeIndex.value].topic = selectedPiece.value.topic
   pieces.value[activeIndex.value].isPublished = false
 }
 
 const handleUpdatePieceTechniqueDescription = () => {
   if (!selectedPiece.value || !pieces.value) return
-  console.log('handleUpdatePieceTechniqueDescription: ', selectedPiece.value.techniqueDescription)
   pieces.value[activeIndex.value].techniqueDescription = selectedPiece.value.techniqueDescription
   pieces.value[activeIndex.value].isPublished = false
 }
 
 const handleOnBlurEditPieceInfo = (
   event: Event,
-  primaryField: 'name' | 'techniqueDescription' | 'sizeInCm',
+  primaryField: 'name' | 'techniqueDescription' | 'sizeInCm' | 'sizeInPx',
   secondField?: 'x' | 'y'
 ) => {
   if (!selectedPiece.value || !pieces.value) return
@@ -419,9 +449,33 @@ const handlePieceStyle = (piece: Piece) => {
 
   // TODO nice to have: add randomization during move for selected piece
 
+  const sizeX = () => {
+    if (piece.sizeInCm?.x) {
+      return `${piece.sizeInCm?.x * 5}px`
+    } 
+    if (piece.sizeInPx?.x) {
+      return `${piece.sizeInPx?.x / 5}px`
+    } 
+    return 'unset'
+  }
+
+  const sizeY = () => {
+    if (piece.sizeInCm?.y) {
+      return `${piece.sizeInCm?.y * 5}px`
+    } 
+    if (piece.sizeInPx?.y) {
+      return `${piece.sizeInPx?.y / 5}px`
+    } 
+    return 'unset'
+  }
+  if (piece.name === 'free neon - neon zdarma - neon gratis(id)') {
+    console.log('piece.sizeInPx?.y: ', piece.sizeInPx?.y);
+    console.log('sizeX(): ', sizeX());
+    console.log('sizeY(): ', sizeY());
+  }
   return {
-    width: `${piece.sizeInCm?.x * 5}px`,
-    maxHeight: piece.sizeInCm?.y ? `${piece.sizeInCm?.y * 5}px` : 'unset',
+    width: sizeX(),
+    maxHeight: sizeY(),
     left: `${piece.position?.x}px`,
     top: `${piece.position?.y}px`,
     deg: `${piece.position?.deg}deg`,

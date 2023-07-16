@@ -25,6 +25,8 @@ export default function useContentful() {
           created
           sizeInCmXHorizontal
           sizeInCmYVertical
+          sizeInPxX
+          sizeInPxY
           widthOnWeb
           positionX
           positionY
