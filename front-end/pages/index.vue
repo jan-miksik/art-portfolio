@@ -69,10 +69,10 @@ watch(mapperRef, (newVal) => {
   } else {
     mapperRef.value?.setData({
       scale: 0.7,
-      originX: 4225,
-      originY: 6388,
-      translateX: -3070 - LEFT_OFFSET,
-      translateY: -5617 - TOP_OFFSET
+      originX: 3000,
+      originY: 6000,
+      translateX: -3900 - LEFT_OFFSET,
+      translateY: -3800 - TOP_OFFSET
     })
   }
 })

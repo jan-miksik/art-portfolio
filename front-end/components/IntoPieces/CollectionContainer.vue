@@ -29,7 +29,7 @@ import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
 
 const IntoPiecesCollectionRef = ref<HTMLCanvasElement>()
 const IntoPiecesCollectionPosition = ref({
-  x: 6300,
+  x: 11000,
   y: 5500
 })
 

@@ -29,8 +29,8 @@ const {
 
 const canvasRef = ref<HTMLCanvasElement>()
 const ballThreeJs = ref({
-  x: 4500,
-  y: 5900
+  x: 7500,
+  y: 5700
 })
 
 const ballThreeJsStyle = computed(() => {
