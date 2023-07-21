@@ -165,7 +165,7 @@ export default function useContentfulPiece() {
     if (!piece.imageRaw) return
     console.log(':::uploading started... ')
     const imageResponse = await uploadAndPublishImage(piece.imageRaw)
-    console.log('assetResponse: ', imageResponse);
+    console.log('-- asset Response --: ', imageResponse);
     const imageName = piece.imageRaw.name.substring(0, piece.imageRaw.name.lastIndexOf('.'))
     try {
       const apiUrl = `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/entries`

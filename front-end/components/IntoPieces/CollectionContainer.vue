@@ -18,6 +18,7 @@ import useAdminPage from '~/J/useAdminPage'
 import useMapper from '~/J/useMapper'
 // import useMouseActionDetector from '~/J/useMouseActionDetector'
 import usePieces from '~/J/usePieces'
+import { LEFT_OFFSET } from '~/appSetup'
 
 // const {
 //   mouseMoveHandlerPublicPage,
@@ -34,7 +35,7 @@ const IntoPiecesCollectionPosition = ref({
 
 const IntoPiecesCollectionStyle = computed(() => {
   return {
-    left: `${IntoPiecesCollectionPosition.value.x}px`,
+    left: `${IntoPiecesCollectionPosition.value.x + LEFT_OFFSET}px`,
     top: `${IntoPiecesCollectionPosition.value.y}px`,
   }
 })

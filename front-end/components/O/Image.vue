@@ -91,7 +91,6 @@ const lowImageWidthByScale = computed(() => {
   if (piece?.value?.sizeInPx?.x) {
     const primaryWidthForPx = (piece?.value?.sizeInPx?.x || 150) / 5
     if (primaryWidthForPx < 150) return 150
-    console.log('primaryWidthForPx: (piece?.value', piece?.value?.name, primaryWidthForPx);
     return Math.floor(primaryWidthForPx)
   }
 
@@ -102,9 +101,7 @@ const lowImageWidthByScale = computed(() => {
 
 
 const lowImageFileByScale = computed(() => {
-  console.log('piece?.value: ', piece?.value?.isUploadedToCf);
   if (!piece?.value?.isUploadedToCf) {
-    console.log('piece?.value?.isUploadedToCf: ', piece?.value?.isUploadedToCf);
     return imageFile.value
   }
 

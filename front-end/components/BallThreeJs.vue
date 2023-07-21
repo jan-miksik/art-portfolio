@@ -18,6 +18,7 @@ import useAdminPage from '~/J/useAdminPage'
 import useMapper from '~/J/useMapper'
 import useMouseActionDetector from '~/J/useMouseActionDetector'
 import usePieces from '~/J/usePieces'
+import { LEFT_OFFSET } from '~/appSetup'
 
 const {
   mouseMoveHandlerPublicPage,
@@ -34,7 +35,7 @@ const ballThreeJs = ref({
 
 const ballThreeJsStyle = computed(() => {
   return {
-    left: `${ballThreeJs.value.x}px`,
+    left: `${ballThreeJs.value.x + LEFT_OFFSET}px`,
     top: `${ballThreeJs.value.y}px`,
   }
 })
@@ -50,7 +51,6 @@ onMounted(() => {
     autoScroll: true,
     listeners: {
       move(event) {
-        // console.log('event: ', event);
         if (!isOnAdminPage.value) return
         const scale = mapperEventData.value.scale
 
@@ -63,7 +63,6 @@ onMounted(() => {
         ballThreeJs.value.y = y
         edgePositions.value.x = Math.max(edgePositions.value.x, x + 2300)
         edgePositions.value.y = Math.max(edgePositions.value.y, y + 2000)
-        // }
       }
     }
   })

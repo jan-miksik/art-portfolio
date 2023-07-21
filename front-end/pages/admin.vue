@@ -78,6 +78,7 @@ import Piece from '~/models/Piece'
 import { v4 as uuidv4 } from 'uuid'
 import { Topics } from '~/components/piecesData'
 import { Techniques } from '../components/piecesData'
+import { LEFT_OFFSET } from '~/appSetup'
 
 const { pieces } = usePieces()
 const { edgePositions } = usePieces()
@@ -112,7 +113,7 @@ watch(mapperRef, (newVal) => {
       scale: 0.25,
       originX: 4412,
       originY: 6505,
-      translateX: -4200,
+      translateX: -2000 - LEFT_OFFSET,
       translateY: -6000
     })
   } else {
@@ -120,7 +121,7 @@ watch(mapperRef, (newVal) => {
       scale: 0.3,
       originX: 4725,
       originY: 6388,
-      translateX: -3970,
+      translateX: -2000 - LEFT_OFFSET,
       translateY: -6017
     })
   }
@@ -144,7 +145,6 @@ const submitPassword = () => {
 }
 
 onMounted(() => {
-  console.log('mapperRef.value: ', mapperRef.value);
   window.addEventListener('mousemove', updateCursorPosition)
 })
 
@@ -156,11 +156,11 @@ onUnmounted(() => {
 const updateCursorPosition = (event: MouseEvent) => {
   if (!dropzoneRef.value) return
 
-  const scale = mapperEventData.value.scale
+  const scale = mapperEventData.value?.scale || 1
 
   cursorPosition.value = {
-    x: (event.clientX) + -mapperEventData.value.x,
-    y: (event.clientY) + -mapperEventData.value.y,
+    x: (event.clientX) + -mapperEventData.value?.x,
+    y: (event.clientY) + -mapperEventData.value?.y,
     scale,
   }
 }
@@ -169,23 +169,20 @@ const drop = (event: DragEvent) => {
   if (!useAdminPage().isOnAdminPage.value) return
 
   const files = event?.dataTransfer?.files
-  console.log('event: ', event);
+  
   if (!files) return
   const imageFile = Array.from(files)[0]
   if (files.length !== 1 && !imageFile) return
-  console.log('imageFile: ', imageFile);
 
   // Remove the file extension
   const description = imageFile.name.replace(/\.[^/.]+$/, '');
-
   const parts = description.split(',').map(part => part.trim());
-  console.log('parts: ', parts);
-
+  
   const name = parts[0];
   const created = new Date(Number(parts[1]), 6);
   const techniqueDescription = parts[2];
   const sizeStr = parts[3];
-  console.log('size: ', sizeStr);
+  
   const index = sizeStr.indexOf('x');
   const size: string[] = [];
 
@@ -241,11 +238,11 @@ const drop = (event: DragEvent) => {
         // height?: number
       },
       position: {
-        x: Math.floor(cursorPosition.value.x),
+        x: Math.floor(cursorPosition.value.x + LEFT_OFFSET),
         y: Math.floor(cursorPosition.value.y),
         deg: 0,
         yMob: Math.floor(cursorPosition.value.y),
-        xMob: Math.floor(cursorPosition.value.x),
+        xMob: Math.floor(cursorPosition.value.x + LEFT_OFFSET),
         degMob: 0
       },
       isUpdated: false,
@@ -254,7 +251,7 @@ const drop = (event: DragEvent) => {
     })
   )
 
-  console.log('newPiece: ', newPiece)
+  
   pieces.value?.push(newPiece)
   useContentfulPiece().uploadPiece(newPiece)
 }
