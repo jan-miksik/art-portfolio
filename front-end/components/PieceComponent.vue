@@ -179,7 +179,7 @@ const handlePieceStyle = (piece: Piece) => {
       if (piece.topic === Topics.NODE_AVATARS && piece.techniqueDescription === TechniqueDescription.DIGITAL_BITMAP) {
         return `${piece.sizeInPx?.x / 15}px`
       }
-      return `${piece.sizeInPx?.x / 7}px`
+      return `${piece.sizeInPx?.x / 5}px`
     }
     return 'unset'
   }
@@ -192,7 +192,7 @@ const handlePieceStyle = (piece: Piece) => {
       if (piece.topic === Topics.NODE_AVATARS && piece.techniqueDescription === TechniqueDescription.DIGITAL_BITMAP) {
         return `${piece.sizeInPx?.y / 15}px`
       }
-      return `${piece.sizeInPx?.y / 10}px`
+      return `${piece.sizeInPx?.y / 5}px`
     }
     return 'unset'
   }
