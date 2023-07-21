@@ -5,7 +5,7 @@ const contentfulData = ref()
 export default function useContentful() {
   const fetchContentfulData = async () => {
     const query = `{
-      pieceCollection {
+      pieceCollection(limit: 500) {
         items {
           sys {
             id
@@ -58,6 +58,7 @@ export default function useContentful() {
       const response = await fetch(fetchUrl, fetchOptions)
       const JSONResponse = await response.json()
       contentfulData.value = JSONResponse.data.pieceCollection.items
+      console.log(' contentfulData.value: ',  contentfulData.value);
     } catch (error) {
       throw new Error('Could not receive the data from Contentful!')
     }

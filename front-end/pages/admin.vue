@@ -78,7 +78,7 @@ import Piece from '~/models/Piece'
 import { v4 as uuidv4 } from 'uuid'
 import { Topics } from '~/components/piecesData'
 import { Techniques } from '../components/piecesData'
-import { LEFT_OFFSET } from '~/appSetup'
+import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
 
 const { pieces } = usePieces()
 const { edgePositions } = usePieces()
@@ -114,15 +114,15 @@ watch(mapperRef, (newVal) => {
       originX: 4412,
       originY: 6505,
       translateX: -2000 - LEFT_OFFSET,
-      translateY: -6000
+      translateY: -6000 - TOP_OFFSET
     })
   } else {
     mapperRef.value?.setData({
       scale: 0.3,
       originX: 4725,
       originY: 6388,
-      translateX: -2000 - LEFT_OFFSET,
-      translateY: -6017
+      translateX: -5500,
+      translateY: -7000
     })
   }
 })
@@ -163,6 +163,7 @@ const updateCursorPosition = (event: MouseEvent) => {
     y: (event.clientY) + -mapperEventData.value?.y,
     scale,
   }
+  // console.log('cursorPosition.value: ', cursorPosition.value);
 }
 
 const drop = (event: DragEvent) => {
@@ -177,11 +178,13 @@ const drop = (event: DragEvent) => {
   // Remove the file extension
   const description = imageFile.name.replace(/\.[^/.]+$/, '');
   const parts = description.split(',').map(part => part.trim());
+  console.log('parts: ', parts);
   
   const name = parts[0];
   const created = new Date(Number(parts[1]), 6);
   const techniqueDescription = parts[2];
   const sizeStr = parts[3];
+  console.log('sizeStr: ', sizeStr);
   
   const index = sizeStr.indexOf('x');
   const size: string[] = [];
@@ -238,11 +241,11 @@ const drop = (event: DragEvent) => {
         // height?: number
       },
       position: {
-        x: Math.floor(cursorPosition.value.x + LEFT_OFFSET),
-        y: Math.floor(cursorPosition.value.y),
+        x: Math.floor(cursorPosition.value.x - 6000),
+        y: Math.floor(cursorPosition.value.y - 4000),
         deg: 0,
-        yMob: Math.floor(cursorPosition.value.y),
-        xMob: Math.floor(cursorPosition.value.x + LEFT_OFFSET),
+        yMob: Math.floor(cursorPosition.value.y - TOP_OFFSET),
+        xMob: Math.floor(cursorPosition.value.x - LEFT_OFFSET),
         degMob: 0
       },
       isUpdated: false,

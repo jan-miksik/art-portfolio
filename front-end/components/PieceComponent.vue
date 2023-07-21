@@ -31,11 +31,13 @@
     v-if="isOnAdminPage"
     :initialPiece="selectedPiece"
     :initialSlide="initialSlide"
+    @close-modal="handleClosePieceDetail"
   />
   <PieceComponentPublicView
     v-else
     :initialPiece="selectedPiece"
     :initialSlide="initialSlide"
+    @close-modal="handleClosePieceDetail"
   />
 </template>
 
@@ -48,7 +50,8 @@ import useAdminPage from '~/J/useAdminPage'
 import useMapper from '~/J/useMapper'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { StyleValue } from 'nuxt/dist/app/compat/capi'
-import { LEFT_OFFSET } from '~/appSetup'
+import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
+import { TechniqueDescription, Topics } from "../components/piecesData"
 
 const {
   mouseDownHandler,
@@ -81,7 +84,7 @@ onMounted(() => {
       autoScroll: true,
       listeners: {
         move(event) {
-          console.log('draggable event: ', event)
+          // console.log('draggable event: ', event)
           if (!isOnAdminPage.value) return
           const scale = mapperEventData.value.scale
           piece.value.isPublished = false
@@ -140,6 +143,10 @@ onMounted(() => {
     })
 })
 
+const handleClosePieceDetail = () => {
+  selectedPiece.value = undefined
+}
+
 const handleOnMouseDown = () => {
   mouseDownHandler()
   localZIndex.value = zIndexOfLastSelectedPiece.value
@@ -151,12 +158,28 @@ const handlePieceStyle = (piece: Piece) => {
 
   // TODO nice to have: add randomization during move for selected piece
 
+  // const sizeX = () => {
+  //   if (piece.sizeInCm?.x) {
+  //     return `${piece.sizeInCm?.x * 5}px`
+  //   }
+  //   if (piece.sizeInPx?.x) {
+  //     return `${piece.sizeInPx?.x / 5}px`
+  //   }
+  //   return 'unset'
+  // }
+
+
+
   const sizeX = () => {
+    // const sizeXToCheck = piece.sizeInCm?.x * 5
     if (piece.sizeInCm?.x) {
       return `${piece.sizeInCm?.x * 5}px`
     }
     if (piece.sizeInPx?.x) {
-      return `${piece.sizeInPx?.x / 5}px`
+      if (piece.topic === Topics.NODE_AVATARS && piece.techniqueDescription === TechniqueDescription.DIGITAL_BITMAP) {
+        return `${piece.sizeInPx?.x / 15}px`
+      }
+      return `${piece.sizeInPx?.x / 7}px`
     }
     return 'unset'
   }
@@ -166,27 +189,28 @@ const handlePieceStyle = (piece: Piece) => {
       return `${piece.sizeInCm?.y * 5}px`
     }
     if (piece.sizeInPx?.y) {
-      return `${piece.sizeInPx?.y / 5}px`
+      if (piece.topic === Topics.NODE_AVATARS && piece.techniqueDescription === TechniqueDescription.DIGITAL_BITMAP) {
+        return `${piece.sizeInPx?.y / 15}px`
+      }
+      return `${piece.sizeInPx?.y / 10}px`
     }
     return 'unset'
   }
-  // if (piece.name === 'free neon - neon zdarma - neon gratis(id)') {
-  //   console.log('piece.sizeInPx?.y: ', piece.sizeInPx?.y)
-  //   console.log('sizeX(): ', sizeX())
-  //   console.log('sizeY(): ', sizeY())
-  // }
+
+  // console.log('sizeY(): ', sizeY());
   return {
     width: sizeX(),
     maxHeight: sizeY(),
+    height: sizeY(),
     left: `${piece.position?.x + LEFT_OFFSET}px`,
-    top: `${piece.position?.y}px`,
+    top: `${piece.position?.y + TOP_OFFSET}px`,
     deg: `${piece.position?.deg}deg`,
     zIndex: `${localZIndex.value}`
   }
 }
 
 const selectImage = (piece: Piece) => {
-  console.log('piece: ', piece);
+  // console.log('piece: ', piece);
   if (!isDragging.value) {
     selectedPiece.value = piece
     const pieceIndex = pieces.value?.findIndex((p) => p.id === piece.id)
@@ -204,11 +228,12 @@ const selectImage = (piece: Piece) => {
 
 .piece__image
   position relative
+  object-fit contain
   width 100%
   max-width 100%
-  object-fit contain
-  min-width 50px
-  min-height 50px
+  min-width 20px
+  min-height 20px
+  height 100%
 
   &--not-published
     // border 1px #12b5225e solid

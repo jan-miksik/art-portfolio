@@ -1,6 +1,6 @@
 import Piece from '~/models/Piece'
 import useContentful from '~/api/useContentful'
-import { LEFT_OFFSET } from '~/appSetup'
+import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
 
 
 const pieces = ref<Piece[] | undefined>([])
@@ -39,10 +39,10 @@ export default function usePieces() {
         positionDegMob,
       } = pieceData
 
-      edgePositions.value.x = Math.max(edgePositions.value.x, positionX + widthOnWeb + 5000 + LEFT_OFFSET);
-      edgePositions.value.y = Math.max(edgePositions.value.y, positionY + 2000);
-      edgePositions.value.xMob = Math.max(edgePositions.value.xMob, positionXMob + widthOnWebMob + 500 + + LEFT_OFFSET);
-      edgePositions.value.yMob = Math.max(edgePositions.value.yMob, positionYMob + 500);
+      edgePositions.value.x = Math.max(edgePositions.value.x, positionX + widthOnWeb + 9000 + LEFT_OFFSET);
+      edgePositions.value.y = Math.max(edgePositions.value.y, positionY + 9000 + TOP_OFFSET);
+      edgePositions.value.xMob = Math.max(edgePositions.value.xMob, positionXMob + widthOnWebMob + 500 + LEFT_OFFSET);
+      edgePositions.value.yMob = Math.max(edgePositions.value.yMob, positionYMob + 500 + TOP_OFFSET);
 
       const newPiece = new Piece({
         id: sys.id,

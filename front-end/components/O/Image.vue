@@ -269,6 +269,7 @@ onUnmounted(() => {
   position absolute
   object-fit contain
   width 100%
+  left 0
 
 
 .image__low

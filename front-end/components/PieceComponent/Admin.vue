@@ -6,8 +6,8 @@
         :class="[
           { 'piece-component-admin__selected-piece-backdrop': selectedPiece }
         ]"
-        @click="handleOnBackdropClick"
-        @touchstart="handleOnBackdropClick"
+        @click="emit('close-modal')"
+        @touchstart="emit('close-modal')"
       >
         <swiper
           class="swiper"
@@ -31,8 +31,8 @@
             >
               <div
                 class="piece-component-admin__selected-piece-image-close-zone"
-                @click="handleOnBackdropClick"
-                @touchstart="handleOnBackdropClick"
+                @click="emit('close-modal')"
+                @touchstart="emit('close-modal')"
               />
               <div
                 class="piece-component-admin__selected-piece-image-inner-wrapper"
@@ -197,6 +197,10 @@ const sizeType = ref<SizeType>()
 const swiperRef = ref<SwiperTypes | null>(null)
 const selectedPiece = ref<Piece | undefined>(initialPiece.value)
 
+const emit = defineEmits<{
+  (e: 'close-modal'): void
+}>()
+
 watch(initialPiece, () => {
   selectedPiece.value = initialPiece.value
   sizeType.value = selectedPiece.value?.sizeInCm.x ? SizeType.CM : SizeType.PX
@@ -233,10 +237,6 @@ const handleOnBlurEditPieceInfo = (
     )
     selectedPiece.value[primaryField][secondField] = Number(target.innerText)
   }
-}
-
-const handleOnBackdropClick = () => {
-  selectedPiece.value = undefined
 }
 
 const handleOnSelectDate = (date: Date) => {
@@ -408,6 +408,20 @@ const handleRemovePiece = async () => {
   right 1rem
   z-index 10000
   opacity 0.2
+
+.piece__remove-button
+  position absolute
+  top 0
+  right 0
+  z-index 1000
+  margin 0.3rem
+  padding 0.3rem
+  cursor pointer
+  transition all 0.2s
+  background white
+  border 1px solid crimson
+  color crimson
+  border-radius 5px
 
 .dark-mode .piece-component-admin__selected-piece-back
   filter brightness(0) saturate(100%) invert(0) sepia(98%) saturate(8%) hue-rotate(174deg) brightness(96%) contrast(102%)

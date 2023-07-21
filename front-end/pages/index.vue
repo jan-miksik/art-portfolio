@@ -42,7 +42,7 @@ import usePieces from '~/J/usePieces'
 import useMapper from '~/J/useMapper'
 import useAdminPage from '~/J/useAdminPage'
 import useMouseActionDetector from '~/J/useMouseActionDetector'
-import { LEFT_OFFSET } from '~/appSetup'
+import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
 
 const { edgePositions } = usePieces()
 const { onMapperEvent } = useMapper()
@@ -64,7 +64,7 @@ watch(mapperRef, (newVal) => {
       originX: 4412,
       originY: 6505,
       translateX: -4200 - LEFT_OFFSET,
-      translateY: -6000
+      translateY: -6000 - TOP_OFFSET
     })
   } else {
     mapperRef.value?.setData({
@@ -72,7 +72,7 @@ watch(mapperRef, (newVal) => {
       originX: 4225,
       originY: 6388,
       translateX: -3070 - LEFT_OFFSET,
-      translateY: -5617
+      translateY: -5617 - TOP_OFFSET
     })
   }
 })

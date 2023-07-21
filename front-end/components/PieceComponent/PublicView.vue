@@ -9,8 +9,8 @@
               selectedPiece
           }
         ]"
-        @click="handleOnBackdropClick"
-        @touchstart="handleOnBackdropClick"
+        @click="emit('close-modal')"
+        @touchstart="emit('close-modal')"
       >
         <swiper
           class="swiper"
@@ -34,8 +34,8 @@
             >
               <div
                 class="piece-component-public-view__selected-piece-image-close-zone"
-                @click="handleOnBackdropClick"
-                @touchstart="handleOnBackdropClick"
+                @click="emit('close-modal')"
+                @touchstart="emit('close-modal')"
               />
               <div
                 class="piece-component-public-view__selected-piece-image-inner-wrapper"
@@ -149,6 +149,10 @@ const activeIndex = ref(0)
 const swiperRef = ref<SwiperTypes | null>(null)
 const selectedPiece = ref<Piece | undefined>(initialPiece.value)
 
+const emit = defineEmits<{
+  (e: 'close-modal'): void
+}>()
+
 watch(initialPiece, () => {
   selectedPiece.value = initialPiece.value
 })
@@ -166,9 +170,6 @@ const handleOnSlideChange = (swiper: SwiperTypes) => {
   selectedPiece.value = pieces.value[swiper.activeIndex]
 }
 
-const handleOnBackdropClick = () => {
-  selectedPiece.value = undefined
-}
 </script>
 
 <style lang="stylus" scoped>
