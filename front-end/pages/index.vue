@@ -61,10 +61,10 @@ watch(mapperRef, (newVal) => {
   if (isSetupForMobile.value) {
     mapperRef.value?.setData({
       scale: 0.25,
-      originX: 4412,
-      originY: 6505,
-      translateX: -4200 - LEFT_OFFSET,
-      translateY: -6000 - TOP_OFFSET
+      originX: 3000,
+      originY: 6000,
+      translateX: -100 - LEFT_OFFSET,
+      translateY: -1700 - TOP_OFFSET
     })
   } else {
     mapperRef.value?.setData({
