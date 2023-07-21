@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     'nuxt-swiper',
   ],
   plugins: [
-    { src: '@/plugins/vue-awesome-swiper', mode: 'client' }
+    { src: '~/plugins/matomo-plugin.js', ssr: false }
   ],
   // plugins: ['~/plugins/uuid-polyfill.js'],
   // vite: {

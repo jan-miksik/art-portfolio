@@ -51,7 +51,7 @@
     "swiper": "^9.4.1",
     "three": "^0.145.0",
     "uuid": "^9.0.0",
-    "vue-awesome-swiper": "^5.0.1",
+    "vue-matomo": "^4.2.0",
     "wagmi": "0.12.13"
   }
 }
