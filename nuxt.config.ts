@@ -1,7 +1,7 @@
 import { defineNuxtConfig } from "nuxt/config"
 const title = 'Jan Mikšík'
 const url = 'https://janmiksik.ooo'
-const mainImage = 'https://janmiksik.ooo/front-image-of-web-(aim).webp'
+const mainImage = 'https://janmiksik.ooo/soc-share-(aim).png'
 const type = 'website'
 const description = 'drawings, digital and crypto pieces, paintings and further'
 const twitterCard = 'summary_large_image'
