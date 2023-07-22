@@ -70,12 +70,6 @@ html
   overflow-y scroll
   overflow-x hidden
 
-// @font-face
-//   font-family AlumniSans
-//   font-weight 300
-//   unicode-range U+000-5FF
-//   src url("~/assets/fonts/Alumni_Sans_Collegiate_One/AlumniSansCollegiateOne-Regular.ttf")
-
 @font-face
   font-family GowunDodum
   font-weight normal

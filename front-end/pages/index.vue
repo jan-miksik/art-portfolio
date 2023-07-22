@@ -1,7 +1,8 @@
 <template>
-  <ODarkModeSwitcher />
-  <!-- <div class="homepage__open-topic-icons"> -->
-  <!-- <SelectTopicIcon :icon="sansTopicIcon" label="Free Topic" :topic="Topics.FREE_TOPIC" class="homepage__sans-topic-link" />
+  <div>
+    <ODarkModeSwitcher />
+    <!-- <div class="homepage__open-topic-icons"> -->
+    <!-- <SelectTopicIcon :icon="sansTopicIcon" label="Free Topic" :topic="Topics.FREE_TOPIC" class="homepage__sans-topic-link" />
 
       <SelectTopicIcon :icon="geometryIcon" label="Geometry" :topic="Topics.GEOMETRY" class="homepage__geometry-link"/>
 
@@ -10,9 +11,9 @@
       <SelectTopicIcon :icon="puzzleIcon" label="Puzzle" :topic="Topics.PUZZLE" class="homepage__puzzle-link"/>
 
       <SelectTopicIcon :icon="collectIcon" label="Into Pieces" :topic="Topics.NFT_COLLECTION" class="homepage__nft-collection-link"/> -->
-  <!-- </div> -->
+    <!-- </div> -->
 
-  <Contact />
+    <Contact />
     <PinchScrollZoom
       v-if="windowObject?.innerWidth && edgePositions.x"
       ref="mapperRef"
@@ -30,14 +31,17 @@
       :content-width="edgePositions.x"
       :content-height="edgePositions.y"
       :draggable="!isOverPieceOrSetupInPublicPage"
-      >
+    >
       <Pieces />
     </PinchScrollZoom>
+  </div>
 </template>
 
 <script setup lang="ts">
 import '@coddicat/vue-pinch-scroll-zoom/style.css'
-import PinchScrollZoom, { PinchScrollZoomEmitData } from '@coddicat/vue-pinch-scroll-zoom'
+import PinchScrollZoom, {
+  PinchScrollZoomEmitData
+} from '@coddicat/vue-pinch-scroll-zoom'
 import usePieces from '~/J/usePieces'
 import useMapper from '~/J/useMapper'
 import useAdminPage from '~/J/useAdminPage'

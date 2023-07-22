@@ -165,6 +165,7 @@
           Smazat
         </button>
       </div>
+      <div v-else/>
     </Transition>
   </Teleport>
 </template>
