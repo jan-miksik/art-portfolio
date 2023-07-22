@@ -3,7 +3,7 @@ const title = 'Jan Mikšík'
 const url = 'https://janmiksik.ooo'
 const mainImage = 'https://janmiksik.ooo/front-image-of-web-(aim).webp'
 const type = 'website'
-const description = 'Drawings, paintings, digital pieces and others'
+const description = 'drawings, digital and crypto pieces, paintings and further'
 const twitterCard = 'summary_large_image'
 
 export default defineNuxtConfig({
