@@ -23,7 +23,7 @@ const modeRef = ref<HTMLElement>()
 
 
 const darkModeSwitcherRef = ref<HTMLElement>()
-const styleRef = ref({left: 0, top: 0})
+const styleRef = ref({left: 5, top: 7})
 const { mouseDownHandler, mouseMoveHandler, mouseUpHandler, isDragging } = useMouseActionDetector()
 // const { dragAndDropStyle} = useDraggable(darkModeSwitcherRef, styleRef)
 // useDraggable(darkModeSwitcherRef, styleRef)

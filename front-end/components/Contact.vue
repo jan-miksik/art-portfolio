@@ -96,7 +96,7 @@ import useMouseActionDetector from '~/J/useMouseActionDetector'
 import ImageFile from '~/models/ImageFile'
 const { mouseDownHandler, mouseMoveHandler, mouseUpHandler, isDragging } = useMouseActionDetector()
 
-const style = ref({left: window.innerWidth - 80, top: 5})
+const style = ref({left: window.innerWidth - 50, top: 5})
 const contactRef = ref<HTMLElement>()
 
 onMounted(() => {
@@ -279,18 +279,18 @@ const randomizePosition = () => {
 
 
 .homepage__soc-link
-  margin 2rem
-  cursor crosshair
+  // margin 2rem
+  cursor: pointer;
 
   &:hover
     transition all 0.3s !important
     // box-shadow inset 0 -20px 0 0 rgb(41 187 97 / 41%)
 
 .homepage__soc-link-img
-  padding 0.5rem
+  // padding 0.5rem
   filter brightness(0) saturate(100%) invert(0) sepia(98%) saturate(8%) hue-rotate(174deg) brightness(96%) contrast(102%)
-  border 1px solid transparent
-  border-radius 2px
+  // border 1px solid transparent
+  // border-radius 2px
 
 .dark-mode .homepage__soc-link-img
   filter brightness(0) saturate(100%) invert(0) sepia(98%) saturate(8%) hue-rotate(174deg) brightness(96%) contrast(102%)

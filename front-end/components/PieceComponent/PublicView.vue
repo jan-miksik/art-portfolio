@@ -120,6 +120,9 @@
               </span>
             </div>
           </div>
+          <div class="piece-component-public-view__pagination-info">
+            {{ swiperPagination }}
+          </div>
         </swiper>
       </div>
     </Transition>
@@ -163,6 +166,9 @@ const isSizeInCm = computed(
 const isSizeInPx = computed(
   () => selectedPiece.value?.sizeInPx.x && selectedPiece.value?.sizeInPx.y
 )
+
+const swiperPagination = computed(() => `${activeIndex.value + 1} / ${pieces.value?.length}`)
+
 
 const handleOnSlideChange = (swiper: SwiperTypes) => {
   if (!pieces.value) return
@@ -304,6 +310,18 @@ const handleOnSlideChange = (swiper: SwiperTypes) => {
 
 .dark-mode .piece-component-public-view__selected-piece-back
   filter brightness(0) saturate(100%) invert(0) sepia(98%) saturate(8%) hue-rotate(174deg) brightness(96%) contrast(102%)
+
+.piece-component-public-view__pagination-info
+  position absolute
+  top 3rem
+  left 0
+  z-index 10000
+  font-size 0.7rem
+  color #808085f2
+  rotate 90deg
+
+.dark-mode .piece-component-public-view__pagination-info
+  color #d2d3e0f2
 </style>
 
 <style lang="stylus">

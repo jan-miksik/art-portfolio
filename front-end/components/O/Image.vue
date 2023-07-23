@@ -270,6 +270,8 @@ onUnmounted(() => {
   object-fit contain
   width 100%
   left 0
+  min-width 10px
+  min-height 10px
 
 
 .image__low
