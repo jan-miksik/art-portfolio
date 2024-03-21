@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div v-if="!isAuthenticated" class="admin__not-authenticated" />
   <form
     v-if="!isAuthenticated"
@@ -62,6 +63,7 @@
       <Pieces />
     </PinchScrollZoom>
   </div>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -181,9 +183,9 @@ const drop = (event: DragEvent) => {
   console.log('parts: ', parts);
   
   const name = parts[0];
-  const created = new Date(Number(parts[1]), 6);
-  const techniqueDescription = parts[2];
-  const sizeStr = parts[3];
+  const created = new Date(Number(parts[1]), 6) || new Date();
+  const techniqueDescription = parts[2] || '';
+  const sizeStr = parts[3] || '0x0';
   console.log('sizeStr: ', sizeStr);
   
   const index = sizeStr.indexOf('x');
