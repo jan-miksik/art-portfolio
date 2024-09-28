@@ -60,6 +60,7 @@ export default function useContentful() {
       contentfulData.value = JSONResponse.data.pieceCollection.items
       console.log(' contentfulData.value: ',  contentfulData.value);
     } catch (error) {
+      console.log('error ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]', error)
       throw new Error('Could not receive the data from Contentful!')
     }
   }

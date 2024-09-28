@@ -1,0 +1,2 @@
+"dev": "nuxt dev --https --ssl-cert localhost.pem --ssl-key localhost-key.pem",
+"d": "nuxt dev --https --ssl-cert localhost.pem --ssl-key localhost-key.pem",

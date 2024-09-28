@@ -1,4 +1,3 @@
-import { defineNuxtConfig } from "nuxt/config"
 const title = 'Jan Mikšík'
 const url = 'https://janmiksik.ooo'
 const mainImage = 'https://janmiksik.ooo/soc-share-(aim).png'
@@ -7,6 +6,8 @@ const description = 'drawings, digital and crypto pieces, paintings and further'
 const twitterCard = 'summary_large_image'
 
 export default defineNuxtConfig({
+  compatibilityDate: '2024-04-03',
+  devtools: { enabled: true },
   typescript: {
     strict: true
   },
@@ -17,13 +18,10 @@ export default defineNuxtConfig({
       '~/components',
     ]
   },
-  modules: [
-    '@vueuse/nuxt',
-    'nuxt-swiper',
-  ],
-  plugins: [
-    { src: '~/plugins/matomo-plugin.js', ssr: false }
-  ],
+  // modules: [
+  //   '@vueuse/nuxt',
+  //   'nuxt-swiper',
+  // ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     head: {
@@ -47,23 +45,6 @@ export default defineNuxtConfig({
         { name: 'twitter:card', content: twitterCard },
         { name: 'twitter:description', content: description }
       ],
-      script: [
-        {
-          src: '//gc.zgo.at/count.js', // URL scriptu GoatCounter
-          async: true,
-          'data-goatcounter': 'https://janmiksik.goatcounter.com/count', // URL účtu GoatCounter
-        },
-      ],
     }
   },
-  // plugins: ['~/plugins/uuid-polyfill.js'],
-  // vite: {
-  //   server: {
-  //     // Povolte HMR prostřednictvím zabezpečeného WebSocketu (wss)
-  //     hmr: {
-  //       clientPort: parseInt(process.env.GITHUB_CODESAPCE_PORT || '', 10) || 24678,
-  //       protocol: 'wss'
-  //     }
-  //   }
-  // }
 })
