@@ -137,9 +137,6 @@ body::-webkit-scrollbar-track // Background
 .dark-mode img
   filter invert(var(--image-filter-invert))
 
-  // &:hover
-  //   filter invert(0)
-
 .rotate-all
   transform rotate(1080deg)
   transition all 3s
@@ -155,11 +152,9 @@ input::-webkit-inner-spin-button
 input[type="number"]
   appearance textfield
 
-// .dark-mode .w3m-active
-//   filter invert(1)
 .app
   position relative
-  overflow auto
+  // overflow auto
   height 100vh
 
 .dragging

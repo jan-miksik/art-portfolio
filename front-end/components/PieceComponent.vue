@@ -3,7 +3,7 @@
   <div
     class="piece"
     ref="pieceRef"
-    :style="(handlePieceStyle(piece) as StyleValue)"
+    :style="(handlePieceStyle(piece) as any)"
     @mousedown="handleOnMouseDown"
     @mousemove="mouseMoveHandler"
     @mouseleave="mouseLeaveHandler"
@@ -30,13 +30,11 @@
   <PieceComponentAdmin
     v-if="isOnAdminPage"
     :initialPiece="selectedPiece"
-    :initialSlide="initialSlide"
     @close-modal="handleClosePieceDetail"
   />
   <PieceComponentPublicView
     v-else
     :initialPiece="selectedPiece"
-    :initialSlide="initialSlide"
     @close-modal="handleClosePieceDetail"
   />
 </template>
@@ -49,7 +47,6 @@ import usePieces from '~/J/usePieces'
 import useAdminPage from '~/J/useAdminPage'
 import useMapper from '~/J/useMapper'
 import '@vuepic/vue-datepicker/dist/main.css'
-import { StyleValue } from 'nuxt/dist/app/compat/capi'
 import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
 import { TechniqueDescription, Topics } from "../components/piecesData"
 
@@ -69,7 +66,7 @@ const { mapperEventData } = useMapper()
 const localZIndex = ref(1)
 const pieceRef = ref()
 const selectedPiece = ref<Piece>()
-const initialSlide = ref(0)
+// const initialSlide = ref(0)
 
 const props = defineProps<{
   piece: Piece
@@ -210,11 +207,8 @@ const handlePieceStyle = (piece: Piece) => {
 }
 
 const selectImage = (piece: Piece) => {
-  // console.log('piece: ', piece);
   if (!isDragging.value) {
     selectedPiece.value = piece
-    const pieceIndex = pieces.value?.findIndex((p) => p.id === piece.id)
-    initialSlide.value = pieceIndex || 0
   }
 }
 </script>

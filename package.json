@@ -22,7 +22,7 @@
     "interactjs": "^1.10.27",
     "nuxt": "^3.13.0",
     "nuxt-swiper": "^1.1.1",
-    "swiper": "^9.4.1",
+    "swiper": "^11.1.14",
     "three": "^0.145.0",
     "uuid": "^9.0.0",
     "vue": "latest",

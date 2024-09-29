@@ -12,7 +12,7 @@
       {{ errorMessage }}
     </p>
   </form>
-  
+
   <!-- x: {{ Math.floor(cursorPosition.x) }} y: {{ Math.floor(cursorPosition.y) }} scale {{ cursorPosition.scale }} -->
   <!-- <br/> -->
   <!-- mapper x: {{ Math.floor(mapperEventData.x
@@ -71,7 +71,7 @@ import usePieces from '~/J/usePieces'
 import useAdminPage from '~/J/useAdminPage'
 import useContentfulPiece from '~/J/useContentfulPiece'
 import PinchScrollZoom, {
-  PinchScrollZoomEmitData
+  type PinchScrollZoomEmitData
 } from '@coddicat/vue-pinch-scroll-zoom'
 import useMapper from '~/J/useMapper'
 import '@coddicat/vue-pinch-scroll-zoom/style.css'
@@ -172,7 +172,7 @@ const drop = (event: DragEvent) => {
   if (!useAdminPage().isOnAdminPage.value) return
 
   const files = event?.dataTransfer?.files
-  
+
   if (!files) return
   const imageFile = Array.from(files)[0]
   if (files.length !== 1 && !imageFile) return
@@ -181,13 +181,13 @@ const drop = (event: DragEvent) => {
   const description = imageFile.name.replace(/\.[^/.]+$/, '');
   const parts = description.split(',').map(part => part.trim());
   console.log('parts: ', parts);
-  
+
   const name = parts[0];
   const created = new Date(Number(parts[1]), 6) || new Date();
   const techniqueDescription = parts[2] || '';
   const sizeStr = parts[3] || '0x0';
   console.log('sizeStr: ', sizeStr);
-  
+
   const index = sizeStr.indexOf('x');
   const size: string[] = [];
 
@@ -201,7 +201,7 @@ const drop = (event: DragEvent) => {
 
   const isSizeInCm = size[1].includes('cm');
   const isSizeInPx = size[1].includes('px');
-    
+
   const sizeX = parseInt(size[0]);
   const sizeY = () => {
     if (isSizeInCm) {
@@ -256,7 +256,7 @@ const drop = (event: DragEvent) => {
     })
   )
 
-  
+
   pieces.value?.push(newPiece)
   useContentfulPiece().uploadPiece(newPiece)
 }

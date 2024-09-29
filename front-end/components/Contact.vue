@@ -12,7 +12,7 @@
   <!-- @click="showContactModal" -->
     <OImage
       :image-file="emailIcon"
-      class="homepage__contact-img" 
+      class="homepage__contact-img"
       width="27"
       alt="contact"
     />
@@ -38,7 +38,7 @@
           <a class="homepage__soc-link" href="mailto: to@janmiksik.ooo">
             <OImage
               :image-file="emailIcon"
-              class="homepage__soc-link-img" 
+              class="homepage__soc-link-img"
               width="35"
               alt="email"
               :style="randomizePosition()"
@@ -51,7 +51,7 @@
             >
             <OImage
               :image-file="instagramIcon"
-              class="homepage__soc-link-img" 
+              class="homepage__soc-link-img"
               width="27"
               alt="instagram"
               :style="randomizePosition()"
@@ -65,7 +65,7 @@
             >
             <OImage
               :image-file="facebookIcon"
-              class="homepage__soc-link-img" 
+              class="homepage__soc-link-img"
               width="26"
               alt="facebook"
               :style="randomizePosition()"
@@ -78,7 +78,7 @@
             >
             <OImage
               :image-file="twitterIcon"
-              class="homepage__soc-link-img" 
+              class="homepage__soc-link-img"
               width="30"
               alt="twitter"
               :style="randomizePosition()"
@@ -134,44 +134,44 @@ const emailIcon = ref(
   })
 )
 
-const instagramIcon = ref(
-  new ImageFile({
-    url: '/instagram.svg',
-    id: 'instagram-icon',
-    lastUpdated: new Date('1995').getTime()
-  })
-)
-
-const facebookIcon = ref(
-  new ImageFile({
-    url: '/fb.svg',
-    id: 'facebook-icon',
-    lastUpdated: new Date('1993').getTime()
-  })
-)
-
-const twitterIcon = ref(
-  new ImageFile({
-    url: '/twitter.svg',
-    id: 'twitter-icon',
-    lastUpdated: new Date('1992').getTime()
-  })
-)
-
-const contactIcon = ref(
-  new ImageFile({
-    url: '/contact.svg',
-    id: 'contact-icon',
-    lastUpdated: new Date('1992').getTime()
-  })
-)
+// const instagramIcon = ref(
+//   new ImageFile({
+//     url: '/instagram.svg',
+//     id: 'instagram-icon',
+//     lastUpdated: new Date('1995').getTime()
+//   })
+// )
+//
+// const facebookIcon = ref(
+//   new ImageFile({
+//     url: '/fb.svg',
+//     id: 'facebook-icon',
+//     lastUpdated: new Date('1993').getTime()
+//   })
+// )
+//
+// const twitterIcon = ref(
+//   new ImageFile({
+//     url: '/twitter.svg',
+//     id: 'twitter-icon',
+//     lastUpdated: new Date('1992').getTime()
+//   })
+// )
+//
+// const contactIcon = ref(
+//   new ImageFile({
+//     url: '/contact.svg',
+//     id: 'contact-icon',
+//     lastUpdated: new Date('1992').getTime()
+//   })
+// )
 
 const isContactModalVisible = ref(false)
-const contactText = ref()
+// const contactText = ref()
 
-const showContactModal = () => {
-  isContactModalVisible.value = true
-}
+// const showContactModal = () => {
+//   isContactModalVisible.value = true
+// }
 
 const generateRandomNumberPlusMinus = (max: number) => {
   return Math.floor((Math.random() * max + 1) * (Math.random() - 0.5) * 2)

@@ -131,7 +131,7 @@
                   @touchstart.stop
                 >
                   {{ selectedPiece.sizeInCm.y }} </span
-                >cm 
+                >cm
                 <!-- is cm{{ isSizeInCm }} is PX {{ isSizeInPx }} -->
               </span>
 
@@ -174,16 +174,16 @@
 import Piece from '~/models/Piece'
 import usePieces from '~/J/usePieces'
 import useContentfulPiece from '~/J/useContentfulPiece'
-import { Navigation } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import { Swiper as SwiperTypes, Keyboard, Mousewheel } from 'swiper'
+import { Swiper as SwiperTypes } from 'swiper'
 import { Topics, TechniqueDescription } from '~/components/piecesData'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { SizeType } from './usePieceComponent'
+import { Navigation, Keyboard, Mousewheel } from 'swiper/modules'
 
 const { pieces } = usePieces()
 

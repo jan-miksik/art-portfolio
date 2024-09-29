@@ -7,7 +7,8 @@ export enum Topics {
   GEOMETRY = 'geometry',
   NODE_AVATARS = 'node avatars',
   PUZZLE = 'puzzle',
-  NFT_COLLECTION = 'collection'
+  NFT_COLLECTION = 'collection',
+  SANS_TOPIC = 'sans topic'
 }
 
 // export enum TopicIcon {
@@ -44,7 +45,7 @@ export enum AdditionalInfo {
   // :: sold
   // :: lost
   // :: documentation of the exhibition
-  // :: invitation to the exhibition 
+  // :: invitation to the exhibition
   // :: borrowed
 }
 

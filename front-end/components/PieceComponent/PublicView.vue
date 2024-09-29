@@ -14,116 +14,75 @@
       >
         <swiper
           class="swiper"
-          ref="swiperRef"
+          ref="swiperMainRef"
+          :direction="'vertical'"
+          :spaceBetween="50"
+          :initialSlide="activeIndexMain"
+          :pagination="{
+            clickable: true,
+          }"
           :modules="[Navigation, Keyboard, Mousewheel]"
-          :keyboard="{ enabled: true }"
-          @slideChange="handleOnSlideChange"
-          :initialSlide="initialSlide"
+          @slideChange="handleOnSlideChangeMain"
+          @swiper="(swiper) => mainSwiperInstance = swiper"
+
         >
-          <img
-            src="/close.svg"
-            width="30"
-            height="30"
-            class="piece-component-public-view__selected-piece-back"
-          />
-          <swiper-slide class="slide" v-for="(piece, index) in pieces">
-            <div
-              class="piece-component-public-view__selected-piece-image-wrapper"
-              @click.stop
-              @touchstart.stop
-            >
-              <div
-                class="piece-component-public-view__selected-piece-image-close-zone"
-                @click="emit('close-modal')"
-                @touchstart="emit('close-modal')"
-              />
-              <div
-                class="piece-component-public-view__selected-piece-image-inner-wrapper"
-                @click.stop
-                @touchstart.stop
-              >
-                <!-- <PinchScrollZoom
-                  v-if="windowObject?.innerWidth"
-                  :height="windowObject.innerHeight * 0.7"
-                  :width="windowObject?.innerWidth"
-                  within
-                  class="piece-component-public-view__pinch-scroll-zoom"
-                  :min-scale="0.01"
-                  :max-scale="100"
-                > -->
-                <OImage
-                  :image-file="piece.image"
-                  :is-full-size="true"
-                  :piece="piece"
-                  externalCssClass="piece-component-public-view__selected-piece-image"
-                  :class="[
-                    'piece-component-public-view__selected-piece-image',
-                    {
-                      'piece-component-public-view__selected-piece-image--node-avatar':
-                        piece.topic === Topics.NODE_AVATARS
-                    }
-                  ]"
-                  @click.stop
-                  @touchstart.stop
-                />
-                <!-- </PinchScrollZoom> -->
-              </div>
-            </div>
-            <div
-              class="piece-component-public-view__selected-piece-image-info-spacer"
-              @click.stop
-              @touchstart.stop
-            />
+         <swiper-slide>
+           <SwiperBase
+            v-if="freeTopicPieces"
+           :pieces="freeTopicPieces"
+           :initial-piece="selectedPiece"
+            @close-modal="handleClosePieceDetail"
+            @move-main-carousel="handleSlideChangeByStep"
+           />
+         </swiper-slide>
+
+          <swiper-slide>
+            <SwiperBase
+            v-if="puzzlePieces"
+           :pieces="puzzlePieces"
+           :initial-piece="selectedPiece"
+            @close-modal="handleClosePieceDetail"
+            @move-main-carousel="handleSlideChangeByStep"
+           />
           </swiper-slide>
-          <div class="piece-component-public-view__selected-piece-info-wrapper">
-            <div
-              class="piece-component-public-view__selected-piece-info"
-              @click.stop
-              @touchstart.stop
-            >
-              <strong
-                @blur="(e) => handleOnBlurEditPieceInfo(e, 'name')"
-                @click.stop
-                @touchstart.stop
-              >
-                {{ selectedPiece.name }}
-              </strong>
-              <br />
-              <span>
-                {{ selectedPiece.created.getFullYear() }} </span
-              >,
 
-              <span>
-                {{
-                  selectedPiece.techniqueDescription === 'unspecified'
-                    ? ''
-                    : selectedPiece.techniqueDescription
-                }} </span
-              >,
+          <swiper-slide>
+            <SwiperBase
+            v-if="geometryPieces"
+           :pieces="geometryPieces"
+           :initial-piece="selectedPiece"
+            @close-modal="handleClosePieceDetail"
+            @move-main-carousel="handleSlideChangeByStep"
+           /></swiper-slide>
 
-              <span v-if="isSizeInCm">
-                <span @click.stop @touchstart.stop>
-                  {{ selectedPiece.sizeInCm.x }} </span
-                >cm x
-                <span @click.stop @touchstart.stop>
-                  {{ selectedPiece.sizeInCm.y }} </span
-                >cm
-              </span>
+          <swiper-slide>
+            <SwiperBase
+            v-if="nodeAvatarPieces"
+           :pieces="nodeAvatarPieces"
+           :initial-piece="selectedPiece"
+            @close-modal="handleClosePieceDetail"
+            @move-main-carousel="handleSlideChangeByStep"
+           />
+          </swiper-slide>
 
-              <span v-if="isSizeInPx">
-                <span @click.stop @touchstart.stop>
-                  {{ selectedPiece.sizeInPx.x }} </span
-                >px x
-                <span @click.stop @touchstart.stop>
-                  {{ selectedPiece.sizeInPx.y }} </span
-                >px
-              </span>
+  <!--        <swiper-slide>-->
+  <!--          <SwiperBase-->
+  <!--          v-if="digitalPieces"-->
+  <!--         :pieces="digitalPieces"-->
+  <!--         :initial-slide="initialSlide"-->
+  <!--         :initial-piece="initialPiece"-->
+  <!--         />-->
+  <!--        </swiper-slide>-->
+
+            <div @click.stop class="piece-component-public-view__categories">
+              <span @click.stop="handleChangeSlideMain(0)" :class="['piece-component-public-view__category', {'piece-component-public-view__category--active': activeIndexMain === 0}]">Free topic</span>
+              <span @click.stop="handleChangeSlideMain(1)" :class="['piece-component-public-view__category piece-component-public-view__category--puzzle', {'piece-component-public-view__category--active': activeIndexMain === 1}]">Puzzle</span>
+              <span @click.stop="handleChangeSlideMain(2)" :class="['piece-component-public-view__category', {'piece-component-public-view__category--active': activeIndexMain === 2}]">Geometry</span>
+              <span @click.stop="handleChangeSlideMain(3)" :class="['piece-component-public-view__category piece-component-public-view__category--node-avatars', {'piece-component-public-view__category--active': activeIndexMain === 3}]">Node Avatars</span>
+  <!--            <span @click.stop="handleChangeSlideMain(4)" :class="['piece-component-public-view__category piece-component-public-view__category&#45;&#45;digital', {'piece-component-public-view__category&#45;&#45;active': activeIndexMain === 4}]">digital</span>-->
             </div>
-          </div>
-          <div class="piece-component-public-view__pagination-info">
-            {{ swiperPagination }}
-          </div>
         </swiper>
+
       </div>
     </Transition>
   </Teleport>
@@ -132,115 +91,75 @@
 <script setup lang="ts">
 import Piece from '~/models/Piece'
 import usePieces from '~/J/usePieces'
-import { Navigation } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import { Swiper as SwiperTypes, Keyboard, Mousewheel } from 'swiper'
-import { Topics } from '~/components/piecesData'
+import { Swiper as SwiperTypes } from 'swiper'
+import { Navigation, Keyboard, Mousewheel } from 'swiper/modules';
+import {Topics} from "~/components/piecesData";
 
 const { pieces } = usePieces()
 
 const props = defineProps<{
   initialPiece: Piece
-  initialSlide: number
 }>()
 const { initialPiece } = toRefs(props)
 
-const activeIndex = ref(0)
-const swiperRef = ref<SwiperTypes | null>(null)
+const swiperMainRef = ref<SwiperTypes | null>(null)
+const mainSwiperInstance = ref()
+const activeIndexMain = ref(0)
 const selectedPiece = ref<Piece | undefined>(initialPiece.value)
+
+const freeTopicPieces = computed(() => (pieces.value || []).filter(p => p.topic === Topics.FREE_TOPIC || p.topic === Topics.SANS_TOPIC))
+const puzzlePieces = computed(() => (pieces.value || []).filter(p => p.topic === Topics.PUZZLE))
+const geometryPieces = computed(() => (pieces.value || []).filter(p => p.topic === Topics.GEOMETRY))
+const nodeAvatarPieces = computed(() => (pieces.value || []).filter(p => p.topic === Topics.NODE_AVATARS))
 
 const emit = defineEmits<{
   (e: 'close-modal'): void
 }>()
 
+const handleClosePieceDetail = () => {
+  emit('close-modal')
+}
+
 watch(initialPiece, () => {
+  if (initialPiece.value?.topic === Topics.FREE_TOPIC || initialPiece.value?.topic === Topics.SANS_TOPIC) {
+    activeIndexMain.value = 0
+  }
+  if (initialPiece.value?.topic === Topics.PUZZLE) {
+    activeIndexMain.value = 1
+  }
+  if (initialPiece.value?.topic === Topics.GEOMETRY) {
+    activeIndexMain.value = 2
+  }
+  if (initialPiece.value?.topic === Topics.NODE_AVATARS) {
+    activeIndexMain.value = 3
+  }
   selectedPiece.value = initialPiece.value
 })
 
-const isSizeInCm = computed(
-  () => selectedPiece.value?.sizeInCm.x && selectedPiece.value?.sizeInCm.y
-)
-const isSizeInPx = computed(
-  () => selectedPiece.value?.sizeInPx.x && selectedPiece.value?.sizeInPx.y
-)
 
-const swiperPagination = computed(() => `${activeIndex.value + 1} / ${pieces.value?.length}`)
+const handleOnSlideChangeMain = (swiper: SwiperTypes) => {
+  activeIndexMain.value = swiper.activeIndex
+}
 
+const handleChangeSlideMain = (slideIndex: number) => {
+  activeIndexMain.value = slideIndex
+  if (mainSwiperInstance.value) {
+    mainSwiperInstance.value.slideTo(slideIndex)
+  }
+}
 
-const handleOnSlideChange = (swiper: SwiperTypes) => {
-  if (!pieces.value) return
-  activeIndex.value = swiper.activeIndex
-  selectedPiece.value = pieces.value[swiper.activeIndex]
+const handleSlideChangeByStep = (moveDirection: number) => {
+  console.log('handleSlideChangeByStep')
+  mainSwiperInstance.value.slideTo(activeIndexMain.value + moveDirection)
 }
 
 </script>
 
 <style lang="stylus" scoped>
-.piece-component-public-view__selected-piece-image
-  cursor default
-  z-index 10000
-  object-fit contain
-  max-width 90%
-
-  &--node-avatar
-    max-height 300px
-
-.piece-component-public-view__selected-piece-image-wrapper
-  display flex
-  flex-direction column
-  justify-content center
-  align-items center
-  height 100%
-  width 100%
-  cursor default
-
-
-.piece-component-public-view__selected-piece-image-inner-wrapper
-  width 100%
-  display flex
-  justify-content center
-  max-height 75%
-  cursor default
-  z-index 10000
-
-.piece-component-public-view__selected-piece-image-info-spacer
-  height 4.75rem
-  width 100%
-  cursor default
-
-.piece-component-public-view__selected-piece-info-wrapper
-  display flex
-  justify-content center
-  position absolute
-  width 100%
-  bottom 0
-  cursor default
-
-
-.piece-component-public-view__selected-piece-info
-  max-width 90%
-  width max-content
-  text-align center
-  font-size 1rem
-  align-self center
-  cursor auto
-  user-select text
-  font-family GowunDodum, Helvetica, Arial, sans-serif
-  font-weight normal
-  z-index 10001
-  text-shadow 0 0 1px #d2d3e0f2, 0 0 2px #d2d3e0f2
-
-  @media (min-width 600px)
-    align-self flex-end
-    bottom 0.3rem
-
-
-// .dark-mode .piece-component-public-view__selected-piece-info
-// background-color rgb(17 17 17)
-
 
 .piece-component-public-view__selected-piece-backdrop
   position fixed
@@ -260,21 +179,11 @@ const handleOnSlideChange = (swiper: SwiperTypes) => {
   background-color #efebebfc
   cursor url("/close-white.svg"), auto
 
-// // / Animation /
-.images-enter-active
-.images-leave-active
-  transition all 0.5s
-
-.images-enter-from
-.images-leave-to
-  opacity 0
-
 .swiper
   justify-content center
   align-items center
-  height calc(100vh - 70px)
+  height 100vh
   width 100vw
-  font-weight bold
   font-family Roboto, sans-serif
 
 
@@ -289,46 +198,51 @@ const handleOnSlideChange = (swiper: SwiperTypes) => {
   justify-content space-between
   flex-direction column
 
-.piece-component-public-view__selected-piece-image-close-zone
-  position absolute
-  top 0
-  right 0
-  width 100vw
-  height 50vh
-  z-index 10000
-  cursor url("/close.svg"), auto
-
-.dark-mode .piece-component-public-view__selected-piece-image-close-zone
-  cursor url("/close-white.svg"), auto
-
-.piece-component-public-view__selected-piece-back
-  position absolute
-  top 1rem
-  right 1rem
-  z-index 10000
-  opacity 0.2
-
-.dark-mode .piece-component-public-view__selected-piece-back
-  filter brightness(0) saturate(100%) invert(0) sepia(98%) saturate(8%) hue-rotate(174deg) brightness(96%) contrast(102%)
-
-.piece-component-public-view__pagination-info
+.piece-component-public-view__categories
   position absolute
   top 3rem
   left 0
   z-index 10000
   font-size 0.7rem
-  color #808085f2
+  display: flex;
+  gap: 1rem;
+  flex-direction column
+  width 1.5rem
+  cursor default
+
+$translate-category-x = -47px
+
+.piece-component-public-view__category
   rotate 90deg
+  height: 4rem;
+  width: 5rem;
+  white-space: nowrap
+  translate: $translate-category-x
+  opacity 0.5
+  cursor: pointer
+  padding-top: 1rem;
+
+.piece-component-public-view__category--active
+  opacity 1
+
+.piece-component-public-view__category--puzzle
+  translate $translate-category-x 2px
+
+.piece-component-public-view__category--node-avatars
+  translate $translate-category-x 15px
+
+.piece-component-public-view__category--digital
+  translate $translate-category-x 25px
 
 .dark-mode .piece-component-public-view__pagination-info
   color #d2d3e0f2
-</style>
 
-<style lang="stylus">
-.piece-component-public-view__selected-piece-image
-  border 1px solid transparent
-  position relative
-  object-fit contain
-  max-width 100%
-  max-height 100%
+// // / Animation /
+.images-enter-active
+.images-leave-active
+  transition all 0.5s
+
+.images-enter-from
+.images-leave-to
+  opacity 0
 </style>
