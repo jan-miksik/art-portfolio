@@ -1,5 +1,5 @@
 import Piece from '~/models/Piece'
-import axios, { AxiosResponse } from 'axios'
+import axios, { type AxiosResponse } from 'axios'
 import { createClient } from 'contentful-management'
 import useAdminPage from './useAdminPage'
 
@@ -40,7 +40,7 @@ export default function useContentfulPiece() {
   // 2.
   const linkUploadedImageToAsset = async (uploadResponse: AxiosResponse, imageRaw: File) => {
     const imageName = imageRaw.name.substring(0, imageRaw.name.lastIndexOf('.'))
-      
+
     try {
       const assetData = {
         fields: {
@@ -238,6 +238,9 @@ export default function useContentfulPiece() {
           positionDegMob: {
             'en-US': Math.floor(piece.position.degMob || 0)
           },
+          isMoveableInPublic: {
+            'en-US': piece.isMoveableInPublic ?? false
+          },
         }
       }
 
@@ -262,7 +265,7 @@ export default function useContentfulPiece() {
       const space = await contentfulClient.getSpace(contentfulSpaceId)
       const environment = await space.getEnvironment('master')
       const entry = await environment.getEntry(piece.sys.id)
-  
+
       // Update the fields of the entry
       entry.fields = {
         name: {
@@ -325,8 +328,11 @@ export default function useContentfulPiece() {
         positionDegMob: {
           'en-US': Math.floor(piece.position.degMob || 0)
         },
+        isMoveableInPublic: {
+          'en-US': piece.isMoveableInPublic ?? false
+        },
       }
-  
+
       // Save the updated entry
       const updatedEntry = await entry.update()
       piece.sys.version = updatedEntry.sys.version

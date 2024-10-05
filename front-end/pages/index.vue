@@ -30,7 +30,7 @@
       :throttleDelay="20"
       :content-width="edgePositions.x"
       :content-height="edgePositions.y"
-      :draggable="!isOverPieceOrSetupInPublicPage"
+      :draggable="!isOverPieceOrSetup"
     >
       <Pieces />
     </PinchScrollZoom>
@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import '@coddicat/vue-pinch-scroll-zoom/style.css'
 import PinchScrollZoom, {
-  PinchScrollZoomEmitData
+  type PinchScrollZoomEmitData
 } from '@coddicat/vue-pinch-scroll-zoom'
 import usePieces from '~/J/usePieces'
 import useMapper from '~/J/useMapper'
@@ -51,7 +51,7 @@ import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
 const { edgePositions } = usePieces()
 const { onMapperEvent } = useMapper()
 
-const { isOverPieceOrSetupInPublicPage } = useMouseActionDetector()
+const { isOverPieceOrSetupInPublicPage, isOverPieceOrSetup } = useMouseActionDetector()
 const isMapperSet = ref(false)
 const mapperRef = ref()
 

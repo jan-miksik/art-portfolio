@@ -14,12 +14,12 @@ export default function useMouseActionDetector() {
 
   const mouseMoveHandler = () => {
     isDragging.value = true
-    if (!isOnAdminPage.value) return
+    // if (!isOnAdminPage.value) return
     isOverPieceOrSetup.value = true
   }
 
   const mouseUpHandler = () => {
-    
+
     isDragging.value ? 'drag' : 'click'
     setTimeout(() => {
         isDragging.value = false
@@ -31,7 +31,7 @@ export default function useMouseActionDetector() {
   }
 
   const touchmoveHandler = () => {
-    if (!isOnAdminPage.value) return
+    // if (!isOnAdminPage.value) return
     isOverPieceOrSetup.value = true
   }
 

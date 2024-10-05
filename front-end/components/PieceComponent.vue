@@ -81,8 +81,7 @@ onMounted(() => {
       autoScroll: true,
       listeners: {
         move(event) {
-          // console.log('draggable event: ', event)
-          if (!isOnAdminPage.value) return
+          if (!isOnAdminPage.value && !piece.value.isMoveableInPublic) return
           const scale = mapperEventData.value.scale
           piece.value.isPublished = false
           const xRaw = piece.value.position.x + event.dx / scale

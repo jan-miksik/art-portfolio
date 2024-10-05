@@ -2,14 +2,6 @@ import { Techniques, Topics } from '~/components/piecesData';
 import ImageFile from '~/models/ImageFile'
 import { v4 as uuidv4 } from 'uuid'
 
-// const generateRandomNumberPlusMinus = (max: number) => {
-//   return Math.floor((Math.random() * max + 1) * (Math.random() - 0.5) * 2)
-// }
-
-// const randomRange = (min: number, max: number) => {
-//   return Math.floor(Math.random() * (max - min + 1) + min)
-// }
-
 export type IPiece = {
   id: string
   sys?: {
@@ -57,6 +49,7 @@ export type IPiece = {
   description?: string
   price?: number
   updated?: Date
+  isMoveableInPublic?: boolean
 }
 
 export default class Piece {
@@ -83,6 +76,7 @@ export default class Piece {
   public isUpdated
   public isPublished
   public isUploadedToCf
+  public isMoveableInPublic
 
   constructor(data: IPiece) {
     this.id = data.id || ''
@@ -112,45 +106,6 @@ export default class Piece {
     this.isUpdated = data.isUpdated || false
     this.isPublished = data.isPublished || false
     this.isUploadedToCf = data.isUploadedToCf || false
+    this.isMoveableInPublic = data.isMoveableInPublic || false
   }
-  
-  // this.randomizedPosition = this.getRandomizedPosition()
-  // getRandomizedPosition() {
-  //   if (this.topic === Topics.FREE_TOPIC) {
-  //     return {
-  //       transform: `rotate(${generateRandomNumberPlusMinus(3)}deg) scale(${
-  //         randomRange(7, 11) / 10
-  //       }) translateY(${generateRandomNumberPlusMinus(
-  //         170
-  //       )}px) translateX(${generateRandomNumberPlusMinus(10)}px)`
-  //     }
-  //   }
-  //   if (this.topic === Topics.GEOMETRY) {
-  //     return {
-  //       transform: `scale(${
-  //         randomRange(7, 11) / 10
-  //       }) translateY(${generateRandomNumberPlusMinus(
-  //         180
-  //       )}px) translateX(${generateRandomNumberPlusMinus(10)}px)`
-  //     }
-  //   }
-  //   if (this.topic === Topics.NODE_AVATARS) {
-  //     return {
-  //       transform: `scale(${
-  //         randomRange(7, 10) / 10
-  //       }) translateY(${generateRandomNumberPlusMinus(
-  //         110
-  //       )}px) translateX(${generateRandomNumberPlusMinus(10)}px)`
-  //     }
-  //   }
-  //   if (this.topic === Topics.PUZZLE) {
-  //     return {
-  //       transform: `scale(${
-  //         randomRange(8, 10) / 10
-  //       }) translateY(${generateRandomNumberPlusMinus(
-  //         180
-  //       )}px) translateX(${generateRandomNumberPlusMinus(10)}px)`
-  //     }
-  //   }
-  // }
 }

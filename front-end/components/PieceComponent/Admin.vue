@@ -153,6 +153,16 @@
                   {{ selectedPiece.sizeInPx.y }} </span
                 >px
               </span>
+
+              <label>
+                <input
+                  type="checkbox"
+                  v-model="selectedPiece.isMoveableInPublic"
+                  @change="handleIsMoveableInPublic($event.target?.checked)"
+                />
+                Moveable in Public
+              </label>
+
             </div>
           </div>
         </swiper>
@@ -189,9 +199,13 @@ const { pieces } = usePieces()
 
 const props = defineProps<{
   initialPiece: Piece
-  initialSlide: number
+  // initialSlide: number
 }>()
 const { initialPiece } = toRefs(props)
+
+const initialSlide = computed(() => {
+  return pieces.value?.findIndex((p) => p?.id === initialPiece.value?.id) || 0
+})
 
 const activeIndex = ref(0)
 const sizeType = ref<SizeType>()
@@ -267,6 +281,12 @@ const handleRemovePiece = async () => {
     pieces.value = pieces.value?.filter((p) => p.id !== selectedPiece.value?.id)
     alert('Smazáno')
   }
+}
+
+const handleIsMoveableInPublic = (val: boolean) => {
+  if (!selectedPiece.value || !pieces.value) return
+  pieces.value[activeIndex.value].isPublished = false
+  pieces.value[activeIndex.value].isMoveableInPublic = val
 }
 </script>
 

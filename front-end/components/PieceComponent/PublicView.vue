@@ -15,7 +15,7 @@
         <swiper
           class="swiper"
           ref="swiperMainRef"
-          :direction="'vertical'"
+          direction='vertical'
           :spaceBetween="50"
           :initialSlide="activeIndexMain"
           :pagination="{
@@ -32,6 +32,7 @@
            :pieces="freeTopicPieces"
            :initial-piece="selectedPiece"
             @close-modal="handleClosePieceDetail"
+            :activeIndexMain="activeIndexMain"
             @move-main-carousel="handleSlideChangeByStep"
            />
          </swiper-slide>
@@ -41,6 +42,7 @@
             v-if="puzzlePieces"
            :pieces="puzzlePieces"
            :initial-piece="selectedPiece"
+            :activeIndexMain="activeIndexMain"
             @close-modal="handleClosePieceDetail"
             @move-main-carousel="handleSlideChangeByStep"
            />
@@ -51,6 +53,7 @@
             v-if="geometryPieces"
            :pieces="geometryPieces"
            :initial-piece="selectedPiece"
+            :activeIndexMain="activeIndexMain"
             @close-modal="handleClosePieceDetail"
             @move-main-carousel="handleSlideChangeByStep"
            /></swiper-slide>
@@ -58,8 +61,9 @@
           <swiper-slide>
             <SwiperBase
             v-if="nodeAvatarPieces"
-           :pieces="nodeAvatarPieces"
-           :initial-piece="selectedPiece"
+            :pieces="nodeAvatarPieces"
+            :activeIndexMain="activeIndexMain"
+            :initial-piece="selectedPiece"
             @close-modal="handleClosePieceDetail"
             @move-main-carousel="handleSlideChangeByStep"
            />
@@ -153,7 +157,6 @@ const handleChangeSlideMain = (slideIndex: number) => {
 }
 
 const handleSlideChangeByStep = (moveDirection: number) => {
-  console.log('handleSlideChangeByStep')
   mainSwiperInstance.value.slideTo(activeIndexMain.value + moveDirection)
 }
 

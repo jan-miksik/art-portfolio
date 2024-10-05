@@ -137,6 +137,7 @@ import { Topics } from '~/components/piecesData'
 const props = defineProps<{
   initialPiece: Piece
   pieces: Piece[]
+  activeIndexMain: number
 }>()
 const { initialPiece, pieces } = toRefs(props)
 
@@ -162,21 +163,21 @@ const isLastSlide = computed(() => activeIndex.value === (pieces.value?.length -
 const isFirstSlide = computed(() => activeIndex.value === 0)
 
 const isRightArrowPointingDown = computed(() => {
-  if (selectedPiece.value?.topic === Topics.NODE_AVATARS) return false
+  if (props.activeIndexMain === 3) return false
   return isLastSlide.value
 });
 
 const isLeftArrowPointingUp = computed(() => {
-  if (selectedPiece.value?.topic === Topics.FREE_TOPIC || selectedPiece.value?.topic === Topics.SANS_TOPIC) return false
+  if (props.activeIndexMain === 0) return false
   return isFirstSlide.value
 })
 
 const hideArrowRight = computed(() => {
-  return selectedPiece.value?.topic === Topics.NODE_AVATARS && isLastSlide.value
+  return props.activeIndexMain === 3 && isLastSlide.value
 })
 
 const hideArrowLeft = computed(() => {
-  return (selectedPiece.value?.topic === Topics.FREE_TOPIC || selectedPiece.value?.topic === Topics.SANS_TOPIC) && isFirstSlide.value
+  return (props.activeIndexMain === 0) && isFirstSlide.value
 })
 
 const isSizeInCm = computed(

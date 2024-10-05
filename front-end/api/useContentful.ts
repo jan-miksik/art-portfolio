@@ -35,6 +35,7 @@ export default function useContentful() {
           positionXMob
           positionYMob
           positionDegMob
+          isMoveableInPublic
         }
       }
     }`
@@ -58,7 +59,6 @@ export default function useContentful() {
       const response = await fetch(fetchUrl, fetchOptions)
       const JSONResponse = await response.json()
       contentfulData.value = JSONResponse.data.pieceCollection.items
-      console.log(' contentfulData.value: ',  contentfulData.value);
     } catch (error) {
       console.log('error ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]', error)
       throw new Error('Could not receive the data from Contentful!')
