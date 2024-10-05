@@ -182,9 +182,12 @@ const handleSlideChangeByStep = (moveDirection: number) => {
 .swiper
   justify-content center
   align-items center
-  height 100vh
+  height 95dvh
   width 100vw
   font-family Roboto, sans-serif
+
+  @media (min-width 700px)
+    height 100vh
 
 
 .swiper-wrapper
