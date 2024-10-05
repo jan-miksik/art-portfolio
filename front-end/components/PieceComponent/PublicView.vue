@@ -74,7 +74,7 @@
   <!--         />-->
   <!--        </swiper-slide>-->
 
-            <div @click.stop class="piece-component-public-view__categories">
+            <div @click.stop @touchstart.stop class="piece-component-public-view__categories">
               <span @click.stop="handleChangeSlideMain(0)" :class="['piece-component-public-view__category', {'piece-component-public-view__category--active': activeIndexMain === 0}]">Free topic</span>
               <span @click.stop="handleChangeSlideMain(1)" :class="['piece-component-public-view__category piece-component-public-view__category--puzzle', {'piece-component-public-view__category--active': activeIndexMain === 1}]">Puzzle</span>
               <span @click.stop="handleChangeSlideMain(2)" :class="['piece-component-public-view__category', {'piece-component-public-view__category--active': activeIndexMain === 2}]">Geometry</span>
@@ -218,7 +218,7 @@ $translate-category-x = -47px
   width: 5rem;
   white-space: nowrap
   translate: $translate-category-x
-  opacity 0.5
+  opacity 0.3
   cursor: pointer
   padding-top: 1rem;
 

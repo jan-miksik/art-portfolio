@@ -1,5 +1,5 @@
 import ImageFile from '~/models/ImageFile'
-import Dexie, { Table } from 'dexie'
+import Dexie, { type Table } from 'dexie'
 
 export interface ImageIDB {
   id: string;

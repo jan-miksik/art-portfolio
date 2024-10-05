@@ -8,13 +8,7 @@
       :initialSlide="initialSlide"
       @swiper="(swiper) => swiperInstance = swiper"
     >
-      <img
-        src="/close.svg"
-        width="30"
-        height="30"
-        alt="close"
-        class="swiper-base__selected-piece-back"
-      />
+
       <swiper-slide class="slide" v-for="(piece) in pieces">
         <div
           class="swiper-base__selected-piece-image-wrapper"
@@ -118,7 +112,15 @@
         class="swiper-base__selected-piece-image-close-zone"
         @click="emit('close-modal')"
         @touchstart="emit('close-modal')"
-      />
+      >
+        <img
+          src="/close.svg"
+          width="30"
+          height="30"
+          alt="close"
+          class="swiper-base__selected-piece-back"
+        />
+      </div>
     </swiper>
 </template>
 
@@ -248,7 +250,7 @@ const handleOnSlideChange = (swiper: SwiperTypes) => {
   width 100%
   bottom 0
   cursor default
-  padding-bottom 1.5rem
+  padding-bottom 2.5rem
 
 
 .swiper-base__selected-piece-info
@@ -328,6 +330,10 @@ const handleOnSlideChange = (swiper: SwiperTypes) => {
   z-index 10000
   cursor url("/close.svg"), auto
 
+  &:hover
+    .swiper-base__selected-piece-back
+      opacity 1
+
 .dark-mode .swiper-base__selected-piece-image-close-zone
   cursor url("/close-white.svg"), auto
 
@@ -337,6 +343,9 @@ const handleOnSlideChange = (swiper: SwiperTypes) => {
   right 1rem
   z-index 10000
   opacity 0.2
+
+  &:hover
+    opacity 1
 
 .dark-mode .swiper-base__selected-piece-back
   filter brightness(0) saturate(100%) invert(0) sepia(98%) saturate(8%) hue-rotate(174deg) brightness(96%) contrast(102%)
@@ -371,12 +380,12 @@ const handleOnSlideChange = (swiper: SwiperTypes) => {
     display flex
 
 .swiper-base__arrow-left
-  padding: 33% 5rem 33% 1rem;
+  padding: 50vh 5rem 50vh 1rem;
   left: 3rem;
 
 .swiper-base__arrow-right
+  padding: 50vh 1rem 50vh 5rem;
   right: 3rem;
-  padding: 33% 1rem 33% 5rem;
 
 .swiper-base__arrow-right-image
 .swiper-base__arrow-left-image
