@@ -5,10 +5,10 @@
     ref="pieceRef"
     :style="(handlePieceStyle(piece) as any)"
     @mousedown="handleOnMouseDown"
-    @mousemove="mouseMoveHandler"
+    @mousemove="(event) => mouseMoveHandler(event, piece)"
     @mouseleave="mouseLeaveHandler"
     @mouseup="mouseUpHandler"
-    @touchmove="touchmoveHandler"
+    @touchmove="(event) => touchmoveHandler(event, piece)"
     @touchend="touchendHandler"
   >
     <OImage

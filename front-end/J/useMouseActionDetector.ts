@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import useAdminPage from './useAdminPage'
+import type Piece from "~/models/Piece";
 
 const isDragging = ref(false)
 const isOverPieceOrSetup = ref(false)
@@ -12,9 +13,9 @@ export default function useMouseActionDetector() {
     isDragging.value = false
   }
 
-  const mouseMoveHandler = () => {
+  const mouseMoveHandler = (event: MouseEvent, piece?: Piece) => {
     isDragging.value = true
-    // if (!isOnAdminPage.value) return
+    if (!isOnAdminPage.value && !piece?.isMoveableInPublic) return
     isOverPieceOrSetup.value = true
   }
 
@@ -30,8 +31,8 @@ export default function useMouseActionDetector() {
     isOverPieceOrSetup.value = false
   }
 
-  const touchmoveHandler = () => {
-    // if (!isOnAdminPage.value) return
+  const touchmoveHandler = (event: TouchEvent, piece?: Piece) => {
+    if (!isOnAdminPage.value && !piece?.isMoveableInPublic) return
     isOverPieceOrSetup.value = true
   }
 

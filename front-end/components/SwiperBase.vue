@@ -102,10 +102,10 @@
       <div class="swiper-base__pagination-info">
         {{ swiperPagination }}
       </div>
-      <div v-if="!hideArrowLeft" class="swiper-base__arrow-left" @click.stop="handleSlideChange(-1)">
+      <div v-if="!hideArrowLeft" class="swiper-base__arrow-left" @click.stop="handleSlideChange(-1)" @touchstart.stop="handleSlideChange(-1)">
         <img src="/arrow-left.svg" alt="arrow-left" :class="['swiper-base__arrow-left-image', {'swiper-base__arrow-left--rotate-up':isLeftArrowPointingUp}]"/>
       </div>
-      <div v-if="!hideArrowRight" class="swiper-base__arrow-right" @click.stop="handleSlideChange(+1)">
+      <div v-if="!hideArrowRight" class="swiper-base__arrow-right" @click.stop="handleSlideChange(+1)" @touchstart.stop="handleSlideChange(-1)">
         <img src="/arrow-right.svg" alt="arrow-right" :class="['swiper-base__arrow-right-image', {'swiper-base__arrow-right--rotate-down':isRightArrowPointingDown}]"/>
       </div>
       <div
@@ -163,7 +163,7 @@ const isLastSlide = computed(() => activeIndex.value === (pieces.value?.length -
 const isFirstSlide = computed(() => activeIndex.value === 0)
 
 const isRightArrowPointingDown = computed(() => {
-  if (props.activeIndexMain === 3) return false
+  if (props.activeIndexMain === 4) return false
   return isLastSlide.value
 });
 
@@ -173,7 +173,7 @@ const isLeftArrowPointingUp = computed(() => {
 })
 
 const hideArrowRight = computed(() => {
-  return props.activeIndexMain === 3 && isLastSlide.value
+  return props.activeIndexMain === 4 && isLastSlide.value
 })
 
 const hideArrowLeft = computed(() => {

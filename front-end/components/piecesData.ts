@@ -8,7 +8,8 @@ export enum Topics {
   NODE_AVATARS = 'node avatars',
   PUZZLE = 'puzzle',
   NFT_COLLECTION = 'collection',
-  SANS_TOPIC = 'sans topic'
+  SANS_TOPIC = 'sans topic',
+  DIGITAL = 'digital'
 }
 
 // export enum TopicIcon {

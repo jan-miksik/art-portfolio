@@ -60,30 +60,32 @@
 
           <swiper-slide>
             <SwiperBase
-            v-if="nodeAvatarPieces"
-            :pieces="nodeAvatarPieces"
-            :activeIndexMain="activeIndexMain"
-            :initial-piece="selectedPiece"
-            @close-modal="handleClosePieceDetail"
-            @move-main-carousel="handleSlideChangeByStep"
-           />
+              v-if="nodeAvatarPieces"
+              :pieces="nodeAvatarPieces"
+              :activeIndexMain="activeIndexMain"
+              :initial-piece="selectedPiece"
+              @close-modal="handleClosePieceDetail"
+              @move-main-carousel="handleSlideChangeByStep"
+            />
           </swiper-slide>
 
-  <!--        <swiper-slide>-->
-  <!--          <SwiperBase-->
-  <!--          v-if="digitalPieces"-->
-  <!--         :pieces="digitalPieces"-->
-  <!--         :initial-slide="initialSlide"-->
-  <!--         :initial-piece="initialPiece"-->
-  <!--         />-->
-  <!--        </swiper-slide>-->
+          <swiper-slide>
+            <SwiperBase
+              v-if="digitalPieces"
+              :pieces="digitalPieces"
+              :activeIndexMain="activeIndexMain"
+              :initial-piece="selectedPiece"
+              @close-modal="handleClosePieceDetail"
+              @move-main-carousel="handleSlideChangeByStep"
+            />
+          </swiper-slide>
 
             <div @click.stop @touchstart.stop class="piece-component-public-view__categories">
               <span @click.stop="handleChangeSlideMain(0)" :class="['piece-component-public-view__category', {'piece-component-public-view__category--active': activeIndexMain === 0}]">Free topic</span>
               <span @click.stop="handleChangeSlideMain(1)" :class="['piece-component-public-view__category piece-component-public-view__category--puzzle', {'piece-component-public-view__category--active': activeIndexMain === 1}]">Puzzle</span>
               <span @click.stop="handleChangeSlideMain(2)" :class="['piece-component-public-view__category', {'piece-component-public-view__category--active': activeIndexMain === 2}]">Geometry</span>
               <span @click.stop="handleChangeSlideMain(3)" :class="['piece-component-public-view__category piece-component-public-view__category--node-avatars', {'piece-component-public-view__category--active': activeIndexMain === 3}]">Node Avatars</span>
-  <!--            <span @click.stop="handleChangeSlideMain(4)" :class="['piece-component-public-view__category piece-component-public-view__category&#45;&#45;digital', {'piece-component-public-view__category&#45;&#45;active': activeIndexMain === 4}]">digital</span>-->
+              <span @click.stop="handleChangeSlideMain(4)" :class="['piece-component-public-view__category piece-component-public-view__category--digital', {'piece-component-public-view__category--active': activeIndexMain === 4}]">digital</span>
             </div>
         </swiper>
 
@@ -119,6 +121,8 @@ const freeTopicPieces = computed(() => (pieces.value || []).filter(p => p.topic 
 const puzzlePieces = computed(() => (pieces.value || []).filter(p => p.topic === Topics.PUZZLE))
 const geometryPieces = computed(() => (pieces.value || []).filter(p => p.topic === Topics.GEOMETRY))
 const nodeAvatarPieces = computed(() => (pieces.value || []).filter(p => p.topic === Topics.NODE_AVATARS))
+const digitalPieces = computed(() => (pieces.value || []).filter(p => p.topic === Topics.DIGITAL))
+
 
 const emit = defineEmits<{
   (e: 'close-modal'): void
@@ -140,6 +144,9 @@ watch(initialPiece, () => {
   }
   if (initialPiece.value?.topic === Topics.NODE_AVATARS) {
     activeIndexMain.value = 3
+  }
+  if (initialPiece.value?.topic === Topics.DIGITAL) {
+    activeIndexMain.value = 4
   }
   selectedPiece.value = initialPiece.value
 })
