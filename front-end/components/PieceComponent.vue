@@ -25,7 +25,7 @@
       :width="piece.sizeOnWeb.width"
       @click="selectImage(piece)"
     />
-    <!-- x:{{ piece?.position.x }} y: {{ piece?.position.y }} -->
+    <div class="piece__rotate"/>
   </div>
   <PieceComponentAdmin
     v-if="isOnAdminPage"
@@ -87,6 +87,7 @@ onMounted(() => {
           const yRaw = piece.value.position.y + event.dy / scale
           const x = xRaw > -2000 ? xRaw : -2000
           const y = yRaw > -2000 ? yRaw : -2000
+
           piece.value.position.x = x
           piece.value.position.y = y
           edgePositions.value.x = Math.max(
@@ -94,9 +95,8 @@ onMounted(() => {
             x + (piece.value?.sizeOnWeb?.width || 0) + 2000
           )
           edgePositions.value.y = Math.max(edgePositions.value.y, y + 2000)
-          // }
-        }
-      }
+        },
+      },
     })
     .resizable({
       // resize from edges and corners
@@ -104,31 +104,15 @@ onMounted(() => {
 
       listeners: {
         move(event) {
-          // should use proportional size from cm of piece
-          return
+          if (!isOnAdminPage.value && !piece.value.isMoveableInPublic) return
           const scale = mapperEventData.value.scale
-          const target = event.target
-          let x = parseFloat(target.getAttribute('data-x')) || 0
-          let y = parseFloat(target.getAttribute('data-y')) || 0
-
-          // update the element's style
-          if (piece.value.sizeOnWeb.width === event.rect.width) return
-
-          // if (isSetupForMobile.value) {
-          //   piece.value.sizeOnWeb.widthMob = (event.rect.width / scale)
-          // } else {
-          piece.value.sizeOnWeb.width = event.rect.width / scale
-          // }
-
           piece.value.isPublished = false
+          const xRaw = event.dx / scale
+          const yRaw = event.dy / scale
+          piece.value.position.deg += yRaw + xRaw
         }
       },
       modifiers: [
-        // keep the edges inside the parent
-        // interact.modifiers.restrictEdges({
-        //   outer: 'parent'
-        // }),
-
         // minimum size
         interact.modifiers.restrictSize({
           min: { width: 10, height: 10 }
@@ -164,9 +148,7 @@ const handlePieceStyle = (piece: Piece) => {
   // }
 
 
-
   const sizeX = () => {
-    // const sizeXToCheck = piece.sizeInCm?.x * 5
     if (piece.sizeInCm?.x) {
       return `${piece.sizeInCm?.x * 5}px`
     }
@@ -192,14 +174,13 @@ const handlePieceStyle = (piece: Piece) => {
     return 'unset'
   }
 
-  // console.log('sizeY(): ', sizeY());
   return {
     width: sizeX(),
     maxHeight: sizeY(),
     height: sizeY(),
     left: `${piece.position?.x + LEFT_OFFSET}px`,
     top: `${piece.position?.y + TOP_OFFSET}px`,
-    deg: `${piece.position?.deg}deg`,
+    rotate: `${piece.position?.deg}deg`,
     zIndex: `${localZIndex.value}`
   }
 }
@@ -213,25 +194,46 @@ const selectImage = (piece: Piece) => {
 
 <style lang="stylus" scoped>
 
-.piece
+.piece {
   position absolute
   touch-action none
   user-select none
 
-.piece__image
-  position relative
-  object-fit contain
-  width 100%
-  max-width 100%
-  min-width 20px
-  min-height 20px
-  height 100%
+  &__image {
+    position relative
+    object-fit contain
+    width 100%
+    max-width 100%
+    min-width 20px
+    min-height 20px
+    height 100%
 
-  &--not-published
-    // border 1px #12b5225e solid
+    &--not-published {
+      // border 1px #12b5225e solid
+    }
+  }
 
-.piece__image:hover
-  cursor cell
-  z-index 10
+  &__image:hover {
+    cursor cell
+    z-index 10
+  }
+
+  /* Add this for the rotation cursor */
+  &__rotate {
+    position absolute
+    top 0
+    right 0
+    cursor pointer
+    z-index 20
+    width 10px
+    height 10px
+    background-color transparent
+    cursor grab
+  }
+
+  &__rotate:hover {
+    cursor grabbing
+  }
+}
 </style>
 
