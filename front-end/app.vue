@@ -97,7 +97,7 @@ body
   // letter-spacing 2px
   color #0e0e0e
   margin 0
-  overflow-x hidden
+  overflow hidden
   background-color #f1f1f1
   user-select none
 

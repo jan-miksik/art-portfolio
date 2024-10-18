@@ -66,7 +66,6 @@ const { mapperEventData } = useMapper()
 const localZIndex = ref(1)
 const pieceRef = ref()
 const selectedPiece = ref<Piece>()
-// const initialSlide = ref(0)
 
 const props = defineProps<{
   piece: Piece
@@ -175,7 +174,7 @@ const handlePieceStyle = (piece: Piece) => {
       if (piece.topic === Topics.NODE_AVATARS && piece.techniqueDescription === TechniqueDescription.DIGITAL_BITMAP) {
         return `${piece.sizeInPx?.x / 15}px`
       }
-      return `${piece.sizeInPx?.x / 5}px`
+      return `${piece.sizeInPx?.x / 9}px`
     }
     return 'unset'
   }
@@ -188,7 +187,7 @@ const handlePieceStyle = (piece: Piece) => {
       if (piece.topic === Topics.NODE_AVATARS && piece.techniqueDescription === TechniqueDescription.DIGITAL_BITMAP) {
         return `${piece.sizeInPx?.y / 15}px`
       }
-      return `${piece.sizeInPx?.y / 5}px`
+      return `${piece.sizeInPx?.y / 9}px`
     }
     return 'unset'
   }

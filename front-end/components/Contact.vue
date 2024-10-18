@@ -1,31 +1,53 @@
 <template>
   <div
-  ref="contactRef"
-  :style="handleStyle"
-  class="homepage__contact"
-  draggable="true"
-  @mousedown="mouseDownHandler"
-  @mousemove="mouseMoveHandler"
-  @mouseup="mouseUpHandler"
+    ref="contactRef"
+    :style="handleStyle"
+    class="homepage__contact"
+    draggable="true"
+    @mousedown="mouseDownHandler"
+    @mousemove="mouseMoveHandler"
+    @mouseup="mouseUpHandler"
   >
     <a class="homepage__soc-link homepage__soc-link-img" :href="linkToEmail">
-  <!-- @click="showContactModal" -->
-    <OImage
-      :image-file="emailIcon"
-      class="homepage__contact-img"
-      width="27"
-      alt="contact"
-    />
-    <!-- <span class="homepage__contact-text">CONTACT</span> -->
-  </a>
+      <OImage
+        :image-file="emailIcon"
+        class="homepage__contact-img"
+        width="27"
+        alt="email contact"
+      />
+    </a>
   </div>
-  <Transition name="fade">
-    <div
-      v-if="isContactModalVisible"
-      class="homepage__contact-modal-backdrop"
-      @click="isContactModalVisible = false"
-    />
-  </Transition>
+
+  <div
+    ref="contactIgRef"
+    :style="handleIgStyle"
+    class="homepage__contact"
+    draggable="true"
+    @mousedown="mouseDownHandler"
+    @mousemove="mouseMoveHandler"
+    @mouseup="mouseUpHandler"
+  >
+    <a
+      class="homepage__soc-link homepage__soc-link-img"
+      href="https://www.instagram.com/miksik.jan/"
+      target="_blank"
+      >
+      <OImage
+        :image-file="instagramIcon"
+        class="homepage__contact-img"
+        width="27"
+        alt="instagram"
+      />
+    </a>
+  </div>
+
+<!--  <Transition name="fade">-->
+<!--    <div-->
+<!--      v-if="isContactModalVisible"-->
+<!--      class="homepage__contact-modal-backdrop"-->
+<!--      @click="isContactModalVisible = false"-->
+<!--    />-->
+<!--  </Transition>-->
 
   <Transition name="fade">
     <div v-if="isContactModalVisible" class="homepage__contact-modal">
@@ -35,28 +57,28 @@
            ... email is the most certain  ..
         </p> -->
         <div class="homepage__soc-links">
-          <a class="homepage__soc-link" href="mailto: to@janmiksik.ooo">
-            <OImage
-              :image-file="emailIcon"
-              class="homepage__soc-link-img"
-              width="35"
-              alt="email"
-              :style="randomizePosition()"
-            />
-          </a>
-          <!-- <a
-            class="homepage__soc-link"
-            href="https://www.instagram.com/miksik.jan/"
-            target="_blank"
-            >
-            <OImage
-              :image-file="instagramIcon"
-              class="homepage__soc-link-img"
-              width="27"
-              alt="instagram"
-              :style="randomizePosition()"
-            />
-          </a> -->
+<!--          <a class="homepage__soc-link" href="mailto: to@janmiksik.ooo">-->
+<!--            <OImage-->
+<!--              :image-file="emailIcon"-->
+<!--              class="homepage__soc-link-img"-->
+<!--              width="35"-->
+<!--              alt="email"-->
+<!--              :style="randomizePosition()"-->
+<!--            />-->
+<!--          </a>-->
+<!--          <a-->
+<!--            class="homepage__soc-link"-->
+<!--            href="https://www.instagram.com/miksik.jan/"-->
+<!--            target="_blank"-->
+<!--            >-->
+<!--            <OImage-->
+<!--              :image-file="instagramIcon"-->
+<!--              class="homepage__soc-link-img"-->
+<!--              width="27"-->
+<!--              alt="instagram"-->
+<!--              :style="randomizePosition()"-->
+<!--            />-->
+<!--          </a>-->
 
           <!-- <a
             class="homepage__soc-link"
@@ -96,22 +118,37 @@ import useMouseActionDetector from '~/J/useMouseActionDetector'
 import ImageFile from '~/models/ImageFile'
 const { mouseDownHandler, mouseMoveHandler, mouseUpHandler, isDragging } = useMouseActionDetector()
 
-const style = ref({left: window.innerWidth - 50, top: 5})
+const styleEmail = ref({left: window.innerWidth - 140, top: 5})
+const styleIg = ref({left: window.innerWidth - 90, top: 5})
 const contactRef = ref<HTMLElement>()
+const contactIgRef = ref<HTMLElement>()
 
 onMounted(() => {
   if (!contactRef.value) return
 
   interact(contactRef.value).draggable({
-      inertia: true,
-      autoScroll: true,
-      listeners: {
-        move(event) {
-          style.value.top += event.dy
-          style.value.left += event.dx
-        }
+    inertia: true,
+    autoScroll: true,
+    listeners: {
+      move(event) {
+        styleEmail.value.top += event.dy
+        styleEmail.value.left += event.dx
       }
-    })
+    }
+  })
+
+  if (!contactIgRef.value) return
+
+  interact(contactIgRef.value).draggable({
+    inertia: true,
+    autoScroll: true,
+    listeners: {
+      move(event) {
+        styleIg.value.top += event.dy
+        styleIg.value.left += event.dx
+      }
+    }
+  })
 })
 
 const linkToEmail = computed(() => {
@@ -121,8 +158,15 @@ const linkToEmail = computed(() => {
 
 const handleStyle = computed(() => {
   return {
-    top: `${style.value.top}px`,
-    left: `${style.value.left}px`,
+    top: `${styleEmail.value.top}px`,
+    left: `${styleEmail.value.left}px`,
+  }
+})
+
+const handleIgStyle = computed(() => {
+  return {
+    top: `${styleIg.value.top}px`,
+    left: `${styleIg.value.left}px`,
   }
 })
 
@@ -134,13 +178,13 @@ const emailIcon = ref(
   })
 )
 
-// const instagramIcon = ref(
-//   new ImageFile({
-//     url: '/instagram.svg',
-//     id: 'instagram-icon',
-//     lastUpdated: new Date('1995').getTime()
-//   })
-// )
+const instagramIcon = ref(
+  new ImageFile({
+    url: '/instagram.svg',
+    id: 'instagram-icon',
+    lastUpdated: new Date('1995').getTime()
+  })
+)
 //
 // const facebookIcon = ref(
 //   new ImageFile({
@@ -202,8 +246,6 @@ const randomizePosition = () => {
 
 .homepage__contact
   position absolute
-  // top 2rem
-  // right 1rem
   padding 0.2rem
   cursor cell
   opacity 0.65
@@ -211,10 +253,7 @@ const randomizePosition = () => {
   height 50px
   transition opacity 0.3s
   z-index 10
-  // display flex
-  // flex-direction column
-  // align-items center
-  // gap 0.3rem
+
 
   &:hover
     opacity 1 !important
@@ -226,17 +265,13 @@ const randomizePosition = () => {
 
 .homepage__contact-text
   font-size 0.9rem
-  // position absolute
   font-weight bold
   color black
   opacity 0
-  // font-family BungeeHairline, Helvetica, Arial, sans-serif
   position absolute
   rotate -90deg
   top 18px
   left -39px
-  // transition all 0.3s
-  // font-size 1rem
 
 .homepage__contact:hover .homepage__contact-text
   opacity 1
@@ -279,18 +314,14 @@ const randomizePosition = () => {
 
 
 .homepage__soc-link
-  // margin 2rem
   cursor: pointer;
 
   &:hover
     transition all 0.3s !important
-    // box-shadow inset 0 -20px 0 0 rgb(41 187 97 / 41%)
 
 .homepage__soc-link-img
-  // padding 0.5rem
   filter brightness(0) saturate(100%) invert(0) sepia(98%) saturate(8%) hue-rotate(174deg) brightness(96%) contrast(102%)
-  // border 1px solid transparent
-  // border-radius 2px
+
 
 .dark-mode .homepage__soc-link-img
   filter brightness(0) saturate(100%) invert(0) sepia(98%) saturate(8%) hue-rotate(174deg) brightness(96%) contrast(102%)
