@@ -9,6 +9,7 @@
 
       <BallThreeJs />
       <IntoPiecesCollectionContainer />
+      <JanMiksikCom />
     </div>
   </Transition>
 </template>
