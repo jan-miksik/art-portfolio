@@ -185,7 +185,7 @@ const drop = (event: DragEvent) => {
   const name = parts[0];
   const created = new Date(Number(parts[1]), 6) || new Date();
   const techniqueDescription = parts[2] || '';
-  const sizeStr = parts[3] || '0x0';
+  const sizeStr = parts[3] || '500x500'; // fallback if not set size in name
   console.log('sizeStr: ', sizeStr);
 
   const index = sizeStr.indexOf('x');
