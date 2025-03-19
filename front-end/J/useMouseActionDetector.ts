@@ -42,9 +42,11 @@ export default function useMouseActionDetector() {
 
   // Public page
   const mouseMoveHandlerPublicPage = () => {
+    isDragging.value = true
     isOverPieceOrSetupInPublicPage.value = true
   }
   const mouseLeaveHandlerPublicPage = () => {
+    // isDragging.value = false
     isOverPieceOrSetupInPublicPage.value = false
   }
 

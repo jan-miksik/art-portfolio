@@ -1,12 +1,12 @@
 <template>
   <div
-    v-if="!isMobile"
+    v-if="!isSmallScreen"
     class="ball-three-js-container"
     :style="ballThreeJsStyle"
-    @mousemove="mouseMoveHandlerPublicPage"
-    @mouseleave="mouseLeaveHandlerPublicPage"
-    @touchmove="touchmoveHandlerPublicPage"
-    @touchend="touchendHandlerPublicPage">
+    @mousemove.stop="mouseMoveHandlerPublicPage"
+    @mouseleave.stop="mouseLeaveHandlerPublicPage"
+    @touchmove.stop="touchmoveHandlerPublicPage"
+    @touchend.stop="touchendHandlerPublicPage">
     
     <canvas class="ball-three-js" ref="canvasRef"  />
   </div>
@@ -15,6 +15,7 @@
 import interact from 'interactjs'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import isSmallScreen from '~/J/isMobile'
 import useAdminPage from '~/J/useAdminPage'
 import useMapper from '~/J/useMapper'
 import useMouseActionDetector from '~/J/useMouseActionDetector'
@@ -32,11 +33,6 @@ const canvasRef = ref<HTMLCanvasElement>()
 const ballThreeJs = ref({
   x: 7500,
   y: 5700
-})
-
-const isMobile = computed(() => {
-  const screenWidth = window.document.documentElement.clientWidth;
-  return (screenWidth < 768);
 })
 
 const ballThreeJsStyle = computed(() => {
