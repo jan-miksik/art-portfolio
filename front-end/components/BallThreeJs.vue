@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="!isMobile"
     class="ball-three-js-container"
     :style="ballThreeJsStyle"
     @mousemove="mouseMoveHandlerPublicPage"
@@ -33,6 +34,11 @@ const ballThreeJs = ref({
   y: 5700
 })
 
+const isMobile = computed(() => {
+  const screenWidth = window.document.documentElement.clientWidth;
+  return (screenWidth < 768);
+})
+
 const ballThreeJsStyle = computed(() => {
   return {
     left: `${ballThreeJs.value.x + LEFT_OFFSET}px`,
@@ -54,7 +60,6 @@ onMounted(() => {
         if (!isOnAdminPage.value) return
         const scale = mapperEventData.value.scale
 
-        console.log('ballThreeJs.value: ', ballThreeJs.value);
         const xRaw = ballThreeJs.value.x + event.dx / scale
         const yRaw = ballThreeJs.value.y + event.dy / scale
         const x = xRaw > -2000 ? xRaw : -2000
