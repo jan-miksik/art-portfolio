@@ -9,3 +9,5 @@ node_modules
 dist
 .yarn/cache
 .idea
+
+.DS_Store

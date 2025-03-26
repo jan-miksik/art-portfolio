@@ -10,6 +10,7 @@
       <BallThreeJs />
       <IntoPiecesCollectionContainer />
       <JanMiksikCom />
+      <Collaborations />
     </div>
   </Transition>
 </template>

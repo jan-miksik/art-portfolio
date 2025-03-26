@@ -159,4 +159,18 @@ input[type="number"]
 
 .dragging
   cursor grabbing
+
+a
+  color: black
+  text-decoration: underline
+  
+  &:visited
+    color #5f5f5f
+
+  &:hover
+    opacity 0.7
+    transition all 0.2s
+    cursor url("/external.svg"), pointer
+
+
 </style>
