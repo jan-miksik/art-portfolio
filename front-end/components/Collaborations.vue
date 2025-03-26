@@ -3,7 +3,7 @@
 		<label class="collaborations-label">collaborations (me on the coding side)</label>
 		<div class="collaborations-items">
 			<a
-				class=""
+				class="deluna"
 				href="https://danieladeluna.ooo/"
 				target="_blank"
 				rel="noopener noreferrer"
@@ -11,6 +11,7 @@
       danieladeluna.ooo
     </a>
 		<a
+			class="tomas"
       href="https://tomaskofron.com/"
       target="_blank"
 			rel="noopener noreferrer"
@@ -35,6 +36,15 @@ return {
     top: `${collaborationsPosition.value.y + TOP_OFFSET}px`,
 }
 })
+
+// alternative way style
+// .deluna
+// &:hover
+// 	cursor: url("/tiger.png") 50 50, pointer;
+
+// .tomas
+// 	&:hover
+// 		cursor: url("/sunglasses.png") 50 50, pointer;
   
 </script>
 
