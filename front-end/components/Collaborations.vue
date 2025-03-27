@@ -40,7 +40,7 @@ return {
 // alternative way style
 // .deluna
 // &:hover
-// 	cursor: url("/tiger.png") 50 50, pointer;
+// 	cursor: url("/mrak.png") 50 50, pointer;
 
 // .tomas
 // 	&:hover

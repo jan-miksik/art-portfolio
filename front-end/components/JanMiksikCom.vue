@@ -26,8 +26,8 @@ const janMiksikComStyle = computed(() => {
 })
 
 // alternative way style
-//&:hover
-//  cursor: url("/jan.png") 50 50, pointer;
+// &:hover
+// cursor: url("/jan.png") 35 35, pointer;
 
 </script>
 
@@ -36,7 +36,6 @@ const janMiksikComStyle = computed(() => {
   position absolute
   font-size: 5rem;
   color: black;
-
 
 </style>
   
