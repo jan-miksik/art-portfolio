@@ -241,6 +241,9 @@ export default function useContentfulPiece() {
           isMoveableInPublic: {
             'en-US': piece.isMoveableInPublic ?? false
           },
+          isArchived: {
+            'en-US': piece.isArchived ?? false
+          },
         }
       }
 
@@ -330,6 +333,9 @@ export default function useContentfulPiece() {
         },
         isMoveableInPublic: {
           'en-US': piece.isMoveableInPublic ?? false
+        },
+        isArchived: {
+          'en-US': piece.isArchived ?? false
         },
       }
 

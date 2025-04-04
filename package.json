@@ -13,6 +13,7 @@
   "dependencies": {
     "@coddicat/vue-pinch-scroll-zoom": "^4.2.3",
     "@vuepic/vue-datepicker": "^5.3.0",
+    "@vueuse/core": "^13.0.0",
     "@web3modal/ethereum": "^2.3.7",
     "@web3modal/html": "^2.3.7",
     "contentful-management": "^10.38.2",

@@ -128,7 +128,7 @@ body::-webkit-scrollbar-track // Background
   background var(--scrollbar-background)
 
 .dark-mode body
-  background-color #f1f1f1
+  background-color #eeeeee
 
 .dark-mode:not(.w3m-active)
   filter invert(0.97)

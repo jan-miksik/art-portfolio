@@ -1,6 +1,7 @@
 <template>
   <div>
     <ODarkModeSwitcher />
+    <OArchiveToggler />
     <!-- <div class="homepage__open-topic-icons"> -->
     <!-- <SelectTopicIcon :icon="sansTopicIcon" label="Free Topic" :topic="Topics.FREE_TOPIC" class="homepage__sans-topic-link" />
 

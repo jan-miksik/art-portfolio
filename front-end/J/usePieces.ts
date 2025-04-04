@@ -38,6 +38,7 @@ export default function usePieces() {
         positionYMob,
         positionDegMob,
         isMoveableInPublic,
+        isArchived,
       } = pieceData
 
       edgePositions.value.x = Math.max(edgePositions.value.x, positionX + widthOnWeb + 9000 + LEFT_OFFSET);
@@ -85,6 +86,7 @@ export default function usePieces() {
         isPublished: true,
         isUploadedToCf: true,
         isMoveableInPublic: isMoveableInPublic,
+        isArchived: isArchived,
       })
       pieces.value?.push(newPiece)
     })

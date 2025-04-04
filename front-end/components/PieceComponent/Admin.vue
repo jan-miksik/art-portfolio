@@ -163,6 +163,15 @@
                 Moveable in Public
               </label>
 
+              <label>
+                <input
+                  type="checkbox"
+                  v-model="selectedPiece.isArchived"
+                  @change="handleIsArchived($event.target?.checked)"
+                />
+                Archived
+              </label>
+
             </div>
           </div>
         </swiper>
@@ -287,6 +296,12 @@ const handleIsMoveableInPublic = (val: boolean) => {
   if (!selectedPiece.value || !pieces.value) return
   pieces.value[activeIndex.value].isPublished = false
   pieces.value[activeIndex.value].isMoveableInPublic = val
+}
+
+const handleIsArchived = (val: boolean) => {
+  if (!selectedPiece.value || !pieces.value) return
+  pieces.value[activeIndex.value].isPublished = false
+  pieces.value[activeIndex.value].isArchived = val
 }
 </script>
 

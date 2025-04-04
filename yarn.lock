@@ -3134,6 +3134,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/web-bluetooth@npm:^0.0.21":
+  version: 0.0.21
+  resolution: "@types/web-bluetooth@npm:0.0.21"
+  checksum: 85a957d52263607d26236b1748771fdcfc0791f2c20373370e6c725410067dee6a5ec425b0e25ec85db2908dd59415079070655fd3277841cbbd3a557d1f7777
+  languageName: node
+  linkType: hard
+
 "@types/webxr@npm:*":
   version: 0.5.1
   resolution: "@types/webxr@npm:0.5.1"
@@ -3597,6 +3604,35 @@ __metadata:
   peerDependencies:
     vue: ">=3.2.0"
   checksum: 7f4d7bee02567c91c6f538f09e3816f99b945442cf1b850ca0d697f5c4599284fca0ab6a9d1cea902822be9a711554c55220d3b5a82193afda23cf546d04fc73
+  languageName: node
+  linkType: hard
+
+"@vueuse/core@npm:^13.0.0":
+  version: 13.0.0
+  resolution: "@vueuse/core@npm:13.0.0"
+  dependencies:
+    "@types/web-bluetooth": ^0.0.21
+    "@vueuse/metadata": 13.0.0
+    "@vueuse/shared": 13.0.0
+  peerDependencies:
+    vue: ^3.5.0
+  checksum: 47a3e1fa83e0c47f5ff7509f8daedf296934fa675a058df39e3c61b436fff9bda36eeb621706f49ed98171290defcd2dde13737a7cbf465f668c8b4730212ddf
+  languageName: node
+  linkType: hard
+
+"@vueuse/metadata@npm:13.0.0":
+  version: 13.0.0
+  resolution: "@vueuse/metadata@npm:13.0.0"
+  checksum: a9bee05b22585406f8240e81ce9beca9782a95d213fc927ef1c3f1e3372d76502b1b3746de0f839b84885b2bbf71e7a5f0db017a04b58298159ce0650faf38f0
+  languageName: node
+  linkType: hard
+
+"@vueuse/shared@npm:13.0.0":
+  version: 13.0.0
+  resolution: "@vueuse/shared@npm:13.0.0"
+  peerDependencies:
+    vue: ^3.5.0
+  checksum: fb1ae82dd19278dde1b81f906bf2b2c267c8f677a907ae549260ea899cc2f0e763f6ea0e4e01ee99b9a15da758306be7697fd6b17dcf36a60af6df0769cefdf0
   languageName: node
   linkType: hard
 
@@ -8814,6 +8850,7 @@ __metadata:
     "@types/three": ^0.144.0
     "@types/uuid": ^9.0.1
     "@vuepic/vue-datepicker": ^5.3.0
+    "@vueuse/core": ^13.0.0
     "@web3modal/ethereum": ^2.3.7
     "@web3modal/html": ^2.3.7
     contentful-management: ^10.38.2

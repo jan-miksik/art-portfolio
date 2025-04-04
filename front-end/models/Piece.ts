@@ -50,6 +50,7 @@ export type IPiece = {
   price?: number
   updated?: Date
   isMoveableInPublic?: boolean
+  isArchived?: boolean
 }
 
 export default class Piece {
@@ -77,6 +78,7 @@ export default class Piece {
   public isPublished
   public isUploadedToCf
   public isMoveableInPublic
+  public isArchived
 
   constructor(data: IPiece) {
     this.id = data.id || ''
@@ -107,5 +109,6 @@ export default class Piece {
     this.isPublished = data.isPublished || false
     this.isUploadedToCf = data.isUploadedToCf || false
     this.isMoveableInPublic = data.isMoveableInPublic || false
+    this.isArchived = data.isArchived || false
   }
 }

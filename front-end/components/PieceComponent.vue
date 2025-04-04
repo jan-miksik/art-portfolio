@@ -3,6 +3,7 @@
   <div
     class="piece"
     ref="pieceRef"
+    v-if="showPiece"
     :style="(handlePieceStyle(piece) as any)"
     @mousedown="handleOnMouseDown"
     @mousemove="(event) => mouseMoveHandler(event, piece)"
@@ -49,7 +50,9 @@ import useMapper from '~/J/useMapper'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
 import { TechniqueDescription, Topics } from "../components/piecesData"
+import useArchive from '~/J/useArchive'
 
+const { isArchiveVisible } = useArchive()
 const {
   mouseDownHandler,
   mouseMoveHandler,
@@ -74,6 +77,7 @@ const props = defineProps<{
 const { piece } = toRefs(props)
 
 onMounted(() => {
+  if (!pieceRef.value) return
   interact(pieceRef.value)
     .draggable({
       inertia: true,
@@ -190,6 +194,14 @@ const selectImage = (piece: Piece) => {
     selectedPiece.value = piece
   }
 }
+
+const showPiece = computed(() => {
+  if (piece.value.isArchived) {
+    return isArchiveVisible.value
+  }
+  return true
+})
+
 </script>
 
 <style lang="stylus" scoped>

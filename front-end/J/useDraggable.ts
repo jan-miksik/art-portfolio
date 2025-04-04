@@ -19,7 +19,6 @@ export default function useDraggable(elementRef: Ref, styleRef: Ref) {
       }
     })
 
-
     elementRef.value.addEventListener('mousedown', mouseDownHandler)
     elementRef.value.addEventListener('mousemove', mouseMoveHandler)
     elementRef.value.addEventListener('mouseup', mouseUpHandler)

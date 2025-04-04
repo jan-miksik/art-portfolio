@@ -36,6 +36,7 @@ export default function useContentful() {
           positionYMob
           positionDegMob
           isMoveableInPublic
+          isArchived
         }
       }
     }`
