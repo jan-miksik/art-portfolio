@@ -104,7 +104,9 @@ import 'swiper/css/pagination'
 import { Swiper as SwiperTypes } from 'swiper'
 import { Navigation, Keyboard, Mousewheel } from 'swiper/modules';
 import {Topics} from "~/components/piecesData";
+import useArchive from '~/J/useArchive'
 
+const { toggleArchive, isArchiveVisible } = useArchive()
 const { pieces } = usePieces()
 
 const props = defineProps<{
@@ -117,11 +119,18 @@ const mainSwiperInstance = ref()
 const activeIndexMain = ref(0)
 const selectedPiece = ref<Piece | undefined>(initialPiece.value)
 
-const freeTopicPieces = computed(() => (pieces.value || []).filter(p => p.topic === Topics.FREE_TOPIC || p.topic === Topics.SANS_TOPIC))
-const puzzlePieces = computed(() => (pieces.value || []).filter(p => p.topic === Topics.PUZZLE))
-const geometryPieces = computed(() => (pieces.value || []).filter(p => p.topic === Topics.GEOMETRY))
-const nodeAvatarPieces = computed(() => (pieces.value || []).filter(p => p.topic === Topics.NODE_AVATARS))
-const digitalPieces = computed(() => (pieces.value || []).filter(p => p.topic === Topics.DIGITAL))
+const piecesFilered = computed(() => {
+  if (isArchiveVisible.value) {
+    return pieces.value
+  }
+  return pieces.value?.filter(p => !p.isArchived)
+})
+
+const freeTopicPieces = computed(() => (piecesFilered.value || []).filter(p => p.topic === Topics.FREE_TOPIC || p.topic === Topics.SANS_TOPIC))
+const puzzlePieces = computed(() => (piecesFilered.value || []).filter(p => p.topic === Topics.PUZZLE))
+const geometryPieces = computed(() => (piecesFilered.value || []).filter(p => p.topic === Topics.GEOMETRY))
+const nodeAvatarPieces = computed(() => (piecesFilered.value || []).filter(p => p.topic === Topics.NODE_AVATARS))
+const digitalPieces = computed(() => (piecesFilered.value || []).filter(p => p.topic === Topics.DIGITAL))
 
 
 const emit = defineEmits<{

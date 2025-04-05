@@ -136,6 +136,36 @@ const handleOnMouseDown = () => {
   zIndexOfLastSelectedPiece.value++
 }
 
+const calculateSize = (dimension: 'x' | 'y') => {
+  const size = piece.value
+
+  // CM size takes precedence
+  if (size.sizeInCm?.[dimension]) {
+    return `${size.sizeInCm[dimension] * 5}px`
+  }
+
+  // Handle large images (over 2000px)
+  if (size.sizeInPx?.[dimension] > 2000) {
+    const sizeOver2000 = size.sizeInPx[dimension] - 2000
+    const baseSize = 2000 / 12
+    return `${baseSize + (sizeOver2000 / 70)}px`
+  }
+
+  // Handle pixel sizes
+  if (size.sizeInPx?.[dimension]) {
+    const divider = (
+      size.topic === Topics.NODE_AVATARS && 
+      size.techniqueDescription === TechniqueDescription.DIGITAL_BITMAP
+    ) ? 15 : 9
+    return `${size.sizeInPx[dimension] / divider}px`
+  }
+
+  return 'unset'
+}
+
+const sizeX = () => calculateSize('x')
+const sizeY = () => calculateSize('y')
+
 const handlePieceStyle = (piece: Piece) => {
   if (!piece) return { width: '50px' }
 
@@ -151,32 +181,6 @@ const handlePieceStyle = (piece: Piece) => {
   //   return 'unset'
   // }
 
-
-  const sizeX = () => {
-    if (piece.sizeInCm?.x) {
-      return `${piece.sizeInCm?.x * 5}px`
-    }
-    if (piece.sizeInPx?.x) {
-      if (piece.topic === Topics.NODE_AVATARS && piece.techniqueDescription === TechniqueDescription.DIGITAL_BITMAP) {
-        return `${piece.sizeInPx?.x / 15}px`
-      }
-      return `${piece.sizeInPx?.x / 9}px`
-    }
-    return 'unset'
-  }
-
-  const sizeY = () => {
-    if (piece.sizeInCm?.y) {
-      return `${piece.sizeInCm?.y * 5}px`
-    }
-    if (piece.sizeInPx?.y) {
-      if (piece.topic === Topics.NODE_AVATARS && piece.techniqueDescription === TechniqueDescription.DIGITAL_BITMAP) {
-        return `${piece.sizeInPx?.y / 15}px`
-      }
-      return `${piece.sizeInPx?.y / 9}px`
-    }
-    return 'unset'
-  }
 
   return {
     width: sizeX(),

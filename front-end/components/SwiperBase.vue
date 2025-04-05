@@ -77,8 +77,9 @@
               selectedPiece.techniqueDescription === 'unspecified'
                 ? ''
                 : selectedPiece.techniqueDescription
-            }} </span
-          >,
+            }} 
+          </span>
+          <span v-if="isSizeInCm">, </span>
 
           <span v-if="isSizeInCm">
             <span @click.stop @touchstart.stop>
@@ -89,14 +90,14 @@
             >cm
           </span>
 
-          <span v-if="isSizeInPx">
+          <!-- <span v-if="isSizeInPx">
             <span @click.stop @touchstart.stop>
               {{ selectedPiece.sizeInPx.x }} </span
             >px x
             <span @click.stop @touchstart.stop>
               {{ selectedPiece.sizeInPx.y }} </span
             >px
-          </span>
+          </span> -->
         </div>
       </div>
       <div class="swiper-base__pagination-info">
