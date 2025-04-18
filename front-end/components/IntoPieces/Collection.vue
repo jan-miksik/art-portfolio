@@ -41,7 +41,7 @@
       </form>
 
       <div class="nft-collection__valuation">
-        <span class="nft-collection__valuation-full-price">~${{fullMintPrice}}~</span>
+        <span class="nft-collection__valuation-full-price">~${{fullMintPrice}}</span>
       </div>
 
       <div class="nft-collection__links">
