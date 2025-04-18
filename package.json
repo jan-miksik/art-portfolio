@@ -24,7 +24,7 @@
     "@web3modal/html": "^2.3.7",
     "contentful-management": "^10.38.2",
     "dexie": "^3.2.2",
-    "http-proxy-middleware": "^2.0.6",
+    "http-proxy-middleware": "^2.0.9",
     "interactjs": "^1.10.27",
     "nuxt": "^3.13.0",
     "nuxt-swiper": "^1.1.1",
