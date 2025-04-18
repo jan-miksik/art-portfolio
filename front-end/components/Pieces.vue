@@ -11,6 +11,7 @@
       <IntoPiecesCollectionContainer />
       <JanMiksikCom />
       <Collaborations />
+      <About />
     </div>
   </Transition>
 </template>
