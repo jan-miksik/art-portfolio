@@ -9,11 +9,25 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref, nextTick } from 'vue'
+// import { useAppKit } from '@reown/appkit/vue'
 
 interface Props {
   isDisabled?: boolean
   type?: string
 }
+// const modal = ref()
+
+// onMounted(() => {
+//   nextTick(() => {
+//     modal.value = useAppKit()
+//   })
+// })
+
+// const handleMint = () => {
+//   if (props.isDisabled) return
+//   modal.value?.open()
+// }
 
 const props = withDefaults(defineProps<Props>(), {
   isDisabled: false,

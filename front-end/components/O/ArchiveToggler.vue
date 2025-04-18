@@ -65,7 +65,6 @@ const dragAndDropStyle = computed(() => {
 })
 
 const toggelArchive = () => {
-  console.log('aaaa')
 	if (isDragging.value) return
 	toggleArchive()
 }

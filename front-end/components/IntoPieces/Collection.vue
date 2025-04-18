@@ -59,36 +59,43 @@
   </div>
 </template>
 
-
-
 <script setup lang="ts">
 
-import { BigNumberish, ethers } from 'ethers'
-import useWeb3 from '~/J/useWeb3'
 import { mainSupportedChain } from '~/appSetup'
-import { connectedChain } from '~/constants/chains'
 import contractAbi from '~/abi/IntoPieces.json'
-import useCryptoExplorer from '~/J/useCryptoExplorer'
-
-const { initDapp, signer, checkForAnyContractAction, connectedAddress, connectWallet, optimismProvider } = useWeb3()
-
-let contractReadOnly: any = null
+import { switchChain, getGasPrice, estimateGas, writeContract } from '@wagmi/core'
+import { config } from '~/config'
+import { encodeFunctionData, formatEther, parseEther } from 'viem'
+import { createPublicClient, http } from 'viem'
+import { optimism, sepolia } from 'viem/chains'
+import { useAppKit } from '@reown/appkit/vue'
+import { useAccount } from '@wagmi/vue'
 
 const requestedPrice = ref()
-const contract = ref()
 const mintInProgress = ref(false)
 const isMinted = ref(false)
-const maxSupply = ref<BigNumberish>()
+const maxSupply = ref()
 const mintLimitExceeded = ref(false)
-const mintedNfts = ref<BigNumberish>()
+const mintedNfts = ref()
 const mintPrice = ref()
 const fetchingMintPrice = ref()
 const ethToUsdExchangeRate = ref()
 
+const account = useAccount()
+
+// Create a public client directly with viem
+const client = createPublicClient({
+  chain: optimism,
+  transport: http()
+  // TODO: left for testing on sepolia
+  // chain: sepolia,
+  // transport: http()
+})
+
 
 const nftId = computed(() => mintedNfts.value ? Number(mintedNfts.value) - 1 : 0)
 
-const openseaAssetLink = computed(() => (`https://opensea.io/assets/optimism/${mainSupportedChain.nftIntoPiecesContract}/${nftId.value}`))
+const openseaAssetLink = computed(() => (`https://opensea.io/assets/${mainSupportedChain.keyName}/${mainSupportedChain.nftIntoPiecesContract}/${nftId.value}`))
 
 const openseaCollectionLink = computed(() => (`https://opensea.io/collection/${mainSupportedChain.nftIntoPiecesCollectionName}`))
 
@@ -106,13 +113,26 @@ const fullMintPrice = computed(() => {
 const getMintPrice = async () => {
   fetchingMintPrice.value = true
   const DEMO_ADDRESS = '0x70ABD75498bE15Ca935C4c514B49D58D9Ae17B51'
-  const gasPrice = await optimismProvider.getGasPrice();
-  const gasEstimate = await contractReadOnly.estimateGas.safeMint(DEMO_ADDRESS, {
-    value: ethers.utils.parseEther('0')
+  const gasPrice = await getGasPrice(config, {
+    chainId: optimism.id, 
+  })
+
+  const encodedFunctionData = encodeFunctionData({
+    abi: contractAbi.abi,
+    functionName: 'safeMint',
+    args: [DEMO_ADDRESS]
   });
+
+  const gasEstimate = await estimateGas(config, {
+    chainId: optimism.id,
+    account: DEMO_ADDRESS,
+    to: mainSupportedChain.nftIntoPiecesContract as `0x${string}`,
+    value: parseEther('0'),
+    data: encodedFunctionData
+  })
   const ethToUsdRate = await getEthToUsdExchangeRate();
-  const feeCostWei = gasPrice.mul(gasEstimate);
-  const feeCostEth = ethers.utils.formatEther(feeCostWei);
+  const feeCostWei = gasPrice * BigInt(gasEstimate);
+  const feeCostEth = formatEther(feeCostWei);
   const feeCostUsd = roundUp(parseFloat(feeCostEth) * ethToUsdRate, 1);
   const customPriceUsd = roundUp((requestedPrice.value || 0) * ethToUsdRate, 1);
   const fullPriceUsd = roundUp(feeCostUsd + customPriceUsd, 1)
@@ -122,16 +142,17 @@ const getMintPrice = async () => {
 
 
 const mintAction = async () => {
-  contract.value = new ethers.Contract(
-    connectedChain.value?.nftIntoPiecesContract || '',
-    contractAbi.abi,
-    signer.value
-  )
   try {
-    const txMint = await contract.value.safeMint(connectedAddress.value, {
-      value: ethers.utils.parseEther(requestedPrice.value.toString())
+    const resultHash = await writeContract(config, {
+      abi: contractAbi.abi,
+      address: mainSupportedChain.nftIntoPiecesContract as `0x${string}`,
+      functionName: 'safeMint',
+      args: [account.address.value],
+      value: parseEther(requestedPrice.value.toString())
     })
-    return await txMint.wait()
+    return await client.waitForTransactionReceipt({
+      hash: resultHash
+    })
   } catch (error) {
     throw error
   }
@@ -139,18 +160,13 @@ const mintAction = async () => {
 }
 
 
-
-
 const contractActions = async (action: string) => {
-  const canContinue = await checkForAnyContractAction()
-  if (!canContinue) return
   try {
     if (action == 'mint') {
       await mintAction()
       return true
     }
   } catch (error) { 
-    console.log('error: ', error);
     mintInProgress.value = false
     if (!(error as Error)?.message) {
       alert('Error')
@@ -172,31 +188,61 @@ const contractActions = async (action: string) => {
   }
 }
 
+const getMintedNFTs = async () => {
+  return await client.readContract({
+    address: mainSupportedChain.nftIntoPiecesContract as `0x${string}`,
+    abi: contractAbi.abi,
+    functionName: 'mintedNFTs'
+  })
+}
 
+const modal = ref()
+const isContinueMintAfterConnect = ref(false)
 
+const handleMintNFT = async (event?: Event) => {
+  event?.preventDefault()
+  modal.value = useAppKit()
 
-const handleMintNFT = async (event: Event) => {
-  event.preventDefault()
-  await connectWallet()
+  // Wait for user to connect and switch network if needed
+  if (!account.address.value) {
+    isContinueMintAfterConnect.value = true
+    modal.value?.open()
+    return
+  }
+  isContinueMintAfterConnect.value = false
+
+  if (Number(account.chainId) !== mainSupportedChain.chainIdDec) {
+    await switchChain(config, { chainId: mainSupportedChain.chainIdDec as 10 })
+  }
+  
   isMinted.value = false
   mintInProgress.value = true
   const confirmation = await contractActions('mint')
   mintInProgress.value = false
   if (confirmation) {
     requestedPrice.value = undefined
-    mintedNfts.value = await contractReadOnly.mintedNFTs()
+    mintedNfts.value = await getMintedNFTs()
     isMinted.value = true
   }
 }
 
+watch(account.address, async (newVal) => {
+  if (newVal && isContinueMintAfterConnect.value) {
+    await handleMintNFT()
+  }
+}, { immediate: true })
 
 
 
-const checkMintingLimit = async (account?: string) => {
-  if (account || connectedAddress.value) {
-    const remainingMints: BigNumberish = await contractReadOnly.allowedMintCount(
-      account || connectedAddress.value
-      )
+
+const checkMintingLimit = async () => {
+  if (account?.address.value) {
+    const remainingMints = await client.readContract({
+      address: mainSupportedChain.nftIntoPiecesContract as `0x${string}`,
+      abi: contractAbi.abi,
+      functionName: 'allowedMintCount',
+      args: [account?.address.value]
+    });
     mintLimitExceeded.value = remainingMints === 0
   }
 }
@@ -228,27 +274,29 @@ watch(requestedPrice, async () => {
 
 
 const loadContractData = async () => {
-  contractReadOnly = new ethers.Contract(
-    mainSupportedChain.nftIntoPiecesContract || '',
-    contractAbi.abi,
-    useWeb3().jsonRpcProvider
-    ) 
 
+  try {
+    const maxSupplyResult = await client.readContract({
+      address: mainSupportedChain.nftIntoPiecesContract as `0x${string}`,
+      abi: contractAbi.abi,
+      functionName: 'MAX_SUPPLY'
+    })
 
-  // window.contractReadOnly = contractReadOnly
-  // window.jsonRpcProvider = useWeb3().jsonRpcProvider
+    const mintedNftsResult = await getMintedNFTs()
 
-  maxSupply.value = await contractReadOnly.MAX_SUPPLY()
-  mintedNfts.value = +await contractReadOnly.mintedNFTs()
+    maxSupply.value = Number(maxSupplyResult ?? 0);
+    mintedNfts.value = Number(mintedNftsResult ?? 0);
 
-  checkMintingLimit()
+    await checkMintingLimit(); 
+
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Detailed error:', error.message)
+    }
+  }
 }
 
-
-
-
 onMounted(async () => {
-  await initDapp()
   await loadContractData()
   getMintPrice();
 })
@@ -328,6 +376,7 @@ onMounted(async () => {
     &-message
       font-size 3.2rem
       position absolute
+      text-align center
       bottom 5rem
       left -5.5rem
       filter drop-shadow(-2px 7px 7px black) drop-shadow(-2px 7px 25px white) drop-shadow(-2px 7px 25px black) drop-shadow(-2px 7px 25px white)
@@ -433,6 +482,7 @@ onMounted(async () => {
   &__info
     margin-top 3rem
     max-width 21rem
+    text-align center
 
 .dark-mode .nft-collection__successfully-minted
 .dark-mode .nft-collection__limit-exceeded

@@ -12,13 +12,18 @@
   },
   "dependencies": {
     "@coddicat/vue-pinch-scroll-zoom": "^4.2.3",
+    "@reown/appkit": "^1.7.2",
+    "@reown/appkit-adapter-wagmi": "^1.7.2",
+    "@tanstack/react-query": "^5.71.10",
+    "@tanstack/vue-query": "^5.74.3",
     "@vuepic/vue-datepicker": "^5.3.0",
     "@vueuse/core": "^13.0.0",
+    "@wagmi/core": "^2.16.7",
+    "@wagmi/vue": "^0.1.15",
     "@web3modal/ethereum": "^2.3.7",
     "@web3modal/html": "^2.3.7",
     "contentful-management": "^10.38.2",
     "dexie": "^3.2.2",
-    "ethers": "^5.6.9",
     "http-proxy-middleware": "^2.0.6",
     "interactjs": "^1.10.27",
     "nuxt": "^3.13.0",
@@ -26,9 +31,10 @@
     "swiper": "^11.1.14",
     "three": "^0.145.0",
     "uuid": "^9.0.0",
+    "viem": "^2.25.0",
     "vue": "latest",
     "vue-router": "latest",
-    "wagmi": "0.12.13"
+    "wagmi": "^2.14.16"
   },
   "devDependencies": {
     "@types/swiper": "^6.0.0",

@@ -63,7 +63,6 @@ const { isSetupForMobile } = useAdminPage()
 watch(mapperRef, (newVal) => {
   if (!newVal || isMapperSet.value) return
   isMapperSet.value = true
-  console.log('mapperRef.value', mapperRef.value)
   if (isSetupForMobile.value) {
     mapperRef.value?.setData({
       scale: 0.25,

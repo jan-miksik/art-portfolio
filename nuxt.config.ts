@@ -2,7 +2,7 @@ const title = 'Jan Mikšík'
 const url = 'https://janmiksik.ooo'
 const mainImage = 'https://janmiksik.ooo/soc-share-(aim).png'
 const type = 'website'
-const description = 'drawings, digital and crypto pieces, paintings and further'
+const description = 'drawings, digital and crypto pieces, paintings and others'
 const twitterCard = 'summary_large_image'
 
 export default defineNuxtConfig({

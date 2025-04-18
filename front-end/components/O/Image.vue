@@ -24,8 +24,8 @@
 import { updateImage, addImage, getImage } from '~/services/idb'
 import ImageFile from '~/models/ImageFile'
 import useMapper from '~/J/useMapper'
-import { IPiece } from '~/models/Piece'
-import { ImageIDB } from '../../services/idb';
+import { type IPiece } from '~/models/Piece'
+import { type ImageIDB } from '../../services/idb';
 
 const { mapperEventData } = useMapper()
 
