@@ -106,16 +106,17 @@ onMounted(() => {
       // resize from edges and corners
       edges: { left: false, right: true, bottom: false, top: false },
 
-      listeners: {
-        move(event) {
-          if (!isOnAdminPage.value && !piece.value.isMoveableInPublic) return
-          const scale = mapperEventData.value.scale
-          piece.value.isPublished = false
-          const xRaw = event.dx / scale
-          const yRaw = event.dy / scale
-          piece.value.position.deg += yRaw + xRaw
-        }
-      },
+      /* rotation disabled for now */
+      // listeners: {
+      //   move(event) {
+      //     if (!isOnAdminPage.value && !piece.value.isMoveableInPublic) return
+      //     const scale = mapperEventData.value.scale
+      //     piece.value.isPublished = false
+      //     const xRaw = event.dx / scale
+      //     const yRaw = event.dy / scale
+      //     piece.value.position.deg += yRaw + xRaw
+      //   }
+      // },
       modifiers: [
         // minimum size
         interact.modifiers.restrictSize({

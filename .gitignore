@@ -8,6 +8,7 @@ node_modules
 .env
 dist
 .yarn/cache
+.yarn/install-state.gz
 .idea
 
 .DS_Store
