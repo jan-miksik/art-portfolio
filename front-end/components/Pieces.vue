@@ -12,6 +12,7 @@
       <JanMiksikCom />
       <Collaborations />
       <About />
+      <Cv />
     </div>
   </Transition>
 </template>
