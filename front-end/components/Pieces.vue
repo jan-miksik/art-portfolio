@@ -13,6 +13,7 @@
       <Collaborations />
       <About />
       <Cv />
+      <Opensea />
     </div>
   </Transition>
 </template>

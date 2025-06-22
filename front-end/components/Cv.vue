@@ -22,8 +22,8 @@
 
     <h3>Jan Mikšík</h3>
     <p>
-      Born in 1988 in Czech Republic<br>
-      Resides and works in Prague, CZ
+      Born 1988 in Czech Republic - CZ<br>
+      <!-- Resides and works in Prague, CZ -->
     </p>
 
     <h3>education</h3>

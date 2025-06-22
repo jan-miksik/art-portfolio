@@ -58,9 +58,9 @@ export default function usePieces() {
         techniqueDescription,
         created: new Date(created),
         image: {
-          id: image.sys.id,
-          url: image.url,
-          lastUpdated: new Date(image.sys.publishedAt).getTime()
+          id: image?.sys?.id,
+          url: image?.url,
+          lastUpdated: new Date(image?.sys?.publishedAt).getTime()
         },
         sizeInCm: {
           x: sizeInCmXHorizontal,

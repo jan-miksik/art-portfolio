@@ -79,7 +79,7 @@ import useMouseActionDetector from '~/J/useMouseActionDetector'
 import Piece from '~/models/Piece'
 import { v4 as uuidv4 } from 'uuid'
 import { Topics } from '~/components/piecesData'
-import { Techniques } from '../components/piecesData'
+import { Techniques, TechniqueDescription } from '../components/piecesData'
 import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
 
 const { pieces } = usePieces()
@@ -99,7 +99,7 @@ const isSettingsOpen = ref(false)
 const publishingInProgress = ref(false)
 const isMapperSet = ref(false)
 const mapperRef = ref()
-const defaultTopic = ref(Topics.FREE_TOPIC)
+const defaultTopic = ref(Topics.DIGITAL)
 
 const windowObject = computed(() => window)
 
@@ -185,7 +185,7 @@ const drop = (event: DragEvent) => {
   const name = parts[0];
   const created = new Date(Number(parts[1]), 6) || new Date();
   const techniqueDescription = parts[2] || '';
-  const sizeStr = parts[3] || '500x500'; // fallback if not set size in name
+  const sizeStr = parts[3] || '10000x7000px'; // fallback if not set size in name
   console.log('sizeStr: ', sizeStr);
 
   const index = sizeStr.indexOf('x');
@@ -226,7 +226,7 @@ const drop = (event: DragEvent) => {
         lastUpdated: new Date().getTime()
       },
       technique: Techniques.MIXED_MEDIA,
-      techniqueDescription,
+      techniqueDescription: TechniqueDescription.DIGITAL_BITMAP,
       created,
       sizeInCm: {
         x: isSizeInCm ? +sizeX : 0,
@@ -252,7 +252,8 @@ const drop = (event: DragEvent) => {
       },
       isUpdated: false,
       isPublished: false,
-      isUploadedToCf: false
+      isUploadedToCf: false,
+      isMoveableInPublic: true,
     })
   )
 
