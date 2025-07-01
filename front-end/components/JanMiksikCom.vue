@@ -7,6 +7,7 @@
       rel="noopener noreferrer"
     >
         janmiksik.com
+        <img src="~/assets/external.svg" class="jan-miksik-com__external-icon" width="35" height="35" alt="external" />
     </a>
   </template>
   
@@ -25,10 +26,6 @@ const janMiksikComStyle = computed(() => {
   }
 })
 
-// alternative way style
-// &:hover
-// cursor: url("/jan.png") 35 35, pointer;
-
 </script>
 
 <style lang="stylus" scoped>
@@ -36,6 +33,12 @@ const janMiksikComStyle = computed(() => {
   position absolute
   font-size: 5rem;
   color: black;
+  width: max-content;
+
+.jan-miksik-com__external-icon
+  position: absolute;
+  right: -30px;
+  top: 20px;
 
 </style>
   

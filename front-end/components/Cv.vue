@@ -5,6 +5,7 @@
     @click="handleOpenModal"
   >
   CV
+
 </div>
 
 <Teleport to="body">
@@ -23,35 +24,33 @@
     <h3>Jan Mikšík</h3>
     <p>
       Born 1988 in Czech Republic - CZ<br>
-      <!-- Resides and works in Prague, CZ -->
+      <!-- Resides and works in Prague, CZ and Hanoi, VN -->
     </p>
 
     <h3>education</h3>
     <p>
-      2011 - 2017, AVU - Academy of Fine Arts in Prague, painting, MgA., CZ<br>
-      2007 - 2011, SUPŠS in Valašském Meziříčí, field of applied painting, high school diploma, CZ
+      2011 - 2017, MgA, AVU - Academy of Fine Arts in Prague, painting, CZ<br>
+      2007 - 2011, high school diploma, SUPŠS in Valašském Meziříčí, field of applied painting, CZ
     </p>
 
     <h3>selected solo exhibitions</h3>
     <p>
-      2025 - Zero, one and two, Brix bar & hostel, Prague, CZ<br>
-      2016 - Stopové množství, IC of Prague 7, Prague, CZ<br>
-      2015 - Víra a virus, church in Strmilov, CZ<br>
-      2013 - Automaticky, gallery NF, Ústí nad Labem, CZ<br>
+      2025   <i>Zero, one and two</i>, Brix bar & hostel, Prague, CZ<br>
+      2016   <i>Stopové množství</i>, IC of Prague 7, Prague, CZ<br>
+      2015   <i>Víra a virus</i>, church in Strmilov, CZ<br>
+      2013   <i>Automaticky</i>, gallery NF, Ústí nad Labem, CZ<br>
     </p>
 
     <h3>selected group exhibitions</h3>
     <p>
-      2015<br>
-      - Stadion Strahov, Prague, atelier of host teacher - Josef Dabernig, CZ<br>
-      - Klub Final, Prague, CZ<br>
-      <br>
-
-      2014<br>
-      - Festival Kruh, Menza, Ústí nad Labem, CZ<br>
-      - Zhruba, gallery Bunkr, Most, with Bez, CZ<br>
-      - 31 nebo 42, gallery AVU, Prague, atelier Painting II, CZ<br>
-      - ? a !, Café Jericho, Prague, with Tomáš Kolařík, CZ<br>
+      2025   Brix bar & hostel, Prague, CZ<br>
+      2017   The exhibition of diploma theses, National Gallery Prague – Veletržní palác, CZ<br>
+      2015   Stadion Strahov, Prague, atelier of host teacher - Josef Dabernig, CZ<br>
+      2015   Klub Final, Prague, CZ<br>
+      2014   <i>Festival Kruh</i>, Menza, Ústí nad Labem, CZ<br>
+      2014   <i>Zhruba</i>, gallery Bunkr, Most, with Bez, CZ<br>
+      2014   <i>31 nebo 42</i>, gallery AVU, Prague, atelier Painting II, CZ<br>
+      2014   <i>? a !</i>, Café Jericho, Prague, with Tomáš Kolařík, CZ<br>
     </p>
 
     <p class="about__last-update">
@@ -125,10 +124,11 @@ h1
 
 h3
   font-size: 1.5rem;
-  margin: 2rem 0 0 0;
+  margin: 2rem 0 .5rem 0;
 
 p
   margin-top 0.5rem
+  line-height 1.7
 
 .about__modal-backdrop
   position absolute

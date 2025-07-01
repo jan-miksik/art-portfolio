@@ -6,7 +6,7 @@
       target="_blank"
       rel="noopener noreferrer"
     >
-        opensea
+        opensea <img src="~/assets/external.svg" class="opensea__external-icon" width="35" height="35" alt="external" />
     </a>
   </template>
   
@@ -36,6 +36,11 @@ const openseaStyle = computed(() => {
   position absolute
   font-size: 5rem;
   color: black;
+
+.opensea__external-icon
+  position: absolute;
+  right: -30px;
+  top: 20px;
 
 </style>
   

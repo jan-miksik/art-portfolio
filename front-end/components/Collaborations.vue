@@ -8,7 +8,7 @@
 				target="_blank"
 				rel="noopener noreferrer"
     >
-      danieladeluna.ooo
+      danieladeluna.ooo <img src="~/assets/external.svg" class="deluna__external-icon" width="35" height="35" alt="external" />
     </a>
 		<a
 			class="tomas"
@@ -16,7 +16,7 @@
       target="_blank"
 			rel="noopener noreferrer"
     >
-				tomaskofron.com
+				tomaskofron.com <img src="~/assets/external.svg" class="tomas__external-icon" width="35" height="35" alt="external" />	
 			</a>
 		</div>
 	</div>
@@ -50,7 +50,7 @@ return {
 
 <style lang="stylus" scoped>
 .collaborations
-	position absolute
+	position absolute;
 	font-size: 5rem;
 	color: black;
 	width: max-content;
@@ -65,6 +65,14 @@ return {
 	flex-direction: column;
 	align-items: center;
 	gap: 1rem;
+
+.deluna, .tomas
+	position: relative;
+
+.deluna__external-icon, .tomas__external-icon
+	position: absolute;
+	right: -30px;
+	top: 20px;
 
 </style>
   

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="20"
+   height="20"
+   viewBox="0 0 24 24"
+   fill="none"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="Interface / External_Link">
+    <path
+       id="Vector-8"
+       d="m 9.9967758,5.6978174 h -1.8 c -1.12011,0 -1.68058,0 -2.1084,0.21799 -0.37633,0.19174 -0.68207,0.49748 -0.87381,0.87381 -0.21799,0.42782 -0.21799,0.98829 -0.21799,2.1084 v 7.5999996 c 0,1.1201 0,1.6799 0.21799,2.1077 0.19174,0.3763 0.49748,0.6826 0.87381,0.8743 0.4274,0.2178 0.98719,0.2178 2.10511,0.2178 h 7.6061902 c 1.1179,0 1.6769,0 2.1043,-0.2178 0.3763,-0.1917 0.6831,-0.4983 0.8748,-0.8746 0.2178,-0.4274 0.2178,-0.9866 0.2178,-2.1045 v -1.8031 m 1,-4.9999996 v -5 m 0,0 h -5 m 5,0 -7,6.9999996"
+       stroke="#000000"
+       stroke-width="2"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:4.7604;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="Vector"
+       d="m 10.0002,5.6941003 h -1.8 c -1.12011,0 -1.68058,0 -2.1084,0.21799 -0.37633,0.19174 -0.68207,0.49748 -0.87381,0.87381 C 5,7.2137203 5,7.7741903 5,8.8943003 V 16.4943 c 0,1.1201 0,1.6799 0.21799,2.1077 0.19174,0.3763 0.49748,0.6826 0.87381,0.8743 0.4274,0.2178 0.98719,0.2178 2.10511,0.2178 h 7.60619 c 1.1179,0 1.6769,0 2.1043,-0.2178 0.3763,-0.1917 0.6831,-0.4983 0.8748,-0.8746 C 19,18.1743 19,17.6151 19,16.4972 v -1.8031 m 1,-4.9999997 v -5 m 0,0 h -5 m 5,0 -7,6.9999997"
+       stroke="#000000"
+       stroke-width="2"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:2.1204;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+</svg>

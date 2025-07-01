@@ -170,7 +170,6 @@ a
   &:hover
     opacity 0.7
     transition all 0.2s
-    cursor url("/external.svg"), pointer
 
 
 </style>
