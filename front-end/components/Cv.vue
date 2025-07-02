@@ -44,7 +44,7 @@
     <h3>selected group exhibitions</h3>
     <p>
       2025   Brix bar & hostel, Prague, CZ<br>
-      2017   The exhibition of diploma theses, National Gallery Prague – Veletržní palác, CZ<br>
+      2017   <i>The exhibition of diploma theses</i>, National Gallery Prague – Veletržní palác, CZ<br>
       2015   Stadion Strahov, Prague, atelier of host teacher - Josef Dabernig, CZ<br>
       2015   Klub Final, Prague, CZ<br>
       2014   <i>Festival Kruh</i>, Menza, Ústí nad Labem, CZ<br>
