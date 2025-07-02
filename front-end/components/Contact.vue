@@ -40,7 +40,7 @@
     </a>
   </div>
 
-  <div
+  <!-- <div
     ref="contactOpenseaRef"
     :style="handleOpenseaStyle"
     class="homepage__contact"
@@ -61,7 +61,7 @@
         alt="opensea"
       />
     </a>
-  </div>
+  </div> -->
 </template>
 
 <script setup lang="ts">
