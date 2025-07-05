@@ -25,7 +25,7 @@ import useArchive from '~/J/useArchive'
 const { toggleArchive, isArchiveVisible } = useArchive()
 
 const archiveTogglerRefRef = ref<HTMLElement>()
-const styleRef = ref({left: -12, bottom: 60, top: undefined})
+const styleRef = ref({left: -12, bottom: 100, top: undefined})
 const { mouseDownHandler, mouseMoveHandler, mouseUpHandler, isDragging } = useMouseActionDetector()
 
 onMounted(() => {

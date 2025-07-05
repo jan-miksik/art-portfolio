@@ -27,15 +27,15 @@
     @mouseup="mouseUpHandler"
   >
     <a
-      class="homepage__soc-link homepage__soc-link-img"
-      :href="isDragging ? undefined : 'https://www.instagram.com/miksik.jan/'"
+      class="homepage__soc-link homepage__soc-link-img linktree"
+      :href="isDragging ? undefined : 'https://linktr.ee/miksik.jan'"
       target="_blank"
       rel="noopener noreferrer"
       >
       <img
-        src="/instagram.svg"
+        src="/linktree.svg"
         class="homepage__contact-img"
-        alt="instagram"
+        alt="linktree"
       />
     </a>
   </div>
@@ -181,8 +181,6 @@ const handleOpenseaStyle = computed(() => {
   width 30px
   height 30px
 
-
-
 .homepage__contact-text
   font-size 0.9rem
   font-weight bold
@@ -219,5 +217,12 @@ const handleOpenseaStyle = computed(() => {
 
 .homepage__soc-link-img:hover
   z-index 100
+
+.linktree
+  opacity 0.75
+  transition opacity 0.3s
+
+  &:hover
+    opacity 0.6
 
 </style>
