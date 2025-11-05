@@ -1,1 +1,1 @@
-my art portfolio source code
+my art portfolio build with nuxt 3, lives on https://janmiksik.ooo/
