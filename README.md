@@ -1,4 +1,4 @@
-my art portfolio build with nuxt 3, lives on https://janmiksik.ooo/
+my art portfolio build with nuxt 3, lives on https://janmiksik.ooo/ <br>
 the website is more interactive than it looks at first.
 
 preview
