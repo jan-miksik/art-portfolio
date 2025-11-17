@@ -11,7 +11,7 @@
   </template>
   
 <script setup lang="ts">
-import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
+import { LEFT_OFFSET, TOP_OFFSET } from '~/constants/layout'
 
 const openseaPosition = ref({
   x: 10100,
@@ -24,10 +24,6 @@ const openseaStyle = computed(() => {
     top: `${openseaPosition.value.y + TOP_OFFSET}px`,
   }
 })
-
-// alternative way style
-// &:hover
-// cursor: url("/jan.png") 35 35, pointer;
 
 </script>
 

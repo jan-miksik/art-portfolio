@@ -7,6 +7,9 @@ const twitterCard = 'summary_large_image'
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
+  nitro: {
+    preset: 'cloudflare-pages' // or 'cloudflare' for Workers
+  },
   devtools: { enabled: true },
   typescript: {
     strict: true
@@ -17,6 +20,16 @@ export default defineNuxtConfig({
     dirs: [
       '~/components',
     ]
+  },
+  runtimeConfig: {
+    // Server-only (private) - not exposed to client
+    // Use non-VITE_ prefixed vars for server-side secrets (Cloudflare compatible)
+    contentfulManagementToken: process.env.CONTENTFUL_CONTENT_MANAGEMENT_ACCESS_TOKEN || process.env.VITE_CONTENTFUL_CONTENT_MANAGEMENT_ACCESS_TOKEN,
+    contentfulSpaceId: process.env.CONTENTFUL_SPACE_ID || process.env.VITE_CONTENTFUL_SPACE_ID,
+    // Public (exposed to client) - safe for read-only operations
+    public: {
+      contentfulAccessToken: process.env.VITE_CONTENTFUL_ACCESS_TOKEN,
+    }
   },
   // modules: [
   //   '@vueuse/nuxt',

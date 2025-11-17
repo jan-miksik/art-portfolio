@@ -1,389 +1,154 @@
 import Piece from '~/models/Piece'
-import axios, { type AxiosResponse } from 'axios'
-import { createClient } from 'contentful-management'
-import useAdminPage from './useAdminPage'
+import type { AxiosResponse } from 'axios'
+import { logger } from '~/utils/logger'
 
-const contentfulSpaceId = import.meta.env.VITE_CONTENTFUL_SPACE_ID as string
-const contentfulCmt = import.meta.env
-  .VITE_CONTENTFUL_CONTENT_MANAGEMENT_ACCESS_TOKEN as string || ''
-
-const contentfulClient = createClient({
-  accessToken: contentfulCmt
-})
+/**
+ * 
+ * All write operations use server-side API routes to keep the Management API token secure.
+ * The Management API token is secured using Nuxt's runtimeConfig (server-only) and
+ * is never exposed to the client.
+ * 
+ * Server routes:
+ * - /server/api/contentful/upload-and-process-image.post.ts
+ * - /server/api/contentful/upload-piece.post.ts
+ * - /server/api/contentful/update-piece.put.ts
+ * - /server/api/contentful/publish-entry.post.ts
+ * - /server/api/contentful/delete-entry.delete.ts
+ */
 
 export default function useContentfulPiece() {
-  const { isSetupForMobile } = useAdminPage()
-
-  // 1.
-  const uploadImageToContentful = async (imageRaw: File) => {
-    if (!imageRaw) return
-
-    try {
-      const uploadResponse = await axios.post(
-        `https://upload.contentful.com/spaces/${contentfulSpaceId}/uploads`,
-        imageRaw,
-        {
-          headers: {
-            'Content-Type': 'application/octet-stream',
-            Authorization: `Bearer ${contentfulCmt}`,
-            'X-Contentful-Version': 1
-          }
-        }
-      )
-      console.log('1. Image uploaded successfully')
-      return uploadResponse
-    } catch (error) {
-      console.error('Error uploading image:', error)
-    }
-  }
-
-  // 2.
-  const linkUploadedImageToAsset = async (uploadResponse: AxiosResponse, imageRaw: File) => {
-    const imageName = imageRaw.name.substring(0, imageRaw.name.lastIndexOf('.'))
-
-    try {
-      const assetData = {
-        fields: {
-          title: {
-            'en-US': imageName
-          },
-          file: {
-            'en-US': {
-              contentType: imageRaw.type,
-              fileName: imageRaw.name,
-              uploadFrom: {
-                sys: {
-                  type: 'Link',
-                  linkType: 'Upload',
-                  id: uploadResponse?.data.sys.id
-                }
-              }
-            }
-          }
-        }
-      }
-
-      // Link uploaded file to asset
-      const assetResponse = await axios.put(
-        `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${uploadResponse.data.sys.id}`,
-        assetData,
-        {
-          headers: {
-            Authorization: `Bearer ${contentfulCmt}`,
-            'Content-Type': 'application/vnd.contentful.management.v1+json',
-            'X-Contentful-Version': 1
-          }
-        }
-      )
-
-      console.log('2. link Uploaded Image To Asset')
-      return assetResponse
-    } catch (error) {
-      console.error('Error linkUploadedImageToAsset', error)
-    }
-  }
-
-  // 3., 4.
-  const processTheImage = async (uploadResponse: AxiosResponse) => {
-    try {
-      await axios.put(
-        `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${uploadResponse.data.sys.id}/files/en-US/process`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${contentfulCmt}`,
-            'X-Contentful-Version': uploadResponse.data.sys.version
-          }
-        }
-      )
-      console.log('3. Image start processing')
-    } catch (error) {
-      console.error('Error processing image', error)
-    }
-
-    // Poll the asset's processing status until it's ready
-    let assetProcessed = false
-    while (!assetProcessed) {
-      const assetStatusRes = await axios.get(
-        `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${uploadResponse.data.sys.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${contentfulCmt}`
-          }
-        }
-      )
-
-      assetProcessed =
-        assetStatusRes.data.fields.file['en-US'].url !== undefined
-
-      if (!assetProcessed) {
-        // Wait for a bit before checking again
-        try {
-          await new Promise((resolve) => setTimeout(resolve, 200))
-          console.log('4. Image processed')
-        } catch (error) {
-          console.error('Error processTheImage', error)
-        }
-      }
-    }
-  }
-
-  // 5.
-  const publishTheImage = async (assetResponse: AxiosResponse) => {
-    try {
-      await axios.put(
-        `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${assetResponse.data.sys.id}/published`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${contentfulCmt}`,
-            'X-Contentful-Version': assetResponse?.data.sys.version + 1
-          }
-        }
-      )
-      console.log('5. Image published')
-    } catch (error) {
-      console.error('Error publishTheImage:', error)
-    }
-  }
-
   const uploadAndPublishImage = async (imageRaw: File) => {
-    const uploadResponse = await uploadImageToContentful(imageRaw)
-    if (!uploadResponse) return
-
-    const assetResponse = await linkUploadedImageToAsset(uploadResponse, imageRaw)
-    if (!assetResponse) return
-
-    await processTheImage(assetResponse)
-    await publishTheImage(assetResponse)
-
-    return assetResponse
+    try {
+      const formData = new FormData()
+      formData.append('image', imageRaw)
+      
+      const response = await $fetch('/api/contentful/upload-and-process-image', {
+        method: 'POST',
+        body: formData
+      })
+      
+      logger.log('Image uploaded and processed via server route')
+      return { data: response } as AxiosResponse
+    } catch (error) {
+      logger.error('Error uploading via server route:', error)
+      throw new Error(`Failed to upload image: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    }
   }
 
-  // 6.
   const uploadPiece = async (piece: Piece) => {
     if (!piece.imageRaw) return
-    console.log(':::uploading started... ')
+    logger.log(':::uploading started... ')
     const imageResponse = await uploadAndPublishImage(piece.imageRaw)
-    console.log('-- asset Response --: ', imageResponse);
+    logger.log('-- asset Response --: ', imageResponse, imageResponse?.data.sys.id);
     const imageName = piece.imageRaw.name.substring(0, piece.imageRaw.name.lastIndexOf('.'))
+    
     try {
-      const apiUrl = `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/entries`
-
-      const headers = {
-        Authorization: `Bearer ${contentfulCmt}`,
-        'Content-Type': 'application/vnd.contentful.management.v1+json',
-        'X-Contentful-Content-Type': 'piece'
-      }
-
-      const data = {
-        fields: {
-          name: {
-            'en-US': imageName
+      const response = await $fetch('/api/contentful/upload-piece', {
+        method: 'POST',
+        body: {
+          piece: {
+            name: imageName,
+            topic: piece.topic,
+            technique: piece.technique,
+            techniqueDescription: piece.techniqueDescription,
+            created: piece.created,
+            sizeInCm: piece.sizeInCm,
+            sizeInPx: piece.sizeInPx,
+            sizeOnWeb: piece.sizeOnWeb,
+            position: piece.position,
+            isMoveableInPublic: piece.isMoveableInPublic,
+            isArchived: piece.isArchived
           },
-          image: {
-            'en-US': {
-              sys: {
-                type: 'Link',
-                linkType: 'Asset',
-                id: imageResponse?.data.sys.id // ID of an image asset you've previously uploaded to Contentful
-              }
-            }
-          },
-          topic: {
-            'en-US': piece.topic || 'anything'
-          },
-          technique: {
-            'en-US': piece.technique || ''
-          },
-          techniqueDescription: {
-            'en-US': piece.techniqueDescription || 'unspecified'
-          },
-          created: {
-            'en-US': piece.created || new Date(100, 0).toISOString()
-          },
-          sizeInCmXHorizontal: {
-            'en-US': Math.floor(piece.sizeInCm.x || 0)
-          },
-          sizeInCmYVertical: {
-            'en-US': Math.floor(piece.sizeInCm.y || 0)
-          },
-          sizeInPxX: {
-            'en-US': Math.floor(piece.sizeInPx.x || 0)
-          },
-          sizeInPxY: {
-            'en-US': Math.floor(piece.sizeInPx.y || 0)
-          },
-          widthOnWeb: {
-            'en-US': Math.floor(piece.sizeOnWeb.width || 0)
-          },
-          positionX: {
-            'en-US': Math.floor(piece.position.x || 0)
-          },
-          positionY: {
-            'en-US': Math.floor(piece.position.y || 0)
-          },
-          positionDeg: {
-            'en-US': Math.floor(piece.position.deg || 0)
-          },
-          widthOnWebMob: {
-            'en-US': Math.floor(piece.sizeOnWeb.widthMob || 0)
-          },
-          positionXMob: {
-            'en-US': Math.floor(piece.position.xMob || 0)
-          },
-          positionYMob: {
-            'en-US': Math.floor(piece.position.yMob || 0)
-          },
-          positionDegMob: {
-            'en-US': Math.floor(piece.position.degMob || 0)
-          },
-          isMoveableInPublic: {
-            'en-US': piece.isMoveableInPublic ?? false
-          },
-          isArchived: {
-            'en-US': piece.isArchived ?? false
-          },
+          imageAssetId: imageResponse?.data.sys.id
         }
-      }
-
-      const response = await axios.post(apiUrl, data, { headers })
-
+      })
+      logger.log('Piece uploaded via server route as draft')
+      
+      // Update piece with response data
       piece.sys = {
-        id:response.data.sys.id,
-        version: response.data.sys.version
+        id: response.sys.id,
+        version: response.sys.version
       }
       piece.isUpdated = true
       piece.isUploadedToCf = true
       piece.image.id = imageResponse?.data.sys.id
 
-      console.log('6. piece successfully uploaded as draft', piece, response)
+      logger.log('Piece successfully uploaded', piece, response)
+      return response
     } catch (error) {
-      console.error('6. error uploadPiece', error)
+      logger.error('Error uploading piece via server route:', error)
+      throw new Error(`Failed to upload piece: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
 
   const updatePiece = async (piece: Piece) => {
     try {
-      const space = await contentfulClient.getSpace(contentfulSpaceId)
-      const environment = await space.getEnvironment('master')
-      const entry = await environment.getEntry(piece.sys.id)
-
-      // Update the fields of the entry
-      entry.fields = {
-        name: {
-          'en-US': piece.name
-        },
-        image: {
-          'en-US': {
-            sys: {
-              type: 'Link',
-              linkType: 'Asset',
-              id: piece?.image.id
-            }
-          }
-        },
-        topic: {
-          'en-US': piece.topic || 'anything'
-        },
-        technique: {
-          'en-US': piece.technique || ''
-        },
-        techniqueDescription: {
-          'en-US': piece.techniqueDescription || ''
-        },
-        created: {
-          'en-US': piece.created || new Date(100, 0).toISOString()
-        },
-        sizeInCmXHorizontal: {
-          'en-US': Math.floor(piece.sizeInCm.x || 0)
-        },
-        sizeInCmYVertical: {
-          'en-US': Math.floor(piece.sizeInCm.y || 0)
-        },
-        sizeInPxX: {
-          'en-US': Math.floor(piece.sizeInPx.x || 0)
-        },
-        sizeInPxY: {
-          'en-US': Math.floor(piece.sizeInPx.y || 0)
-        },
-        widthOnWeb: {
-          'en-US': Math.floor(piece.sizeOnWeb.width || 0)
-        },
-        positionX: {
-          'en-US': Math.floor(piece.position.x || 0)
-        },
-        positionY: {
-          'en-US': Math.floor(piece.position.y || 0)
-        },
-        positionDeg: {
-          'en-US': Math.floor(piece.position.deg || 0)
-        },
-        widthOnWebMob: {
-          'en-US': Math.floor(piece.sizeOnWeb.widthMob || 0)
-        },
-        positionXMob: {
-          'en-US': Math.floor(piece.position.xMob || 0)
-        },
-        positionYMob: {
-          'en-US': Math.floor(piece.position.yMob || 0)
-        },
-        positionDegMob: {
-          'en-US': Math.floor(piece.position.degMob || 0)
-        },
-        isMoveableInPublic: {
-          'en-US': piece.isMoveableInPublic ?? false
-        },
-        isArchived: {
-          'en-US': piece.isArchived ?? false
-        },
-      }
-
-      // Save the updated entry
-      const updatedEntry = await entry.update()
-      piece.sys.version = updatedEntry.sys.version
+      const response = await $fetch<{ sys: { version: number } }>('/api/contentful/update-piece', {
+        method: 'PUT',
+        body: {
+          entryId: piece.sys.id,
+          version: piece.sys.version,
+          piece: {
+            name: piece.name,
+            topic: piece.topic,
+            technique: piece.technique,
+            techniqueDescription: piece.techniqueDescription,
+            created: piece.created,
+            sizeInCm: piece.sizeInCm,
+            sizeInPx: piece.sizeInPx,
+            sizeOnWeb: piece.sizeOnWeb,
+            position: piece.position,
+            isMoveableInPublic: piece.isMoveableInPublic,
+            isArchived: piece.isArchived
+          },
+          imageAssetId: piece.image.id // Preserve the image link
+        }
+      })
+      logger.log('Piece updated via server route')
+      piece.sys.version = response.sys.version
+      piece.isUpdated = true
+      return response
     } catch (error) {
-      console.error('Error updatePiece:', error)
+      logger.error('Error updating piece via server route:', error)
+      throw new Error(`Failed to update piece: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
-    piece.isUpdated = true
   }
 
   const updateAndPublishPiece = async (piece: Piece) => {
-
     try {
       await updatePiece(piece)
-      await axios.put(
-        `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/entries/${piece.sys.id}/published`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${contentfulCmt}`,
-            'X-Contentful-Version': piece.sys.version
-          }
+      
+      const response = await $fetch<{ sys: { version: number } }>('/api/contentful/publish-entry', {
+        method: 'POST',
+        body: {
+          entryId: piece.sys.id,
+          version: piece.sys.version
         }
-      )
+      })
       piece.isPublished = true
-      piece.sys.version += 1
-      console.log(`Piece ${piece.name} published!`)
+      piece.sys.version = response.sys.version
+      logger.log(`Piece ${piece.name} published via server route!`)
     } catch (error) {
-      console.error('error publishPiece', error)
+      logger.error('error publishPiece', error)
+      throw new Error(`Failed to publish piece: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
 
-  // const removePiece = async (piece: Piece) => {
-
-    const removePiece = async (piece: Piece) => {
-      try {
-        const space = await contentfulClient.getSpace(contentfulSpaceId)
-        const environment = await space.getEnvironment('master')
-        const entry = await environment.getEntry(piece.sys.id)
-        await entry.unpublish() // optional, if the entry is published
-        await entry.delete()
-        console.log(`Entry ${piece.sys.id}: ${piece.name} deleted.`)
-      } catch (error) {
-        console.error('Error removePiece:', error)
-      }
+  const removePiece = async (piece: Piece) => {
+    try {
+      await $fetch('/api/contentful/delete-entry', {
+        method: 'DELETE',
+        query: {
+          id: piece.sys.id,
+          version: piece.sys.version
+        }
+      })
+      logger.log(`Entry ${piece.sys.id}: ${piece.name} deleted via server route.`)
+    } catch (error) {
+      logger.error('Error removing piece via server route:', error)
+      throw new Error(`Failed to remove piece: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
+  }
 
 
   return {

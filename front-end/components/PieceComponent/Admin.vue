@@ -39,15 +39,6 @@
                 @click.stop
                 @touchstart.stop
               >
-                <!-- <PinchScrollZoom
-                  v-if="windowObject?.innerWidth"
-                  :height="windowObject.innerHeight * 0.7"
-                  :width="windowObject?.innerWidth"
-                  within
-                  class="piece-component-admin__pinch-scroll-zoom"
-                  :min-scale="0.01"
-                  :max-scale="100"
-                > -->
                 <OImage
                   :image-file="piece.image"
                   :is-full-size="true"
@@ -63,7 +54,6 @@
                   @click.stop
                   @touchstart.stop
                 />
-                <!-- </PinchScrollZoom> -->
               </div>
             </div>
             <div
@@ -132,7 +122,6 @@
                 >
                   {{ selectedPiece.sizeInCm.y }} </span
                 >cm
-                <!-- is cm{{ isSizeInCm }} is PX {{ isSizeInPx }} -->
               </span>
 
               <span v-if="isSizeInPx">
@@ -158,7 +147,7 @@
                 <input
                   type="checkbox"
                   v-model="selectedPiece.isMoveableInPublic"
-                  @change="handleIsMoveableInPublic($event.target?.checked)"
+                  @change="handleIsMoveableInPublic(($event.target as HTMLInputElement)?.checked ?? false)"
                 />
                 Moveable in Public
               </label>
@@ -167,7 +156,7 @@
                 <input
                   type="checkbox"
                   v-model="selectedPiece.isArchived"
-                  @change="handleIsArchived($event.target?.checked)"
+                  @change="handleIsArchived(($event.target as HTMLInputElement)?.checked ?? false)"
                 />
                 Archived
               </label>
@@ -208,7 +197,6 @@ const { pieces } = usePieces()
 
 const props = defineProps<{
   initialPiece: Piece
-  // initialSlide: number
 }>()
 const { initialPiece } = toRefs(props)
 
@@ -286,9 +274,13 @@ const handleUpdatePieceTechniqueDescription = () => {
 const handleRemovePiece = async () => {
   if (!selectedPiece.value) return
   if (confirm('Smazat?')) {
-    await useContentfulPiece().removePiece(selectedPiece.value)
-    pieces.value = pieces.value?.filter((p) => p.id !== selectedPiece.value?.id)
-    alert('Smazáno')
+    try {
+      await useContentfulPiece().removePiece(selectedPiece.value)
+      pieces.value = pieces.value?.filter((p) => p.id !== selectedPiece.value?.id)
+      alert('Smazáno')
+    } catch (error) {
+      alert(`Chyba při mazání: ${error instanceof Error ? error.message : 'Neznámá chyba'}`)
+    }
   }
 }
 
@@ -366,10 +358,6 @@ const handleIsArchived = (val: boolean) => {
     bottom 0.3rem
 
 
-// .dark-mode .piece-component-admin__selected-piece-info
-// background-color rgb(17 17 17)
-
-
 .piece-component-admin__selected-piece-backdrop
   position fixed
   display flex
@@ -416,15 +404,6 @@ const handleIsArchived = (val: boolean) => {
   align-items center
   justify-content space-between
   flex-direction column
-
-// .piece-component-admin__selected-piece-image-prevent-close
-//   // position absolute
-//   bottom 0
-//   left 0
-//   width 100vw
-//   height 5vh
-//   z-index 10000
-//   cursor default
 
 .piece-component-admin__selected-piece-image-close-zone
   position absolute

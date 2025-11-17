@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import useAdminPage from './useAdminPage'
 import type Piece from "~/models/Piece";
+import { DRAG_RESET_DELAY_MS } from '~/constants/timing'
 
 const isDragging = ref(false)
 const isOverPieceOrSetup = ref(false)
@@ -24,7 +25,7 @@ export default function useMouseActionDetector() {
     isDragging.value ? 'drag' : 'click'
     setTimeout(() => {
         isDragging.value = false
-    }, 500)
+    }, DRAG_RESET_DELAY_MS)
   }
 
   const mouseLeaveHandler = () => {

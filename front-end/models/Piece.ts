@@ -101,9 +101,9 @@ export default class Piece {
     this.position = data.position || { x: 0, y: 0, deg: 0, xMob: 0, yMob: 0, degMob: 0 }
     this.price = data.price || 0
     this.topic = data.topic || ''
-    this.tags = data.tags || ''
-    this.created = data.created || Date
-    this.updated = data.updated || Date
+    this.tags = data.tags || []
+    this.created = data.created || new Date()
+    this.updated = data.updated || new Date()
     this.imageRaw = data.imageRaw || null
     this.isUpdated = data.isUpdated || false
     this.isPublished = data.isPublished || false

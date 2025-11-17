@@ -24,7 +24,6 @@
     <h3>Jan Mikšík</h3>
     <p>
       Born 1988 in Czech Republic - CZ<br>
-      <!-- Resides and works in Prague, CZ and Hanoi, VN -->
     </p>
 
     <h3>education</h3>
@@ -62,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
+import { LEFT_OFFSET, TOP_OFFSET } from '~/constants/layout'
 
 const janMiksikComPosition = ref({
   x: 7500,

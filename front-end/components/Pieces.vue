@@ -33,7 +33,7 @@ const piecesRef = ref()
   left 0
   right 0
 
-// / Animation /
+// Animations
 .images-enter-active
 .images-leave-active
   transition all 0.5s

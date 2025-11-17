@@ -62,12 +62,13 @@
 <script setup lang="ts">
 
 import { mainSupportedChain } from '~/appSetup'
+import { logger } from '~/utils/logger'
 import contractAbi from '~/abi/IntoPieces.json'
 import { switchChain, getGasPrice, estimateGas, writeContract } from '@wagmi/core'
 import { config } from '~/config'
 import { encodeFunctionData, formatEther, parseEther } from 'viem'
 import { createPublicClient, http } from 'viem'
-import { optimism, sepolia } from 'viem/chains'
+import { optimism } from 'viem/chains'
 import { useAppKit } from '@reown/appkit/vue'
 import { useAccount } from '@wagmi/vue'
 
@@ -87,9 +88,8 @@ const account = useAccount()
 const client = createPublicClient({
   chain: optimism,
   transport: http()
-  // TODO: left for testing on sepolia
+  // left for testing on sepolia
   // chain: sepolia,
-  // transport: http()
 })
 
 
@@ -291,7 +291,7 @@ const loadContractData = async () => {
 
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Detailed error:', error.message)
+      logger.error('Detailed error:', error.message)
     }
   }
 }

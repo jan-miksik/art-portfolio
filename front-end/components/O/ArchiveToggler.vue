@@ -1,12 +1,12 @@
 <template>
 	<div
 		class="container"
-		ref="archiveTogglerRefRef"
+		ref="archiveTogglerRef"
     :style="dragAndDropStyle"
 		@mousedown="mouseDownHandler"
 		@mousemove="mouseMoveHandler"
 		@mouseup="mouseUpHandler"
-		@click="toggelArchive"
+		@click="toggleArchiveHandler"
 		>
     <div class="archive-toggler-text">archive 
       
@@ -24,13 +24,13 @@ import useArchive from '~/J/useArchive'
 
 const { toggleArchive, isArchiveVisible } = useArchive()
 
-const archiveTogglerRefRef = ref<HTMLElement>()
+const archiveTogglerRef = ref<HTMLElement>()
 const styleRef = ref({left: -12, bottom: 100, top: undefined})
 const { mouseDownHandler, mouseMoveHandler, mouseUpHandler, isDragging } = useMouseActionDetector()
 
 onMounted(() => {
-	if (!archiveTogglerRefRef.value) return
-	interact(archiveTogglerRefRef.value).draggable({
+	if (!archiveTogglerRef.value) return
+	interact(archiveTogglerRef.value).draggable({
 		inertia: true,
 		autoScroll: true,
 		listeners: {
@@ -64,7 +64,7 @@ const dragAndDropStyle = computed(() => {
 	}
 })
 
-const toggelArchive = () => {
+const toggleArchiveHandler = () => {
 	if (isDragging.value) return
 	toggleArchive()
 }

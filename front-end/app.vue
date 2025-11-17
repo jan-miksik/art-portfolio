@@ -60,7 +60,6 @@ onMounted(async () => {
 </script>
 
 <style lang="stylus">
-// stylelint-disable-next-line selector-anb-no-unmatchable
 :root
   --image-filter-invert 1
 

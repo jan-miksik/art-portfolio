@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="container"
-		ref="archiveTogglerRefRef"
+		ref="beSupporterRef"
     :style="dragAndDropStyle"
 		@mousedown="mouseDownHandler"
 		@mousemove="mouseMoveHandler"
@@ -37,17 +37,14 @@
 <script setup lang="ts">
 import interact from 'interactjs'
 import useMouseActionDetector from '~/J/useMouseActionDetector'
-// import useArchive from '~/J/useArchive'
 
-// const { toggleArchive, isArchiveVisible } = useArchive()
-
-const archiveTogglerRefRef = ref<HTMLElement>()
+const beSupporterRef = ref<HTMLElement>()
 const styleRef = ref({right: -65, bottom: 120, top: undefined})
-const { mouseDownHandler, mouseMoveHandler, mouseUpHandler, isDragging } = useMouseActionDetector()
+const { mouseDownHandler, mouseMoveHandler, mouseUpHandler } = useMouseActionDetector()
 
 onMounted(() => {
-	if (!archiveTogglerRefRef.value) return
-	interact(archiveTogglerRefRef.value).draggable({
+	if (!beSupporterRef.value) return
+	interact(beSupporterRef.value).draggable({
 		inertia: true,
 		autoScroll: true,
 		listeners: {

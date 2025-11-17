@@ -3,19 +3,8 @@
     <ODarkModeSwitcher />
     <OArchiveToggler />
     <OBeSupporter />
-    <!-- <div class="homepage__open-topic-icons"> -->
-    <!-- <SelectTopicIcon :icon="sansTopicIcon" label="Free Topic" :topic="Topics.FREE_TOPIC" class="homepage__sans-topic-link" />
-
-      <SelectTopicIcon :icon="geometryIcon" label="Geometry" :topic="Topics.GEOMETRY" class="homepage__geometry-link"/>
-
-      <SelectTopicIcon :icon="nodeAvatarsIcon" label="Node Avatars" :topic="Topics.NODE_AVATARS" class="homepage__node-avatars-link"/>
-
-      <SelectTopicIcon :icon="puzzleIcon" label="Puzzle" :topic="Topics.PUZZLE" class="homepage__puzzle-link"/>
-
-      <SelectTopicIcon :icon="collectIcon" label="Into Pieces" :topic="Topics.NFT_COLLECTION" class="homepage__nft-collection-link"/> -->
-    <!-- </div> -->
-
     <Contact />
+
     <PinchScrollZoom
       v-if="windowObject?.innerWidth && edgePositions.x"
       ref="mapperRef"
@@ -48,12 +37,12 @@ import usePieces from '~/J/usePieces'
 import useMapper from '~/J/useMapper'
 import useAdminPage from '~/J/useAdminPage'
 import useMouseActionDetector from '~/J/useMouseActionDetector'
-import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
+import { LEFT_OFFSET, TOP_OFFSET } from '~/constants/layout'
 
 const { edgePositions } = usePieces()
 const { onMapperEvent } = useMapper()
 
-const { isOverPieceOrSetupInPublicPage, isOverPieceOrSetup } = useMouseActionDetector()
+const { isOverPieceOrSetup } = useMouseActionDetector()
 const isMapperSet = ref(false)
 const mapperRef = ref()
 
@@ -92,52 +81,6 @@ useHead({
   ]
 })
 
-// const mapperContainerStyle = computed(() => {
-//   return {
-//     left: `${mapperContainerPosition.value.x}px`,
-//     top: `${mapperContainerPosition.value.y}px`
-//   }
-// })
-
-// const sansTopicIcon = ref(
-//   new ImageFile({
-//     url: 'topics-entry-icons/sans-topic-icon.webp',
-//     id: 'title-sans-topic-img',
-//     lastUpdated: new Date('1991').getTime()
-//   })
-// )
-
-// const geometryIcon = ref(
-//   new ImageFile({
-//     url: 'topics-entry-icons/geometry-icon.png',
-//     id: 'geometry-title-img',
-//     lastUpdated: new Date('1991').getTime()
-//   })
-// )
-
-// const nodeAvatarsIcon = ref(
-//   new ImageFile({
-//     url: 'topics-entry-icons/node-avatars-icon.webp',
-//     id: 'node-avatars-title-img',
-//     lastUpdated: new Date('1997').getTime()
-//   })
-// )
-
-// const puzzleIcon = ref(
-//   new ImageFile({
-//     url: 'topics-entry-icons/puzzle-icon.webp',
-//     id: 'puzzle-title-img',
-//     lastUpdated: new Date('1993').getTime()
-//   })
-// )
-
-// const collectIcon = ref(
-//   new ImageFile({
-//     url: 'topics-entry-icons/collect-icon.png',
-//     id: 'collect',
-//     lastUpdated: new Date('1993').getTime()
-//   })
-// )
 </script>
 <style lang="stylus">
 .index__pinch-scroll-zoom-container

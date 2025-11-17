@@ -1,5 +1,6 @@
 import ImageFile from '~/models/ImageFile'
 import Dexie, { type Table } from 'dexie'
+import { logger } from '~/utils/logger'
 
 export interface ImageIDB {
   id: string;
@@ -8,9 +9,6 @@ export interface ImageIDB {
 }
 
 export default class MySubClassedDexie extends Dexie {
-// export default class MySubClassedDexie {
-  // 'Images' is added by dexie when declaring the stores()
-  // We just tell the typing system this is the case
   images!: Table<ImageIDB>
 
   constructor() {
@@ -37,7 +35,7 @@ export const addImage = async (image: ImageFile) => {
       lastUpdated
     })
   } catch (error) {
-    console.error('addImage error: ', error)
+    logger.error('addImage error: ', error)
   }
 }
 
@@ -53,7 +51,7 @@ export const updateImage = async (image: ImageFile) => {
       lastUpdated
     })
   } catch (error) {
-    console.error('updateImage error: ', error)
+    logger.error('updateImage error: ', error)
   }
 }
 

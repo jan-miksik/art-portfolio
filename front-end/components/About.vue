@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
+import { LEFT_OFFSET, TOP_OFFSET } from '~/constants/layout'
 
 const janMiksikComPosition = ref({
   x: 7000,

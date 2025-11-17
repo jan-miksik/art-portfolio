@@ -23,7 +23,7 @@
 </template>
   
 <script setup lang="ts">
-import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
+import { LEFT_OFFSET, TOP_OFFSET } from '~/constants/layout'
 
 const collaborationsPosition = ref({
 	x: 11000,
@@ -37,7 +37,7 @@ return {
 }
 })
 
-// alternative way style
+// alternative style
 // .deluna
 // &:hover
 // 	cursor: url("/mrak.png") 50 50, pointer;

@@ -8,7 +8,7 @@
     @mousemove="mouseMoveHandler"
     @mouseup="mouseUpHandler"
   >
-    <a class="homepage__soc-link homepage__soc-link-img" :href="isDragging ? undefined : 'mailto: to@janmiksik.ooo'" target="_blank" rel="noopener noreferrer">
+    <a class="homepage__soc-link homepage__soc-link-img" :href="isDragging ? undefined : 'mailto:to@janmiksik.ooo'" target="_blank" rel="noopener noreferrer">
       <img
         src="/email.svg"
         class="homepage__contact-img"
@@ -39,43 +39,17 @@
       />
     </a>
   </div>
-
-  <!-- <div
-    ref="contactOpenseaRef"
-    :style="handleOpenseaStyle"
-    class="homepage__contact"
-    draggable="true"
-    @mousedown="mouseDownHandler"
-    @mousemove="mouseMoveHandler"
-    @mouseup="mouseUpHandler"
-  >
-    <a
-      class="homepage__soc-link homepage__soc-link-img"
-      :href="isDragging ? undefined : 'https://opensea.io/collection/various-pictures-2'"
-      target="_blank"
-      rel="noopener noreferrer"
-      >
-      <img
-        src="/opensea-bw.svg"
-        class="homepage__contact-img"
-        alt="opensea"
-      />
-    </a>
-  </div> -->
 </template>
 
 <script setup lang="ts">
 import interact from 'interactjs'
 import useMouseActionDetector from '~/J/useMouseActionDetector'
-import ImageFile from '~/models/ImageFile'
 const { mouseDownHandler, mouseMoveHandler, mouseUpHandler, isDragging } = useMouseActionDetector()
 
 const styleEmail = ref({left: window.innerWidth - 120, top: 5})
 const styleIg = ref({left: window.innerWidth - 70, top: 5})
-const styleOpensea = ref({left: window.innerWidth - 170, top: 5})
 const contactRef = ref<HTMLElement>()
 const contactIgRef = ref<HTMLElement>()
-const contactOpenseaRef = ref<HTMLElement>()
 
 onMounted(() => {
   if (!contactRef.value) return
@@ -103,24 +77,6 @@ onMounted(() => {
       }
     }
   })
-
-  if (!contactOpenseaRef.value) return
-
-  interact(contactOpenseaRef.value).draggable({
-    inertia: true,
-    autoScroll: true,
-    listeners: {
-      move(event) {
-        styleOpensea.value.top += event.dy
-        styleOpensea.value.left += event.dx
-      }
-    }
-  })
-})
-
-const linkToEmail = computed(() => {
-  if (isDragging.value) return
-  return 'mailto: to@janmiksik.ooo'
 })
 
 const handleStyle = computed(() => {
@@ -136,29 +92,6 @@ const handleIgStyle = computed(() => {
     left: `${styleIg.value.left}px`,
   }
 })
-
-const handleOpenseaStyle = computed(() => {
-  return {
-    top: `${styleOpensea.value.top}px`,
-    left: `${styleOpensea.value.left}px`,
-  }
-})
-
-// const emailIcon = ref(
-//   new ImageFile({
-//     url: '/email.svg',
-//     id: 'email-icon',
-//     lastUpdated: new Date('1992').getTime()
-//   })
-// )
-
-// const instagramIcon = ref(
-//   new ImageFile({
-//     url: '/instagram.svg',
-//     id: 'instagram-icon',
-//     lastUpdated: new Date('1995').getTime()
-//   })
-// )
 
 </script>
 

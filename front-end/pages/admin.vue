@@ -13,12 +13,6 @@
     </p>
   </form>
 
-  <!-- x: {{ Math.floor(cursorPosition.x) }} y: {{ Math.floor(cursorPosition.y) }} scale {{ cursorPosition.scale }} -->
-  <!-- <br/> -->
-  <!-- mapper x: {{ Math.floor(mapperEventData.x
-) }} y: {{ Math.floor(mapperEventData.y) }} scale {{ mapperEventData.scale }} -->
-
-
   <div class="admin__upload-data">
     <button
       :disabled="!isSomethingToPublish || publishingInProgress"
@@ -80,7 +74,10 @@ import Piece from '~/models/Piece'
 import { v4 as uuidv4 } from 'uuid'
 import { Topics } from '~/components/piecesData'
 import { Techniques, TechniqueDescription } from '../components/piecesData'
-import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
+import { LEFT_OFFSET, TOP_OFFSET } from '~/constants/layout'
+import { NEW_PIECE_X_OFFSET, NEW_PIECE_Y_OFFSET, DEFAULT_WEB_WIDTH, DEFAULT_WEB_WIDTH_MOBILE } from '~/constants/layout'
+import { PUBLISH_DELAY_MS } from '~/constants/timing'
+import { logger } from '~/utils/logger'
 
 const { pieces } = usePieces()
 const { edgePositions } = usePieces()
@@ -154,7 +151,6 @@ onUnmounted(() => {
   window.removeEventListener('mousemove', updateCursorPosition)
 })
 
-// admin
 const updateCursorPosition = (event: MouseEvent) => {
   if (!dropzoneRef.value) return
 
@@ -165,7 +161,6 @@ const updateCursorPosition = (event: MouseEvent) => {
     y: (event.clientY) + -mapperEventData.value?.y,
     scale,
   }
-  // console.log('cursorPosition.value: ', cursorPosition.value);
 }
 
 const drop = (event: DragEvent) => {
@@ -180,13 +175,10 @@ const drop = (event: DragEvent) => {
   // Remove the file extension
   const description = imageFile.name.replace(/\.[^/.]+$/, '');
   const parts = description.split(',').map(part => part.trim());
-  console.log('parts: ', parts);
 
   const name = parts[0];
   const created = new Date(Number(parts[1]), 6) || new Date();
-  const techniqueDescription = parts[2] || '';
   const sizeStr = parts[3] || '10000x7000px'; // fallback if not set size in name
-  console.log('sizeStr: ', sizeStr);
 
   const index = sizeStr.indexOf('x');
   const size: string[] = [];
@@ -196,7 +188,7 @@ const drop = (event: DragEvent) => {
     const part2 = sizeStr.substring(index + 1);
     size.push(part1, part2)
   } else {
-    console.error("'x' not found in string");
+    logger.error("'x' not found in string");
   }
 
   const isSizeInCm = size[1].includes('cm');
@@ -238,13 +230,13 @@ const drop = (event: DragEvent) => {
       },
       imageRaw: imageFile,
       sizeOnWeb: {
-        width: 350,
-        widthMob: 250
+        width: DEFAULT_WEB_WIDTH,
+        widthMob: DEFAULT_WEB_WIDTH_MOBILE
         // height?: number
       },
       position: {
-        x: Math.floor(cursorPosition.value.x - 6000),
-        y: Math.floor(cursorPosition.value.y - 4000),
+        x: Math.floor(cursorPosition.value.x - NEW_PIECE_X_OFFSET),
+        y: Math.floor(cursorPosition.value.y - NEW_PIECE_Y_OFFSET),
         deg: 0,
         yMob: Math.floor(cursorPosition.value.y - TOP_OFFSET),
         xMob: Math.floor(cursorPosition.value.x - LEFT_OFFSET),
@@ -259,12 +251,18 @@ const drop = (event: DragEvent) => {
 
 
   pieces.value?.push(newPiece)
-  useContentfulPiece().uploadPiece(newPiece)
+  
+  // Upload to Contentful in background
+  useContentfulPiece().uploadPiece(newPiece).catch((error) => {
+    errorMessage.value = `Failed to upload piece: ${error instanceof Error ? error.message : 'Unknown error'}`
+    // Reset upload status on error
+    newPiece.isUploadedToCf = false
+    newPiece.isUpdated = false
+  })
 }
 
 const handlePublishChanges = async () => {
   publishingInProgress.value = true
-  const DELAY = 200
   const piecesToPublish = pieces.value?.filter(
     (piece) => piece.isPublished === false
   )
@@ -274,14 +272,16 @@ const handlePublishChanges = async () => {
     return
   }
   for (const piece of piecesToPublish) {
-    await new Promise((resolve) => setTimeout(resolve, DELAY))
-    await useContentfulPiece().updateAndPublishPiece(piece)
+    try {
+      await new Promise((resolve) => setTimeout(resolve, PUBLISH_DELAY_MS))
+      await useContentfulPiece().updateAndPublishPiece(piece)
+    } catch (error) {
+      errorMessage.value = `Failed to publish "${piece.name}": ${error instanceof Error ? error.message : 'Unknown error'}`
+      // Continue with next piece instead of stopping
+      continue
+    }
   }
   publishingInProgress.value = false
-}
-
-const handleOpenSettings = () => {
-  isSettingsOpen.value = true
 }
 
 const handleOnPasswordInput = () => {

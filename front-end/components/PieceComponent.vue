@@ -1,10 +1,9 @@
 <template>
-  <!-- TODO resolve style typings -->
   <div
     class="piece"
     ref="pieceRef"
     v-if="showPiece"
-    :style="(handlePieceStyle(piece) as any)"
+    :style="handlePieceStyle(piece)"
     @mousedown="handleOnMouseDown"
     @mousemove="(event) => mouseMoveHandler(event, piece)"
     @mouseleave="mouseLeaveHandler"
@@ -29,13 +28,13 @@
     <div class="piece__rotate"/>
   </div>
   <PieceComponentAdmin
-    v-if="isOnAdminPage"
-    :initialPiece="selectedPiece"
+    v-if="isOnAdminPage && selectedPiece"
+    :initialPiece="selectedPiece!"
     @close-modal="handleClosePieceDetail"
   />
   <PieceComponentPublicView
-    v-else
-    :initialPiece="selectedPiece"
+    v-else-if="!isOnAdminPage && selectedPiece"
+    :initialPiece="selectedPiece!"
     @close-modal="handleClosePieceDetail"
   />
 </template>
@@ -48,7 +47,15 @@ import usePieces from '~/J/usePieces'
 import useAdminPage from '~/J/useAdminPage'
 import useMapper from '~/J/useMapper'
 import '@vuepic/vue-datepicker/dist/main.css'
-import { LEFT_OFFSET, TOP_OFFSET } from '~/appSetup'
+import { LEFT_OFFSET, TOP_OFFSET } from '~/constants/layout'
+import { 
+  CM_TO_PX_MULTIPLIER, 
+  LARGE_IMAGE_THRESHOLD_PX, 
+  BASE_SIZE_DIVISOR, 
+  SIZE_REDUCTION_DIVISOR, 
+  STANDARD_PIXEL_DIVISOR, 
+  NODE_AVATARS_DIGITAL_DIVISOR 
+} from '~/constants/sizing'
 import { TechniqueDescription, Topics } from "../components/piecesData"
 import useArchive from '~/J/useArchive'
 
@@ -85,7 +92,7 @@ onMounted(() => {
       listeners: {
         move(event) {
           if (!isOnAdminPage.value && !piece.value.isMoveableInPublic) return
-          const scale = mapperEventData.value.scale
+          const scale = mapperEventData.value?.scale ?? 1
           piece.value.isPublished = false
           const xRaw = piece.value.position.x + event.dx / scale
           const yRaw = piece.value.position.y + event.dy / scale
@@ -105,18 +112,6 @@ onMounted(() => {
     .resizable({
       // resize from edges and corners
       edges: { left: false, right: true, bottom: false, top: false },
-
-      /* rotation disabled for now */
-      // listeners: {
-      //   move(event) {
-      //     if (!isOnAdminPage.value && !piece.value.isMoveableInPublic) return
-      //     const scale = mapperEventData.value.scale
-      //     piece.value.isPublished = false
-      //     const xRaw = event.dx / scale
-      //     const yRaw = event.dy / scale
-      //     piece.value.position.deg += yRaw + xRaw
-      //   }
-      // },
       modifiers: [
         // minimum size
         interact.modifiers.restrictSize({
@@ -142,14 +137,14 @@ const calculateSize = (dimension: 'x' | 'y') => {
 
   // CM size takes precedence
   if (size.sizeInCm?.[dimension]) {
-    return `${size.sizeInCm[dimension] * 5}px`
+    return `${size.sizeInCm[dimension] * CM_TO_PX_MULTIPLIER}px`
   }
 
-  // Handle large images (over 2000px)
-  if (size.sizeInPx?.[dimension] > 2000) {
-    const sizeOver2000 = size.sizeInPx[dimension] - 2000
-    const baseSize = 2000 / 12
-    return `${baseSize + (sizeOver2000 / 70)}px`
+  // Handle large images (over threshold)
+  if (size.sizeInPx?.[dimension] > LARGE_IMAGE_THRESHOLD_PX) {
+    const sizeOverThreshold = size.sizeInPx[dimension] - LARGE_IMAGE_THRESHOLD_PX
+    const baseSize = LARGE_IMAGE_THRESHOLD_PX / BASE_SIZE_DIVISOR
+    return `${baseSize + (sizeOverThreshold / SIZE_REDUCTION_DIVISOR)}px`
   }
 
   // Handle pixel sizes
@@ -157,7 +152,7 @@ const calculateSize = (dimension: 'x' | 'y') => {
     const divider = (
       size.topic === Topics.NODE_AVATARS && 
       size.techniqueDescription === TechniqueDescription.DIGITAL_BITMAP
-    ) ? 15 : 9
+    ) ? NODE_AVATARS_DIGITAL_DIVISOR : STANDARD_PIXEL_DIVISOR
     return `${size.sizeInPx[dimension] / divider}px`
   }
 
@@ -167,21 +162,8 @@ const calculateSize = (dimension: 'x' | 'y') => {
 const sizeX = () => calculateSize('x')
 const sizeY = () => calculateSize('y')
 
-const handlePieceStyle = (piece: Piece) => {
+const handlePieceStyle = (piece: Piece): Record<string, string> => {
   if (!piece) return { width: '50px' }
-
-  // TODO nice to have: add randomization during move for selected piece
-
-  // const sizeX = () => {
-  //   if (piece.sizeInCm?.x) {
-  //     return `${piece.sizeInCm?.x * 5}px`
-  //   }
-  //   if (piece.sizeInPx?.x) {
-  //     return `${piece.sizeInPx?.x / 5}px`
-  //   }
-  //   return 'unset'
-  // }
-
 
   return {
     width: sizeX(),
@@ -226,7 +208,7 @@ const showPiece = computed(() => {
     height 100%
 
     &--not-published {
-      // border 1px #12b5225e solid
+      border 1px #12b5225e solid
     }
   }
 
