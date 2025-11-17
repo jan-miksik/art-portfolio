@@ -8,7 +8,17 @@ const twitterCard = 'summary_large_image'
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   nitro: {
-    preset: 'cloudflare-pages' // or 'cloudflare' for Workers
+    preset: 'cloudflare-pages',
+    // Ensure all HTTP methods are supported for API routes
+    routeRules: {
+      '/api/**': {
+        cors: true,
+        headers: {
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        }
+      }
+    }
   },
   devtools: { enabled: true },
   typescript: {
