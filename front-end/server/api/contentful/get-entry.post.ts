@@ -1,11 +1,11 @@
 import axios from 'axios'
 
 /**
- * Server-side API route for fetching a Contentful entry (GET handler)
+ * Server-side API route for fetching a Contentful entry (POST handler)
  * This keeps the Management API token secure on the server
  * Returns the entry with its current version
  * 
- * GET handler - for Cloudflare Pages, POST requests are handled by get-entry.post.ts
+ * POST handler for Cloudflare Pages compatibility
  */
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
@@ -19,9 +19,10 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // For GET, read from query params
+  // For POST, read from body or query params
+  const body = await readBody(event).catch(() => ({}))
   const query = getQuery(event)
-  const entryId = query.id as string
+  const entryId = (body.id || query.id) as string
 
   if (!entryId) {
     throw createError({
