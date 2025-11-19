@@ -1,6 +1,7 @@
 import Piece from '~/models/Piece'
 import type { AxiosResponse } from 'axios'
 import { logger } from '~/utils/logger'
+import useContentfulEntry from '~/J/useContentfulEntry'
 
 /**
  * 
@@ -14,9 +15,11 @@ import { logger } from '~/utils/logger'
  * - /server/api/contentful/update-piece.put.ts
  * - /server/api/contentful/publish-entry.post.ts
  * - /server/api/contentful/delete-entry.delete.ts
+ * - /server/api/contentful/get-entry.get.ts
  */
 
 export default function useContentfulPiece() {
+  const { ensureVersion } = useContentfulEntry()
   const uploadAndPublishImage = async (imageRaw: File) => {
     try {
       const formData = new FormData()
@@ -83,11 +86,17 @@ export default function useContentfulPiece() {
 
   const updatePiece = async (piece: Piece) => {
     try {
+      // Ensure we have a valid version (fetch if missing)
+      const version = await ensureVersion(piece)
+      if (!version) {
+        throw new Error(`Cannot update piece "${piece.name}": Unable to fetch current version from Contentful`)
+      }
+
       const response = await $fetch<{ sys: { version: number } }>('/api/contentful/update-piece', {
         method: 'PUT',
         body: {
           entryId: piece.sys.id,
-          version: piece.sys.version,
+          version: version,
           piece: {
             name: piece.name,
             topic: piece.topic,
@@ -118,11 +127,17 @@ export default function useContentfulPiece() {
     try {
       await updatePiece(piece)
       
+      // Ensure version is still valid after update (should be, but double-check)
+      const version = await ensureVersion(piece)
+      if (!version) {
+        throw new Error(`Cannot publish piece "${piece.name}": Unable to fetch current version from Contentful`)
+      }
+
       const response = await $fetch<{ sys: { version: number } }>('/api/contentful/publish-entry', {
         method: 'POST',
         body: {
           entryId: piece.sys.id,
-          version: piece.sys.version
+          version: version
         }
       })
       piece.isPublished = true
@@ -136,11 +151,17 @@ export default function useContentfulPiece() {
 
   const removePiece = async (piece: Piece) => {
     try {
+      // Ensure we have a valid version (fetch if missing)
+      const version = await ensureVersion(piece)
+      if (!version) {
+        throw new Error(`Cannot remove piece "${piece.name}": Unable to fetch current version from Contentful`)
+      }
+
       await $fetch('/api/contentful/delete-entry', {
         method: 'DELETE',
         query: {
           id: piece.sys.id,
-          version: piece.sys.version
+          version: version
         }
       })
       logger.log(`Entry ${piece.sys.id}: ${piece.name} deleted via server route.`)
