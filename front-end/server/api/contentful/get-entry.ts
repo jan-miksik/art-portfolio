@@ -4,8 +4,18 @@ import axios from 'axios'
  * Server-side API route for fetching a Contentful entry
  * This keeps the Management API token secure on the server
  * Returns the entry with its current version
+ * 
+ * Supports both GET and POST methods for Cloudflare Pages compatibility
  */
 export default defineEventHandler(async (event) => {
+  // Support both GET and POST methods (POST for Cloudflare compatibility)
+  if (event.method !== 'GET' && event.method !== 'POST') {
+    throw createError({
+      statusCode: 405,
+      message: `Method ${event.method} not allowed. Use GET or POST.`
+    })
+  }
+
   const config = useRuntimeConfig()
   const contentfulSpaceId = config.contentfulSpaceId
   const contentfulCmt = config.contentfulManagementToken
@@ -17,8 +27,16 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const query = getQuery(event)
-  const entryId = query.id as string
+  // For GET, read from query params; for POST, read from body
+  let entryId: string | undefined
+  
+  if (event.method === 'POST') {
+    const body = await readBody(event).catch(() => ({}))
+    entryId = body.id || (getQuery(event).id as string)
+  } else {
+    const query = getQuery(event)
+    entryId = query.id as string
+  }
 
   if (!entryId) {
     throw createError({

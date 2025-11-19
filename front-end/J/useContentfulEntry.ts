@@ -17,13 +17,14 @@ export default function useContentfulEntry() {
     }
 
     try {
+      // Use POST for Cloudflare Pages compatibility (GET may not be supported)
       const response = await $fetch<{
         id: string
         version: number
         publishedVersion?: number
       }>('/api/contentful/get-entry', {
-        method: 'GET',
-        query: {
+        method: 'POST',
+        body: {
           id: entryId
         }
       })
@@ -48,14 +49,15 @@ export default function useContentfulEntry() {
     }
 
     try {
+      // Use POST for Cloudflare Pages compatibility (GET may not be supported)
       const response = await $fetch<{
         id: string
         version: number
         publishedVersion?: number
         entry: any
       }>('/api/contentful/get-entry', {
-        method: 'GET',
-        query: {
+        method: 'POST',
+        body: {
           id: entryId
         }
       })
