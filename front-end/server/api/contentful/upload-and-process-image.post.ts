@@ -1,8 +1,7 @@
-import axios from 'axios'
-
 /**
  * Server-side API route for uploading and processing images in Contentful
  * Handles the full workflow: upload -> link -> process -> publish
+ * Uses $fetch instead of axios for Cloudflare compatibility
  * This keeps the Management API token secure on the server
  */
 export default defineEventHandler(async (event) => {
@@ -44,23 +43,24 @@ export default defineEventHandler(async (event) => {
     // 1. Upload image
     // Contentful requires "application/octet-stream" for uploads, not the actual image MIME type
     const arrayBuffer = await imageFile.arrayBuffer()
-    const imageBuffer = Buffer.from(arrayBuffer)
-    const uploadResponse = await axios.post(
+    // Use Uint8Array for Cloudflare Workers compatibility (Buffer is Node.js specific)
+    const imageBuffer = new Uint8Array(arrayBuffer)
+    const uploadResponse: any = await $fetch(
       `https://upload.contentful.com/spaces/${contentfulSpaceId}/uploads`,
-      imageBuffer,
       {
+        method: 'POST',
+        body: imageBuffer,
         headers: {
           'Content-Type': 'application/octet-stream',
           Authorization: `Bearer ${contentfulCmt}`,
-          'X-Contentful-Version': 1
+          'X-Contentful-Version': '1'
         }
       }
     )
 
     console.log(
       '[upload-and-process-image] 1. Image uploaded',
-      uploadResponse.status,
-      uploadResponse.data?.sys
+      uploadResponse?.sys
     )
 
     // 2. Link uploaded image to asset
@@ -78,7 +78,7 @@ export default defineEventHandler(async (event) => {
               sys: {
                 type: 'Link',
                 linkType: 'Upload',
-                id: uploadResponse.data.sys.id
+                id: uploadResponse.sys.id
               }
             }
           }
@@ -86,39 +86,40 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    const assetResponse = await axios.post(
+    const assetResponse: any = await $fetch(
       `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets`,
-      assetData,
       {
+        method: 'POST',
+        body: assetData,
         headers: {
           Authorization: `Bearer ${contentfulCmt}`,
           'Content-Type': 'application/vnd.contentful.management.v1+json',
-          'X-Contentful-Version': 1
+          'X-Contentful-Version': '1'
         }
       }
     )
 
     console.log(
       '[upload-and-process-image] 2. Asset created',
-      assetResponse.status,
-      assetResponse.data?.sys
+      assetResponse?.sys
     )
 
     // 3. Process the image
-    await axios.put(
-      `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${assetResponse.data.sys.id}/files/en-US/process`,
-      {},
+    await $fetch(
+      `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${assetResponse.sys.id}/files/en-US/process`,
       {
+        method: 'PUT',
+        body: {},
         headers: {
           Authorization: `Bearer ${contentfulCmt}`,
-          'X-Contentful-Version': assetResponse.data.sys.version
+          'X-Contentful-Version': String(assetResponse.sys.version)
         }
       }
     )
 
     console.log(
       '[upload-and-process-image] 3. Processing triggered',
-      assetResponse.data?.sys?.id
+      assetResponse?.sys?.id
     )
 
     // 4. Poll for processing completion
@@ -131,16 +132,17 @@ export default defineEventHandler(async (event) => {
     let attempts = 0
 
     while (!assetProcessed && attempts < MAX_ATTEMPTS) {
-      const assetStatusRes = await axios.get(
-        `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${assetResponse.data.sys.id}`,
+      const assetStatusRes: any = await $fetch(
+        `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${assetResponse.sys.id}`,
         {
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${contentfulCmt}`
           }
         }
       )
 
-      assetProcessed = assetStatusRes.data.fields.file['en-US'].url !== undefined
+      assetProcessed = assetStatusRes.fields.file['en-US'].url !== undefined
 
       if (!assetProcessed) {
         console.log(
@@ -163,31 +165,32 @@ export default defineEventHandler(async (event) => {
 
     console.log(
       '[upload-and-process-image] 4. Processing completed',
-      assetResponse.data?.sys?.id
+      assetResponse?.sys?.id
     )
 
     // 5. Publish the image
-    await axios.put(
-      `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${assetResponse.data.sys.id}/published`,
-      {},
+    await $fetch(
+      `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${assetResponse.sys.id}/published`,
       {
+        method: 'PUT',
+        body: {},
         headers: {
           Authorization: `Bearer ${contentfulCmt}`,
-          'X-Contentful-Version': assetResponse.data.sys.version + 1
+          'X-Contentful-Version': String(assetResponse.sys.version + 1)
         }
       }
     )
 
     console.log(
       '[upload-and-process-image] 5. Image published',
-      assetResponse.data?.sys?.id
+      assetResponse?.sys?.id
     )
 
-    return assetResponse.data
+    return assetResponse
   } catch (error: any) {
     // Surface more detail from Contentful so we can debug 400s more easily
-    const statusCode = error?.response?.status || 500
-    const cfDetails = error?.response?.data
+    const statusCode = error?.response?.status || error?.statusCode || 500
+    const cfDetails = error?.response?.data || error?.data
 
     console.error(
       '[upload-and-process-image] Error',

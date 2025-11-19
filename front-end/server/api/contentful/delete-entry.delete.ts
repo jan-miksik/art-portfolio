@@ -1,7 +1,6 @@
-import axios from 'axios'
-
 /**
  * Server-side API route for deleting entries in Contentful
+ * Uses $fetch instead of axios for Cloudflare compatibility
  * This keeps the Management API token secure on the server
  */
 export default defineEventHandler(async (event) => {
@@ -29,22 +28,24 @@ export default defineEventHandler(async (event) => {
   try {
     // First unpublish if published
     try {
-      const entryResponse = await axios.get(
+      const entryResponse: any = await $fetch(
         `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/entries/${entryId}`,
         {
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${contentfulCmt}`
           }
         }
       )
 
-      if (entryResponse.data.sys.publishedVersion) {
-        await axios.delete(
+      if (entryResponse.sys.publishedVersion) {
+        await $fetch(
           `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/entries/${entryId}/published`,
           {
+            method: 'DELETE',
             headers: {
               Authorization: `Bearer ${contentfulCmt}`,
-              'X-Contentful-Version': entryResponse.data.sys.version
+              'X-Contentful-Version': String(entryResponse.sys.version)
             }
           }
         )
@@ -54,21 +55,24 @@ export default defineEventHandler(async (event) => {
     }
 
     // Delete the entry
-    const response = await axios.delete(
+    const response: any = await $fetch(
       `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/entries/${entryId}`,
       {
+        method: 'DELETE',
         headers: {
           Authorization: `Bearer ${contentfulCmt}`,
-          'X-Contentful-Version': query.version ? Number(query.version) : 1
+          'X-Contentful-Version': String(query.version ? Number(query.version) : 1)
         }
       }
     )
 
-    return { success: true, data: response.data }
+    return { success: true, data: response }
   } catch (error: any) {
+    const status = error.response?.status || error.statusCode || 500
+    const msg = error.data?.message || error.message || 'Unknown error'
     throw createError({
-      statusCode: error.response?.status || 500,
-      message: `Failed to delete entry: ${error.message}`
+      statusCode: status,
+      message: `Failed to delete entry: ${msg}`
     })
   }
 })

@@ -1,7 +1,6 @@
-import axios from 'axios'
-
 /**
  * Server-side API route for publishing entries in Contentful
+ * Uses $fetch instead of axios for Cloudflare compatibility
  * This keeps the Management API token secure on the server
  */
 export default defineEventHandler(async (event) => {
@@ -27,22 +26,25 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const response = await axios.put(
+    const response: any = await $fetch(
       `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/entries/${entryId}/published`,
-      {},
       {
+        method: 'PUT',
+        body: {},
         headers: {
           Authorization: `Bearer ${contentfulCmt}`,
-          'X-Contentful-Version': version
+          'X-Contentful-Version': String(version)
         }
       }
     )
 
-    return response.data
+    return response
   } catch (error: any) {
+    const status = error.response?.status || error.statusCode || 500
+    const msg = error.data?.message || error.message || 'Unknown error'
     throw createError({
-      statusCode: error.response?.status || 500,
-      message: `Failed to publish entry: ${error.message}`
+      statusCode: status,
+      message: `Failed to publish entry: ${msg}`
     })
   }
 })

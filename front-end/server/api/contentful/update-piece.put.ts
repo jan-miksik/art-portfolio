@@ -1,7 +1,6 @@
-import axios from 'axios'
-
 /**
  * Server-side API route for updating pieces in Contentful
+ * Uses $fetch instead of axios for Cloudflare compatibility
  * This keeps the Management API token secure on the server
  */
 export default defineEventHandler(async (event) => {
@@ -32,7 +31,7 @@ export default defineEventHandler(async (event) => {
     const headers = {
       Authorization: `Bearer ${contentfulCmt}`,
       'Content-Type': 'application/vnd.contentful.management.v1+json',
-      'X-Contentful-Version': version
+      'X-Contentful-Version': String(version)
     }
 
     const fields: Record<string, any> = {
@@ -110,12 +109,19 @@ export default defineEventHandler(async (event) => {
 
     const data = { fields }
 
-    const response = await axios.put(apiUrl, data, { headers })
-    return response.data
+    const response: any = await $fetch(apiUrl, {
+      method: 'PUT',
+      headers,
+      body: data
+    })
+
+    return response
   } catch (error: any) {
+    const status = error.response?.status || error.statusCode || 500
+    const msg = error.data?.message || error.message || 'Unknown error'
     throw createError({
-      statusCode: error.response?.status || 500,
-      message: `Failed to update piece: ${error.message}`
+      statusCode: status,
+      message: `Failed to update piece: ${msg}`
     })
   }
 })

@@ -9,15 +9,16 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   nitro: {
     preset: 'cloudflare-pages',
-    // Ensure all HTTP methods are supported for API routes
     routeRules: {
-      '/api/**': {
-        cors: true,
+      // Apply to your specific endpoint
+      '/api/get-entry': {
+        // specific headers to disable caching
         headers: {
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
         }
-      }
+      },
     }
   },
   devtools: { enabled: true },

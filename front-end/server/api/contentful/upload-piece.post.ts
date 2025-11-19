@@ -1,7 +1,6 @@
-import axios from 'axios'
-
 /**
  * Server-side API route for uploading pieces to Contentful
+ * Uses $fetch instead of axios for Cloudflare compatibility
  * This keeps the Management API token secure on the server
  * 
  * All Management API operations are proxied through server routes
@@ -110,12 +109,18 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    const response = await axios.post(apiUrl, data, { headers })
-    return response.data
+    const response: any = await $fetch(apiUrl, {
+      method: 'POST',
+      body: data,
+      headers
+    })
+    return response
   } catch (error: any) {
+    const status = error.response?.status || error.statusCode || 500
+    const msg = error.data?.message || error.message || 'Unknown error'
     throw createError({
-      statusCode: error.response?.status || 500,
-      message: `Failed to upload piece: ${error.message}`
+      statusCode: status,
+      message: `Failed to upload piece: ${msg}`
     })
   }
 })
