@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     preset: 'cloudflare-pages',
     routeRules: {
       // Apply to your specific endpoint
-      '/api/get-entry': {
+      '/api/contentful/get-entry': {
         // specific headers to disable caching
         headers: {
           'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -32,14 +32,15 @@ export default defineNuxtConfig({
       '~/components',
     ]
   },
+  // Nuxt automatically takes variables from .env on localhost or from server env in production and connects them
+  // for example: contentfulManagementToken: NUXT_CONTENTFUL_MANAGEMENT_TOKEN
   runtimeConfig: {
     // Server-only (private) - not exposed to client
-    // Use non-VITE_ prefixed vars for server-side secrets (Cloudflare compatible)
-    contentfulManagementToken: process.env.CONTENTFUL_CONTENT_MANAGEMENT_ACCESS_TOKEN || process.env.VITE_CONTENTFUL_CONTENT_MANAGEMENT_ACCESS_TOKEN,
-    contentfulSpaceId: process.env.CONTENTFUL_SPACE_ID || process.env.VITE_CONTENTFUL_SPACE_ID,
+    contentfulManagementToken: '',
+    contentfulSpaceId: '',
     // Public (exposed to client) - safe for read-only operations
     public: {
-      contentfulAccessToken: process.env.VITE_CONTENTFUL_ACCESS_TOKEN,
+      contentfulAccessToken: '',
     }
   },
   // modules: [
