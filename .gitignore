@@ -10,5 +10,6 @@ dist
 .yarn/cache
 .yarn/install-state.gz
 .idea
+.wrangler
 
 .DS_Store

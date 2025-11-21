@@ -19,6 +19,15 @@ export default defineNuxtConfig({
           'Expires': '0'
         }
       },
+      // Ensure all API routes are handled by functions
+      '/api/**': {
+        cors: true,
+        headers: {
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          'Cache-Control': 'no-store, no-cache, must-revalidate, private'
+        }
+      }
     }
   },
   devtools: { enabled: true },
@@ -32,15 +41,19 @@ export default defineNuxtConfig({
       '~/components',
     ]
   },
-  // Nuxt automatically takes variables from .env on localhost or from server env in production and connects them
-  // for example: contentfulManagementToken: NUXT_CONTENTFUL_MANAGEMENT_TOKEN
+  // Runtime config maps environment variables to these keys
+  // 
+  // How it works:
+  // - In development: reads from .env file
+  // - In production: reads from Cloudflare Pages environment variables
+  // - Naming: NUXT_ prefix + UPPERCASE key name → maps to camelCase key below
   runtimeConfig: {
     // Server-only (private) - not exposed to client
-    contentfulManagementToken: '',
-    contentfulSpaceId: '',
+    contentfulManagementToken: '', // From NUXT_CONTENTFUL_MANAGEMENT_TOKEN
+    contentfulSpaceId: '', // From NUXT_CONTENTFUL_SPACE_ID
     // Public (exposed to client) - safe for read-only operations
     public: {
-      contentfulAccessToken: '',
+      contentfulAccessToken: '', // From NUXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN (if needed client-side)
     }
   },
   // modules: [
