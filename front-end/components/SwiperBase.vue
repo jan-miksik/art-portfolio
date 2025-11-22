@@ -9,7 +9,7 @@
     @swiper="(swiper) => swiperInstance = swiper"
   >
 
-    <swiper-slide class="slide" v-for="(piece) in pieces">
+    <swiper-slide class="slide" v-for="(piece) in pieces" :key="piece.id">
       <div
         class="swiper-base__selected-piece-image-wrapper"
         @click.stop
@@ -86,7 +86,7 @@
     <div v-if="!hideArrowLeft" class="swiper-base__arrow-left" @click.stop="handleSlideChange(-1)" @touchstart.stop="handleSlideChange(-1)">
       <img src="/arrow-left.svg" alt="arrow-left" :class="['swiper-base__arrow-left-image', {'swiper-base__arrow-left--rotate-up':isLeftArrowPointingUp}]"/>
     </div>
-    <div v-if="!hideArrowRight" class="swiper-base__arrow-right" @click.stop="handleSlideChange(+1)" @touchstart.stop="handleSlideChange(-1)">
+    <div v-if="!hideArrowRight" class="swiper-base__arrow-right" @click.stop="handleSlideChange(+1)" @touchstart.stop="handleSlideChange(+1)">
       <img src="/arrow-right.svg" alt="arrow-right" :class="['swiper-base__arrow-right-image', {'swiper-base__arrow-right--rotate-down':isRightArrowPointingDown}]"/>
     </div>
     <div
