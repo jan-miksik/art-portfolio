@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     console.error('Contentful Config Missing on Server')
     throw createError({
       statusCode: 500,
-      message: 'Server configuration error'
+      message: 'Server configuration error' +'Has SpaceId:' + !!config.contentfulSpaceId + 'Has Token:' + !!config.contentfulManagementToken
     })
   }
 
