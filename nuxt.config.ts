@@ -56,10 +56,6 @@ export default defineNuxtConfig({
       contentfulAccessToken: '', // From NUXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN (if needed client-side)
     }
   },
-  // modules: [
-  //   '@vueuse/nuxt',
-  //   'nuxt-swiper',
-  // ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     head: {
