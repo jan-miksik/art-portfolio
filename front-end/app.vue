@@ -16,7 +16,7 @@ import useContentful from '~/api/useContentful'
 import usePieces from '~/J/usePieces'
 
 const { fetchContentfulData } = useContentful()
-const { mergeContentfulDataWithLocalData, pieces } = usePieces()
+const { mergeContentfulDataWithLocalData } = usePieces()
 
 const scrollable = ref<HTMLElement | null>(null)
 
@@ -83,7 +83,6 @@ html
 
 @font-face
   font-family Neonderthaw
-  // font-weight normal
   font-weight 300
   unicode-range U+000-5FF
   src url("~/assets/fonts/Neonderthaw/Neonderthaw-Regular.ttf")
@@ -93,7 +92,6 @@ body
   -webkit-font-smoothing antialiased
   -moz-osx-font-smoothing grayscale
   text-align center
-  // letter-spacing 2px
   color #0e0e0e
   margin 0
   overflow hidden
@@ -153,7 +151,6 @@ input[type="number"]
 
 .app
   position relative
-  // overflow auto
   height 100vh
 
 .dragging

@@ -1,128 +1,108 @@
 <template>
-    <swiper
-      class="swiper"
-      ref="swiperRef"
-      :modules="[Navigation, Keyboard, Mousewheel]"
-      :keyboard="{ enabled: true }"
-      @slideChange="handleOnSlideChange"
-      :initialSlide="initialSlide"
-      @swiper="(swiper) => swiperInstance = swiper"
-    >
+  <swiper
+    class="swiper"
+    ref="swiperRef"
+    :modules="[Navigation, Keyboard, Mousewheel]"
+    :keyboard="{ enabled: true }"
+    @slideChange="handleOnSlideChange"
+    :initialSlide="initialSlide"
+    @swiper="(swiper) => swiperInstance = swiper"
+  >
 
-      <swiper-slide class="slide" v-for="(piece) in pieces">
+    <swiper-slide class="slide" v-for="(piece) in pieces">
+      <div
+        class="swiper-base__selected-piece-image-wrapper"
+        @click.stop
+        @touchstart.stop
+      >
         <div
-          class="swiper-base__selected-piece-image-wrapper"
+          class="swiper-base__selected-piece-image-inner-wrapper"
           @click.stop
           @touchstart.stop
         >
-
-          <div
-            class="swiper-base__selected-piece-image-inner-wrapper"
+          <OImage
+            :image-file="piece.image"
+            :is-full-size="true"
+            :piece="piece"
+            externalCssClass="swiper-base__selected-piece-image"
+            :class="[
+              'swiper-base__selected-piece-image',
+              {
+                'swiper-base__selected-piece-image--node-avatar':
+                  piece.topic === Topics.NODE_AVATARS
+              }
+            ]"
             @click.stop
             @touchstart.stop
-          >
-            <!-- <PinchScrollZoom
-              v-if="windowObject?.innerWidth"
-              :height="windowObject.innerHeight * 0.7"
-              :width="windowObject?.innerWidth"
-              within
-              class="swiper-base__pinch-scroll-zoom"
-              :min-scale="0.01"
-              :max-scale="100"
-            > -->
-            <OImage
-              :image-file="piece.image"
-              :is-full-size="true"
-              :piece="piece"
-              externalCssClass="swiper-base__selected-piece-image"
-              :class="[
-                'swiper-base__selected-piece-image',
-                {
-                  'swiper-base__selected-piece-image--node-avatar':
-                    piece.topic === Topics.NODE_AVATARS
-                }
-              ]"
-              @click.stop
-              @touchstart.stop
-            />
-            <!-- </PinchScrollZoom> -->
-          </div>
+          />
         </div>
-        <div
-          class="swiper-base__selected-piece-image-info-spacer"
-          @click.stop
-          @touchstart.stop
-        />
-      </swiper-slide>
-      <div class="swiper-base__selected-piece-info-wrapper">
-        <div
-          class="swiper-base__selected-piece-info"
-          @click.stop
-          @touchstart.stop
-          v-if="selectedPiece"
-        >
-          <strong
-            @click.stop
-            @touchstart.stop
-          >
-            {{ selectedPiece.name }}
-          </strong>
-          <br />
-          <span>
-            {{ selectedPiece.created.getFullYear() }} </span
-          >,
-
-          <span>
-            {{
-              selectedPiece.techniqueDescription === 'unspecified'
-                ? ''
-                : selectedPiece.techniqueDescription
-            }} 
-          </span>
-          <span v-if="isSizeInCm">, </span>
-
-          <span v-if="isSizeInCm">
-            <span @click.stop @touchstart.stop>
-              {{ selectedPiece.sizeInCm.x }} </span
-            >cm x
-            <span @click.stop @touchstart.stop>
-              {{ selectedPiece.sizeInCm.y }} </span
-            >cm
-          </span>
-
-          <!-- <span v-if="isSizeInPx">
-            <span @click.stop @touchstart.stop>
-              {{ selectedPiece.sizeInPx.x }} </span
-            >px x
-            <span @click.stop @touchstart.stop>
-              {{ selectedPiece.sizeInPx.y }} </span
-            >px
-          </span> -->
-        </div>
-      </div>
-      <div class="swiper-base__pagination-info">
-        {{ swiperPagination }}
-      </div>
-      <div v-if="!hideArrowLeft" class="swiper-base__arrow-left" @click.stop="handleSlideChange(-1)" @touchstart.stop="handleSlideChange(-1)">
-        <img src="/arrow-left.svg" alt="arrow-left" :class="['swiper-base__arrow-left-image', {'swiper-base__arrow-left--rotate-up':isLeftArrowPointingUp}]"/>
-      </div>
-      <div v-if="!hideArrowRight" class="swiper-base__arrow-right" @click.stop="handleSlideChange(+1)" @touchstart.stop="handleSlideChange(-1)">
-        <img src="/arrow-right.svg" alt="arrow-right" :class="['swiper-base__arrow-right-image', {'swiper-base__arrow-right--rotate-down':isRightArrowPointingDown}]"/>
       </div>
       <div
-        class="swiper-base__selected-piece-image-close-zone"
-        @click="emit('close-modal')"
-        @touchstart="emit('close-modal')"
+        class="swiper-base__selected-piece-image-info-spacer"
+        @click.stop
+        @touchstart.stop
+      />
+    </swiper-slide>
+    <div class="swiper-base__selected-piece-info-wrapper">
+      <div
+        class="swiper-base__selected-piece-info"
+        @click.stop
+        @touchstart.stop
+        v-if="selectedPiece"
       >
-        <img
-          src="/close.svg"
-          width="30"
-          height="30"
-          alt="close"
-          class="swiper-base__selected-piece-back"
-        />
+        <strong
+          @click.stop
+          @touchstart.stop
+        >
+          {{ selectedPiece.name }}
+        </strong>
+        <br />
+        <span>
+          {{ selectedPiece.created.getFullYear() }} </span
+        >,
+
+        <span>
+          {{
+            selectedPiece.techniqueDescription === 'unspecified'
+              ? ''
+              : selectedPiece.techniqueDescription
+          }} 
+        </span>
+        <span v-if="isSizeInCm">, </span>
+
+        <span v-if="isSizeInCm">
+          <span @click.stop @touchstart.stop>
+            {{ selectedPiece.sizeInCm.x }} </span
+          >cm x
+          <span @click.stop @touchstart.stop>
+            {{ selectedPiece.sizeInCm.y }} </span
+          >cm
+        </span>
       </div>
-    </swiper>
+    </div>
+    <div class="swiper-base__pagination-info">
+      {{ swiperPagination }}
+    </div>
+    <div v-if="!hideArrowLeft" class="swiper-base__arrow-left" @click.stop="handleSlideChange(-1)" @touchstart.stop="handleSlideChange(-1)">
+      <img src="/arrow-left.svg" alt="arrow-left" :class="['swiper-base__arrow-left-image', {'swiper-base__arrow-left--rotate-up':isLeftArrowPointingUp}]"/>
+    </div>
+    <div v-if="!hideArrowRight" class="swiper-base__arrow-right" @click.stop="handleSlideChange(+1)" @touchstart.stop="handleSlideChange(-1)">
+      <img src="/arrow-right.svg" alt="arrow-right" :class="['swiper-base__arrow-right-image', {'swiper-base__arrow-right--rotate-down':isRightArrowPointingDown}]"/>
+    </div>
+    <div
+      class="swiper-base__selected-piece-image-close-zone"
+      @click="emit('close-modal')"
+      @touchstart="emit('close-modal')"
+    >
+      <img
+        src="/close.svg"
+        width="30"
+        height="30"
+        alt="close"
+        class="swiper-base__selected-piece-back"
+      />
+    </div>
+  </swiper>
 </template>
 
 <script setup lang="ts">
@@ -231,7 +211,6 @@ const handleOnSlideChange = (swiper: SwiperTypes) => {
   width 100%
   cursor default
 
-
 .swiper-base__selected-piece-image-inner-wrapper
   width 100%
   display flex
@@ -254,7 +233,6 @@ const handleOnSlideChange = (swiper: SwiperTypes) => {
   cursor default
   padding-bottom 2.5rem
 
-
 .swiper-base__selected-piece-info
   max-width 90%
   width max-content
@@ -271,11 +249,6 @@ const handleOnSlideChange = (swiper: SwiperTypes) => {
   @media (min-width 600px)
     align-self flex-end
     bottom 0.3rem
-
-
-// .dark-mode .swiper-base__selected-piece-info
-// background-color rgb(17 17 17)
-
 
 .swiper-base__selected-piece-backdrop
   position fixed
@@ -360,7 +333,6 @@ const handleOnSlideChange = (swiper: SwiperTypes) => {
   font-size 0.7rem
   color #808085f2
   font-weight normal
-  //rotate 90deg
 
 .dark-mode .swiper-base__pagination-info
   color #d2d3e0f2

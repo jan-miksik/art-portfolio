@@ -47,9 +47,6 @@ export default function useCryptoExplorer() {
     },
   }
 
-  // https://testnet.qx.app/asset/0x8E072dcd26eAe73C172bF6ed2a5D00Aa18bD4D20/0
-  // https://testnet.qx.app/collection/0x8E072dcd26eAe73C172bF6ed2a5D00Aa18bD4D20
-
   const getLooksrareCollectionLink = () => {
     if (mainSupportedChain.keyName === 'arbitrumGoerli') {
       const link = explorers[mainSupportedChain.keyName].looksrare.getAssetLink(`${mainSupportedChain.nftIntoPiecesContract}`)

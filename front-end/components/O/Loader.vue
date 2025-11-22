@@ -40,9 +40,6 @@ const props = withDefaults(defineProps<Props>(), {
   display flex
   justify-content center
   align-items center
-
-  // color: #fff;
-  // font-family "Courier New", Courier, monospace
   font-weight 500
 
 
@@ -93,7 +90,6 @@ const props = withDefaults(defineProps<Props>(), {
   border-radius 52% 48% 70% 30% / 41% 65% 35% 59%
 
 
-// stylelint-disable-next-line keyframes-name-pattern
 @keyframes animateThreads
   0%
     transform rotate(0deg)

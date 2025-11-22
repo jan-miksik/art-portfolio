@@ -5,7 +5,6 @@
     @click="handleOpenModal"
   >
   CV
-
 </div>
 
 <Teleport to="body">

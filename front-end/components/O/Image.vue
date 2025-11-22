@@ -56,7 +56,7 @@ const selectedResolutionType = computed(() => {
 
 
 
-// LOW IMAGE
+// LOW RESOLUTION IMAGE
 const lowImageRef = ref()
 const lowImageFileFromIDB = ref<ImageIDB>()
 const lowImageSrc = ref('')
@@ -217,7 +217,6 @@ watch([isVisible, () => mapperEventData.value?.scale], async (newVal) => {
   if (!isVisible) return
 
   if (isFullSize.value) {
-    // giveLowImageSourcePlease() 
     giveFullImageSourcePlease()
     return
   }

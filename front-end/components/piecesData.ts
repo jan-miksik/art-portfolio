@@ -1,7 +1,3 @@
-
-// <name>,<year>,<technique>,<width>x<height><cm | px>, <additional info> //
-// ex.:: A and B,2019,drawing on paper,30x21cm.png
-
 export enum Topics {
   FREE_TOPIC = 'free topic',
   GEOMETRY = 'geometry',
@@ -11,14 +7,6 @@ export enum Topics {
   SANS_TOPIC = 'sans topic',
   DIGITAL = 'digital'
 }
-
-// export enum TopicIcon {
-//   FREE_TOPIC = 'free topic',
-//   GEOMETRY = 'geometry',
-//   NODE_AVATARS = 'node avatars',
-//   PUZZLE = 'puzzle',
-//   NFT_COLLECTION = 'nft collection'
-// }
 
 export enum Techniques {
   DRAWING = 'drawing',
@@ -36,20 +24,11 @@ export enum TechniqueDescription {
   OIL_AND_ACRYLIC_PAINTING_ON_UNSTRETCHED_CANVAS = 'oil and acrylic painting on unstretched canvas',
   DIGITAL_BITMAP = 'digital (bitmap)',
   DIGITAL_VECTOR = 'digital (vector)',
-  // ?oil on unstretched canvas
-  // ?acrylic on unstretched canvas
-  // ?digital
 }
 
 export enum AdditionalInfo {
   IN_PRIVATE_COLLECTION = 'in private collection'
-  // :: sold
-  // :: lost
-  // :: documentation of the exhibition
-  // :: invitation to the exhibition
-  // :: borrowed
 }
-
 
 const piecesData = {}
 

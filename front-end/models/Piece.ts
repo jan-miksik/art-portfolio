@@ -38,13 +38,9 @@ export type IPiece = {
     yMob: number
     degMob?: number
   }
-
   isUpdated?: boolean
   isPublished?: boolean
   isUploadedToCf?: boolean
-
-  randomizedPosition?: { transform: string }
-
   tags?: string[]
   description?: string
   price?: number
@@ -66,13 +62,10 @@ export default class Piece {
   public sizeInPx
   public sizeOnWeb
   public position
-
-  // public randomizedPosition
   public tags
   public description
   public price
   public updated
-
   public imageRaw
   public isUpdated
   public isPublished

@@ -76,7 +76,7 @@ const ballThreeJsStyle = computed(() => {
 onMounted(() => {
   const { isOnAdminPage } = useAdminPage()
   const { mapperEventData } = useMapper()
-  const { zIndexOfLastSelectedPiece, edgePositions } = usePieces()
+  const { edgePositions } = usePieces()
 
   if (!canvasRef.value) return
   interact(canvasRef.value).draggable({

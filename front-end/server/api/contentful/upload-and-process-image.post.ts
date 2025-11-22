@@ -5,8 +5,6 @@
  * This keeps the Management API token secure on the server
  */
 export default defineEventHandler(async (event) => {
-  // Use console.log in server routes for visibility (logger uses import.meta.env which may not work in server context)
-  console.log('-------------- upload-and-process-image.post.ts started --------------')
   
   const config = useRuntimeConfig()
   const contentfulSpaceId = config.contentfulSpaceId
@@ -41,7 +39,6 @@ export default defineEventHandler(async (event) => {
     )
 
     // 1. Upload image
-    // Contentful requires "application/octet-stream" for uploads, not the actual image MIME type
     const arrayBuffer = await imageFile.arrayBuffer()
     // Use Uint8Array for Cloudflare Workers compatibility (Buffer is Node.js specific)
     const imageBuffer = new Uint8Array(arrayBuffer)
@@ -51,6 +48,7 @@ export default defineEventHandler(async (event) => {
         method: 'POST',
         body: imageBuffer,
         headers: {
+          // Contentful requires "application/octet-stream" for uploads, not the actual image MIME type
           'Content-Type': 'application/octet-stream',
           Authorization: `Bearer ${contentfulCmt}`,
           'X-Contentful-Version': '1'

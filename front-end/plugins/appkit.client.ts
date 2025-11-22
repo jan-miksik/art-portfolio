@@ -27,7 +27,6 @@ export default defineNuxtPlugin(() => {
     metadata,
     projectId,
     features: {
-      // TODO: add and test login and proccessing with email and socials
       email: false,
       socials: [],
       analytics: true

@@ -73,7 +73,6 @@ const { onMapperEvent, mapperEventData } = useMapper()
 const { isOverPieceOrSetup } = useMouseActionDetector()
 const { isOnAdminPage, isSetupForMobile } = useAdminPage()
 
-
 const dropzoneRef = ref<HTMLElement | null>(null)
 const cursorPosition = ref({ x: 0, y: 0, scale: 1 })
 const errorMessage = ref('')
@@ -207,7 +206,6 @@ const drop = (event: DragEvent) => {
       sizeOnWeb: {
         width: DEFAULT_WEB_WIDTH,
         widthMob: DEFAULT_WEB_WIDTH_MOBILE
-        // height?: number
       },
       position: {
         x: Math.floor(cursorPosition.value.x - NEW_PIECE_X_OFFSET),

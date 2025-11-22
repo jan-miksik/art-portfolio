@@ -24,7 +24,6 @@ const chains: Record<string, IChain> = {
     keyName: 'sepolia',
     name: 'Sepolia',
     nftIntoPiecesContract: '0x315706Dd2210315C8eE1e0bB01c5d172301Cae72',
-    // nftShowingPortfolioContract: '0x47488CA96d736E63365d75C471050b5074CBD076',
     nftIntoPiecesCollectionName: 'into-pieces-2',
     isChainSupported: true,
     nativeCurrency: {
