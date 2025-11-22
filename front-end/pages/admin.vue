@@ -1,18 +1,6 @@
 <template>
   <div>
-  <div v-if="!isAuthenticated" class="admin__not-authenticated" />
-  <form
-    v-if="!isAuthenticated"
-    class="admin__auth-form"
-    @submit.prevent="submitPassword"
-  >
-    <input type="password" v-model="password" @input="handleOnPasswordInput" />
-    <button type="submit">Přihlásit</button>
-    <p class="admin__error-message">
-      {{ errorMessage }}
-    </p>
-  </form>
-
+  <!-- admin page is secured by Cloudflare Access -->
   <div class="admin__upload-data">
     <button
       :disabled="!isSomethingToPublish || publishingInProgress"
@@ -81,18 +69,14 @@ import { logger } from '~/utils/logger'
 
 const { pieces } = usePieces()
 const { edgePositions } = usePieces()
-const { onMapperEvent, isMapperDraggable, mapperEventData } = useMapper()
+const { onMapperEvent, mapperEventData } = useMapper()
 const { isOverPieceOrSetup } = useMouseActionDetector()
 const { isOnAdminPage, isSetupForMobile } = useAdminPage()
 
-const isAuthenticated = ref(
-  import.meta.env.VITE_IS_ADMIN_AUTHENTICATION !== 'true'
-)
+
 const dropzoneRef = ref<HTMLElement | null>(null)
 const cursorPosition = ref({ x: 0, y: 0, scale: 1 })
-const password = ref('')
 const errorMessage = ref('')
-const isSettingsOpen = ref(false)
 const publishingInProgress = ref(false)
 const isMapperSet = ref(false)
 const mapperRef = ref()
@@ -133,15 +117,6 @@ const isSomethingToPublish = computed(
 const publishButtonText = computed(() =>
   publishingInProgress.value ? 'Nahrávání...' : 'Publikovat'
 )
-
-const submitPassword = () => {
-  errorMessage.value = ''
-  if (password.value === import.meta.env.VITE_ADMIN_PASSWORD) {
-    isAuthenticated.value = true
-  } else {
-    errorMessage.value = 'špatné heslo'
-  }
-}
 
 onMounted(() => {
   window.addEventListener('mousemove', updateCursorPosition)
@@ -249,7 +224,6 @@ const drop = (event: DragEvent) => {
     })
   )
 
-
   pieces.value?.push(newPiece)
   
   // Upload to Contentful in background
@@ -284,9 +258,6 @@ const handlePublishChanges = async () => {
   publishingInProgress.value = false
 }
 
-const handleOnPasswordInput = () => {
-  errorMessage.value = ''
-}
 </script>
 
 <style lang="stylus">
