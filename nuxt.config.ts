@@ -41,19 +41,13 @@ export default defineNuxtConfig({
       '~/components',
     ]
   },
-  // Runtime config maps environment variables to these keys
-  // 
-  // How it works:
-  // - In development: reads from .env file
-  // - In production: reads from Cloudflare Pages environment variables
-  // - Naming: NUXT_ prefix + UPPERCASE key name → maps to camelCase key below
   runtimeConfig: {
     // Server-only (private) - not exposed to client
-    contentfulManagementToken: '', // From NUXT_CONTENTFUL_MANAGEMENT_TOKEN
-    contentfulSpaceId: '', // From NUXT_CONTENTFUL_SPACE_ID
+    contentfulManagementToken: process.env.NUXT_CONTENTFUL_MANAGEMENT_TOKEN,
+    contentfulSpaceId: process.env.NUXT_CONTENTFUL_SPACE_ID,
     // Public (exposed to client) - safe for read-only operations
     public: {
-      contentfulAccessToken: '', // From NUXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN (if needed client-side)
+      contentfulAccessToken: process.env.NUXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN,
     }
   },
   app: {
