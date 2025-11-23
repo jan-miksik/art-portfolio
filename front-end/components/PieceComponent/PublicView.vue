@@ -23,7 +23,7 @@
           }"
           :modules="[Navigation, Keyboard, Mousewheel]"
           @slideChange="handleOnSlideChangeMain"
-          @swiper="(swiper) => mainSwiperInstance = swiper"
+          @swiper="handleSwiperInit"
 
         >
          <swiper-slide>
@@ -142,7 +142,6 @@ const handleClosePieceDetail = () => {
 }
 
 watch(initialPiece, () => {
-  console.log('initialPiece', initialPiece.value)
   if (initialPiece.value?.topic === Topics.FREE_TOPIC || initialPiece.value?.topic === Topics.SANS_TOPIC) {
     activeIndexMain.value = 0
   }
@@ -162,6 +161,10 @@ watch(initialPiece, () => {
 },{ immediate: true })
 
 
+const handleSwiperInit = (swiper: SwiperTypes) => {
+  mainSwiperInstance.value = swiper
+}
+
 const handleOnSlideChangeMain = (swiper: SwiperTypes) => {
   activeIndexMain.value = swiper.activeIndex
 }
@@ -174,7 +177,9 @@ const handleChangeSlideMain = (slideIndex: number) => {
 }
 
 const handleSlideChangeByStep = (moveDirection: number) => {
-  mainSwiperInstance.value.slideTo(activeIndexMain.value + moveDirection)
+  if (mainSwiperInstance.value) {
+    mainSwiperInstance.value.slideTo(activeIndexMain.value + moveDirection)
+  }
 }
 
 </script>

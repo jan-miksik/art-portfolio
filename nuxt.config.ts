@@ -20,6 +20,8 @@ export default defineNuxtConfig({
         }
       },
       // Ensure all API routes are handled by functions
+      // NOTE: CORS is permissive here because authentication is handled by Cloudflare Access
+      // in production. If deploying without Cloudflare Access, restrict CORS and add auth checks.
       '/api/**': {
         cors: true,
         headers: {

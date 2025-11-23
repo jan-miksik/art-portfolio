@@ -41,7 +41,7 @@ onMounted(() => {
     listeners: {
       move(event) {
         if (!isOnAdminPage.value) return
-        const scale = mapperEventData.value.scale
+        const scale = mapperEventData.value?.scale || 1
 
         const xRaw = IntoPiecesCollectionPosition.value.x + event.dx / scale
         const yRaw = IntoPiecesCollectionPosition.value.y + event.dy / scale

@@ -5,6 +5,9 @@
  * 
  * All Management API operations are proxied through server routes
  * to prevent token exposure in client-side code.
+ * 
+ * SECURITY NOTE: This endpoint is protected by Cloudflare Access in production.
+ * In other environments, ensure equivalent authentication is configured before deployment.
  */
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()

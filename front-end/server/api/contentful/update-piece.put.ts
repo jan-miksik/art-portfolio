@@ -2,6 +2,9 @@
  * Server-side API route for updating pieces in Contentful
  * Uses $fetch instead of axios for Cloudflare compatibility
  * This keeps the Management API token secure on the server
+ * 
+ * SECURITY NOTE: This endpoint is protected by Cloudflare Access in production.
+ * In other environments, ensure equivalent authentication is configured before deployment.
  */
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()

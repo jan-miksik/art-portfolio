@@ -85,7 +85,7 @@ onMounted(() => {
     listeners: {
       move(event) {
         if (!isOnAdminPage.value) return
-        const scale = mapperEventData.value.scale
+        const scale = mapperEventData.value?.scale || 1
 
         const xRaw = ballThreeJs.value.x + event.dx / scale
         const yRaw = ballThreeJs.value.y + event.dy / scale

@@ -129,10 +129,12 @@ const updateCursorPosition = (event: MouseEvent) => {
   if (!dropzoneRef.value) return
 
   const scale = mapperEventData.value?.scale || 1
+  const x = mapperEventData.value?.x || 0
+  const y = mapperEventData.value?.y || 0
 
   cursorPosition.value = {
-    x: (event.clientX) + -mapperEventData.value?.x,
-    y: (event.clientY) + -mapperEventData.value?.y,
+    x: event.clientX - x,
+    y: event.clientY - y,
     scale,
   }
 }
