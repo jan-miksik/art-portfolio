@@ -20,7 +20,7 @@
           @click.stop
           @touchstart.stop
         >
-          <OImage
+          <BaseImage
             :image-file="piece.image"
             :is-full-size="true"
             :piece="piece"

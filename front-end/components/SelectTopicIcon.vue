@@ -3,7 +3,7 @@
     :class="mainStyleClasses"
     @click="selectTopic(topic)"
   >
-    <OImage
+    <BaseImage
       :image-file="icon"
       class="open-topic-icon__topic-thumbnail-img"
       :alt="label"

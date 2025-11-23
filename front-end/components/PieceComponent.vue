@@ -11,7 +11,7 @@
     @touchmove="(event) => touchmoveHandler(event, piece)"
     @touchend="touchendHandler"
   >
-    <OImage
+    <BaseImage
       v-if="piece"
       :id="piece.id"
       :image-file="piece.image"

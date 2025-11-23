@@ -17,7 +17,7 @@
     </div>
 
     <Transition name="fade">
-      <OLoader v-if="mintInProgress" size="large" class="nft-collection__minting-in-progress" />
+      <BaseLoader v-if="mintInProgress" size="large" class="nft-collection__minting-in-progress" />
     </Transition>
 
     <span class="nft-collection__limit-exceeded" v-if="mintLimitExceeded">
@@ -27,7 +27,7 @@
     <div>
       <form class="nft-collection__mint-form" @submit.prevent="handleMintNFT">
         <div class="nft-collection__input-and-currency">
-          <OInput required type="number" step="any" v-model="requestedPrice" label="custom valuation"/>
+          <BaseInput required type="number" step="any" v-model="requestedPrice" label="custom valuation"/>
           <span title="Optimism - second layer of Ethereum">
             <span>{{mainSupportedChain?.nativeCurrency.symbol}}</span>
             <img class="nft-collection__optimism-logo" src="/optimism-ethereum-logo.svg" width="12" height="12" alt="optimism logo"/>
@@ -64,7 +64,7 @@
 import { mainSupportedChain } from '~/appSetup'
 import { logger } from '~/utils/logger'
 import contractAbi from '~/abi/IntoPieces.json'
-import { switchChain, getGasPrice, estimateGas, writeContract } from '@wagmi/core'
+import { switchChain, getGasPrice, estimateGas, writeContract } from '@wagmi/vue/actions'
 import { config } from '~/config'
 import { encodeFunctionData, formatEther, parseEther } from 'viem'
 import { createPublicClient, http } from 'viem'
@@ -81,6 +81,8 @@ const mintedNfts = ref()
 const mintPrice = ref()
 const fetchingMintPrice = ref()
 const ethToUsdExchangeRate = ref()
+const modal = ref()
+const isContinueMintAfterConnect = ref(false)
 
 const account = useAccount()
 
@@ -92,13 +94,9 @@ const client = createPublicClient({
   // chain: sepolia,
 })
 
-
 const nftId = computed(() => mintedNfts.value ? Number(mintedNfts.value) - 1 : 0)
-
 const openseaAssetLink = computed(() => (`https://opensea.io/assets/${mainSupportedChain.keyName}/${mainSupportedChain.nftIntoPiecesContract}/${nftId.value}`))
-
 const openseaCollectionLink = computed(() => (`https://opensea.io/collection/${mainSupportedChain.nftIntoPiecesCollectionName}`))
-
 const fullMintPrice = computed(() => {
   const hasRequestedPrice = requestedPrice.value || requestedPrice.value === 0
   if(fetchingMintPrice.value && hasRequestedPrice) {
@@ -159,7 +157,6 @@ const mintAction = async () => {
  
 }
 
-
 const contractActions = async (action: string) => {
   try {
     if (action == 'mint') {
@@ -196,9 +193,6 @@ const getMintedNFTs = async () => {
   })
 }
 
-const modal = ref()
-const isContinueMintAfterConnect = ref(false)
-
 const handleMintNFT = async (event?: Event) => {
   event?.preventDefault()
   modal.value = useAppKit()
@@ -232,9 +226,6 @@ watch(account.address, async (newVal) => {
   }
 }, { immediate: true })
 
-
-
-
 const checkMintingLimit = async () => {
   if (account?.address.value) {
     const remainingMints = await client.readContract({
@@ -247,12 +238,7 @@ const checkMintingLimit = async () => {
   }
 }
 
-
-
 const roundUp = (num: number, decimals: number) => Math.ceil(num * 10 ** decimals) / 10 ** decimals;
-
-
-
 
 async function getEthToUsdExchangeRate() {
   try {
@@ -265,13 +251,9 @@ async function getEthToUsdExchangeRate() {
   }
 }
 
-
-
 watch(requestedPrice, async () => {
   await getMintPrice()
 })
-
-
 
 const loadContractData = async () => {
 

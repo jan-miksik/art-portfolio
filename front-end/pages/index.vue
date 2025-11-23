@@ -1,8 +1,8 @@
 <template>
   <div>
-    <ODarkModeSwitcher />
-    <OArchiveToggler />
-    <OBeSupporter />
+    <BaseDarkModeSwitcher />
+    <BaseArchiveToggler />
+    <BaseBeSupporter />
     <Contact />
 
     <PinchScrollZoom
