@@ -4,6 +4,12 @@
  * Uses $fetch instead of axios for Cloudflare compatibility
  * This keeps the Management API token secure on the server
  */
+import type {
+  ContentfulUploadResponse,
+  ContentfulAssetResponse,
+  ContentfulHttpError
+} from '~/types/contentful-api'
+
 export default defineEventHandler(async (event) => {
   
   const config = useRuntimeConfig()
@@ -42,7 +48,7 @@ export default defineEventHandler(async (event) => {
     const arrayBuffer = await imageFile.arrayBuffer()
     // Use Uint8Array for Cloudflare Workers compatibility (Buffer is Node.js specific)
     const imageBuffer = new Uint8Array(arrayBuffer)
-    const uploadResponse: any = await $fetch(
+    const uploadResponse = await $fetch<ContentfulUploadResponse>(
       `https://upload.contentful.com/spaces/${contentfulSpaceId}/uploads`,
       {
         method: 'POST',
@@ -84,7 +90,7 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    const assetResponse: any = await $fetch(
+    const assetResponse = await $fetch<ContentfulAssetResponse>(
       `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets`,
       {
         method: 'POST',
@@ -130,7 +136,7 @@ export default defineEventHandler(async (event) => {
     let attempts = 0
 
     while (!assetProcessed && attempts < MAX_ATTEMPTS) {
-      const assetStatusRes: any = await $fetch(
+      const assetStatusRes = await $fetch<ContentfulAssetResponse>(
         `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${assetResponse.sys.id}`,
         {
           method: 'GET',
@@ -167,6 +173,7 @@ export default defineEventHandler(async (event) => {
     )
 
     // 5. Publish the image
+    const currentVersion = assetResponse.sys.version ?? 0
     await $fetch(
       `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${assetResponse.sys.id}/published`,
       {
@@ -174,7 +181,7 @@ export default defineEventHandler(async (event) => {
         body: {},
         headers: {
           Authorization: `Bearer ${contentfulCmt}`,
-          'X-Contentful-Version': String(assetResponse.sys.version + 1)
+          'X-Contentful-Version': String(currentVersion + 1)
         }
       }
     )
@@ -185,22 +192,23 @@ export default defineEventHandler(async (event) => {
     )
 
     return assetResponse
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Surface more detail from Contentful so we can debug 400s more easily
-    const statusCode = error?.response?.status || error?.statusCode || 500
-    const cfDetails = error?.response?.data || error?.data
+    const httpError = error as ContentfulHttpError
+    const statusCode = httpError?.response?.status || httpError?.statusCode || 500
+    const cfDetails = httpError?.response?.data || httpError?.data
 
     console.error(
       '[upload-and-process-image] Error',
       statusCode,
-      error?.message,
+      httpError?.message,
       cfDetails
     )
 
     throw createError({
       statusCode,
       message: `Failed to upload and process image: ${
-        error?.message || 'Unknown error'
+        httpError?.message || 'Unknown error'
       }${cfDetails ? ` | Contentful response: ${JSON.stringify(cfDetails)}` : ''}`
     })
   }

@@ -6,6 +6,11 @@
  * SECURITY NOTE: This endpoint is protected by Cloudflare Access in production.
  * In other environments, ensure equivalent authentication is configured before deployment.
  */
+import type {
+  ContentfulEntryResponse,
+  ContentfulHttpError
+} from '~/types/contentful-api'
+
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const contentfulSpaceId = config.contentfulSpaceId
@@ -29,7 +34,7 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const response: any = await $fetch(
+    const response = await $fetch<ContentfulEntryResponse>(
       `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/entries/${entryId}/published`,
       {
         method: 'PUT',
@@ -42,9 +47,10 @@ export default defineEventHandler(async (event) => {
     )
 
     return response
-  } catch (error: any) {
-    const status = error.response?.status || error.statusCode || 500
-    const msg = error.data?.message || error.message || 'Unknown error'
+  } catch (error: unknown) {
+    const httpError = error as ContentfulHttpError
+    const status = httpError.response?.status || httpError.statusCode || 500
+    const msg = httpError.data?.message || httpError.message || 'Unknown error'
     throw createError({
       statusCode: status,
       message: `Failed to publish entry: ${msg}`

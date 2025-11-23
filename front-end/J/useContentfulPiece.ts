@@ -1,7 +1,10 @@
 import Piece from '~/models/Piece'
-import type { AxiosResponse } from 'axios'
 import { logger } from '~/utils/logger'
 import useContentfulEntry from '~/J/useContentfulEntry'
+import type {
+  ContentfulAssetResponse,
+  ContentfulEntryResponse
+} from '~/types/contentful-api'
 
 /**
  * 
@@ -20,33 +23,33 @@ import useContentfulEntry from '~/J/useContentfulEntry'
 
 export default function useContentfulPiece() {
   const { ensureVersion } = useContentfulEntry()
-  const uploadAndPublishImage = async (imageRaw: File) => {
+  const uploadAndPublishImage = async (imageRaw: File): Promise<ContentfulAssetResponse> => {
     try {
       const formData = new FormData()
       formData.append('image', imageRaw)
       
-      const response = await $fetch('/api/contentful/upload-and-process-image', {
+      const response = await $fetch<ContentfulAssetResponse>('/api/contentful/upload-and-process-image', {
         method: 'POST',
         body: formData
       })
       
       logger.log('Image uploaded and processed via server route')
-      return { data: response } as AxiosResponse
+      return response
     } catch (error) {
       logger.error('Error uploading via server route:', error)
       throw new Error(`Failed to upload image: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
 
-  const uploadPiece = async (piece: Piece) => {
+  const uploadPiece = async (piece: Piece): Promise<ContentfulEntryResponse | void> => {
     if (!piece.imageRaw) return
     logger.log(':::uploading started... ')
     const imageResponse = await uploadAndPublishImage(piece.imageRaw)
-    logger.log('-- asset Response --: ', imageResponse, imageResponse?.data.sys.id);
+    logger.log('-- asset Response --: ', imageResponse, imageResponse?.sys.id);
     const imageName = piece.imageRaw.name.substring(0, piece.imageRaw.name.lastIndexOf('.'))
     
     try {
-      const response = await $fetch('/api/contentful/upload-piece', {
+      const response = await $fetch<ContentfulEntryResponse>('/api/contentful/upload-piece', {
         method: 'POST',
         body: {
           piece: {
@@ -62,7 +65,7 @@ export default function useContentfulPiece() {
             isMoveableInPublic: piece.isMoveableInPublic,
             isArchived: piece.isArchived
           },
-          imageAssetId: imageResponse?.data.sys.id
+          imageAssetId: imageResponse.sys.id
         }
       })
       logger.log('Piece uploaded via server route as draft')
@@ -70,11 +73,11 @@ export default function useContentfulPiece() {
       // Update piece with response data
       piece.sys = {
         id: response.sys.id,
-        version: response.sys.version
+        version: response.sys.version || 0
       }
       piece.isUpdated = true
       piece.isUploadedToCf = true
-      piece.image.id = imageResponse?.data.sys.id
+      piece.image.id = imageResponse.sys.id
 
       logger.log('Piece successfully uploaded', piece, response)
       return response
@@ -92,7 +95,7 @@ export default function useContentfulPiece() {
         throw new Error(`Cannot update piece "${piece.name}": Unable to fetch current version from Contentful`)
       }
 
-      const response = await $fetch<{ sys: { version: number } }>('/api/contentful/update-piece', {
+      const response = await $fetch<ContentfulEntryResponse>('/api/contentful/update-piece', {
         method: 'PUT',
         body: {
           entryId: piece.sys.id,
@@ -114,7 +117,7 @@ export default function useContentfulPiece() {
         }
       })
       logger.log('Piece updated via server route')
-      piece.sys.version = response.sys.version
+      piece.sys.version = response.sys.version || 0
       piece.isUpdated = true
       return response
     } catch (error) {
@@ -133,7 +136,7 @@ export default function useContentfulPiece() {
         throw new Error(`Cannot publish piece "${piece.name}": Unable to fetch current version from Contentful`)
       }
 
-      const response = await $fetch<{ sys: { version: number } }>('/api/contentful/publish-entry', {
+      const response = await $fetch<ContentfulEntryResponse>('/api/contentful/publish-entry', {
         method: 'POST',
         body: {
           entryId: piece.sys.id,
@@ -141,7 +144,7 @@ export default function useContentfulPiece() {
         }
       })
       piece.isPublished = true
-      piece.sys.version = response.sys.version
+      piece.sys.version = response.sys.version || 0
       logger.log(`Piece ${piece.name} published via server route!`)
     } catch (error) {
       logger.error('error publishPiece', error)

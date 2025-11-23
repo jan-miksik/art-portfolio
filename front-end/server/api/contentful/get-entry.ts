@@ -3,6 +3,12 @@
  * Uses $fetch instead of axios for Cloudflare compatibility
  * Supports both GET (preferred) and POST (fallback for Cloudflare)
  */
+import type {
+  ContentfulEntryResponse,
+  ContentfulHttpError,
+  GetEntryResponse
+} from '~/types/contentful-api'
+
 export default defineEventHandler(async (event) => {
   if (event.method !== 'GET' && event.method !== 'POST') {
     throw createError({
@@ -40,7 +46,7 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const response: any = await $fetch(
+    const response = await $fetch<ContentfulEntryResponse>(
       `https://api.contentful.com/spaces/${config.contentfulSpaceId}/environments/master/entries/${entryId}`,
       {
         method: 'GET',
@@ -56,15 +62,17 @@ export default defineEventHandler(async (event) => {
     setHeader(event, 'Pragma', 'no-cache')
     setHeader(event, 'Expires', '0')
 
-    return {
+    const result: GetEntryResponse = {
       id: response.sys.id,
-      version: response.sys.version,
+      version: response.sys.version ?? 0,
       publishedVersion: response.sys.publishedVersion,
       entry: response
     }
-  } catch (error: any) {
-    const status = error.response?.status || error.statusCode || 500
-    const msg = error.data?.message || error.message || 'Unknown error'
+    return result
+  } catch (error: unknown) {
+    const httpError = error as ContentfulHttpError
+    const status = httpError.response?.status || httpError.statusCode || 500
+    const msg = httpError.data?.message || httpError.message || 'Unknown error'
 
     throw createError({
       statusCode: status,

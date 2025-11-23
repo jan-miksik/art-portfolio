@@ -6,6 +6,12 @@
  * SECURITY NOTE: This endpoint is protected by Cloudflare Access in production.
  * In other environments, ensure equivalent authentication is configured before deployment.
  */
+import type {
+  ContentfulEntryResponse,
+  ContentfulHttpError,
+  ContentfulPieceFields
+} from '~/types/contentful-api'
+
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const contentfulSpaceId = config.contentfulSpaceId
@@ -37,7 +43,7 @@ export default defineEventHandler(async (event) => {
       'X-Contentful-Version': String(version)
     }
 
-    const fields: Record<string, any> = {
+    const fields: ContentfulPieceFields = {
       name: {
         'en-US': piece.name || 'untitled'
       },
@@ -112,16 +118,17 @@ export default defineEventHandler(async (event) => {
 
     const data = { fields }
 
-    const response: any = await $fetch(apiUrl, {
+    const response = await $fetch<ContentfulEntryResponse>(apiUrl, {
       method: 'PUT',
       headers,
       body: data
     })
 
     return response
-  } catch (error: any) {
-    const status = error.response?.status || error.statusCode || 500
-    const msg = error.data?.message || error.message || 'Unknown error'
+  } catch (error: unknown) {
+    const httpError = error as ContentfulHttpError
+    const status = httpError.response?.status || httpError.statusCode || 500
+    const msg = httpError.data?.message || httpError.message || 'Unknown error'
     throw createError({
       statusCode: status,
       message: `Failed to update piece: ${msg}`
