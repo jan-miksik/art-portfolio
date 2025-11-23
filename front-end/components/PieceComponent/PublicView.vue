@@ -31,8 +31,8 @@
             v-if="freeTopicPieces"
            :pieces="freeTopicPieces"
            :initial-piece="selectedPiece"
-            @close-modal="handleClosePieceDetail"
-            :activeIndexMain="activeIndexMain"
+           :activeIndexMain="activeIndexMain"
+           @close-modal="handleClosePieceDetail"
             @move-main-carousel="handleSlideChangeByStep"
            />
          </swiper-slide>
@@ -106,7 +106,7 @@ import { Navigation, Keyboard, Mousewheel } from 'swiper/modules';
 import {Topics} from "~/components/piecesData";
 import useArchive from '~/J/useArchive'
 
-const { toggleArchive, isArchiveVisible } = useArchive()
+const { isArchiveVisible } = useArchive()
 const { pieces } = usePieces()
 
 const props = defineProps<{
@@ -142,6 +142,7 @@ const handleClosePieceDetail = () => {
 }
 
 watch(initialPiece, () => {
+  console.log('initialPiece', initialPiece.value)
   if (initialPiece.value?.topic === Topics.FREE_TOPIC || initialPiece.value?.topic === Topics.SANS_TOPIC) {
     activeIndexMain.value = 0
   }
@@ -158,7 +159,7 @@ watch(initialPiece, () => {
     activeIndexMain.value = 4
   }
   selectedPiece.value = initialPiece.value
-})
+},{ immediate: true })
 
 
 const handleOnSlideChangeMain = (swiper: SwiperTypes) => {

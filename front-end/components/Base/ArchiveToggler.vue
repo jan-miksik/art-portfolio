@@ -8,7 +8,12 @@
 		@mouseup="mouseUpHandler"
 		@click="toggleArchiveHandler"
 		>
-    <div class="archive-toggler-text">archive 
+    <div
+      class="archive-toggler-text"
+      role="button"
+      aria-label="Toggle archive visibility"
+      tabindex="0"
+    >archive 
       
     <img v-if="isArchiveVisible" src="/eye-open.svg" class="archive-toggler-text__eye"/>
     <img v-else src="/eye-closed.svg" class="archive-toggler-text__eye"/>

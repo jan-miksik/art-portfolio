@@ -23,7 +23,7 @@ export type IPiece = {
     x: number
     y: number
   }
-  imageRaw?: File
+  imageRaw?: File | null
   sizeOnWeb?: {
     width?: number
     height?: number

@@ -14,6 +14,7 @@
 <script setup lang="ts">
 import useContentful from '~/api/useContentful'
 import usePieces from '~/J/usePieces'
+import { useThrottleFn } from '@vueuse/core'
 
 const { fetchContentfulData } = useContentful()
 const { mergeContentfulDataWithLocalData } = usePieces()
@@ -35,7 +36,7 @@ const handleOnMouseDown = (event: MouseEvent) => {
   }
 }
 
-const mouseMoveHandler = (event: MouseEvent) => {
+const mouseMoveHandler = useThrottleFn((event: MouseEvent) => {
   if (isDragging && scrollable.value) {
     const deltaX = lastX - event.clientX
     const deltaY = lastY - event.clientY
@@ -44,7 +45,7 @@ const mouseMoveHandler = (event: MouseEvent) => {
     scrollable.value.scrollLeft += deltaX
     scrollable.value.scrollTop += deltaY
   }
-}
+}, 10) // 10ms throttle
 
 const mouseUpHandler = () => {
   isDragging = false

@@ -178,6 +178,7 @@ const handlePieceStyle = (piece: Piece): Record<string, string> => {
 
 const selectImage = (piece: Piece) => {
   if (!isDragging.value) {
+    console.log('selectImage', piece)
     selectedPiece.value = piece
   }
 }

@@ -21,8 +21,6 @@ export default function useMouseActionDetector() {
   }
 
   const mouseUpHandler = () => {
-
-    isDragging.value ? 'drag' : 'click'
     setTimeout(() => {
         isDragging.value = false
     }, DRAG_RESET_DELAY_MS)
