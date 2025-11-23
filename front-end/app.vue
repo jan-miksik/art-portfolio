@@ -8,6 +8,7 @@
     @mouseleave="mouseUpHandler"
   >
     <NuxtPage />
+    <BaseErrorNotifications />
   </div>
 </template>
 

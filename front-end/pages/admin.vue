@@ -66,6 +66,8 @@ import { LEFT_OFFSET, TOP_OFFSET } from '~/constants/layout'
 import { NEW_PIECE_X_OFFSET, NEW_PIECE_Y_OFFSET, DEFAULT_WEB_WIDTH, DEFAULT_WEB_WIDTH_MOBILE } from '~/constants/layout'
 import { PUBLISH_DELAY_MS } from '~/constants/timing'
 import { logger } from '~/utils/logger'
+import { ErrorCode, createAppError } from '~/utils/errorHandler'
+import useErrorNotification from '~/J/useErrorNotification'
 
 const { pieces } = usePieces()
 const { edgePositions } = usePieces()
@@ -80,6 +82,7 @@ const publishingInProgress = ref(false)
 const isMapperSet = ref(false)
 const mapperRef = ref()
 const defaultTopic = ref(Topics.DIGITAL)
+const { showErrorNotification } = useErrorNotification()
 
 const windowObject = computed(() => window)
 
@@ -139,6 +142,90 @@ const updateCursorPosition = (event: MouseEvent) => {
   }
 }
 
+interface ParsedFileName {
+  name: string
+  created: Date
+  size: {
+    x: number
+    y: number
+    unit: 'cm' | 'px'
+  }
+}
+
+const DEFAULT_SIZE_CM = { x: 50, y: 70, unit: 'cm' as const }
+const DEFAULT_SIZE_PX = { x: 10000, y: 7000, unit: 'px' as const }
+
+const parseDate = (dateStr: string | undefined): Date => {
+  if (!dateStr) {
+    return new Date() // Use current date as default
+  }
+  
+  const timestamp = Number(dateStr)
+  if (isNaN(timestamp) || timestamp < 0) {
+    return new Date() // Use current date if invalid
+  }
+  
+  // Create date from timestamp, using month 6 (July, 0-indexed) as default
+  const date = new Date(timestamp, 6)
+  if (isNaN(date.getTime())) {
+    return new Date() // Use current date if invalid
+  }
+  
+  return date
+}
+
+const parseSize = (sizeStr: string | undefined): { x: number; y: number; unit: 'cm' | 'px' } => {
+  if (!sizeStr) {
+    return DEFAULT_SIZE_PX // Default to pixels
+  }
+  
+  const trimmed = sizeStr.trim()
+  const index = trimmed.indexOf('x')
+  
+  if (index === -1) {
+    return DEFAULT_SIZE_PX // Default if no 'x' separator
+  }
+  
+  const widthStr = trimmed.substring(0, index).trim()
+  const heightStr = trimmed.substring(index + 1).trim()
+  
+  const isSizeInCm = heightStr.includes('cm')
+  const isSizeInPx = heightStr.includes('px')
+  
+  if (!isSizeInCm && !isSizeInPx) {
+    return DEFAULT_SIZE_PX // Default if no unit
+  }
+  
+  const unit = isSizeInCm ? 'cm' : 'px'
+  const width = parseInt(widthStr, 10)
+  const height = parseInt(heightStr.replace(/cm|px/g, '').trim(), 10)
+  
+  if (isNaN(width) || width <= 0 || isNaN(height) || height <= 0) {
+    return unit === 'cm' ? DEFAULT_SIZE_CM : DEFAULT_SIZE_PX
+  }
+  
+  return { x: width, y: height, unit }
+}
+
+const parseFileName = (fileName: string): ParsedFileName => {
+  // Remove the file extension to get the base name
+  const description = fileName.replace(/\.[^/.]+$/, '')
+  const parts = description.split(',').map(part => part.trim())
+  
+  // Use filename (without extension) as name if no parts provided
+  const name = parts[0] || description || fileName.replace(/\.[^/.]+$/, '') || 'Untitled'
+  
+  // Try to parse date from parts[1], use current date as default
+  const dateStr = parts[1]
+  const created = parseDate(dateStr)
+  
+  // Try to parse size from parts[3] or parts[2], use default if not found
+  const sizeStr = parts[3] || parts[2]
+  const size = parseSize(sizeStr)
+  
+  return { name, created, size }
+}
+
 const drop = (event: DragEvent) => {
   if (!useAdminPage().isOnAdminPage.value) return
 
@@ -146,41 +233,24 @@ const drop = (event: DragEvent) => {
 
   if (!files) return
   const imageFile = Array.from(files)[0]
-  if (files.length !== 1 && !imageFile) return
-
-  // Remove the file extension
-  const description = imageFile.name.replace(/\.[^/.]+$/, '');
-  const parts = description.split(',').map(part => part.trim());
-
-  const name = parts[0];
-  const created = new Date(Number(parts[1]), 6) || new Date();
-  const sizeStr = parts[3] || '10000x7000px'; // fallback if not set size in name
-
-  const index = sizeStr.indexOf('x');
-  const size: string[] = [];
-
-  if (index !== -1) {
-    const part1 = sizeStr.substring(0, index);
-    const part2 = sizeStr.substring(index + 1);
-    size.push(part1, part2)
-  } else {
-    logger.error("'x' not found in string");
+  if (files.length !== 1 || !imageFile) {
+    showErrorNotification(
+      createAppError(
+        new Error('Please drop exactly one file'),
+        'drop',
+        ErrorCode.INVALID_INPUT
+      ),
+      'drop',
+      ErrorCode.INVALID_INPUT
+    )
+    return
   }
 
-  const isSizeInCm = size[1].includes('cm');
-  const isSizeInPx = size[1].includes('px');
+  const parsedData = parseFileName(imageFile.name)
+  const { name, created, size } = parsedData
 
-  const sizeX = parseInt(size[0]);
-  const sizeY = () => {
-    if (isSizeInCm) {
-      return parseInt(size[1].replace('cm', ''))
-    }
-    if (isSizeInPx) {
-      return parseInt(size[1].replace('px', ''))
-    }
-    return 0
-  }
-
+  const isSizeInCm = size.unit === 'cm'
+  const isSizeInPx = size.unit === 'px'
 
   const id = uuidv4()
   const newPiece = reactive(
@@ -197,12 +267,12 @@ const drop = (event: DragEvent) => {
       techniqueDescription: TechniqueDescription.DIGITAL_BITMAP,
       created,
       sizeInCm: {
-        x: isSizeInCm ? +sizeX : 0,
-        y: isSizeInCm ? +sizeY() : 0
+        x: isSizeInCm ? size.x : 0,
+        y: isSizeInCm ? size.y : 0
       },
       sizeInPx: {
-        x: isSizeInPx ? +sizeX : 0,
-        y: isSizeInPx ? +sizeY() : 0
+        x: isSizeInPx ? size.x : 0,
+        y: isSizeInPx ? size.y : 0
       },
       imageRaw: imageFile,
       sizeOnWeb: {
@@ -224,14 +294,26 @@ const drop = (event: DragEvent) => {
     })
   )
 
+  // Add piece to array first (for UI feedback)
   pieces.value?.push(newPiece)
   
   // Upload to Contentful in background
+  // If upload fails, we keep the piece in the array but mark it as failed
+  // User can retry or remove it manually
   useContentfulPiece().uploadPiece(newPiece).catch((error) => {
-    errorMessage.value = `Failed to upload piece: ${error instanceof Error ? error.message : 'Unknown error'}`
-    // Reset upload status on error
+    const errorMsg = showErrorNotification(error, 'uploadPiece', ErrorCode.CONTENTFUL_UPLOAD_FAILED)
+    errorMessage.value = errorMsg
+    
+    // Reset upload status on error - piece remains in array but marked as failed
     newPiece.isUploadedToCf = false
     newPiece.isUpdated = false
+    
+    // Log for debugging
+    logger.error('Failed to upload piece:', {
+      pieceId: newPiece.id,
+      pieceName: newPiece.name,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    })
   })
 }
 
@@ -249,8 +331,22 @@ const handlePublishChanges = async () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, PUBLISH_DELAY_MS))
       await useContentfulPiece().updateAndPublishPiece(piece)
+      logger.log(`Successfully published piece: ${piece.name}`)
     } catch (error) {
-      errorMessage.value = `Failed to publish "${piece.name}": ${error instanceof Error ? error.message : 'Unknown error'}`
+      const errorMsg = showErrorNotification(
+        error,
+        `publishPiece:${piece.name}`,
+        ErrorCode.CONTENTFUL_PUBLISH_FAILED
+      )
+      errorMessage.value = `Failed to publish "${piece.name}": ${errorMsg}`
+      
+      // Log for debugging
+      logger.error('Failed to publish piece:', {
+        pieceId: piece.id,
+        pieceName: piece.name,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      })
+      
       // Continue with next piece instead of stopping
       continue
     }

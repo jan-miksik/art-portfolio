@@ -1,6 +1,7 @@
 import Piece from '~/models/Piece'
 import { logger } from '~/utils/logger'
 import useContentfulEntry from '~/J/useContentfulEntry'
+import { createAppError, ErrorCode } from '~/utils/errorHandler'
 import type {
   ContentfulAssetResponse,
   ContentfulEntryResponse
@@ -36,8 +37,12 @@ export default function useContentfulPiece() {
       logger.log('Image uploaded and processed via server route')
       return response
     } catch (error) {
-      logger.error('Error uploading via server route:', error)
-      throw new Error(`Failed to upload image: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw createAppError(
+        error,
+        'uploadAndPublishImage',
+        ErrorCode.CONTENTFUL_UPLOAD_FAILED,
+        { fileName: imageRaw.name }
+      )
     }
   }
 
@@ -82,8 +87,12 @@ export default function useContentfulPiece() {
       logger.log('Piece successfully uploaded', piece, response)
       return response
     } catch (error) {
-      logger.error('Error uploading piece via server route:', error)
-      throw new Error(`Failed to upload piece: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw createAppError(
+        error,
+        'uploadPiece',
+        ErrorCode.CONTENTFUL_UPLOAD_FAILED,
+        { pieceId: piece.id, pieceName: piece.name }
+      )
     }
   }
 
@@ -121,8 +130,12 @@ export default function useContentfulPiece() {
       piece.isUpdated = true
       return response
     } catch (error) {
-      logger.error('Error updating piece via server route:', error)
-      throw new Error(`Failed to update piece: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw createAppError(
+        error,
+        'updatePiece',
+        ErrorCode.CONTENTFUL_UPDATE_FAILED,
+        { pieceId: piece.sys.id, pieceName: piece.name }
+      )
     }
   }
 
@@ -147,8 +160,12 @@ export default function useContentfulPiece() {
       piece.sys.version = response.sys.version || 0
       logger.log(`Piece ${piece.name} published via server route!`)
     } catch (error) {
-      logger.error('error publishPiece', error)
-      throw new Error(`Failed to publish piece: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw createAppError(
+        error,
+        'updateAndPublishPiece',
+        ErrorCode.CONTENTFUL_PUBLISH_FAILED,
+        { pieceId: piece.sys.id, pieceName: piece.name }
+      )
     }
   }
 
@@ -169,8 +186,12 @@ export default function useContentfulPiece() {
       })
       logger.log(`Entry ${piece.sys.id}: ${piece.name} deleted via server route.`)
     } catch (error) {
-      logger.error('Error removing piece via server route:', error)
-      throw new Error(`Failed to remove piece: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw createAppError(
+        error,
+        'removePiece',
+        ErrorCode.CONTENTFUL_DELETE_FAILED,
+        { pieceId: piece.sys.id, pieceName: piece.name }
+      )
     }
   }
 
