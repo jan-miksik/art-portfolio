@@ -13,3 +13,13 @@ dist
 .wrangler
 
 .DS_Store
+
+# Test coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
