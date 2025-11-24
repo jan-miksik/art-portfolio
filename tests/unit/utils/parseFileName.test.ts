@@ -32,19 +32,16 @@ describe('parseFileName', () => {
     expect(result.size).toEqual({ x: 1000, y: 800, unit: 'px' })
   })
 
-  it('should handle missing date and use current date', () => {
-    const before = new Date()
+  it('should handle missing date and use epoch (deterministic default)', () => {
     const result = parseFileName('artwork.jpg')
-    const after = new Date()
     expect(result.name).toBe('artwork')
-    expect(result.created.getTime()).toBeGreaterThanOrEqual(before.getTime())
-    expect(result.created.getTime()).toBeLessThanOrEqual(after.getTime())
+    expect(result.created.getTime()).toBe(0)
   })
 
-  it('should handle invalid date string', () => {
+  it('should handle invalid date string and use epoch (deterministic default)', () => {
     const result = parseFileName('artwork,invalid-date.jpg')
     expect(result.name).toBe('artwork')
-    expect(result.created).toBeInstanceOf(Date)
+    expect(result.created.getTime()).toBe(0)
   })
 
   it('should handle empty filename', () => {
@@ -63,31 +60,41 @@ describe('parseDate', () => {
   it('should parse valid timestamp', () => {
     const timestamp = new Date('2024-01-15').getTime()
     const result = parseDate(String(timestamp))
-    expect(result.getTime()).toBe(timestamp)
+    expect(result).not.toBeNull()
+    expect(result!.getTime()).toBe(timestamp)
   })
 
-  it('should return current date for undefined', () => {
-    const before = new Date()
+  it('should return null for undefined when no defaultDate provided', () => {
     const result = parseDate(undefined)
-    const after = new Date()
-    expect(result.getTime()).toBeGreaterThanOrEqual(before.getTime())
-    expect(result.getTime()).toBeLessThanOrEqual(after.getTime())
+    expect(result).toBeNull()
   })
 
-  it('should return current date for invalid string', () => {
-    const before = new Date()
+  it('should return defaultDate for undefined when provided', () => {
+    const defaultDate = new Date(0)
+    const result = parseDate(undefined, defaultDate)
+    expect(result).toBe(defaultDate)
+  })
+
+  it('should return null for invalid string when no defaultDate provided', () => {
     const result = parseDate('invalid')
-    const after = new Date()
-    expect(result.getTime()).toBeGreaterThanOrEqual(before.getTime())
-    expect(result.getTime()).toBeLessThanOrEqual(after.getTime())
+    expect(result).toBeNull()
   })
 
-  it('should handle empty string', () => {
-    const before = new Date()
+  it('should return defaultDate for invalid string when provided', () => {
+    const defaultDate = new Date(0)
+    const result = parseDate('invalid', defaultDate)
+    expect(result).toBe(defaultDate)
+  })
+
+  it('should return null for empty string when no defaultDate provided', () => {
     const result = parseDate('')
-    const after = new Date()
-    expect(result.getTime()).toBeGreaterThanOrEqual(before.getTime())
-    expect(result.getTime()).toBeLessThanOrEqual(after.getTime())
+    expect(result).toBeNull()
+  })
+
+  it('should return defaultDate for empty string when provided', () => {
+    const defaultDate = new Date(0)
+    const result = parseDate('', defaultDate)
+    expect(result).toBe(defaultDate)
   })
 })
 

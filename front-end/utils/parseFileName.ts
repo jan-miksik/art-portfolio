@@ -11,20 +11,20 @@ export interface ParsedFileName {
 const DEFAULT_SIZE_CM = { x: 50, y: 70, unit: 'cm' as const }
 const DEFAULT_SIZE_PX = { x: 10000, y: 7000, unit: 'px' as const }
 
-export const parseDate = (dateStr: string | undefined): Date => {
+export const parseDate = (dateStr: string | undefined, defaultDate?: Date): Date | null => {
   if (!dateStr) {
-    return new Date() // Use current date as default
+    return defaultDate ?? null
   }
   
   const timestamp = Number(dateStr)
   if (isNaN(timestamp)) {
-    return new Date() // Use current date if invalid
+    return defaultDate ?? null
   }
   
   // Use timestamp directly as milliseconds since epoch
   const date = new Date(timestamp)
   if (isNaN(date.getTime())) {
-    return new Date() // Use current date if invalid
+    return defaultDate ?? null
   }
   
   return date
@@ -71,9 +71,10 @@ export const parseFileName = (fileName: string): ParsedFileName => {
   // Use filename (without extension) as name if no parts provided
   const name = parts[0] || description || fileName.replace(/\.[^/.]+$/, '') || 'Untitled'
   
-  // Try to parse date from parts[1], use current date as default
+  // Try to parse date from parts[1], use epoch (new Date(0)) as deterministic default
   const dateStr = parts[1]
-  const created = parseDate(dateStr)
+  const parsedDate = parseDate(dateStr, new Date(0))
+  const created = parsedDate ?? new Date(0)
   
   // Try to parse size from parts[3] or parts[2], use default if not found
   const sizeStr = parts[3] || parts[2]

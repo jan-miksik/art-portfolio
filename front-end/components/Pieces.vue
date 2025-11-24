@@ -1,6 +1,6 @@
 <template>
   <Transition name="images">
-    <div class='pieces' ref="piecesRef"
+    <div class='pieces' ref="piecesRef" data-testid="pieces-container"
     >
       <PieceComponent v-for="(piece, index) in pieces"
         :key="piece?.id || index" 

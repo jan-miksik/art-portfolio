@@ -1,16 +1,25 @@
 describe('Admin Flow', () => {
   beforeEach(() => {
-    // Note: In a real scenario, you would need to authenticate via Cloudflare Access
-    // For testing, you might need to mock this or use test credentials
+    const cfClientId = Cypress.env('CF_CLIENT_ID')
+    const cfClientSecret = Cypress.env('CF_CLIENT_SECRET')
+    
+    // Intercept all requests to add Cloudflare Access headers
+    cy.intercept('**', (req) => {
+      if (cfClientId && cfClientSecret) {
+        req.headers['CF-Access-Client-Id'] = cfClientId
+        req.headers['CF-Access-Client-Secret'] = cfClientSecret
+      }
+    })
+    
     cy.visit('/admin')
   })
 
   it('should display admin page', () => {
-    cy.contains('Publikovat').should('be.visible')
+    cy.get('[data-testid="publish-button"]').should('be.visible')
   })
 
   it('should have a topic selector', () => {
-    cy.get('select').should('be.visible')
+    cy.get('[data-testid="topic-selector"]').should('be.visible')
   })
 })
 

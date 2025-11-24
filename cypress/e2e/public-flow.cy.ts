@@ -10,8 +10,11 @@ describe('Public Flow', () => {
   })
 
   it('should load pieces on the canvas', () => {
-    // Wait for pieces to load (they may load asynchronously)
-    cy.get('.pieces', { timeout: 10000 }).should('exist')
+    // Wait for pieces container to be visible
+    cy.get('[data-testid="pieces-container"]', { timeout: 10000 }).should('be.visible')
+    // Assert that actual piece elements are present inside the container
+    cy.get('[data-testid="pieces-container"] .piece', { timeout: 10000 })
+      .should('have.length.greaterThan', 0)
   })
 
   // Note: Testing actual canvas interaction (panning, zooming, clicking pieces)

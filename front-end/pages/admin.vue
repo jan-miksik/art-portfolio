@@ -3,6 +3,7 @@
   <!-- admin page is secured by Cloudflare Access -->
   <div class="admin__upload-data">
     <button
+      data-testid="publish-button"
       :disabled="!isSomethingToPublish || publishingInProgress"
       @click="handlePublishChanges"
     >
@@ -10,6 +11,7 @@
     </button>
     default topic for dropped piece
     <select
+      data-testid="topic-selector"
       v-model="defaultTopic"
     >
       <option disabled value="">select...</option>

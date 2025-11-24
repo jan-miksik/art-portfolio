@@ -4,14 +4,29 @@ export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:3000',
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      // Load Cloudflare Access service token credentials from environment
+      const cfClientId = process.env.CF_CLIENT_ID
+      const cfClientSecret = process.env.CF_CLIENT_SECRET
+
+      if (cfClientId && cfClientSecret) {
+        config.env.CF_CLIENT_ID = cfClientId
+        config.env.CF_CLIENT_SECRET = cfClientSecret
+      }
+
+      // Register custom task for logging
+      on('task', {
+        log(message) {
+          console.log(message)
+          return null
+        },
+      })
+
+      return config
     },
     supportFile: 'cypress/support/e2e.ts',
     specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
     video: false,
     screenshotOnRunFailure: true,
-    // Don't fail if server isn't running (useful for CI/CD)
-    // Make sure to start the dev server before running tests
   },
   component: {
     devServer: {
