@@ -11,7 +11,7 @@ dist
 .yarn/install-state.gz
 .idea
 .wrangler
-
+cypress.env.json
 .DS_Store
 
 # Test coverage
