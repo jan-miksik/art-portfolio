@@ -16,23 +16,42 @@
         <div class="error-notifications__actions">
           <button
             class="error-notifications__copy"
-            @click="copyToClipboard(notification.message)"
-            :title="copyButtonText"
+            :class="{ 'error-notifications__copy--copied': copiedNotifications.has(notification.id) }"
+            @click="copyToClipboard(notification.message, notification.id)"
+            :title="copiedNotifications.has(notification.id) ? 'Copied!' : 'Copy to clipboard'"
             aria-label="Copy error message"
           >
-            <svg 
-              width="16" 
-              height="16" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              stroke-width="2" 
-              stroke-linecap="round" 
-              stroke-linejoin="round"
-            >
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
+            <Transition name="icon" mode="out-in">
+              <svg 
+                v-if="!copiedNotifications.has(notification.id)"
+                key="copy"
+                width="16" 
+                height="16" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                stroke-width="2" 
+                stroke-linecap="round" 
+                stroke-linejoin="round"
+              >
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <svg 
+                v-else
+                key="check"
+                width="16" 
+                height="16" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                stroke-width="2" 
+                stroke-linecap="round" 
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </Transition>
           </button>
           <button
             class="error-notifications__close"
@@ -51,21 +70,27 @@
 import useErrorNotification from '~/J/useErrorNotification'
 
 const { notifications, removeErrorNotification } = useErrorNotification()
-const copyButtonText = ref('Copy to clipboard')
-const copiedTimeout = ref<NodeJS.Timeout | null>(null)
+const copiedNotifications = ref<Set<string>>(new Set())
+const copiedTimeouts = ref<Map<string, NodeJS.Timeout>>(new Map())
 
-const copyToClipboard = async (text: string) => {
+const copyToClipboard = async (text: string, notificationId: string) => {
   try {
     await navigator.clipboard.writeText(text)
-    copyButtonText.value = 'Copied!'
+    copiedNotifications.value.add(notificationId)
     
-    if (copiedTimeout.value) {
-      clearTimeout(copiedTimeout.value)
+    // Clear existing timeout for this notification
+    const existingTimeout = copiedTimeouts.value.get(notificationId)
+    if (existingTimeout) {
+      clearTimeout(existingTimeout)
     }
     
-    copiedTimeout.value = setTimeout(() => {
-      copyButtonText.value = 'Copy to clipboard'
+    // Set timeout to remove copied state
+    const timeout = setTimeout(() => {
+      copiedNotifications.value.delete(notificationId)
+      copiedTimeouts.value.delete(notificationId)
     }, 2000)
+    
+    copiedTimeouts.value.set(notificationId, timeout)
   } catch (err) {
     // Fallback for older browsers
     const textArea = document.createElement('textarea')
@@ -79,15 +104,21 @@ const copyToClipboard = async (text: string) => {
     
     try {
       document.execCommand('copy')
-      copyButtonText.value = 'Copied!'
+      copiedNotifications.value.add(notificationId)
       
-      if (copiedTimeout.value) {
-        clearTimeout(copiedTimeout.value)
+      // Clear existing timeout for this notification
+      const existingTimeout = copiedTimeouts.value.get(notificationId)
+      if (existingTimeout) {
+        clearTimeout(existingTimeout)
       }
       
-      copiedTimeout.value = setTimeout(() => {
-        copyButtonText.value = 'Copy to clipboard'
+      // Set timeout to remove copied state
+      const timeout = setTimeout(() => {
+        copiedNotifications.value.delete(notificationId)
+        copiedTimeouts.value.delete(notificationId)
       }, 2000)
+      
+      copiedTimeouts.value.set(notificationId, timeout)
     } catch (fallbackErr) {
       console.error('Failed to copy:', fallbackErr)
     } finally {
@@ -97,9 +128,12 @@ const copyToClipboard = async (text: string) => {
 }
 
 onUnmounted(() => {
-  if (copiedTimeout.value) {
-    clearTimeout(copiedTimeout.value)
-  }
+  // Clear all timeouts
+  copiedTimeouts.value.forEach((timeout) => {
+    clearTimeout(timeout)
+  })
+  copiedTimeouts.value.clear()
+  copiedNotifications.value.clear()
 })
 </script>
 
@@ -176,10 +210,40 @@ onUnmounted(() => {
     display flex
     align-items center
     justify-content center
-    transition opacity 0.2s
+    transition all 0.2s ease
+    position relative
 
     &:hover
       opacity 1
+
+    &--copied
+      opacity 1
+      color #4caf50
+      
+      svg
+        animation checkmark 0.3s ease-out
+
+@keyframes checkmark
+  0%
+    transform scale(0.8)
+    opacity 0.5
+  50%
+    transform scale(1.1)
+  100%
+    transform scale(1)
+    opacity 1
+
+.icon-enter-active,
+.icon-leave-active
+  transition all 0.2s ease
+
+.icon-enter-from
+  transform scale(0.8)
+  opacity 0
+
+.icon-leave-to
+  transform scale(0.8)
+  opacity 0
 
   &__close
     flex-shrink 0

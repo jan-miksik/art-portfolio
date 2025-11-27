@@ -56,10 +56,28 @@ const USER_MESSAGES: Record<ErrorCode, string> = {
 
 /**
  * Extracts user-friendly error message from an error
+ * Handles Nuxt $fetch errors which store the message in error.data.message
  */
 export const getErrorMessage = (error: unknown, context?: string): string => {
   if (error instanceof AppError) {
     return error.userMessage || error.message
+  }
+  
+  // Handle Nuxt $fetch errors from server routes (createError responses)
+  if (error && typeof error === 'object') {
+    const fetchError = error as { data?: { message?: string }; message?: string }
+    const message = fetchError.data?.message || fetchError.message
+    
+    if (message) {
+      // Check for specific error patterns
+      if (message.includes('network') || message.includes('fetch')) {
+        return USER_MESSAGES[ErrorCode.NETWORK_ERROR]
+      }
+      if (message.includes('timeout')) {
+        return USER_MESSAGES[ErrorCode.TIMEOUT_ERROR]
+      }
+      return message
+    }
   }
   
   if (error instanceof Error) {
@@ -116,7 +134,19 @@ export const createAppError = (
   let message: string
   let userMessage: string
   
-  if (error instanceof Error) {
+  // Handle Nuxt $fetch errors from server routes (createError responses)
+  if (error && typeof error === 'object') {
+    const fetchError = error as { data?: { message?: string }; message?: string; stack?: string; name?: string }
+    const extractedMessage = fetchError.data?.message || fetchError.message || 'Unknown error'
+    
+    logger.error(`${contextInfo} Error:`, extractedMessage, {
+      stack: fetchError.stack,
+      name: fetchError.name,
+      ...additionalContext
+    })
+    message = extractedMessage
+    userMessage = getErrorMessage(error, context)
+  } else if (error instanceof Error) {
     logger.error(`${contextInfo} Error:`, error.message, {
       stack: error.stack,
       name: error.name,

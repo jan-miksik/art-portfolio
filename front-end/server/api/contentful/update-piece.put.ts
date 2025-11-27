@@ -8,9 +8,9 @@
  */
 import type {
   ContentfulEntryResponse,
-  ContentfulHttpError,
-  ContentfulPieceFields
+  ContentfulHttpError
 } from '~/types/contentful-api'
+import { buildPieceFields } from '~/server/utils/contentfulFields'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
@@ -43,79 +43,7 @@ export default defineEventHandler(async (event) => {
       'X-Contentful-Version': String(version)
     }
 
-    const fields: ContentfulPieceFields = {
-      name: {
-        'en-US': piece.name || 'untitled'
-      },
-      topic: {
-        'en-US': piece.topic || 'anything'
-      },
-      technique: {
-        'en-US': piece.technique || ''
-      },
-      techniqueDescription: {
-        'en-US': piece.techniqueDescription || 'unspecified'
-      },
-      created: {
-        'en-US': piece.created || new Date(100, 0).toISOString()
-      },
-      sizeInCmXHorizontal: {
-        'en-US': Math.floor(piece.sizeInCm?.x || 0)
-      },
-      sizeInCmYVertical: {
-        'en-US': Math.floor(piece.sizeInCm?.y || 0)
-      },
-      sizeInPxX: {
-        'en-US': Math.floor(piece.sizeInPx?.x || 0)
-      },
-      sizeInPxY: {
-        'en-US': Math.floor(piece.sizeInPx?.y || 0)
-      },
-      widthOnWeb: {
-        'en-US': Math.floor(piece.sizeOnWeb?.width || 0)
-      },
-      positionX: {
-        'en-US': Math.floor(piece.position?.x || 0)
-      },
-      positionY: {
-        'en-US': Math.floor(piece.position?.y || 0)
-      },
-      positionDeg: {
-        'en-US': Math.floor(piece.position?.deg || 0)
-      },
-      widthOnWebMob: {
-        'en-US': Math.floor(piece.sizeOnWeb?.widthMob || 0)
-      },
-      positionXMob: {
-        'en-US': Math.floor(piece.position?.xMob || 0)
-      },
-      positionYMob: {
-        'en-US': Math.floor(piece.position?.yMob || 0)
-      },
-      positionDegMob: {
-        'en-US': Math.floor(piece.position?.degMob || 0)
-      },
-      isMoveableInPublic: {
-        'en-US': piece.isMoveableInPublic || false
-      },
-      isArchived: {
-        'en-US': piece.isArchived || false
-      }
-    }
-
-    // Include image field if imageAssetId is provided (preserves the image link)
-    if (imageAssetId) {
-      fields.image = {
-        'en-US': {
-          sys: {
-            type: 'Link',
-            linkType: 'Asset',
-            id: imageAssetId
-          }
-        }
-      }
-    }
-
+    const fields = buildPieceFields(piece, imageAssetId)
     const data = { fields }
 
     const response = await $fetch<ContentfulEntryResponse>(apiUrl, {

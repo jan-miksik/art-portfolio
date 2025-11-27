@@ -37,6 +37,7 @@ export default function useContentfulPiece() {
       logger.log('Image uploaded and processed via server route')
       return response
     } catch (error) {
+      logger.log('Error uploading image: ', error)
       throw createAppError(
         error,
         'uploadAndPublishImage',

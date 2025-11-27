@@ -9,6 +9,8 @@ import type {
   ContentfulAssetResponse,
   ContentfulHttpError
 } from '~/types/contentful-api'
+import { logger } from '~/utils/logger'
+import { CONTENTFUL_POLLING } from '~/constants/contentful'
 
 export default defineEventHandler(async (event) => {
   
@@ -36,13 +38,29 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+  const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+
+  if (!ALLOWED_TYPES.includes(imageFile.type)) {
+    throw createError({
+      statusCode: 400,
+      message: 'Invalid file type. Only JPEG, PNG, and WebP are allowed.'
+    })
+  }
+
+  if (imageFile.size > MAX_FILE_SIZE) {
+    throw createError({
+      statusCode: 400,
+      message: 'File size exceeds maximum allowed size of 10MB'
+    })
+  }
+
   try {
-    console.log(
-      '[upload-and-process-image] Received file',
-      imageFile.name,
-      imageFile.type,
-      imageFile.size
-    )
+    logger.log('[upload-and-process-image] Received file', {
+      name: imageFile.name,
+      type: imageFile.type,
+      size: imageFile.size
+    })
 
     // 1. Upload image
     const arrayBuffer = await imageFile.arrayBuffer()
@@ -62,10 +80,10 @@ export default defineEventHandler(async (event) => {
       }
     )
 
-    console.log(
-      '[upload-and-process-image] 1. Image uploaded',
-      uploadResponse?.sys
-    )
+    logger.log('[upload-and-process-image] 1. Image uploaded', {
+      uploadId: uploadResponse?.sys?.id,
+      version: uploadResponse?.sys?.version
+    })
 
     // 2. Link uploaded image to asset
     const imageName = imageFile.name.substring(0, imageFile.name.lastIndexOf('.'))
@@ -103,10 +121,10 @@ export default defineEventHandler(async (event) => {
       }
     )
 
-    console.log(
-      '[upload-and-process-image] 2. Asset created',
-      assetResponse?.sys
-    )
+    logger.log('[upload-and-process-image] 2. Asset created', {
+      assetId: assetResponse?.sys?.id,
+      version: assetResponse?.sys?.version
+    })
 
     // 3. Process the image
     await $fetch(
@@ -121,59 +139,63 @@ export default defineEventHandler(async (event) => {
       }
     )
 
-    console.log(
-      '[upload-and-process-image] 3. Processing triggered',
-      assetResponse?.sys?.id
-    )
+    logger.log('[upload-and-process-image] 3. Processing triggered', {
+      assetId: assetResponse?.sys?.id
+    })
 
     // 4. Poll for processing completion
-    const MAX_ATTEMPTS = 60
-    const INITIAL_DELAY = 100
-    const MAX_DELAY = 2000
-    const BACKOFF_MULTIPLIER = 1.5
+    const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-    let assetProcessed = false
-    let attempts = 0
+    const pollAssetStatus = async (): Promise<ContentfulAssetResponse> => {
+      let delayMs: number = CONTENTFUL_POLLING.INITIAL_DELAY
 
-    while (!assetProcessed && attempts < MAX_ATTEMPTS) {
-      const assetStatusRes = await $fetch<ContentfulAssetResponse>(
-        `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${assetResponse.sys.id}`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${contentfulCmt}`
+      for (let attempt = 0; attempt < CONTENTFUL_POLLING.MAX_ATTEMPTS; attempt++) {
+        try {
+          const assetStatusRes = await $fetch<ContentfulAssetResponse>(
+            `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${assetResponse.sys.id}`,
+            {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${contentfulCmt}`
+              }
+            }
+          )
+
+          const processed = assetStatusRes.fields.file['en-US'].url !== undefined
+          if (processed) {
+            return assetStatusRes
+          }
+
+          logger.log('[upload-and-process-image] 4. Processing in progress', {
+            attempt: attempt + 1,
+            assetId: assetResponse.sys.id
+          })
+        } catch (error) {
+          logger.warn('[upload-and-process-image] 4. Poll attempt failed', {
+            attempt: attempt + 1,
+            assetId: assetResponse.sys.id,
+            error: error instanceof Error ? error.message : 'Unknown error'
+          })
+          if (attempt === CONTENTFUL_POLLING.MAX_ATTEMPTS - 1) {
+            throw error
           }
         }
-      )
 
-      assetProcessed = assetStatusRes.fields.file['en-US'].url !== undefined
-
-      if (!assetProcessed) {
-        console.log(
-          '[upload-and-process-image] 4. Processing in progress',
-          'attempt',
-          attempts + 1
-        )
-        attempts++
-        const delay = Math.min(
-          INITIAL_DELAY * Math.pow(BACKOFF_MULTIPLIER, attempts - 1),
-          MAX_DELAY
-        )
-        await new Promise((resolve) => setTimeout(resolve, delay))
+        await sleep(delayMs)
+        delayMs = Math.min(delayMs * CONTENTFUL_POLLING.BACKOFF_MULTIPLIER, CONTENTFUL_POLLING.MAX_DELAY)
       }
-    }
 
-    if (!assetProcessed) {
       throw new Error('Image processing timeout')
     }
 
-    console.log(
-      '[upload-and-process-image] 4. Processing completed',
-      assetResponse?.sys?.id
-    )
+    const assetStatusRes = await pollAssetStatus()
+
+    logger.log('[upload-and-process-image] 4. Processing completed', {
+      assetId: assetStatusRes?.sys?.id,
+      version: assetStatusRes?.sys?.version
+    })
 
     // 5. Publish the image
-    const currentVersion = assetResponse.sys.version ?? 0
     await $fetch(
       `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/assets/${assetResponse.sys.id}/published`,
       {
@@ -181,29 +203,29 @@ export default defineEventHandler(async (event) => {
         body: {},
         headers: {
           Authorization: `Bearer ${contentfulCmt}`,
-          'X-Contentful-Version': String(currentVersion + 1)
+          'X-Contentful-Version': String(assetStatusRes.sys.version)
         }
       }
     )
 
-    console.log(
-      '[upload-and-process-image] 5. Image published',
-      assetResponse?.sys?.id
-    )
+    logger.log('[upload-and-process-image] 5. Image published', {
+      assetId: assetStatusRes?.sys?.id,
+      version: assetStatusRes?.sys?.version
+    })
 
-    return assetResponse
+    return assetStatusRes
   } catch (error: unknown) {
     // Surface more detail from Contentful so we can debug 400s more easily
     const httpError = error as ContentfulHttpError
     const statusCode = httpError?.response?.status || httpError?.statusCode || 500
     const cfDetails = httpError?.response?.data || httpError?.data
 
-    console.error(
-      '[upload-and-process-image] Error',
+    logger.error('[upload-and-process-image] Error', {
       statusCode,
-      httpError?.message,
-      cfDetails
-    )
+      message: httpError?.message,
+      contentfulDetails: cfDetails,
+      fileName: imageFile?.name
+    })
 
     throw createError({
       statusCode,

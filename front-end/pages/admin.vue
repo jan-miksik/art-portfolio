@@ -217,15 +217,21 @@ const drop = (event: DragEvent) => {
   pieces.value?.push(newPiece)
   
   // Upload to Contentful in background
-  // If upload fails, we keep the piece in the array but mark it as failed
-  // User can retry or remove it manually
+  // If upload fails, remove the piece from the UI
   useContentfulPiece().uploadPiece(newPiece).catch((error) => {
     const errorMsg = showErrorNotification(error, 'uploadPiece', ErrorCode.CONTENTFUL_UPLOAD_FAILED)
     errorMessage.value = errorMsg
     
-    // Reset upload status on error - piece remains in array but marked as failed
-    newPiece.isUploadedToCf = false
-    newPiece.isUpdated = false
+    // Remove piece from UI if upload fails
+    const pieceIndex = pieces.value?.findIndex(p => p.id === newPiece.id)
+    if (pieceIndex !== undefined && pieceIndex !== -1 && pieces.value) {
+      pieces.value.splice(pieceIndex, 1)
+    }
+    
+    // Clean up object URL
+    if (newPiece.image?.url && newPiece.image.url.startsWith('blob:')) {
+      URL.revokeObjectURL(newPiece.image.url)
+    }
     
     // Log for debugging
     logger.error('Failed to upload piece:', {
