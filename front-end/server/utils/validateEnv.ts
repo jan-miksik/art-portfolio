@@ -1,7 +1,7 @@
 export const validateEnv = () => {
   const required = {
-    contentfulSpaceId: process.env.NUXT_CONTENTFUL_SPACE_ID,
-    contentfulManagementToken: process.env.NUXT_CONTENTFUL_MANAGEMENT_TOKEN,
+    NUXT_CONTENTFUL_SPACE_ID: process.env.NUXT_CONTENTFUL_SPACE_ID,
+    NUXT_CONTENTFUL_MANAGEMENT_TOKEN: process.env.NUXT_CONTENTFUL_MANAGEMENT_TOKEN,
   }
 
   const missing = Object.entries(required)

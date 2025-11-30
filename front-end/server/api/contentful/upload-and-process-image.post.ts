@@ -161,7 +161,7 @@ export default defineEventHandler(async (event) => {
             }
           )
 
-          const processed = assetStatusRes.fields.file['en-US'].url !== undefined
+          const processed = assetStatusRes.fields?.file?.['en-US']?.url !== undefined
           if (processed) {
             return assetStatusRes
           }

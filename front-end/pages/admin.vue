@@ -224,7 +224,7 @@ const drop = (event: DragEvent) => {
     
     // Remove piece from UI if upload fails
     const pieceIndex = pieces.value?.findIndex(p => p.id === newPiece.id)
-    if (pieceIndex !== undefined && pieceIndex !== -1 && pieces.value) {
+    if (pieceIndex !== -1 && pieces.value && pieceIndex !== undefined) {
       pieces.value.splice(pieceIndex, 1)
     }
     

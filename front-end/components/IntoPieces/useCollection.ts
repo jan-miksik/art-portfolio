@@ -163,7 +163,7 @@ export const useCollection = (chain: IChain) => {
     isContinueMintAfterConnect.value = false
 
     if (Number(account.chainId) !== chain.chainIdDec) {
-      await switchChain(config, { chainId: chain.chainIdDec as 10 })
+      await switchChain(config, { chainId: chain.chainIdDec as typeof optimism.id })
     }
 
     isMinted.value = false
