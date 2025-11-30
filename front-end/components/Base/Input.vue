@@ -1,12 +1,25 @@
 <template>
   <div class="input">
-    <label class="input__label">{{ label }}</label>
-    <input class="input__body" 
-    :step="step" 
-    :required="required" 
-    :type="type"
-    :value="modelValue"
-    @input="handleInputChange"/>
+    <label 
+      v-if="label" 
+      :for="inputId" 
+      class="input__label"
+    >
+      {{ label }}
+    </label>
+    <input 
+      :id="inputId"
+      class="input__body" 
+      :step="step" 
+      :required="required" 
+      :type="type"
+      :value="modelValue"
+      :disabled="isDisabled"
+      :aria-label="label || ariaLabel"
+      :aria-required="required"
+      :aria-disabled="isDisabled"
+      @input="handleInputChange"
+    />
   </div>
 </template>
 
@@ -19,6 +32,7 @@ interface Props {
   step?: string
   required?: boolean
   label?: string
+  ariaLabel?: string
 }
 
 const emit = defineEmits<{
@@ -31,8 +45,11 @@ const handleInputChange = (event: Event) => {
 
 const props = withDefaults(defineProps<Props>(), {
   isDisabled: false,
-  type: "submit"
+  type: "text"
 })
+
+// Generate unique ID for label-input association
+const inputId = computed(() => `input-${Math.random().toString(36).substr(2, 9)}`)
 
 </script>
 
@@ -60,7 +77,8 @@ const props = withDefaults(defineProps<Props>(), {
 
     &:focus
       animation 7s infinite alternate caret-anim
-      outline none
+      outline 2px solid #1464a2
+      outline-offset 2px
 
 @keyframes caret-anim
   0%

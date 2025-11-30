@@ -138,7 +138,7 @@ export const useCollection = (chain: IChain) => {
       }
 
       if ((error as any)?.message?.toLowerCase()?.startsWith('user rejected')) {
-        showErrorNotification(new Error('User rejected the request'))
+        showErrorNotification(new Error('User rejected the request'), context)
         return false
       }
 

@@ -1,6 +1,11 @@
 <template>
-  <button type="submit" :class="['mint-into-pieces-button', {'animated-button': !props.isDisabled, 'button--disabled': isDisabled}]"
-    :disabled="isDisabled">
+  <button 
+    type="submit" 
+    :class="['mint-into-pieces-button', {'animated-button': !props.isDisabled, 'button--disabled': isDisabled}]"
+    :disabled="isDisabled"
+    :aria-label="ariaLabel || 'Mint NFT'"
+    :aria-disabled="isDisabled"
+  >
     <slot/>
   </button>
 </template>
@@ -9,6 +14,7 @@
 
 interface Props {
   isDisabled?: boolean
+  ariaLabel?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {

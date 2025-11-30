@@ -11,8 +11,11 @@
     <div
       class="archive-toggler-text"
       role="button"
-      aria-label="Toggle archive visibility"
+      :aria-label="isArchiveVisible ? 'Hide archived pieces' : 'Show archived pieces'"
+      :aria-pressed="isArchiveVisible"
       tabindex="0"
+      @keydown.enter="toggleArchiveHandler"
+      @keydown.space.prevent="toggleArchiveHandler"
     >archive 
       
     <img v-if="isArchiveVisible" src="/eye-open.svg" class="archive-toggler-text__eye"/>
@@ -88,6 +91,7 @@ const toggleArchiveHandler = () => {
   font-size 15px
   transition color 0.3s ease
   cursor pointer
+  outline: none
 
   &:hover
     color #5f5f5f

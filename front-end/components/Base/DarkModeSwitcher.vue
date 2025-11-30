@@ -8,7 +8,18 @@
     @mousemove="mouseMoveHandler"
     @mouseup="mouseUpHandler"
     >
-    <div ref="modeRef" class="mode" @click="switchMode" />
+    <button 
+      ref="modeRef" 
+      class="mode" 
+      @click="switchMode"
+      @keydown.enter="switchMode"
+      @keydown.space.prevent="switchMode"
+      :aria-label="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+      :aria-pressed="isDarkMode"
+      role="switch"
+      type="button"
+      tabindex="0"
+    />
   </div>
 </template>
 
@@ -96,9 +107,19 @@ const switchMode = () => {
   z-index 10
   opacity: 0.8
   transition opacity 0.2s ease-out
+  border: none
+  padding: 0
+  margin: 0
+  background-color: transparent
+  background-repeat: no-repeat
+  background-position: center
 
   &:hover
     opacity 1
+
+  &:focus
+    outline: 2px solid currentColor
+    outline-offset: 2px
 
 #dark-mode-switcher
   position absolute

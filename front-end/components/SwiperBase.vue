@@ -91,16 +91,32 @@
     <div class="swiper-base__pagination-info">
       {{ swiperPagination }}
     </div>
-    <div v-if="!hideArrowLeft" class="swiper-base__arrow-left" @click.stop="handleSlideChange(-1)" @touchstart.stop="handleSlideChange(-1)">
-      <img src="/arrow-left.svg" alt="arrow-left" :class="['swiper-base__arrow-left-image', {'swiper-base__arrow-left--rotate-up':isLeftArrowPointingUp}]"/>
-    </div>
-    <div v-if="!hideArrowRight" class="swiper-base__arrow-right" @click.stop="handleSlideChange(+1)" @touchstart.stop="handleSlideChange(+1)">
-      <img src="/arrow-right.svg" alt="arrow-right" :class="['swiper-base__arrow-right-image', {'swiper-base__arrow-right--rotate-down':isRightArrowPointingDown}]"/>
-    </div>
-    <div
+    <button 
+      v-if="!hideArrowLeft" 
+      class="swiper-base__arrow-left" 
+      @click.stop="handleSlideChange(-1)" 
+      @touchstart.stop="handleSlideChange(-1)"
+      aria-label="Previous image"
+      type="button"
+    >
+      <img src="/arrow-left.svg" alt="" :class="['swiper-base__arrow-left-image', {'swiper-base__arrow-left--rotate-up':isLeftArrowPointingUp}]" aria-hidden="true"/>
+    </button>
+    <button 
+      v-if="!hideArrowRight" 
+      class="swiper-base__arrow-right" 
+      @click.stop="handleSlideChange(+1)" 
+      @touchstart.stop="handleSlideChange(+1)"
+      aria-label="Next image"
+      type="button"
+    >
+      <img src="/arrow-right.svg" alt="" :class="['swiper-base__arrow-right-image', {'swiper-base__arrow-right--rotate-down':isRightArrowPointingDown}]" aria-hidden="true"/>
+    </button>
+    <button
       class="swiper-base__selected-piece-image-close-zone"
       @click="emit('close-modal')"
       @touchstart="emit('close-modal')"
+      aria-label="Close image viewer"
+      type="button"
     >
       <img
         src="/close.svg"
@@ -108,25 +124,24 @@
         height="30"
         alt="close"
         class="swiper-base__selected-piece-back"
+        aria-hidden="true"
       />
-    </div>
+    </button>
   </component>
 </template>
 
 <script setup lang="ts">
 import type { Component } from 'vue'
 import Piece from '~/models/Piece'
-// CSS imports remain static (non-blocking)
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-// Import types statically (types don't add to bundle size)
+
 import type { Swiper as SwiperClass } from 'swiper'
 import type { SwiperModule } from 'swiper/types'
 import { Topics } from '~/components/piecesData'
 
 // Dynamically import Swiper components
-// Types are imported statically above, but components are loaded dynamically
 const Swiper = shallowRef<Component | null>(null)
 const SwiperSlide = shallowRef<Component | null>(null)
 const Navigation = shallowRef<SwiperModule | null>(null)
@@ -134,7 +149,6 @@ const Keyboard = shallowRef<SwiperModule | null>(null)
 const Mousewheel = shallowRef<SwiperModule | null>(null)
 const swiperLoaded = ref(false)
 
-// Load Swiper when component is mounted
 onMounted(async () => {
   if (!swiperLoaded.value) {
     const swiperModule = await import('swiper/vue')
@@ -336,6 +350,11 @@ const handleOnSlideChange = (swiper: SwiperClass) => {
   right 0
   width 30vw
   height 20vh
+  background: none
+  border: none
+  cursor: pointer
+  padding: 0
+  margin: 0
   z-index 10000
   cursor url("/close.svg"), auto
 
@@ -378,6 +397,11 @@ const handleOnSlideChange = (swiper: SwiperClass) => {
   top: 0;
   opacity: 0.5;
   z-index 10000
+  background: none
+  border: none
+  cursor: pointer
+  padding: 0
+  margin: 0
   cursor pointer
   transition all 0.3s
 
