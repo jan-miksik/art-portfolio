@@ -19,11 +19,15 @@
 </template>
 
 <script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
 import usePieces from '~/J/usePieces'
 
 const { pieces } = usePieces()
 
 const piecesRef = ref()
+
+// Lazy load BallThreeJs component (contains Three.js ~600KB)
+const BallThreeJs = defineAsyncComponent(() => import('~/components/BallThreeJs.vue'))
 
 </script>
 

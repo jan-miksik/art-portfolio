@@ -13,14 +13,12 @@
 </template>
 <script setup lang="ts">
 import interact from 'interactjs'
-import * as THREE from 'three'
 import isSmallScreen from '~/J/isMobile'
 import useAdminPage from '~/J/useAdminPage'
 import useMapper from '~/J/useMapper'
 import useMouseActionDetector from '~/J/useMouseActionDetector'
 import usePieces from '~/J/usePieces'
 import { LEFT_OFFSET, TOP_OFFSET } from '~/constants/layout'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 // Position constants
 const INITIAL_BALL_X = 7500
@@ -73,12 +71,17 @@ const ballThreeJsStyle = computed(() => {
   }
 })
 
-onMounted(() => {
+onMounted(async () => {
   const { isOnAdminPage } = useAdminPage()
   const { mapperEventData } = useMapper()
   const { edgePositions } = usePieces()
 
   if (!canvasRef.value) return
+  
+  // Dynamically import Three.js only when component is mounted
+  const THREE = await import('three')
+  const { OrbitControls } = await import('three/examples/jsm/controls/OrbitControls')
+  
   interact(canvasRef.value).draggable({
     inertia: true,
     autoScroll: true,

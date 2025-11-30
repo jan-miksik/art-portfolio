@@ -70,7 +70,8 @@ import { PUBLISH_DELAY_MS } from '~/constants/timing'
 import { logger } from '~/utils/logger'
 import { ErrorCode, createAppError } from '~/utils/errorHandler'
 import useErrorNotification from '~/J/useErrorNotification'
-import { parseFileName, type ParsedFileName } from '~/utils/parseFileName'
+import { parseFileName } from '~/utils/parseFileName'
+import { useThrottleFn } from '@vueuse/core'
 
 const { pieces } = usePieces()
 const { edgePositions } = usePieces()
@@ -131,7 +132,7 @@ onUnmounted(() => {
   window.removeEventListener('mousemove', updateCursorPosition)
 })
 
-const updateCursorPosition = (event: MouseEvent) => {
+const updateCursorPosition = useThrottleFn((event: MouseEvent) => {
   if (!dropzoneRef.value) return
 
   const scale = mapperEventData.value?.scale || 1
@@ -143,7 +144,7 @@ const updateCursorPosition = (event: MouseEvent) => {
     y: event.clientY - y,
     scale,
   }
-}
+}, 16) // ~60fps
 
 const drop = (event: DragEvent) => {
   if (!useAdminPage().isOnAdminPage.value) return

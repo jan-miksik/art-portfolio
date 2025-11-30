@@ -12,7 +12,9 @@
         @click="emit('close-modal')"
         @touchstart="emit('close-modal')"
       >
-        <swiper
+        <component
+          v-if="swiperLoaded && Swiper"
+          :is="Swiper"
           class="swiper"
           ref="swiperMainRef"
           direction='vertical'
@@ -26,7 +28,10 @@
           @swiper="handleSwiperInit"
 
         >
-         <swiper-slide>
+         <component
+           v-if="swiperLoaded && SwiperSlide"
+           :is="SwiperSlide"
+         >
            <SwiperBase
             v-if="freeTopicPieces"
            :pieces="freeTopicPieces"
@@ -35,9 +40,12 @@
            @close-modal="handleClosePieceDetail"
             @move-main-carousel="handleSlideChangeByStep"
            />
-         </swiper-slide>
+         </component>
 
-          <swiper-slide>
+          <component
+           v-if="swiperLoaded && SwiperSlide"
+           :is="SwiperSlide"
+          >
             <SwiperBase
             v-if="puzzlePieces"
            :pieces="puzzlePieces"
@@ -46,9 +54,12 @@
             @close-modal="handleClosePieceDetail"
             @move-main-carousel="handleSlideChangeByStep"
            />
-          </swiper-slide>
+          </component>
 
-          <swiper-slide>
+          <component
+           v-if="swiperLoaded && SwiperSlide"
+           :is="SwiperSlide"
+          >
             <SwiperBase
             v-if="geometryPieces"
            :pieces="geometryPieces"
@@ -56,9 +67,12 @@
             :activeIndexMain="activeIndexMain"
             @close-modal="handleClosePieceDetail"
             @move-main-carousel="handleSlideChangeByStep"
-           /></swiper-slide>
+           /></component>
 
-          <swiper-slide>
+          <component
+           v-if="swiperLoaded && SwiperSlide"
+           :is="SwiperSlide"
+          >
             <SwiperBase
               v-if="nodeAvatarPieces"
               :pieces="nodeAvatarPieces"
@@ -67,9 +81,12 @@
               @close-modal="handleClosePieceDetail"
               @move-main-carousel="handleSlideChangeByStep"
             />
-          </swiper-slide>
+          </component>
 
-          <swiper-slide>
+          <component
+           v-if="swiperLoaded && SwiperSlide"
+           :is="SwiperSlide"
+          >
             <SwiperBase
               v-if="digitalPieces"
               :pieces="digitalPieces"
@@ -78,7 +95,7 @@
               @close-modal="handleClosePieceDetail"
               @move-main-carousel="handleSlideChangeByStep"
             />
-          </swiper-slide>
+          </component>
 
             <div @click.stop @touchstart.stop class="piece-component-public-view__categories">
               <span @click.stop="handleChangeSlideMain(0)" :class="['piece-component-public-view__category', {'piece-component-public-view__category--active': activeIndexMain === 0}]">Free topic</span>
@@ -87,7 +104,7 @@
               <span @click.stop="handleChangeSlideMain(3)" :class="['piece-component-public-view__category piece-component-public-view__category--node-avatars', {'piece-component-public-view__category--active': activeIndexMain === 3}]">Node Avatars</span>
               <span @click.stop="handleChangeSlideMain(4)" :class="['piece-component-public-view__category piece-component-public-view__category--digital', {'piece-component-public-view__category--active': activeIndexMain === 4}]">digital</span>
             </div>
-        </swiper>
+        </component>
 
       </div>
     </Transition>
@@ -95,14 +112,15 @@
 </template>
 
 <script setup lang="ts">
+import type { Component } from 'vue'
 import Piece from '~/models/Piece'
 import usePieces from '~/J/usePieces'
-import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import { Swiper as SwiperTypes } from 'swiper'
-import { Navigation, Keyboard, Mousewheel } from 'swiper/modules';
+// Import types statically (types don't add to bundle size)
+import type { Swiper as SwiperClass } from 'swiper'
+import type { SwiperModule } from 'swiper/types'
 import {Topics} from "~/components/piecesData";
 import useArchive from '~/J/useArchive'
 
@@ -114,10 +132,34 @@ const props = defineProps<{
 }>()
 const { initialPiece } = toRefs(props)
 
-const swiperMainRef = ref<SwiperTypes | null>(null)
-const mainSwiperInstance = ref()
+// Dynamically import Swiper components (only load when modal is shown)
+// Types are imported statically above, but components are loaded dynamically
+const Swiper = shallowRef<Component | null>(null)
+const SwiperSlide = shallowRef<Component | null>(null)
+const Navigation = shallowRef<SwiperModule | null>(null)
+const Keyboard = shallowRef<SwiperModule | null>(null)
+const Mousewheel = shallowRef<SwiperModule | null>(null)
+
+const swiperMainRef = ref<{ $swiper: SwiperClass } | null>(null)
+const mainSwiperInstance = ref<SwiperClass | null>(null)
 const activeIndexMain = ref(0)
 const selectedPiece = ref<Piece | undefined>(initialPiece.value)
+const swiperLoaded = ref(false)
+
+// Load Swiper when component is mounted (modal is shown)
+onMounted(async () => {
+  if (!swiperLoaded.value) {
+    const swiperModule = await import('swiper/vue')
+    const swiperModules = await import('swiper/modules')
+    
+    Swiper.value = swiperModule.Swiper as Component
+    SwiperSlide.value = swiperModule.SwiperSlide as Component
+    Navigation.value = swiperModules.Navigation as SwiperModule
+    Keyboard.value = swiperModules.Keyboard as SwiperModule
+    Mousewheel.value = swiperModules.Mousewheel as SwiperModule
+    swiperLoaded.value = true
+  }
+})
 
 const piecesFilered = computed(() => {
   if (isArchiveVisible.value) {
@@ -161,11 +203,11 @@ watch(initialPiece, () => {
 },{ immediate: true })
 
 
-const handleSwiperInit = (swiper: SwiperTypes) => {
+const handleSwiperInit = (swiper: SwiperClass) => {
   mainSwiperInstance.value = swiper
 }
 
-const handleOnSlideChangeMain = (swiper: SwiperTypes) => {
+const handleOnSlideChangeMain = (swiper: SwiperClass) => {
   activeIndexMain.value = swiper.activeIndex
 }
 

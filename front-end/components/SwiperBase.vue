@@ -1,15 +1,23 @@
 <template>
-  <swiper
+  <component
+    v-if="swiperLoaded && Swiper"
+    :is="Swiper"
     class="swiper"
     ref="swiperRef"
     :modules="[Navigation, Keyboard, Mousewheel]"
     :keyboard="{ enabled: true }"
     @slideChange="handleOnSlideChange"
     :initialSlide="initialSlide"
-    @swiper="(swiper) => swiperInstance = swiper"
+    @swiper="(swiper: SwiperClass) => swiperInstance = swiper"
   >
 
-    <swiper-slide class="slide" v-for="(piece) in pieces" :key="piece.id">
+    <component
+      v-if="swiperLoaded && SwiperSlide"
+      :is="SwiperSlide"
+      class="slide"
+      v-for="(piece) in pieces"
+      :key="piece.id"
+    >
       <div
         class="swiper-base__selected-piece-image-wrapper"
         @click.stop
@@ -42,7 +50,7 @@
         @click.stop
         @touchstart.stop
       />
-    </swiper-slide>
+    </component>
     <div class="swiper-base__selected-piece-info-wrapper">
       <div
         class="swiper-base__selected-piece-info"
@@ -102,18 +110,44 @@
         class="swiper-base__selected-piece-back"
       />
     </div>
-  </swiper>
+  </component>
 </template>
 
 <script setup lang="ts">
+import type { Component } from 'vue'
 import Piece from '~/models/Piece'
-import { Swiper, SwiperSlide } from 'swiper/vue'
+// CSS imports remain static (non-blocking)
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import { Swiper as SwiperTypes } from 'swiper'
-import { Navigation, Keyboard, Mousewheel } from 'swiper/modules';
+// Import types statically (types don't add to bundle size)
+import type { Swiper as SwiperClass } from 'swiper'
+import type { SwiperModule } from 'swiper/types'
 import { Topics } from '~/components/piecesData'
+
+// Dynamically import Swiper components
+// Types are imported statically above, but components are loaded dynamically
+const Swiper = shallowRef<Component | null>(null)
+const SwiperSlide = shallowRef<Component | null>(null)
+const Navigation = shallowRef<SwiperModule | null>(null)
+const Keyboard = shallowRef<SwiperModule | null>(null)
+const Mousewheel = shallowRef<SwiperModule | null>(null)
+const swiperLoaded = ref(false)
+
+// Load Swiper when component is mounted
+onMounted(async () => {
+  if (!swiperLoaded.value) {
+    const swiperModule = await import('swiper/vue')
+    const swiperModules = await import('swiper/modules')
+    
+    Swiper.value = swiperModule.Swiper as Component
+    SwiperSlide.value = swiperModule.SwiperSlide as Component
+    Navigation.value = swiperModules.Navigation as SwiperModule
+    Keyboard.value = swiperModules.Keyboard as SwiperModule
+    Mousewheel.value = swiperModules.Mousewheel as SwiperModule
+    swiperLoaded.value = true
+  }
+})
 
 const props = defineProps<{
   initialPiece: Piece
@@ -123,8 +157,8 @@ const props = defineProps<{
 const { initialPiece, pieces } = toRefs(props)
 
 const activeIndex = ref(0)
-const swiperInstance = ref()
-const swiperRef = ref<SwiperTypes | null>(null)
+const swiperInstance = ref<SwiperClass | null>(null)
+const swiperRef = ref<{ $swiper: SwiperClass } | null>(null)
 const selectedPiece = ref<Piece | undefined>(initialPiece.value)
 
 const emit = defineEmits<{
@@ -184,7 +218,7 @@ const handleSlideChange = (moveDirection: number) => {
   }
 }
 
-const handleOnSlideChange = (swiper: SwiperTypes) => {
+const handleOnSlideChange = (swiper: SwiperClass) => {
   if (!pieces.value) return
   activeIndex.value = swiper.activeIndex
   selectedPiece.value = pieces.value[swiper.activeIndex]

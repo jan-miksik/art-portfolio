@@ -15,9 +15,9 @@ import { buildPieceFields } from '~/server/utils/contentfulFields'
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const contentfulSpaceId = config.contentfulSpaceId
-  const contentfulCmt = config.contentfulManagementToken
+  const contentfulManagementToken = config.contentfulManagementToken
 
-  if (!contentfulSpaceId || !contentfulCmt) {
+  if (!contentfulSpaceId || !contentfulManagementToken) {
     throw createError({
       statusCode: 500,
       message: 'Contentful configuration missing'
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
     const apiUrl = `https://api.contentful.com/spaces/${contentfulSpaceId}/environments/master/entries/${entryId}`
 
     const headers = {
-      Authorization: `Bearer ${contentfulCmt}`,
+      Authorization: `Bearer ${contentfulManagementToken}`,
       'Content-Type': 'application/vnd.contentful.management.v1+json',
       'X-Contentful-Version': String(version)
     }

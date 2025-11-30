@@ -14,9 +14,9 @@ import type {
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const contentfulSpaceId = config.contentfulSpaceId
-  const contentfulCmt = config.contentfulManagementToken
+  const contentfulManagementToken = config.contentfulManagementToken
 
-  if (!contentfulSpaceId || !contentfulCmt) {
+  if (!contentfulSpaceId || !contentfulManagementToken) {
     throw createError({
       statusCode: 500,
       message: 'Contentful configuration missing'
@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
         method: 'PUT',
         body: {},
         headers: {
-          Authorization: `Bearer ${contentfulCmt}`,
+          Authorization: `Bearer ${contentfulManagementToken}`,
           'X-Contentful-Version': String(version)
         }
       }

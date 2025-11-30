@@ -16,9 +16,9 @@ export default defineEventHandler(async (event) => {
   
   const config = useRuntimeConfig()
   const contentfulSpaceId = config.contentfulSpaceId
-  const contentfulCmt = config.contentfulManagementToken
+  const contentfulManagementToken = config.contentfulManagementToken
 
-  if (!contentfulSpaceId || !contentfulCmt) {
+  if (!contentfulSpaceId || !contentfulManagementToken) {
     throw createError({
       statusCode: 500,
       message: 'Contentful configuration missing'
@@ -74,7 +74,7 @@ export default defineEventHandler(async (event) => {
         headers: {
           // Contentful requires "application/octet-stream" for uploads, not the actual image MIME type
           'Content-Type': 'application/octet-stream',
-          Authorization: `Bearer ${contentfulCmt}`,
+          Authorization: `Bearer ${contentfulManagementToken}`,
           'X-Contentful-Version': '1'
         }
       }
@@ -114,7 +114,7 @@ export default defineEventHandler(async (event) => {
         method: 'POST',
         body: assetData,
         headers: {
-          Authorization: `Bearer ${contentfulCmt}`,
+          Authorization: `Bearer ${contentfulManagementToken}`,
           'Content-Type': 'application/vnd.contentful.management.v1+json',
           'X-Contentful-Version': '1'
         }
@@ -133,7 +133,7 @@ export default defineEventHandler(async (event) => {
         method: 'PUT',
         body: {},
         headers: {
-          Authorization: `Bearer ${contentfulCmt}`,
+          Authorization: `Bearer ${contentfulManagementToken}`,
           'X-Contentful-Version': String(assetResponse.sys.version)
         }
       }
@@ -156,7 +156,7 @@ export default defineEventHandler(async (event) => {
             {
               method: 'GET',
               headers: {
-                Authorization: `Bearer ${contentfulCmt}`
+                Authorization: `Bearer ${contentfulManagementToken}`
               }
             }
           )
@@ -202,7 +202,7 @@ export default defineEventHandler(async (event) => {
         method: 'PUT',
         body: {},
         headers: {
-          Authorization: `Bearer ${contentfulCmt}`,
+          Authorization: `Bearer ${contentfulManagementToken}`,
           'X-Contentful-Version': String(assetStatusRes.sys.version)
         }
       }

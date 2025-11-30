@@ -1,3 +1,5 @@
+import { visualizer } from 'rollup-plugin-visualizer'
+
 const title = 'Jan Mikšík'
 const url = 'https://janmiksik.ooo'
 const mainImage = 'https://janmiksik.ooo/soc-share-(aim).png'
@@ -51,6 +53,20 @@ export default defineNuxtConfig({
     public: {
       contentfulAccessToken: process.env.NUXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN,
     }
+  },
+  vite: {
+    plugins: [
+      // Only include visualizer when ANALYZE env var is set
+      ...(process.env.ANALYZE ? [
+        visualizer({
+          filename: './dist/stats.html',
+          open: true,
+          gzipSize: true,
+          brotliSize: true,
+          template: 'treemap' // or 'sunburst', 'network'
+        })
+      ] : [])
+    ]
   },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
