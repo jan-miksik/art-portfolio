@@ -41,8 +41,8 @@
     "three": "^0.145.0",
     "uuid": "^9.0.0",
     "viem": "^2.25.0",
-    "vue": "latest",
-    "vue-router": "latest",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0",
     "wagmi": "^2.14.16"
   },
   "devDependencies": {

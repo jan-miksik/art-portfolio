@@ -90,8 +90,27 @@ const { showErrorNotification } = useErrorNotification()
 
 const windowObject = computed(() => window)
 
+const updateCursorPosition = useThrottleFn((event: MouseEvent) => {
+  if (!dropzoneRef.value) return
+
+  const scale = mapperEventData.value?.scale || 1
+  const x = mapperEventData.value?.x || 0
+  const y = mapperEventData.value?.y || 0
+
+  cursorPosition.value = {
+    x: event.clientX - x,
+    y: event.clientY - y,
+    scale,
+  }
+}, 16) // ~60fps
+
 onMounted(async () => {
   isOnAdminPage.value = true
+  window.addEventListener('mousemove', updateCursorPosition)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('mousemove', updateCursorPosition)
 })
 
 watch(mapperRef, (newVal) => {
@@ -123,28 +142,6 @@ const isSomethingToPublish = computed(
 const publishButtonText = computed(() =>
   publishingInProgress.value ? 'Nahrávání...' : 'Publikovat'
 )
-
-onMounted(() => {
-  window.addEventListener('mousemove', updateCursorPosition)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('mousemove', updateCursorPosition)
-})
-
-const updateCursorPosition = useThrottleFn((event: MouseEvent) => {
-  if (!dropzoneRef.value) return
-
-  const scale = mapperEventData.value?.scale || 1
-  const x = mapperEventData.value?.x || 0
-  const y = mapperEventData.value?.y || 0
-
-  cursorPosition.value = {
-    x: event.clientX - x,
-    y: event.clientY - y,
-    scale,
-  }
-}, 16) // ~60fps
 
 const drop = (event: DragEvent) => {
   if (!useAdminPage().isOnAdminPage.value) return
