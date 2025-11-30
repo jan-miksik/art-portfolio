@@ -1,7 +1,16 @@
-export const validateEnv = () => {
+/**
+ * Validates required environment variables
+ * Uses runtimeConfig to access env vars in Cloudflare Pages runtime
+ * In Cloudflare Pages, environment variables are injected via runtimeConfig, not process.env
+ * @param config - Runtime config from useRuntimeConfig()
+ */
+export const validateEnv = (config: ReturnType<typeof useRuntimeConfig>) => {
+  const spaceId = config.contentfulSpaceId
+  const managementToken = config.contentfulManagementToken
+
   const required = {
-    NUXT_CONTENTFUL_SPACE_ID: process.env.NUXT_CONTENTFUL_SPACE_ID,
-    NUXT_CONTENTFUL_MANAGEMENT_TOKEN: process.env.NUXT_CONTENTFUL_MANAGEMENT_TOKEN,
+    NUXT_CONTENTFUL_SPACE_ID: spaceId,
+    NUXT_CONTENTFUL_MANAGEMENT_TOKEN: managementToken,
   }
 
   const missing = Object.entries(required)
