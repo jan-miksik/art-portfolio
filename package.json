@@ -28,7 +28,7 @@
     "@vuepic/vue-datepicker": "^5.3.0",
     "@vueuse/core": "^13.0.0",
     "@wagmi/core": "^2.16.7",
-    "@wagmi/vue": "^0.1.15",
+    "@wagmi/vue": "^0.1.28",
     "@web3modal/ethereum": "^2.3.7",
     "@web3modal/html": "^2.3.7",
     "contentful-management": "^10.38.2",
@@ -62,5 +62,9 @@
     "vitest": "^4.0.13",
     "wait-on": "^9.0.3"
   },
-  "packageManager": "yarn@3.6.1"
+  "packageManager": "yarn@3.6.1",
+  "resolutions": {
+    "@metamask/sdk": "^0.33.1",
+    "debug": "^4.3.4"
+  }
 }
