@@ -113,8 +113,9 @@
     </button>
     <button
       class="swiper-base__selected-piece-image-close-zone"
-      @click="emit('close-modal')"
-      @touchstart="emit('close-modal')"
+      @click.stop="emit('close-modal')"
+      @touchstart.stop="emit('close-modal')"
+      @touchend.stop.prevent
       aria-label="Close image viewer"
       type="button"
     >
@@ -357,6 +358,8 @@ const handleOnSlideChange = (swiper: SwiperClass) => {
   margin: 0
   z-index 10000
   cursor url("/close.svg"), auto
+  pointer-events: auto
+  touch-action: manipulation
 
   &:hover
     .swiper-base__selected-piece-back

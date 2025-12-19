@@ -31,8 +31,9 @@
             >
               <div
                 class="piece-component-admin__selected-piece-image-close-zone"
-                @click="emit('close-modal')"
-                @touchstart="emit('close-modal')"
+                @click.stop="emit('close-modal')"
+                @touchstart.stop="emit('close-modal')"
+                @touchend.stop.prevent
               />
               <div
                 class="piece-component-admin__selected-piece-image-inner-wrapper"
@@ -413,6 +414,8 @@ const handleIsArchived = (val: boolean) => {
   height 50vh
   z-index 10000
   cursor url("/close.svg"), auto
+  pointer-events: auto
+  touch-action: manipulation
 
 .dark-mode .piece-component-admin__selected-piece-image-close-zone
   cursor url("/close-white.svg"), auto
