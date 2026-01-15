@@ -67,41 +67,119 @@ export const useCollection = (chain: IChain) => {
       const response = await fetch(
         'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd',
       )
+      if (!response.ok) {
+        throw new Error(`Failed to fetch exchange rate: ${response.status}`)
+      }
       const data = await response.json()
-      ethToUsdExchangeRate.value = data.ethereum.usd
-      return data.ethereum.usd
+      if (data?.ethereum?.usd) {
+        ethToUsdExchangeRate.value = data.ethereum.usd
+        return data.ethereum.usd
+      }
+      throw new Error('Invalid exchange rate response format')
     } catch (err) {
+      logger.error('Failed to fetch ETH to USD exchange rate:', err)
+      // Return previously cached value if available
       return ethToUsdExchangeRate.value
     }
   }
 
   const getMintPrice = async () => {
     fetchingMintPrice.value = true
-    const gasPrice = await getGasPrice(config, {
-      chainId: optimism.id,
-    })
+    try {
+      const gasPrice = await getGasPrice(config, {
+        chainId: optimism.id,
+      })
 
-    const encodedFunctionData = encodeFunctionData({
-      abi: IntoPiecesContractAbi,
-      functionName: 'safeMint',
-      args: [DEMO_USER_ADDRESS],
-    })
+      // Use connected account address if available, otherwise use demo address
+      // For gas estimation, we need an address that can mint (or at least simulate the call)
+      const estimateAddress = (account.address.value || DEMO_USER_ADDRESS) as Address
+      const mintRecipient = estimateAddress // The address that will receive the NFT in the mint call
+      
+      const encodedFunctionData = encodeFunctionData({
+        abi: IntoPiecesContractAbi,
+        functionName: 'safeMint',
+        args: [mintRecipient],
+      })
 
-    const gasEstimate = await estimateGas(config, {
-      chainId: optimism.id,
-      account: DEMO_USER_ADDRESS,
-      to: contractAddress,
-      value: parseEther('0'),
-      data: encodedFunctionData,
-    })
-    const ethToUsdRate = await getEthToUsdExchangeRate()
-    const feeCostWei = gasPrice * BigInt(gasEstimate)
-    const feeCostEth = formatEther(feeCostWei)
-    const feeCostUsd = roundUp(parseFloat(feeCostEth) * ethToUsdRate, 1)
-    const customPriceUsd = roundUp((requestedPrice.value || 0) * ethToUsdRate, 1)
-    const fullPriceUsd = roundUp(feeCostUsd + customPriceUsd, 1)
-    fetchingMintPrice.value = false
-    mintPrice.value = { feeCostUsd, customPriceUsd, fullPriceUsd }
+      let gasEstimate: bigint
+      try {
+        // Try to estimate gas with the address
+        // The 'account' field is who's paying for gas, 'to' field is the contract
+        // The args in encodedFunctionData specify who receives the NFT
+        // Include requestedPrice in value for accurate gas estimation
+        const estimatedValue = requestedPrice.value !== undefined && requestedPrice.value !== null
+          ? parseEther(requestedPrice.value.toString())
+          : parseEther('0')
+        
+        gasEstimate = await estimateGas(config, {
+          chainId: optimism.id,
+          account: estimateAddress,
+          to: contractAddress,
+          value: estimatedValue,
+          data: encodedFunctionData,
+        })
+      } catch (estimateError) {
+        // Check if this is an execution revert (address can't mint)
+        const errorMessage = (estimateError as Error)?.message?.toLowerCase() || ''
+        const errorName = (estimateError as any)?.name || ''
+        const causedBy = (estimateError as any)?.cause
+        const causedByMessage = causedBy?.message?.toLowerCase() || ''
+        const causedByName = causedBy?.name || ''
+        
+        const isExecutionRevert = 
+          errorName.includes('ExecutionReverted') ||
+          errorName.includes('EstimateGasExecutionError') ||
+          errorMessage.includes('execution reverted') ||
+          causedByName.includes('ExecutionReverted') ||
+          causedByMessage.includes('execution reverted')
+        
+        if (isExecutionRevert) {
+          // Address can't mint or simulation reverted.
+          // Use a reasonable default gas estimate so price can still be shown.
+          // Typical NFT mint uses around 150k-200k gas, using 180k as a safe estimate.
+          gasEstimate = 180000n
+        } else {
+          // Other error (network, RPC, etc.) - throw it
+          throw estimateError
+        }
+      }
+
+      const ethToUsdRate = await getEthToUsdExchangeRate()
+      if (!ethToUsdRate) {
+        throw new Error('Failed to fetch ETH to USD exchange rate')
+      }
+      const feeCostWei = gasPrice * BigInt(gasEstimate)
+      const feeCostEth = formatEther(feeCostWei)
+      const feeCostUsd = roundUp(parseFloat(feeCostEth) * ethToUsdRate, 1)
+      const customPriceUsd = roundUp((requestedPrice.value || 0) * ethToUsdRate, 1)
+      const fullPriceUsd = roundUp(feeCostUsd + customPriceUsd, 1)
+      mintPrice.value = { feeCostUsd, customPriceUsd, fullPriceUsd }
+    } catch (error) {
+      // Check if this is an execution revert error
+      const errorMessage = (error as Error)?.message?.toLowerCase() || ''
+      const errorName = (error as any)?.name || ''
+      const causedBy = (error as any)?.cause
+      const causedByMessage = causedBy?.message?.toLowerCase() || ''
+      const causedByName = causedBy?.name || ''
+      
+      const isExecutionRevert = 
+        errorName.includes('ExecutionReverted') ||
+        errorName.includes('EstimateGasExecutionError') ||
+        errorMessage.includes('execution reverted') ||
+        causedByName.includes('ExecutionReverted') ||
+        causedByMessage.includes('execution reverted')
+      
+      if (isExecutionRevert) {
+        // Address can't mint - silently fail, user will see "?" for price
+        return
+      }
+      
+      // Log other errors (network issues, RPC failures, etc.)
+      logger.error('Failed to fetch mint price:', error)
+      // Silently fail - user can still mint, they just won't see the price estimate
+    } finally {
+      fetchingMintPrice.value = false
+    }
   }
 
   const mintAction = async () => {
@@ -214,8 +292,19 @@ export const useCollection = (chain: IChain) => {
   )
 
   onMounted(async () => {
-    await loadContractData()
-    await getMintPrice()
+    try {
+      await loadContractData()
+    } catch (error) {
+      logger.error('Failed to load contract data:', error)
+      showErrorNotification(error, 'useCollection.loadContractData')
+    }
+
+    try {
+      await getMintPrice()
+    } catch (error) {
+      logger.error('Failed to get mint price on mount:', error)
+      // Error is already handled in getMintPrice, but we catch here to prevent unhandled promise rejection
+    }
   })
 
   return {
