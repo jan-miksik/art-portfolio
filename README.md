@@ -11,10 +11,8 @@ This is a Nuxt 3 Vue.js portfolio website with Web3 integration, drag-and-drop f
 - **Web3 Integration**: Wallet connection, NFT collection viewing, and minting of new NFTs
 - **Contentful CMS**: Secure server-side API routes for managing artwork (upload, update, publish, delete)
 - **Admin Panel**: Full CRUD operations for managing art pieces
-- **Dark Mode**: Toggle between light and dark themes
 - **Responsive Design**: Optimized for desktop and mobile devices
 - **Image Caching**: IndexedDB caching for improved performance
-- **Archive Management**: Toggle visibility of archived pieces
 
 ## Tech Stack
 
