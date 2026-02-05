@@ -235,41 +235,45 @@ const handleOnBlurEditPieceInfo = (
   secondField?: 'x' | 'y'
 ) => {
   if (!selectedPiece.value || !pieces.value) return
+  const piece = pieces.value[activeIndex.value]
+  if (!piece) return
   const target = event.target as HTMLDivElement
-  pieces.value[activeIndex.value].isPublished = false
+  piece.isPublished = false
 
   if (primaryField === 'name' || primaryField === 'techniqueDescription') {
-    pieces.value[activeIndex.value][primaryField] = target.innerText
+    piece[primaryField] = target.innerText
     selectedPiece.value[primaryField] = target.innerText
     return
   }
 
   if (secondField === 'x' || secondField === 'y') {
-    pieces.value[activeIndex.value][primaryField][secondField] = Number(
-      target.innerText
-    )
+    piece[primaryField][secondField] = Number(target.innerText)
     selectedPiece.value[primaryField][secondField] = Number(target.innerText)
   }
 }
 
 const handleOnSelectDate = (date: Date) => {
   if (!pieces.value) return
-  pieces.value[activeIndex.value].isPublished = false
-  pieces.value[activeIndex.value].created = date
+  const piece = pieces.value[activeIndex.value]
+  if (!piece) return
+  piece.isPublished = false
+  piece.created = date
 }
 
 const handleUpdatePieceTopic = () => {
   if (!selectedPiece.value || !pieces.value) return
-
-  pieces.value[activeIndex.value].topic = selectedPiece.value.topic
-  pieces.value[activeIndex.value].isPublished = false
+  const piece = pieces.value[activeIndex.value]
+  if (!piece) return
+  piece.topic = selectedPiece.value.topic
+  piece.isPublished = false
 }
 
 const handleUpdatePieceTechniqueDescription = () => {
   if (!selectedPiece.value || !pieces.value) return
-  pieces.value[activeIndex.value].techniqueDescription =
-    selectedPiece.value.techniqueDescription
-  pieces.value[activeIndex.value].isPublished = false
+  const piece = pieces.value[activeIndex.value]
+  if (!piece) return
+  piece.techniqueDescription = selectedPiece.value.techniqueDescription
+  piece.isPublished = false
 }
 
 const handleRemovePiece = async () => {
@@ -287,14 +291,18 @@ const handleRemovePiece = async () => {
 
 const handleIsMoveableInPublic = (val: boolean) => {
   if (!selectedPiece.value || !pieces.value) return
-  pieces.value[activeIndex.value].isPublished = false
-  pieces.value[activeIndex.value].isMoveableInPublic = val
+  const piece = pieces.value[activeIndex.value]
+  if (!piece) return
+  piece.isPublished = false
+  piece.isMoveableInPublic = val
 }
 
 const handleIsArchived = (val: boolean) => {
   if (!selectedPiece.value || !pieces.value) return
-  pieces.value[activeIndex.value].isPublished = false
-  pieces.value[activeIndex.value].isArchived = val
+  const piece = pieces.value[activeIndex.value]
+  if (!piece) return
+  piece.isPublished = false
+  piece.isArchived = val
 }
 </script>
 

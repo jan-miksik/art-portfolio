@@ -1,3 +1,3 @@
-import chains from "~/constants/chains";
+import { mainSupportedChain } from "~/constants/chains";
 
-export const mainSupportedChain = chains.optimism
+export { mainSupportedChain }

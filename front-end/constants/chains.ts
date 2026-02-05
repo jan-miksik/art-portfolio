@@ -62,6 +62,9 @@ const chains: Record<string, IChain> = {
   }
 }
 
+/** Main chain used for IntoPieces NFT; typed so consumers get IChain, not IChain | undefined. */
+export const mainSupportedChain: IChain = chains.optimism!
+
 export const connectedChain = ref<IChain>()
 
 export default chains

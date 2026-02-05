@@ -8,7 +8,7 @@ const description = 'drawings, digital and crypto pieces, paintings and others'
 const twitterCard = 'summary_large_image'
 
 export default defineNuxtConfig({
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: '2026-02-05',
   nitro: {
     preset: 'cloudflare-pages',
     routeRules: {
@@ -40,6 +40,10 @@ export default defineNuxtConfig({
   },
   ssr: false,
   srcDir: 'front-end/',
+  dir: {
+    // Tell Nuxt where the `public` directory is when using a custom `srcDir`
+    public: 'front-end/public',
+  },
   components: {
     dirs: [
       '~/components',
@@ -66,7 +70,7 @@ export default defineNuxtConfig({
           template: 'treemap' // or 'sunburst', 'network'
         })
       ] : [])
-    ]
+    ],
   },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },

@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import { mainSupportedChain } from '~/appSetup'
+import { mainSupportedChain } from '~/constants/chains'
 import { useCollection } from './useCollection'
 
 const {
