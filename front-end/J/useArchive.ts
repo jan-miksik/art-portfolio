@@ -1,6 +1,6 @@
 import { useStorage } from '@vueuse/core'
 
-const isArchiveVisible = useStorage<boolean>('is-archive-visible', false)
+const isArchiveVisible = useStorage<boolean>('is-archive-visible', true)
 
 export default function useArchive() {
 
