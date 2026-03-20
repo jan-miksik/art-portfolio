@@ -1,7 +1,6 @@
 <template>
   <div>
     <BaseDarkModeSwitcher />
-    <BaseArchiveToggler />
     <BaseBeSupporter />
     <Contact />
 

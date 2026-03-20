@@ -1,11 +1,9 @@
-import { useStorage } from '@vueuse/core'
-
-const isArchiveVisible = useStorage<boolean>('is-archive-visible', true)
+const isArchiveVisible = ref(true)
 
 export default function useArchive() {
 
   const toggleArchive = () => {
-    isArchiveVisible.value = !isArchiveVisible.value
+    isArchiveVisible.value = true
   }
 
   return {
